@@ -1,0 +1,29 @@
+{
+	"name": "@bug-on/md3-tokens",
+	"version": "0.1.0",
+	"description": "Material Design 3 Expressive design tokens",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		},
+		"./colors.css": "./src/colors.css",
+		"./elevation.css": "./src/elevation.css",
+		"./shape.css": "./src/shape.css",
+		"./typography.css": "./src/typography.css",
+		"./index.css": "./dist/index.css"
+	},
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"clean": "rm -rf dist"
+	},
+	"devDependencies": {
+		"tsup": "^8.4.0",
+		"typescript": "5.8.3"
+	}
+}
