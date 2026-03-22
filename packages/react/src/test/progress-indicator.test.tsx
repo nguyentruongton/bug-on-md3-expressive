@@ -115,7 +115,7 @@ describe("ProgressIndicator", () => {
 				<ProgressIndicator
 					variant="linear"
 					value={50}
-					space={8}
+					gapSize={8}
 					aria-label="Test space"
 				/>,
 			);

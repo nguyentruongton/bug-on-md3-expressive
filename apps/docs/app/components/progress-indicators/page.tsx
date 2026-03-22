@@ -1,15 +1,16 @@
 "use client";
 
 import {
-	ProgressIndicator,
+	Button,
 	Card,
 	CodeBlock,
+	ProgressIndicator,
 	TableOfContents,
-	Button,
 } from "@bug-on/md3-react";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ProgressPlayground } from "./playground";
 
 export default function ProgressIndicatorPage() {
 	const [progress, setProgress] = useState(0);
@@ -42,6 +43,7 @@ export function ProgressExamples() {
 }`;
 
 	const tocItems = [
+		{ id: "playground", label: "Interactive Playground" },
 		{ id: "linear-variants", label: "Linear Variants" },
 		{ id: "circular-variants", label: "Circular Variants" },
 		{ id: "use-cases", label: "Use Cases" },
@@ -80,6 +82,14 @@ export function ProgressExamples() {
 					</p>
 				</div>
 
+				{/* Playground */}
+				<section id="playground" className="mb-20 scroll-mt-24">
+					<h2 className="text-2xl font-medium text-m3-on-surface mb-8">
+						Interactive Playground
+					</h2>
+					<ProgressPlayground />
+				</section>
+
 				{/* Linear */}
 				<section id="linear-variants" className="mb-20 scroll-mt-24">
 					<h2 className="text-2xl font-medium text-m3-on-surface mb-8">
@@ -109,6 +119,8 @@ export function ProgressExamples() {
 										aria-label="Loading wavy indeterminate"
 										waveSpeed={0.5}
 										crawlerSpeed={0.2}
+										value={100}
+										determinateAnimation="continuous"
 									/>
 									<div className="text-xs text-m3-on-surface-variant/60 mt-2 text-center">
 										Indeterminate
@@ -118,10 +130,23 @@ export function ProgressExamples() {
 									<ProgressIndicator
 										variant="linear"
 										shape="wavy"
-										indeterminateAnimation="md3"
-										waveSpeed={0.5}
-										crawlerSpeed={0.2}
+										value={50}
+										determinateAnimation="md3"
+										aria-label="Indeterminate MD3 100"
+									/>
+									<div className="text-xs text-m3-on-surface-variant/60 mt-2 text-center">
+										Indeterminate MD3
+									</div>
+								</div>
+								<div>
+									<ProgressIndicator
+										variant="linear"
+										shape="wavy"
+										trackShape="flat"
+										showStopIndicator={true}
 										aria-label="Loading wavy MD3"
+										waveSpeed={0.5}
+										crawlerSpeed={0.5}
 									/>
 									<div className="text-xs text-m3-on-surface-variant/60 mt-2 text-center">
 										Indeterminate MD3
@@ -132,7 +157,7 @@ export function ProgressExamples() {
 										variant="linear"
 										shape="wavy"
 										value={progress}
-										aria-label={"Progress " + progress + "% wavy"}
+										aria-label={`Progress ${progress}% wavy`}
 									/>
 									<div className="text-xs text-m3-on-surface-variant/60 mt-2 text-center">
 										Determinate
@@ -144,6 +169,10 @@ export function ProgressExamples() {
 										shape="wavy"
 										amplitude={6}
 										wavelength={40}
+										crawlerSpeed={0.2}
+										gapSize={0}
+										waveSpeed={0.5}
+										value={50}
 										aria-label="Loading wavy custom"
 									/>
 									<div className="text-xs text-m3-on-surface-variant/60 mt-2 text-center">
@@ -178,7 +207,7 @@ export function ProgressExamples() {
 									<ProgressIndicator
 										variant="linear"
 										value={progress}
-										aria-label={"Progress " + progress + "%"}
+										aria-label={`Progress ${progress}%`}
 									/>
 									<div className="text-xs text-m3-on-surface-variant/60 font-medium mt-2 text-center">
 										Determinate
@@ -227,7 +256,7 @@ export function ProgressExamples() {
 											variant="circular"
 											shape="wavy"
 											value={progress}
-											aria-label={"Determinate " + progress + "% wavy"}
+											aria-label={`Determinate ${progress}% wavy`}
 										/>
 										<span className="text-xs text-m3-on-surface-variant">
 											Determinate
@@ -240,7 +269,7 @@ export function ProgressExamples() {
 											value={progress}
 											size={52}
 											trackHeight={8}
-											aria-label={"Thick wavy " + progress + "%"}
+											aria-label={`Thick wavy ${progress}%`}
 										/>
 										<span className="text-xs text-m3-on-surface-variant text-center max-w-25">
 											Thick (8dp)
@@ -277,7 +306,7 @@ export function ProgressExamples() {
 										<ProgressIndicator
 											variant="circular"
 											value={progress}
-											aria-label={"Determinate " + progress + "% flat"}
+											aria-label={`Determinate ${progress}% flat`}
 										/>
 										<span className="text-xs text-m3-on-surface-variant">
 											Determinate
@@ -288,7 +317,7 @@ export function ProgressExamples() {
 											variant="circular"
 											value={progress}
 											size={80}
-											aria-label={"Determinate Large " + progress + "% flat"}
+											aria-label={`Determinate Large ${progress}% flat`}
 										/>
 										<span className="text-xs text-m3-on-surface-variant text-center max-w-25">
 											Large (80dp)
@@ -325,6 +354,7 @@ export function ProgressExamples() {
 								<Button colorStyle="filled">
 									<ProgressIndicator
 										variant="circular"
+										shape="wavy"
 										size={20}
 										color="currentColor"
 										trackColor="transparent"

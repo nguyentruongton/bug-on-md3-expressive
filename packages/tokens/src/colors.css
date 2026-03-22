@@ -34,12 +34,12 @@
 	--md-sys-color-outline-variant: #cac4d0;
 
 	/* Indicator tokens — Loading & Progress */
-	--md-sys-color-indicator-active: #6750a4;
-	--md-sys-color-indicator-container: #e8def8;
-	--md-sys-color-indicator-contained-active: #4f3788;
-	--md-sys-color-indicator-contained-container: #eaddff;
-	--md-sys-color-indicator-track: #e7e0eb;
-	--md-sys-color-indicator-stop: #6750a4;
+	--md-sys-color-indicator-active: var(--md-sys-color-primary);
+	--md-sys-color-indicator-container: var(--md-sys-color-secondary-container);
+	--md-sys-color-indicator-contained-active: var(--md-sys-color-primary-container);
+	--md-sys-color-indicator-contained-container: var(--md-sys-color-primary-container);
+	--md-sys-color-indicator-track: var(--md-sys-color-surface-variant);
+	--md-sys-color-indicator-stop: var(--md-sys-color-primary);
 }
 
 /* Dark Theme overrides */
@@ -80,10 +80,10 @@
 	--md-sys-color-outline-variant: #49454f;
 
 	/* Indicator tokens — Dark */
-	--md-sys-color-indicator-active: #d0bcff;
-	--md-sys-color-indicator-container: #4a4458;
-	--md-sys-color-indicator-contained-active: #eaddff;
-	--md-sys-color-indicator-contained-container: #4f378b;
-	--md-sys-color-indicator-track: #49454f;
-	--md-sys-color-indicator-stop: #cac4d0;
+	--md-sys-color-indicator-active: var(--md-sys-color-primary);
+	--md-sys-color-indicator-container: var(--md-sys-color-secondary-container);
+	--md-sys-color-indicator-contained-active: var(--md-sys-color-on-primary-container);
+	--md-sys-color-indicator-contained-container: var(--md-sys-color-primary-container);
+	--md-sys-color-indicator-track: var(--md-sys-color-surface-variant);
+	--md-sys-color-indicator-stop: var(--md-sys-color-primary);
 }

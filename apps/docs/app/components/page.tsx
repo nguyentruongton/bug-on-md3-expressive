@@ -18,7 +18,7 @@ export default function ComponentsOverviewPage() {
 						creating a user interface.
 					</p>
 				</div>
-				<div className="w-full max-w-[400px] aspect-square relative flex-shrink-0">
+				<div className="w-full max-w-100 aspect-square relative shrink-0">
 					{/* Abstract geometric shapes to mimic the hero graphic */}
 					<div className="absolute inset-0 bg-[#EADDFF] rounded-full overflow-hidden flex items-center justify-center">
 						<div className="w-3/4 h-3/4 bg-white rounded-2xl shadow-sm flex flex-col gap-3 p-4 rotate-12 translate-x-4">
@@ -35,7 +35,7 @@ export default function ComponentsOverviewPage() {
 			</section>
 
 			{/* Components Grid */}
-			<div className="px-6 md:px-8 lg:px-20 py-12 md:py-16 max-w-[1600px] mx-auto">
+			<div className="px-6 md:px-8 lg:px-20 py-12 md:py-16 max-w-400 mx-auto">
 				{componentCategories.map((category) => (
 					<section key={category.title} className="mb-16 md:mb-20">
 						<h2 className="text-2xl md:text-[32px] font-normal text-[#1D192B] mb-8 md:mb-10">

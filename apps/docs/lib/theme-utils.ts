@@ -63,7 +63,10 @@ export function applyTheme(sourceColorHex: string, mode: ThemeMode = "light") {
 
 	for (const [key, value] of Object.entries(colors)) {
 		// Convert camelCase to kebab-case for CSS variables
-		const cssVarName = `--color-m3-${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}`;
-		root.style.setProperty(cssVarName, value);
+		const kebabKey = key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
+		// Update standard MD3 tokens (used by @bug-on/md3-react components)
+		root.style.setProperty(`--md-sys-color-${kebabKey}`, value);
+		// Update Tailwind arbitrary variables (used by apps/docs utilities)
+		root.style.setProperty(`--color-m3-${kebabKey}`, value);
 	}
 }
