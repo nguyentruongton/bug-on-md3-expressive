@@ -22,7 +22,7 @@ export default function ProgressIndicatorPage() {
 		return () => clearInterval(interval);
 	}, []);
 
-	const progressCode = `import { ProgressIndicator } from '@bug-on/md3-react';
+	const progressCode = `import { ProgressIndicator, Button } from '@bug-on/md3-react';
 
 export function ProgressExamples() {
   return (
@@ -38,6 +38,12 @@ export function ProgressExamples() {
       
       {/* Determinate Circular */}
       <ProgressIndicator variant="circular" value={75} aria-label="Disk space" />
+
+      {/* Progress inside Buttons using \`loading\` prop */}
+      <div className="flex gap-4">
+        <Button loading loadingVariant="loading-indicator">Uploading</Button>
+        <Button loading loadingVariant="circular" colorStyle="outlined">Synchronizing</Button>
+      </div>
     </div>
   );
 }`;
@@ -51,7 +57,7 @@ export function ProgressExamples() {
 	];
 
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-12 py-12 flex flex-col xl:flex-row gap-12">
+		<div className="w-full max-w-7xl mx-auto px-4 md:px-8 py-8 lg:py-12 flex flex-col xl:flex-row gap-12">
 			<div className="flex-1 min-w-0">
 				{/* Breadcrumbs */}
 				<nav className="flex items-center gap-2 mb-8">
@@ -97,7 +103,7 @@ export function ProgressExamples() {
 					</h2>
 					<Card
 						variant="outlined"
-						className="p-8 flex flex-col gap-12 bg-m3-surface-container-lowest"
+						className="p-6 md:p-8 flex flex-col gap-12 bg-m3-surface-container-lowest"
 					>
 						{/* Wavy */}
 						<div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-m3-surface-variant pb-8">
@@ -130,32 +136,6 @@ export function ProgressExamples() {
 									<ProgressIndicator
 										variant="linear"
 										shape="wavy"
-										value={50}
-										determinateAnimation="md3"
-										aria-label="Indeterminate MD3 100"
-									/>
-									<div className="text-xs text-m3-on-surface-variant/60 mt-2 text-center">
-										Indeterminate MD3
-									</div>
-								</div>
-								<div>
-									<ProgressIndicator
-										variant="linear"
-										shape="wavy"
-										trackShape="flat"
-										showStopIndicator={true}
-										aria-label="Loading wavy MD3"
-										waveSpeed={0.5}
-										crawlerSpeed={0.5}
-									/>
-									<div className="text-xs text-m3-on-surface-variant/60 mt-2 text-center">
-										Indeterminate MD3
-									</div>
-								</div>
-								<div>
-									<ProgressIndicator
-										variant="linear"
-										shape="wavy"
 										value={progress}
 										aria-label={`Progress ${progress}% wavy`}
 									/>
@@ -167,8 +147,9 @@ export function ProgressExamples() {
 									<ProgressIndicator
 										variant="linear"
 										shape="wavy"
-										amplitude={6}
+										amplitude={10}
 										wavelength={40}
+										trackHeight={8}
 										crawlerSpeed={0.2}
 										gapSize={0}
 										waveSpeed={0.5}
@@ -225,7 +206,7 @@ export function ProgressExamples() {
 					</h2>
 					<Card
 						variant="outlined"
-						className="p-8 flex flex-col gap-12 bg-m3-surface-container-lowest"
+						className="p-6 md:p-8 flex flex-col gap-12 bg-m3-surface-container-lowest"
 					>
 						{/* Wavy */}
 						<div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-m3-surface-variant pb-8">
@@ -240,8 +221,8 @@ export function ProgressExamples() {
 								</p>
 							</div>
 							<div className="md:w-1/2 w-full flex flex-col gap-8 justify-center items-center">
-								<div className="flex items-center gap-12 justify-center w-full">
-									<div className="flex flex-col items-center gap-4">
+								<div className="flex flex-wrap items-center gap-6 sm:gap-12 justify-center w-full">
+									<div className="flex flex-col items-center gap-4 min-w-[100px]">
 										<ProgressIndicator
 											variant="circular"
 											shape="wavy"
@@ -292,8 +273,8 @@ export function ProgressExamples() {
 								</p>
 							</div>
 							<div className="md:w-1/2 w-full flex flex-col gap-8 justify-center items-center">
-								<div className="flex items-center gap-12 justify-center w-full">
-									<div className="flex flex-col items-center gap-4">
+								<div className="flex flex-wrap items-center gap-6 sm:gap-12 justify-center w-full">
+									<div className="flex flex-col items-center gap-4 min-w-[100px]">
 										<ProgressIndicator
 											variant="circular"
 											aria-label="Indeterminate circular flat"
@@ -336,7 +317,7 @@ export function ProgressExamples() {
 					</h2>
 					<Card
 						variant="outlined"
-						className="p-8 flex flex-col gap-12 bg-m3-surface-container-lowest"
+						className="p-6 md:p-8 flex flex-col gap-12 bg-m3-surface-container-lowest"
 					>
 						{/* Inside a Button */}
 						<div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-4">
@@ -351,26 +332,19 @@ export function ProgressExamples() {
 								</p>
 							</div>
 							<div className="flex flex-wrap items-center gap-4 justify-center min-w-50">
-								<Button colorStyle="filled">
-									<ProgressIndicator
-										variant="circular"
-										shape="wavy"
-										size={20}
-										color="currentColor"
-										trackColor="transparent"
-										aria-label="Loading..."
-									/>
-									<span className="ml-2">Uploading</span>
+								<Button
+									colorStyle="filled"
+									loading={true}
+									loadingVariant="loading-indicator"
+								>
+									Uploading
 								</Button>
-								<Button colorStyle="outlined">
-									<ProgressIndicator
-										variant="circular"
-										size={20}
-										color="currentColor"
-										trackColor="transparent"
-										aria-label="Saving..."
-									/>
-									<span className="ml-2">Synchronizing</span>
+								<Button
+									colorStyle="outlined"
+									loading={true}
+									loadingVariant="circular"
+								>
+									Synchronizing
 								</Button>
 							</div>
 						</div>

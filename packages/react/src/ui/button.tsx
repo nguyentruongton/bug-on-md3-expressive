@@ -2,9 +2,11 @@
 
 import { cva } from "class-variance-authority";
 import type { HTMLMotionProps } from "motion/react";
-import { domMax, LazyMotion, m } from "motion/react";
+import { AnimatePresence, domMax, LazyMotion, m } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
+import { LoadingIndicator } from "./loading-indicator";
+import { ProgressIndicator } from "./progress-indicator";
 import { Ripple, type RippleOrigin } from "./ripple";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -110,20 +112,20 @@ const buttonColorVariants = cva(
 			colorStyle: {
 				elevated: [
 					"bg-m3-surface-container-low text-m3-primary shadow-md",
-					"hover:bg-m3-primary/8 hover:shadow-lg",
+					"hover:bg-m3-primary/8",
 					"active:bg-m3-primary/12 active:shadow-sm",
 					"disabled:bg-m3-on-surface/12 disabled:text-m3-on-surface/[0.38]",
 				],
 				// filled = default + toggle-selected state (routes here via effectiveColorStyle)
 				filled: [
 					"bg-m3-primary text-m3-on-primary",
-					"hover:brightness-95 hover:shadow-md",
+					"hover:brightness-95",
 					"active:brightness-90 active:shadow-none",
 					"disabled:bg-m3-on-surface/12 disabled:text-m3-on-surface/[0.38]",
 				],
 				tonal: [
 					"bg-m3-secondary-container text-m3-on-secondary-container",
-					"hover:bg-m3-on-secondary-container/8 hover:shadow-md",
+					"hover:bg-m3-on-secondary-container/8",
 					"active:bg-m3-on-secondary-container/12 active:shadow-none",
 					"disabled:bg-m3-on-surface/12 disabled:text-m3-on-surface/[0.38]",
 				],
@@ -155,6 +157,8 @@ type MotionButtonProps = Omit<HTMLMotionProps<"button">, "children" | "color">;
 export interface BaseButtonProps extends MotionButtonProps {
 	/** MD3 color variant */
 	colorStyle?: "elevated" | "filled" | "tonal" | "outlined" | "text";
+	/** Color style when selected (for toggle buttons) */
+	selectedColorStyle?: "elevated" | "filled" | "tonal" | "outlined" | "text";
 	/** Button size – XS to XL */
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
 	/** Shape family: round (pill) or square (rect with scaled corners) */
@@ -162,6 +166,15 @@ export interface BaseButtonProps extends MotionButtonProps {
 	/** Icon node – sized automatically per MD3 spec */
 	icon?: React.ReactNode;
 	iconPosition?: "leading" | "trailing";
+	/** Display loading indicator and disable interaction */
+	loading?: boolean;
+	/**
+	 * Visual style of the loading indicator
+	 * - 'loading-indicator': MD3 Expressive morphing shape
+	 * - 'circular': Classic circular spinner
+	 * @default 'loading-indicator'
+	 */
+	loadingVariant?: "loading-indicator" | "circular";
 	children: React.ReactNode;
 }
 
@@ -181,11 +194,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			style,
 			variant = "default",
 			colorStyle = "filled",
+			selectedColorStyle,
 			size = "sm",
 			shape = "round",
 			selected,
 			icon,
 			iconPosition = "leading",
+			loading = false,
+			loadingVariant = "loading-indicator",
 			children,
 			onClick,
 			onKeyDown,
@@ -197,10 +213,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const isToggle = variant === "toggle";
 		const isSelected = isToggle ? !!selected : false;
 
-		// When toggle is selected, always use "filled" regardless of base colorStyle.
+		// When toggle is selected, use selectedColorStyle if provided, else "filled".
 		// This avoids CSS specificity battles between two bg-* classes from different
 		// CVA variants. effectiveColorStyle is the single source of truth for color.
-		const effectiveColorStyle = isToggle && isSelected ? "filled" : colorStyle;
+		const effectiveColorStyle = isToggle && isSelected ? (selectedColorStyle || "filled") : colorStyle;
 
 		// ── Shape Morphing ───────────────────────────────────────────────────
 		// When toggle selected: shape flips (round → square, square → round)
@@ -238,6 +254,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 		const handlePointerDown = React.useCallback(
 			(e: React.PointerEvent<HTMLButtonElement>) => {
+				if (loading) return; // Không trigger ripple khi đang loading
 				const rect = e.currentTarget.getBoundingClientRect();
 				const x = e.clientX - rect.left;
 				const y = e.clientY - rect.top;
@@ -245,7 +262,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				const size = Math.hypot(rect.width, rect.height) * 2;
 				setRipples((prev) => [...prev, { id: Date.now(), x, y, size }]);
 			},
-			[],
+			[loading],
 		);
 
 		const removeRipple = React.useCallback((id: number) => {
@@ -262,9 +279,18 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 						ariaLabelProp ||
 						(typeof children === "string" ? children : undefined)
 					}
-					onClick={onClick}
+					aria-busy={loading ? true : undefined}
+					aria-disabled={loading ? true : restProps.disabled}
+					onClick={(e) => {
+						if (loading) {
+							e.preventDefault();
+							return;
+						}
+						if (onClick) onClick(e);
+					}}
 					onPointerDown={handlePointerDown}
 					onKeyDown={(e) => {
+						if (loading) return;
 						if (e.key === "Enter" || e.key === " ") {
 							if (onClick) {
 								e.preventDefault();
@@ -279,7 +305,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					// Removed whileTap scale — ripple provides click feedback instead.
 					//
 					// NOTE: Uses spring with bounce: 0 (critically damped) for border-radius.
-					// This prevents overshoot below zero (visual jitter) while perfectly 
+					// This prevents overshoot below zero (visual jitter) while perfectly
 					// preserving velocity on rapid click interruptions, fixing the jerky morph.
 					// `layout` is intentionally NOT on this element — it conflicts with
 					// Framer Motion's layout projection correction of border-radius, causing jitter.
@@ -290,7 +316,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 						borderRadius: {
 							type: "spring",
 							bounce: 0,
-							duration: 0.3,
+							duration: 0.2,
 						},
 					}}
 					className={cn(
@@ -299,6 +325,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 						"overflow-hidden",
 						SIZE_TEXT_CLASS[size],
 						needsTouchTarget ? "relative" : "",
+						loading && "pointer-events-none opacity-75 cursor-not-allowed",
 						className,
 					)}
 					{...restProps}
@@ -314,36 +341,88 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					{/* ── MD3 Expressive Ripple layer ───────────────────────── */}
 					<Ripple ripples={ripples} onRippleDone={removeRipple} />
 
-					{icon && iconPosition === "leading" && (
-						<span
-							aria-hidden="true"
-							className={cn(
-								"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full",
-								iconClass,
-							)}
-						>
-							{icon}
-						</span>
-					)}
+					<AnimatePresence initial={false}>
+						{(loading || (icon && iconPosition === "leading")) && (
+							<m.span
+								initial={{ width: 0, opacity: 0, scale: 0.5 }}
+								animate={{ width: "auto", opacity: 1, scale: 1 }}
+								exit={{ width: 0, opacity: 0, scale: 0.5 }}
+								transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+								aria-hidden={loading ? undefined : "true"}
+								className={cn(
+									"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full overflow-hidden",
+									// Khi loading, nếu không có iconClass nào, ta vẫn giữ size box bằng cách lấy iconClass tương ứng với size Button.
+									iconClass,
+								)}
+							>
+								{loading ? (
+									loadingVariant === "loading-indicator" ? (
+										<LoadingIndicator
+											size={
+												size === "xs"
+													? 18
+													: size === "sm"
+														? 20
+														: size === "md"
+															? 24
+															: size === "lg"
+																? 32
+																: 40
+											}
+											color="currentColor"
+											aria-label="Loading"
+										/>
+									) : (
+										<ProgressIndicator
+											variant="circular"
+											size={
+												size === "xs"
+													? 18
+													: size === "sm"
+														? 20
+														: size === "md"
+															? 24
+															: size === "lg"
+																? 32
+																: 40
+											}
+											color="currentColor"
+											trackColor="transparent"
+											aria-label="Loading"
+										/>
+									)
+								) : (
+									icon
+								)}
+							</m.span>
+						)}
+					</AnimatePresence>
 
 					<m.span
 						layout="size"
+						className="inline-flex items-center gap-[inherit]"
 						transition={{ type: "spring", bounce: 0, duration: 0.3 }}
 					>
 						{labelText}
 					</m.span>
 
-					{icon && iconPosition === "trailing" && (
-						<span
-							aria-hidden="true"
-							className={cn(
-								"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full",
-								iconClass,
-							)}
-						>
-							{icon}
-						</span>
-					)}
+					<AnimatePresence initial={false}>
+						{icon && iconPosition === "trailing" && (
+							<m.span
+								initial={{ width: 0, opacity: 0, scale: 0.5 }}
+								animate={{ width: "auto", opacity: 1, scale: 1 }}
+								exit={{ width: 0, opacity: 0, scale: 0.5 }}
+								transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+								aria-hidden="true"
+								className={cn(
+									"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full overflow-hidden",
+									iconClass,
+								)}
+							>
+								{icon}
+							</m.span>
+						)}
+					</AnimatePresence>
 				</m.button>
 			</LazyMotion>
 		);

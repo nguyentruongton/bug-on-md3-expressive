@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css"; // Global styles
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LayoutProvider } from "@/lib/layout-context";
 
 const inter = Inter({
 	subsets: ["latin"],
@@ -23,10 +24,12 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
 			<body
 				suppressHydrationWarning
-				className="antialiased bg-m3-surface-container text-m3-on-surface font-sans"
+				className="antialiased bg-mesh-gradient text-m3-on-surface font-sans overflow-x-hidden"
 			>
 				<ThemeProvider>
-					<LayoutWrapper>{children}</LayoutWrapper>
+					<LayoutProvider>
+						<LayoutWrapper>{children}</LayoutWrapper>
+					</LayoutProvider>
 				</ThemeProvider>
 			</body>
 		</html>

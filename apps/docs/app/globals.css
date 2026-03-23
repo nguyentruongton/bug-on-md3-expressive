@@ -128,6 +128,16 @@ body {
 	-webkit-font-smoothing: antialiased;
 }
 
+@utility bg-mesh-gradient {
+	background-color: #f7e0fc;
+	background-image: 
+		radial-gradient(at 0% 0%, hsla(300, 100%, 85%, 0.6) 0px, transparent 50%),
+		radial-gradient(at 100% 0%, hsla(280, 100%, 85%, 0.6) 0px, transparent 50%),
+		radial-gradient(at 100% 100%, hsla(340, 100%, 85%, 0.6) 0px, transparent 50%),
+		radial-gradient(at 0% 100%, hsla(250, 100%, 85%, 0.6) 0px, transparent 50%),
+		radial-gradient(at 50% 50%, hsla(0, 100%, 90%, 0.4) 0px, transparent 60%);
+}
+
 /* ::-webkit-scrollbar {
 	width: 8px;
 }

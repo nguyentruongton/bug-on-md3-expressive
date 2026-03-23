@@ -135,7 +135,7 @@ export const WavyLinearTrack = React.memo<{
 			for (const seg of segments) {
 				const trackEnd = seg.adjTail - totalGap;
 				if (trackEnd > currentTrackX) {
-					trackD += getSinePath(currentTrackX, trackEnd, phase, activeWavelength, trackAmp) + " ";
+					trackD += `${getSinePath(currentTrackX, trackEnd, phase, activeWavelength, trackAmp)} `;
 				}
 				currentTrackX = Math.max(currentTrackX, seg.adjHead + totalGap);
 			}
