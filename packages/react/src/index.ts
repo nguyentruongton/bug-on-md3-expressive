@@ -85,3 +85,19 @@ export {
 	ScrollAreaScrollbar,
 } from "./ui/scroll-area";
 export { TableOfContents } from "./ui/toc";
+// Typography - MD3 Expressive
+export {
+	Typography,
+	TypographyContext,
+	TypographyProvider,
+	TypographyTokens,
+	TypographyKeyTokens,
+	TypeScaleTokens,
+	useTypography,
+	MD3_EXPRESSIVE_FONT_VARIATION,
+} from "./ui/typography";
+export type {
+	TextStyle,
+	TypographyProviderProps,
+	TypeScaleTokensType,
+} from "./ui/typography";

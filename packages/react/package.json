@@ -10,6 +10,14 @@
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.js"
+		},
+		"./typography.css": {
+			"style": "./dist/typography.css",
+			"default": "./dist/typography.css"
+		},
+		"./index.css": {
+			"style": "./dist/index.css",
+			"default": "./dist/index.css"
 		}
 	},
 	"files": [
@@ -18,7 +26,7 @@
 	],
 	"sideEffects": false,
 	"scripts": {
-		"build": "tsup",
+		"build": "tsup && tsc -p tsconfig.build.json",
 		"dev": "tsup --watch",
 		"test": "vitest run",
 		"lint": "tsc --noEmit",

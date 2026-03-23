@@ -3,16 +3,40 @@ import * as React from "react";
 import { cn } from "../lib/utils";
 import type { ButtonProps } from "./button";
 
+/**
+ * Thuộc tính truyền vào cho thành phần nhóm nút (Button Group).
+ */
 export interface ButtonGroupProps extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
+	/**
+	 * Cấu trúc hiển thị của nhóm nút:
+	 * - `standard`: Các nút cách xa và có khoảng cách độc lập với nhau (gap).
+	 * - `connected`: Các nút nối liền khung viền với nhau để tạo thành dạng Segmented Button.
+	 * @default "standard"
+	 */
 	variant?: "standard" | "connected";
+	/**
+	 * Hướng sắp xếp của các nút trong nhóm.
+	 * @default "horizontal"
+	 */
 	orientation?: "horizontal" | "vertical";
-	/** Đặt thành true nếu bạn muốn Standard Group giãn đều toàn bộ chiều rộng container */
+	/** 
+	 * Đặt thành `true` nếu bạn muốn nhóm hiển thị dạng `standard` giãn đều lấp đầy toàn bộ khu vực chứa (container). 
+	 * @default false
+	 */
 	fullWidth?: boolean;
-	/** Áp dụng chung một kích thước cho toàn bộ các nút trong nhóm */
+	/** 
+	 * Áp dụng thống nhất chung một kích thước (`size`) cho tất cả các con trong nhóm (ghi đè kích thước lẻ từng nút). 
+	 */
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
-	/** Bật/tắt hiệu ứng Morphing Width khi nhấn nút (mặc định: true) */
+	/** 
+	 * Bật/tắt hiệu ứng thu phóng độ rộng / khoảng đệm (Morphing Width) khi nhấn vào các nút (áp dụng cho nhóm `standard`).
+	 * @default true 
+	 */
 	morphingWidth?: boolean;
-	/** Hiển thị icon Check khi nút được chọn trong Group */
+	/** 
+	 * Tự động hiển thị biểu tượng (icon) Check khi một nút trạng thái nằm trong nhóm được chỉ định là `selected={true}`.
+	 * @default false 
+	 */
 	showCheck?: boolean;
 }
 
@@ -52,7 +76,7 @@ const PRESSED_RADIUS_MAP: Record<string, number> = {
 	xl: 40,
 };
 
-export const ButtonGroup = React.forwardRef<HTMLFieldSetElement, ButtonGroupProps>(
+const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupProps>(
 	(
 		{
 			className,
@@ -69,10 +93,15 @@ export const ButtonGroup = React.forwardRef<HTMLFieldSetElement, ButtonGroupProp
 	) => {
 		const [pressedIndex, setPressedIndex] = React.useState<number | null>(null);
 
-		const childrenArray = React.Children.toArray(children).filter(
-			React.isValidElement,
+		const childrenArray = React.useMemo(() => 
+			React.Children.toArray(children).filter(React.isValidElement),
+			[children]
 		);
 		const count = childrenArray.length;
+
+		const handlePointerLeaveAndUp = React.useCallback(() => {
+			setPressedIndex(null);
+		}, []);
 
 		return (
 			<fieldset
@@ -85,8 +114,8 @@ export const ButtonGroup = React.forwardRef<HTMLFieldSetElement, ButtonGroupProp
 					fullWidth && (orientation === "horizontal" ? "w-full" : "h-full"),
 					className,
 				)}
-				onPointerLeave={() => setPressedIndex(null)}
-				onPointerUp={() => setPressedIndex(null)}
+				onPointerLeave={handlePointerLeaveAndUp}
+				onPointerUp={handlePointerLeaveAndUp}
 				{...props}
 			>
 				{childrenArray.map((child, index) => {
@@ -256,4 +285,27 @@ export const ButtonGroup = React.forwardRef<HTMLFieldSetElement, ButtonGroupProp
 	},
 );
 
-ButtonGroup.displayName = "ButtonGroup";
+ButtonGroupComponent.displayName = "ButtonGroup";
+
+/**
+ * Component Nhóm Nút (Button Group) được sử dụng để gom nhóm nhiều nút có công năng tương tự lại với nhau.
+ * Hỗ trợ tạo các bộ nút độc lập (Standard) hoặc khối liên kết liền mạch (Connected/Segmented Buttons).
+ * Kế thừa cơ chế chuyển động kết hợp liền mạch của MD3 Expressive.
+ * 
+ * @example
+ * ```tsx
+ * // Nhóm nút tiêu chuẩn rời rạc (Standard)
+ * <ButtonGroup variant="standard">
+ *   <Button>Lựa chọn 1</Button>
+ *   <Button>Lựa chọn 2</Button>
+ * </ButtonGroup>
+ * 
+ * // Nhóm nút liền khối (Connected Segmented Button)
+ * <ButtonGroup variant="connected" showCheck fullWidth>
+ *   <Button variant="toggle" selected={view === "day"} onClick={() => setView("day")}>Ngày</Button>
+ *   <Button variant="toggle" selected={view === "week"} onClick={() => setView("week")}>Tuần</Button>
+ *   <Button variant="toggle" selected={view === "month"} onClick={() => setView("month")}>Tháng</Button>
+ * </ButtonGroup>
+ * ```
+ */
+export const ButtonGroup = React.memo(ButtonGroupComponent);

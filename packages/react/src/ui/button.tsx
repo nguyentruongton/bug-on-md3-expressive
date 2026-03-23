@@ -154,30 +154,59 @@ const buttonColorVariants = cva(
 // ─────────────────────────────────────────────────────────────────────────────
 type MotionButtonProps = Omit<HTMLMotionProps<"button">, "children" | "color">;
 
+/**
+ * Thuộc tính cơ bản của nút theo chuẩn thiết kế Material Design 3 (MD3) Expressive.
+ */
 export interface BaseButtonProps extends MotionButtonProps {
-	/** MD3 color variant */
+	/**
+	 * Biến thể màu sắc của nút theo MD3.
+	 * @default "filled"
+	 */
 	colorStyle?: "elevated" | "filled" | "tonal" | "outlined" | "text";
-	/** Color style when selected (for toggle buttons) */
+	/**
+	 * Biến thể màu sắc khi nút được chọn (chỉ áp dụng cho nút chuyển đổi trạng thái - toggle).
+	 */
 	selectedColorStyle?: "elevated" | "filled" | "tonal" | "outlined" | "text";
-	/** Button size – XS to XL */
+	/**
+	 * Kích thước của nút, hỗ trợ từ XS đến XL.
+	 * @default "sm"
+	 */
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
-	/** Shape family: round (pill) or square (rect with scaled corners) */
+	/**
+	 * Định dạng viền của nút: hình viên thuốc (round) hoặc hình vuông có bo góc (square).
+	 * @default "round"
+	 */
 	shape?: "round" | "square";
-	/** Icon node – sized automatically per MD3 spec */
+	/**
+	 * Biểu tượng bên trong nút. Kích thước tự động được căn chỉnh theo `size` của nút dựa trên thông số thiết kế MD3.
+	 */
 	icon?: React.ReactNode;
+	/**
+	 * Vị trí xuất hiện của biểu tượng so với nội dung chữ.
+	 * @default "leading"
+	 */
 	iconPosition?: "leading" | "trailing";
-	/** Display loading indicator and disable interaction */
+	/**
+	 * Nếu `true`, nút sẽ chuyển sang trạng thái chờ hiển thị vòng quay tải và bị vô hiệu hóa tương tác.
+	 * @default false
+	 */
 	loading?: boolean;
 	/**
-	 * Visual style of the loading indicator
-	 * - 'loading-indicator': MD3 Expressive morphing shape
-	 * - 'circular': Classic circular spinner
-	 * @default 'loading-indicator'
+	 * Phong cách hiển thị của vòng quay tải khi ở trạng thái chờ:
+	 * - `loading-indicator`: Hình khối thay đổi (morphing) đồng bộ với MD3 Expressive.
+	 * - `circular`: Vòng quay tròn cổ điển (classic spinner).
+	 * @default "loading-indicator"
 	 */
 	loadingVariant?: "loading-indicator" | "circular";
+	/**
+	 * Nội dung con của nút (chủ yếu được hiển thị dưới dạng nhãn chữ).
+	 */
 	children: React.ReactNode;
 }
 
+/**
+ * Thuộc tính hoàn chỉnh của nút, bao gồm cấu hình là nút thông thường hay là nút trạng thái (toggle) yêu cầu thêm thuộc tính `selected`.
+ */
 export type ButtonProps = BaseButtonProps &
 	(
 		| { variant?: "default"; selected?: never }
@@ -187,7 +216,18 @@ export type ButtonProps = BaseButtonProps &
 // ─────────────────────────────────────────────────────────────────────────────
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const getSizeIconPx = (size: string): number => {
+	switch (size) {
+		case "xs": return 18;
+		case "sm": return 20;
+		case "md": return 24;
+		case "lg": return 32;
+		case "xl": return 40;
+		default: return 20;
+	}
+};
+
+const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
 			className,
@@ -233,18 +273,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			pressedRadiusMap[size] ?? pressedRadiusMap.sm;
 
 		// ── Label: Sentence case ─────────────────────────────────────────────
-		const labelText =
+		const labelText = React.useMemo(() => 
 			typeof children === "string"
 				? children.charAt(0).toUpperCase() + children.slice(1).toLowerCase()
-				: children;
+				: children,
+			[children]
+		);
 
-		const iconClass = SIZE_ICON_CLASS[size] ?? "size-5";
+		const iconClass = React.useMemo(() => SIZE_ICON_CLASS[size] ?? "size-5", [size]);
 
 		// Let TypeScript infer MotionStyle-compatible type (not React.CSSProperties)
-		const mergedStyle = {
+		const mergedStyle = React.useMemo(() => ({
 			...SIZE_STYLES[size],
 			...style,
-		};
+		}), [size, style]);
 
 		// ── A11y: 48dp min touch target for XS / SM via invisible ::after span ─
 		const needsTouchTarget = size === "xs" || size === "sm";
@@ -269,6 +311,25 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			setRipples((prev) => prev.filter((r) => r.id !== id));
 		}, []);
 
+		const handleClick = React.useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+			if (loading) {
+				e.preventDefault();
+				return;
+			}
+			if (onClick) onClick(e);
+		}, [loading, onClick]);
+
+		const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLButtonElement>) => {
+			if (loading) return;
+			if (e.key === "Enter" || e.key === " ") {
+				if (onClick) {
+					e.preventDefault();
+					(e.currentTarget as HTMLButtonElement).click();
+				}
+			}
+			if (onKeyDown) onKeyDown(e);
+		}, [loading, onClick, onKeyDown]);
+
 		return (
 			<LazyMotion features={domMax} strict>
 				<m.button
@@ -281,24 +342,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					}
 					aria-busy={loading ? true : undefined}
 					aria-disabled={loading ? true : restProps.disabled}
-					onClick={(e) => {
-						if (loading) {
-							e.preventDefault();
-							return;
-						}
-						if (onClick) onClick(e);
-					}}
+					onClick={handleClick}
 					onPointerDown={handlePointerDown}
-					onKeyDown={(e) => {
-						if (loading) return;
-						if (e.key === "Enter" || e.key === " ") {
-							if (onClick) {
-								e.preventDefault();
-								(e.currentTarget as HTMLButtonElement).click();
-							}
-						}
-						if (onKeyDown) onKeyDown(e);
-					}}
+					onKeyDown={handleKeyDown}
 					style={mergedStyle}
 					// ── Expressive Morphing ──────────────────────────────────
 					// Shape morphs between pill ↔ rounded-square on toggle.
@@ -358,34 +404,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 								{loading ? (
 									loadingVariant === "loading-indicator" ? (
 										<LoadingIndicator
-											size={
-												size === "xs"
-													? 18
-													: size === "sm"
-														? 20
-														: size === "md"
-															? 24
-															: size === "lg"
-																? 32
-																: 40
-											}
+											size={getSizeIconPx(size)}
 											color="currentColor"
 											aria-label="Loading"
 										/>
 									) : (
 										<ProgressIndicator
 											variant="circular"
-											size={
-												size === "xs"
-													? 18
-													: size === "sm"
-														? 20
-														: size === "md"
-															? 24
-															: size === "lg"
-																? 32
-																: 40
-											}
+											size={getSizeIconPx(size)}
 											color="currentColor"
 											trackColor="transparent"
 											aria-label="Loading"
@@ -429,4 +455,24 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	},
 );
 
-Button.displayName = "Button";
+ButtonComponent.displayName = "Button";
+
+/**
+ * Component Nút (Button) theo chuẩn thiết kế Material Design 3 (MD3) Expressive.
+ * Tích hợp sẵn các hiệu ứng gợn sóng (ripple wave), chuyển hóa hình dạng khi tương tác (morphing shape) và các trạng thái tải.
+ * 
+ * @example
+ * ```tsx
+ * // Nút bấm thông thường
+ * <Button colorStyle="filled" size="md">Nhấn vào đây</Button>
+ * 
+ * // Nút bấm có biểu tượng và đang chờ xử lý
+ * <Button icon={<CheckIcon />} loading={isSubmitting}>Xác nhận</Button>
+ * 
+ * // Nút chuyển đổi trạng thái (toggle/segmented)
+ * <Button variant="toggle" selected={isToggled} onClick={() => setToggled(!isToggled)}>
+ *   Bật / Tắt
+ * </Button>
+ * ```
+ */
+export const Button = React.memo(ButtonComponent);

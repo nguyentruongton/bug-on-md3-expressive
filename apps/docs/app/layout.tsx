@@ -1,14 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css"; // Global styles
+import { TypographyProvider } from "@bug-on/md3-react";
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutProvider } from "@/lib/layout-context";
-
-const inter = Inter({
-	subsets: ["latin"],
-	variable: "--font-sans",
-});
+import "@bug-on/md3-react/typography.css";
+import "./globals.css";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Bug Ổn MD3 Expressive Components",
@@ -21,14 +17,16 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
+		<html lang="en" suppressHydrationWarning>
 			<body
 				suppressHydrationWarning
-				className="antialiased bg-mesh-gradient text-m3-on-surface font-sans overflow-x-hidden"
+				className="antialiased bg-mesh-gradient text-m3-on-surface font-md3-expressive overflow-x-hidden"
 			>
 				<ThemeProvider>
 					<LayoutProvider>
-						<LayoutWrapper>{children}</LayoutWrapper>
+						<TypographyProvider>
+							<LayoutWrapper>{children}</LayoutWrapper>
+						</TypographyProvider>
 					</LayoutProvider>
 				</ThemeProvider>
 			</body>

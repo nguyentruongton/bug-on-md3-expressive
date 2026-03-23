@@ -94,7 +94,10 @@ export default function ButtonGroupsPage() {
 								<span className="text-xs font-medium text-m3-on-surface-variant uppercase tracking-widest mb-4">
 									Try clicking and holding
 								</span>
-								<ButtonGroup variant="standard" className="flex-wrap justify-center">
+								<ButtonGroup
+									variant="standard"
+									className="flex-wrap justify-center"
+								>
 									<Button colorStyle="tonal" className="min-w-28 mb-2">
 										Cancel
 									</Button>
@@ -108,7 +111,11 @@ export default function ButtonGroupsPage() {
 								<span className="text-xs font-medium text-m3-on-surface-variant uppercase tracking-widest mb-4">
 									Without Morphing Effect
 								</span>
-								<ButtonGroup variant="standard" morphingWidth={false} className="flex-wrap justify-center">
+								<ButtonGroup
+									variant="standard"
+									morphingWidth={false}
+									className="flex-wrap justify-center"
+								>
 									<Button colorStyle="tonal" className="min-w-28 mb-2">
 										Cancel
 									</Button>
@@ -142,7 +149,11 @@ export default function ButtonGroupsPage() {
 								<span className="text-sm font-medium text-m3-on-surface-variant">
 									Default Size (sm) - Inner Radius: 8px
 								</span>
-								<ButtonGroup variant="connected" showCheck className="flex-wrap justify-center">
+								<ButtonGroup
+									variant="connected"
+									showCheck
+									className="flex-wrap justify-center"
+								>
 									{["Day", "Week", "Month", "Year"].map((item) => (
 										<Button
 											key={`sm-${item}`}
@@ -161,7 +172,11 @@ export default function ButtonGroupsPage() {
 								<span className="text-sm font-medium text-m3-on-surface-variant">
 									Large Size (lg) - Inner Radius: 16px
 								</span>
-								<ButtonGroup variant="connected" size="lg" className="flex-wrap justify-center">
+								<ButtonGroup
+									variant="connected"
+									size="lg"
+									className="flex-wrap justify-center"
+								>
 									{["Day", "Week", "Month", "Year"].map((item) => (
 										<Button
 											key={`lg-${item}`}

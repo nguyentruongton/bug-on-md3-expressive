@@ -4,8 +4,7 @@ import { defineConfig } from "tsup";
 const config: Options = {
 	entry: ["src/index.ts"],
 	format: ["cjs", "esm"],
-	dts: true,
-	clean: true,
+	clean: false, // Tắt clean để tránh nuke mất typography.css khi Next.js đang khởi động
 	// externalize peer dependencies — user project sẽ cung cấp
 	external: ["react", "react-dom", "motion"],
 	// Tree-shaking tối đa, không split vì thư viện nhỏ
@@ -13,10 +12,8 @@ const config: Options = {
 	splitting: false,
 	sourcemap: true,
 	outDir: "dist",
-	// Giữ "use client" directive ở đầu file — bắt buộc cho Next.js App Router
-	banner: {
-		js: '"use client";',
-	},
+	// "use client" sẽ được chèn thủ công bằng script phía sau (copy-assets.js)
+	onSuccess: "node scripts/copy-assets.js",
 };
 
 export default defineConfig(config);

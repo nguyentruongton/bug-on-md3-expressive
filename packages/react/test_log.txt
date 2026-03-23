@@ -1,0 +1,72 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90mD:/Project/bug-on-md3-expressive/packages/react[39m
+
+ [31mΓ¥»[39m src/ui/typography/__tests__/Typography.test.tsx [2m([22m[2m9 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 38[2mms[22m[39m
+       [32mΓ£ô[39m should initialize with default Google Sans Flex font[32m 2[2mms[22m[39m
+       [32mΓ£ô[39m should support a custom fontFamily override[32m 0[2mms[22m[39m
+       [32mΓ£ô[39m should generate all 30 TextStyle properties from tokens[32m 1[2mms[22m[39m
+[31m       [31m├ù[31m should map TypographyKeyTokens correctly using fromToken()[39m[32m 8[2mms[22m[39m
+       [32mΓ£ô[39m should create a overridden copy without mutating originals via copy()[32m 0[2mms[22m[39m
+       [32mΓ£ô[39m should provide default Google Sans Flex typography when no props given[32m 17[2mms[22m[39m
+       [32mΓ£ô[39m should respect fontFamily prop shorthand[32m 2[2mms[22m[39m
+       [32mΓ£ô[39m should prioritize custom typography instance prop[32m 2[2mms[22m[39m
+       [32mΓ£ô[39m should return the default Typography if used without a provider[32m 2[2mms[22m[39m
+pnpm.exe : 
+At C:\Users\Stark\AppData\Local\pnpm\
+pnpm.ps1:14 char:3
++   & "$basedir/.tools/@pnpm+win-x64/
+10.27.0/node_modules/@pnpm/win-x64 
+...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpe 
+   cified: (:String) [], RemoteExce  
+  ption
+    + FullyQualifiedErrorId : Native 
+   CommandError
+ 
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[
+41m Failed Tests 1 [49m[22m[31mΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+
+[41m[1m FAIL [22m[49m src/ui/typo
+graphy/__tests__/Typography.test.tsx
+[2m > [22mTypography[2m > 
+[22mTypography (Class)[2m > 
+[22mshould map TypographyKeyTokens 
+correctly using fromToken()
+[31m[1mAssertionError[22m: 
+expected 700 to be 800 // Object.is 
+equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 800[39m
+[31m+ 700[39m
+
+[36m [2mΓ¥»[22m src/ui/typography/
+__tests__/Typography.test.tsx:[2m42:
+36[22m[39m
+    [90m 40|[39m
+    [90m 41|[39m       const 
+emphStyle = typography.fromToken(Typo
+graphyKeyTokens.TitleΓÇª
+    [90m 42|[39m       expect(emphS
+tyle.fontWeight).toBe(800); // 
+Emphasized uses weighΓÇª
+    [90m   |[39m                   
+                 [31m^[39m
+    [90m 43|[39m     })[33m;[39m
+    [90m 44|[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»Γ
+Ä»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ
+»ΓÄ»ΓÄ»[1/1]ΓÄ»[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (9)[39m
+[2m   Start at [22m 00:13:29
+[2m   Duration [22m 2.26s[2m (transform 91ms, setup 143ms, import 292ms, tests 38ms, environment 1.58s)[22m
+

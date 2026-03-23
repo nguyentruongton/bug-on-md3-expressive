@@ -8,8 +8,12 @@
 /* Explicit scan required components in workspace */
 @source "../../../packages/react/src";
 
+
 /* Map MD3 tokens → Tailwind v4 utility classes */
 @theme {
+	/* Fonts */
+	--font-sans: "Google Sans Flex", ui-sans-serif, system-ui, sans-serif;
+
 	/* Colors */
 	--color-m3-primary: var(--md-sys-color-primary, #6750a4);
 	--color-m3-on-primary: var(--md-sys-color-on-primary, #ffffff);
@@ -124,30 +128,19 @@
 body {
 	background-color: var(--md-sys-color-surface, #fef7ff);
 	color: var(--md-sys-color-on-surface, #1c1b1f);
-	font-family: var(--font-sans), system-ui, sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
 
 @utility bg-mesh-gradient {
 	background-color: #f7e0fc;
-	background-image: 
+	background-image:
 		radial-gradient(at 0% 0%, hsla(300, 100%, 85%, 0.6) 0px, transparent 50%),
 		radial-gradient(at 100% 0%, hsla(280, 100%, 85%, 0.6) 0px, transparent 50%),
-		radial-gradient(at 100% 100%, hsla(340, 100%, 85%, 0.6) 0px, transparent 50%),
+		radial-gradient(
+			at 100% 100%,
+			hsla(340, 100%, 85%, 0.6) 0px,
+			transparent 50%
+		),
 		radial-gradient(at 0% 100%, hsla(250, 100%, 85%, 0.6) 0px, transparent 50%),
 		radial-gradient(at 50% 50%, hsla(0, 100%, 90%, 0.4) 0px, transparent 60%);
 }
-
-/* ::-webkit-scrollbar {
-	width: 8px;
-}
-::-webkit-scrollbar-track {
-	background: transparent;
-}
-::-webkit-scrollbar-thumb {
-	background: var(--color-m3-outline-variant);
-	border-radius: var(--radius-m3-full);
-}
-::-webkit-scrollbar-thumb:hover {
-	background: var(--color-m3-outline);
-} */

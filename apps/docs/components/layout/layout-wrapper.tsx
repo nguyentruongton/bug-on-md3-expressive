@@ -1,5 +1,6 @@
 "use client";
 
+import { ScrollArea } from "@bug-on/md3-react";
 import { NavigationDrawer } from "@/components/layout/navigation-drawer";
 import { NavigationRail } from "@/components/layout/navigation-rail";
 
@@ -23,8 +24,10 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
 			<NavigationRail />
 			<NavigationDrawer />
 
-			<main className="flex-1 overflow-y-auto overflow-x-hidden mb-22 lg:mb-0 lg:rounded-[2.5rem] bg-m3-surface z-0 relative flex flex-col">
-				{children}
+			<main className="flex-1 overflow-hidden mb-22 lg:mb-0 lg:rounded-[2.5rem] bg-m3-surface z-0 relative flex flex-col">
+				<ScrollArea className="flex-1 w-full" type="hover">
+					{children}
+				</ScrollArea>
 			</main>
 		</div>
 	);

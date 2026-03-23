@@ -1,0 +1,21 @@
+/* MD3 Expressive Typography - Google Sans Flex Variable Font */
+
+@font-face {
+  font-family: 'Google Sans Flex';
+  src: url('../../assets/fonts/GoogleSansFlex-VariableFont.woff2') format('woff2');
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
+ * Applies Google Sans Flex with ROND axis at 100 (maximum roundness)
+ * as required by MD3 Expressive design spec.
+ *
+ * Usage: Add this class to any element or the root element to apply
+ * the MD3 Expressive typography defaults.
+ */
+.font-md3-expressive {
+  font-family: 'Google Sans Flex', system-ui, sans-serif;
+  font-variation-settings: "ROND" 100;
+}
