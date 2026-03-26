@@ -19,19 +19,15 @@
  * @see https://m3.material.io/components/chips/overview
  */
 
-"use client";
-
 import { cva, type VariantProps } from "class-variance-authority";
 import { AnimatePresence, domMax, LazyMotion, m } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
 import { Ripple, useRipple } from "./ripple";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Internal Icons (inline SVG – no external icon library dependency)
-// ─────────────────────────────────────────────────────────────────────────────
+// Internal Icons
 
-/** MD3 checkmark icon – 18×18px */
+
 function CheckIcon({ className }: { className?: string }) {
 	return (
 		<svg
@@ -52,7 +48,7 @@ function CheckIcon({ className }: { className?: string }) {
 	);
 }
 
-/** MD3 close/remove icon – 18×18px */
+
 function CloseIcon({ className }: { className?: string }) {
 	return (
 		<svg
@@ -74,16 +70,12 @@ function CloseIcon({ className }: { className?: string }) {
 	);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CVA Variants
-// Token mapping:
-//   border-m3-outline-variant → FlatOutlineColor (all variants)
-//   bg-m3-secondary-container → FlatSelectedContainerColor / SelectedContainerColor
-//   text-m3-on-secondary-container → SelectedLabelTextColor
-//   text-m3-on-surface          → Assist LabelTextColor
-//   text-m3-on-surface-variant  → Filter/Input/Suggestion UnselectedLabelTextColor
-//   bg-m3-surface-container-low → ElevatedContainerColor (Assist, Filter, Suggestion)
-// ─────────────────────────────────────────────────────────────────────────────
+// Token mapping references (Kotlin source):
+// - FlatOutlineColor (all variants): border-m3-outline-variant
+// - FlatSelectedContainerColor: bg-m3-secondary-container
+// - SelectedLabelTextColor: text-m3-on-secondary-container
+// - ElevatedContainerColor: bg-m3-surface-container-low
 
 const chipVariants = cva(
 	[
@@ -142,9 +134,7 @@ const chipVariants = cva(
 	},
 );
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Props
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 export interface ChipProps
 	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
@@ -214,9 +204,7 @@ export interface ChipProps
 	onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Component Implementation
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 	(
@@ -238,7 +226,6 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 	) => {
 		const { ripples, onPointerDown, removeRipple } = useRipple();
 
-		// ── Derived state ──────────────────────────────────────────────────────
 
 		const isFilter = variant === "filter";
 		const isInput = variant === "input";
@@ -265,7 +252,7 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 		 */
 		const hasLeadingContent = isFilter || !!resolvedLeadingIcon;
 
-		// ── Padding logic ──────────────────────────────────────────────────────
+
 		// Source: AssistChipDefaults.ContentPadding / inputChipPadding in Chip.kt
 		// No icons:         px-4   (16px each side)
 		// Leading only:     pl-2 pr-4
@@ -285,18 +272,11 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 			isInput && hasLeadingContent && hasTrailingContent && "pl-1 pr-2",
 		);
 
-		// ── Visual state overrides ─────────────────────────────────────────────
+
 
 		const stateClass = cn(
-			// Filter selected: FlatSelectedContainerColor = SecondaryContainer
-			// Source: FilterChipTokens.FlatSelectedContainerColor / FlatSelectedOutlineWidth = 0
-			isFilter &&
-				selected &&
-				"bg-m3-secondary-container text-m3-on-secondary-container border-none before:bg-m3-on-secondary-container",
-
-			// Input selected: SelectedContainerColor = SecondaryContainer
-			// Source: InputChipTokens.SelectedContainerColor / SelectedOutlineWidth = 0
-			isInput &&
+			// Selected state: FlatSelectedContainerColor / SelectedContainerColor
+			(isFilter || isInput) &&
 				selected &&
 				"bg-m3-secondary-container text-m3-on-secondary-container border-none before:bg-m3-on-secondary-container",
 
@@ -307,10 +287,7 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 				"bg-m3-surface-container-low border-none elevation-1",
 
 			// Elevated + selected filter chip still gets shadow
-			elevated &&
-				isFilter &&
-				selected &&
-				"elevation-1",
+			elevated && isFilter && selected && "elevation-1",
 
 			// Disabled state overrides
 			// Source: DisabledLabelTextOpacity = 0.38, FlatDisabledOutlineOpacity = 0.12
@@ -321,7 +298,7 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 				"bg-m3-on-surface/[.12] text-m3-on-surface border-none",
 		);
 
-		// ── Leading icon color class ───────────────────────────────────────────
+
 		// Assist: IconColor = Primary (AssistChipTokens.IconColor)
 		// Suggestion: LeadingIconColor = Primary
 		// Filter unselected: UnselectedLeadingIconColor = Primary
@@ -337,7 +314,7 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 			isInput && selected && "text-m3-primary",
 		);
 
-		// ── Render ─────────────────────────────────────────────────────────────
+
 		const isCompound = !!onRemove;
 		const Root = (isCompound ? "div" : "button") as React.ElementType;
 
@@ -349,7 +326,8 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 			stateClass,
 			// When compound, the root div handles the overall shape but not the main interaction
 			// We disable the root's state layer (hover/focus) to avoid the 1px gap issue
-			isCompound && "items-stretch cursor-default active:scale-100 before:opacity-0 gap-0",
+			isCompound &&
+				"items-stretch cursor-default active:scale-100 before:opacity-0 gap-0",
 			className,
 		);
 
@@ -484,7 +462,7 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 						mainContent
 					)}
 
-					{/* ── Trailing slot: trailingIcon or remove button ── */}
+					{/* Trailing slot */}
 					{hasTrailingContent && (
 						<span className="flex items-center justify-center shrink-0">
 							{onRemove ? (
