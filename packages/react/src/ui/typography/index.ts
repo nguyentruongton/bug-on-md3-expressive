@@ -13,18 +13,22 @@ export { TypeScaleTokens } from "./type-scale-tokens";
 
 export type { TypographyProviderProps } from "./typography";
 export {
-  Typography,
-  TypographyContext,
-  TypographyProvider,
-  useTypography,
+	Typography,
+	TypographyContext,
+	TypographyProvider,
+	useTypography,
 } from "./typography";
 
 export { TypographyKeyTokens } from "./typography-key-tokens";
 
-export type { TextStyle, FontVariationAxes, TypographyTokensOptions } from "./typography-tokens";
+export type {
+	FontVariationAxes,
+	TextStyle,
+	TypographyTokensOptions,
+} from "./typography-tokens";
 export {
-  MD3_EXPRESSIVE_FONT_VARIATION,
-  DEFAULT_FONT_VARIATION_AXES,
-  serializeFontVariationAxes,
-  TypographyTokens,
+	DEFAULT_FONT_VARIATION_AXES,
+	MD3_EXPRESSIVE_FONT_VARIATION,
+	serializeFontVariationAxes,
+	TypographyTokens,
 } from "./typography-tokens";

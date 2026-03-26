@@ -42,17 +42,12 @@
  * ```
  */
 
-import {
-  createContext,
-  useMemo,
-  useContext,
-  type ReactNode,
-} from "react";
+import { createContext, type ReactNode, useContext, useMemo } from "react";
 import { TypographyKeyTokens } from "./typography-key-tokens";
 import {
-  type TextStyle,
-  type FontVariationAxes,
-  TypographyTokens,
+	type FontVariationAxes,
+	type TextStyle,
+	TypographyTokens,
 } from "./typography-tokens";
 
 // ─── Typography Class ─────────────────────────────────────────────────────────
@@ -78,118 +73,180 @@ import {
  * ```
  */
 export class Typography {
-  readonly #tokens: TypographyTokens;
+	readonly #tokens: TypographyTokens;
 
-  constructor(tokens: TypographyTokens = defaultTokens) {
-    this.#tokens = tokens;
-  }
+	constructor(tokens: TypographyTokens = defaultTokens) {
+		this.#tokens = tokens;
+	}
 
-  // ─── Baseline Styles ────────────────────────────────────────────────────────
+	// ─── Baseline Styles ────────────────────────────────────────────────────────
 
-  /** Display Large text style (`57px`, weight `400`). */
-  get displayLarge(): TextStyle { return this.#tokens.DisplayLarge; }
-  /** Display Medium text style (`45px`, weight `400`). */
-  get displayMedium(): TextStyle { return this.#tokens.DisplayMedium; }
-  /** Display Small text style (`36px`, weight `400`). */
-  get displaySmall(): TextStyle { return this.#tokens.DisplaySmall; }
-  /** Headline Large text style (`32px`, weight `400`). */
-  get headlineLarge(): TextStyle { return this.#tokens.HeadlineLarge; }
-  /** Headline Medium text style (`28px`, weight `400`). */
-  get headlineMedium(): TextStyle { return this.#tokens.HeadlineMedium; }
-  /** Headline Small text style (`24px`, weight `400`). */
-  get headlineSmall(): TextStyle { return this.#tokens.HeadlineSmall; }
-  /** Title Large text style (`22px`, weight `400`). */
-  get titleLarge(): TextStyle { return this.#tokens.TitleLarge; }
-  /** Title Medium text style (`16px`, weight `500`). */
-  get titleMedium(): TextStyle { return this.#tokens.TitleMedium; }
-  /** Title Small text style (`14px`, weight `500`). */
-  get titleSmall(): TextStyle { return this.#tokens.TitleSmall; }
-  /** Body Large text style (`16px`, weight `400`). */
-  get bodyLarge(): TextStyle { return this.#tokens.BodyLarge; }
-  /** Body Medium text style (`14px`, weight `400`). */
-  get bodyMedium(): TextStyle { return this.#tokens.BodyMedium; }
-  /** Body Small text style (`12px`, weight `400`). */
-  get bodySmall(): TextStyle { return this.#tokens.BodySmall; }
-  /** Label Large text style (`14px`, weight `500`). */
-  get labelLarge(): TextStyle { return this.#tokens.LabelLarge; }
-  /** Label Medium text style (`12px`, weight `500`). */
-  get labelMedium(): TextStyle { return this.#tokens.LabelMedium; }
-  /** Label Small text style (`11px`, weight `500`). */
-  get labelSmall(): TextStyle { return this.#tokens.LabelSmall; }
+	/** Display Large text style (`57px`, weight `400`). */
+	get displayLarge(): TextStyle {
+		return this.#tokens.DisplayLarge;
+	}
+	/** Display Medium text style (`45px`, weight `400`). */
+	get displayMedium(): TextStyle {
+		return this.#tokens.DisplayMedium;
+	}
+	/** Display Small text style (`36px`, weight `400`). */
+	get displaySmall(): TextStyle {
+		return this.#tokens.DisplaySmall;
+	}
+	/** Headline Large text style (`32px`, weight `400`). */
+	get headlineLarge(): TextStyle {
+		return this.#tokens.HeadlineLarge;
+	}
+	/** Headline Medium text style (`28px`, weight `400`). */
+	get headlineMedium(): TextStyle {
+		return this.#tokens.HeadlineMedium;
+	}
+	/** Headline Small text style (`24px`, weight `400`). */
+	get headlineSmall(): TextStyle {
+		return this.#tokens.HeadlineSmall;
+	}
+	/** Title Large text style (`22px`, weight `400`). */
+	get titleLarge(): TextStyle {
+		return this.#tokens.TitleLarge;
+	}
+	/** Title Medium text style (`16px`, weight `500`). */
+	get titleMedium(): TextStyle {
+		return this.#tokens.TitleMedium;
+	}
+	/** Title Small text style (`14px`, weight `500`). */
+	get titleSmall(): TextStyle {
+		return this.#tokens.TitleSmall;
+	}
+	/** Body Large text style (`16px`, weight `400`). */
+	get bodyLarge(): TextStyle {
+		return this.#tokens.BodyLarge;
+	}
+	/** Body Medium text style (`14px`, weight `400`). */
+	get bodyMedium(): TextStyle {
+		return this.#tokens.BodyMedium;
+	}
+	/** Body Small text style (`12px`, weight `400`). */
+	get bodySmall(): TextStyle {
+		return this.#tokens.BodySmall;
+	}
+	/** Label Large text style (`14px`, weight `500`). */
+	get labelLarge(): TextStyle {
+		return this.#tokens.LabelLarge;
+	}
+	/** Label Medium text style (`12px`, weight `500`). */
+	get labelMedium(): TextStyle {
+		return this.#tokens.LabelMedium;
+	}
+	/** Label Small text style (`11px`, weight `500`). */
+	get labelSmall(): TextStyle {
+		return this.#tokens.LabelSmall;
+	}
 
-  // ─── Emphasized Styles (MD3 Expressive) ─────────────────────────────────────
+	// ─── Emphasized Styles (MD3 Expressive) ─────────────────────────────────────
 
-  /** Display Large Emphasized text style (`57px`, weight `800`). */
-  get displayLargeEmphasized(): TextStyle { return this.#tokens.DisplayLargeEmphasized; }
-  /** Display Medium Emphasized text style (`45px`, weight `800`). */
-  get displayMediumEmphasized(): TextStyle { return this.#tokens.DisplayMediumEmphasized; }
-  /** Display Small Emphasized text style (`36px`, weight `800`). */
-  get displaySmallEmphasized(): TextStyle { return this.#tokens.DisplaySmallEmphasized; }
-  /** Headline Large Emphasized text style (`32px`, weight `800`). */
-  get headlineLargeEmphasized(): TextStyle { return this.#tokens.HeadlineLargeEmphasized; }
-  /** Headline Medium Emphasized text style (`28px`, weight `800`). */
-  get headlineMediumEmphasized(): TextStyle { return this.#tokens.HeadlineMediumEmphasized; }
-  /** Headline Small Emphasized text style (`24px`, weight `800`). */
-  get headlineSmallEmphasized(): TextStyle { return this.#tokens.HeadlineSmallEmphasized; }
-  /** Title Large Emphasized text style (`22px`, weight `700`). */
-  get titleLargeEmphasized(): TextStyle { return this.#tokens.TitleLargeEmphasized; }
-  /** Title Medium Emphasized text style (`16px`, weight `700`). */
-  get titleMediumEmphasized(): TextStyle { return this.#tokens.TitleMediumEmphasized; }
-  /** Title Small Emphasized text style (`14px`, weight `700`). */
-  get titleSmallEmphasized(): TextStyle { return this.#tokens.TitleSmallEmphasized; }
-  /** Body Large Emphasized text style (`16px`, weight `700`). */
-  get bodyLargeEmphasized(): TextStyle { return this.#tokens.BodyLargeEmphasized; }
-  /** Body Medium Emphasized text style (`14px`, weight `700`). */
-  get bodyMediumEmphasized(): TextStyle { return this.#tokens.BodyMediumEmphasized; }
-  /** Body Small Emphasized text style (`12px`, weight `700`). */
-  get bodySmallEmphasized(): TextStyle { return this.#tokens.BodySmallEmphasized; }
-  /** Label Large Emphasized text style (`14px`, weight `800`). */
-  get labelLargeEmphasized(): TextStyle { return this.#tokens.LabelLargeEmphasized; }
-  /** Label Medium Emphasized text style (`12px`, weight `800`). */
-  get labelMediumEmphasized(): TextStyle { return this.#tokens.LabelMediumEmphasized; }
-  /** Label Small Emphasized text style (`11px`, weight `800`). */
-  get labelSmallEmphasized(): TextStyle { return this.#tokens.LabelSmallEmphasized; }
+	/** Display Large Emphasized text style (`57px`, weight `800`). */
+	get displayLargeEmphasized(): TextStyle {
+		return this.#tokens.DisplayLargeEmphasized;
+	}
+	/** Display Medium Emphasized text style (`45px`, weight `800`). */
+	get displayMediumEmphasized(): TextStyle {
+		return this.#tokens.DisplayMediumEmphasized;
+	}
+	/** Display Small Emphasized text style (`36px`, weight `800`). */
+	get displaySmallEmphasized(): TextStyle {
+		return this.#tokens.DisplaySmallEmphasized;
+	}
+	/** Headline Large Emphasized text style (`32px`, weight `800`). */
+	get headlineLargeEmphasized(): TextStyle {
+		return this.#tokens.HeadlineLargeEmphasized;
+	}
+	/** Headline Medium Emphasized text style (`28px`, weight `800`). */
+	get headlineMediumEmphasized(): TextStyle {
+		return this.#tokens.HeadlineMediumEmphasized;
+	}
+	/** Headline Small Emphasized text style (`24px`, weight `800`). */
+	get headlineSmallEmphasized(): TextStyle {
+		return this.#tokens.HeadlineSmallEmphasized;
+	}
+	/** Title Large Emphasized text style (`22px`, weight `700`). */
+	get titleLargeEmphasized(): TextStyle {
+		return this.#tokens.TitleLargeEmphasized;
+	}
+	/** Title Medium Emphasized text style (`16px`, weight `700`). */
+	get titleMediumEmphasized(): TextStyle {
+		return this.#tokens.TitleMediumEmphasized;
+	}
+	/** Title Small Emphasized text style (`14px`, weight `700`). */
+	get titleSmallEmphasized(): TextStyle {
+		return this.#tokens.TitleSmallEmphasized;
+	}
+	/** Body Large Emphasized text style (`16px`, weight `700`). */
+	get bodyLargeEmphasized(): TextStyle {
+		return this.#tokens.BodyLargeEmphasized;
+	}
+	/** Body Medium Emphasized text style (`14px`, weight `700`). */
+	get bodyMediumEmphasized(): TextStyle {
+		return this.#tokens.BodyMediumEmphasized;
+	}
+	/** Body Small Emphasized text style (`12px`, weight `700`). */
+	get bodySmallEmphasized(): TextStyle {
+		return this.#tokens.BodySmallEmphasized;
+	}
+	/** Label Large Emphasized text style (`14px`, weight `800`). */
+	get labelLargeEmphasized(): TextStyle {
+		return this.#tokens.LabelLargeEmphasized;
+	}
+	/** Label Medium Emphasized text style (`12px`, weight `800`). */
+	get labelMediumEmphasized(): TextStyle {
+		return this.#tokens.LabelMediumEmphasized;
+	}
+	/** Label Small Emphasized text style (`11px`, weight `800`). */
+	get labelSmallEmphasized(): TextStyle {
+		return this.#tokens.LabelSmallEmphasized;
+	}
 
-  // ─── Methods ─────────────────────────────────────────────────────────────────
+	// ─── Methods ─────────────────────────────────────────────────────────────────
 
-  /**
-   * Returns the `TextStyle` corresponding to the given {@link TypographyKeyTokens}.
-   *
-   * Port of `internal fun Typography.fromToken(value: TypographyKeyTokens): TextStyle`.
-   *
-   * @example
-   * ```ts
-   * const style = typography.fromToken(TypographyKeyTokens.BodyLarge);
-   * ```
-   */
-  fromToken(value: TypographyKeyTokens): TextStyle {
-    return this[TOKEN_TO_PROP[value]];
-  }
+	/**
+	 * Returns the `TextStyle` corresponding to the given {@link TypographyKeyTokens}.
+	 *
+	 * Port of `internal fun Typography.fromToken(value: TypographyKeyTokens): TextStyle`.
+	 *
+	 * @example
+	 * ```ts
+	 * const style = typography.fromToken(TypographyKeyTokens.BodyLarge);
+	 * ```
+	 */
+	fromToken(value: TypographyKeyTokens): TextStyle {
+		return this[TOKEN_TO_PROP[value]];
+	}
 
-  /**
-   * Creates a new `Typography` instance with the specified property overrides
-   * merged on top of the current instance's styles.
-   *
-   * Port of Compose's `fun Typography.copy(...)`.
-   *
-   * Unlike a shallow `Object.assign`, this method preserves the lazy-getter
-   * architecture — overridden styles are stored separately and looked up first
-   * on each property access, while non-overridden styles continue to be
-   * resolved from the underlying {@link TypographyTokens}.
-   *
-   * @param overrides - Map of camelCase property names to partial `TextStyle` overrides.
-   * @returns A new `Typography` instance. The original is never mutated.
-   *
-   * @example
-   * ```ts
-   * const custom = typography.copy({ bodyLarge: { fontSize: "2rem" } });
-   * custom.bodyLarge.fontSize; // "2rem"
-   * custom.bodySmall.fontSize; // original token value — untouched
-   * ```
-   */
-  copy(overrides: Partial<Record<TypographyStyleKey, Partial<TextStyle>>>): Typography {
-    return new OverriddenTypography(this.#tokens, this, overrides);
-  }
+	/**
+	 * Creates a new `Typography` instance with the specified property overrides
+	 * merged on top of the current instance's styles.
+	 *
+	 * Port of Compose's `fun Typography.copy(...)`.
+	 *
+	 * Unlike a shallow `Object.assign`, this method preserves the lazy-getter
+	 * architecture — overridden styles are stored separately and looked up first
+	 * on each property access, while non-overridden styles continue to be
+	 * resolved from the underlying {@link TypographyTokens}.
+	 *
+	 * @param overrides - Map of camelCase property names to partial `TextStyle` overrides.
+	 * @returns A new `Typography` instance. The original is never mutated.
+	 *
+	 * @example
+	 * ```ts
+	 * const custom = typography.copy({ bodyLarge: { fontSize: "2rem" } });
+	 * custom.bodyLarge.fontSize; // "2rem"
+	 * custom.bodySmall.fontSize; // original token value — untouched
+	 * ```
+	 */
+	copy(
+		overrides: Partial<Record<TypographyStyleKey, Partial<TextStyle>>>,
+	): Typography {
+		return new OverriddenTypography(this.#tokens, this, overrides);
+	}
 }
 
 // ─── TypographyStyleKey ───────────────────────────────────────────────────────
@@ -200,7 +257,7 @@ export class Typography {
  * `OverriddenTypography` resolver.
  */
 type TypographyStyleKey = {
-  [K in keyof Typography]: Typography[K] extends TextStyle ? K : never;
+	[K in keyof Typography]: Typography[K] extends TextStyle ? K : never;
 }[keyof Typography];
 
 // ─── OverriddenTypography ─────────────────────────────────────────────────────
@@ -214,96 +271,156 @@ type TypographyStyleKey = {
  * @internal
  */
 class OverriddenTypography extends Typography {
-  readonly #base: Typography;
-  readonly #overrides: Partial<Record<TypographyStyleKey, Partial<TextStyle>>>;
+	readonly #base: Typography;
+	readonly #overrides: Partial<Record<TypographyStyleKey, Partial<TextStyle>>>;
 
-  constructor(
-    tokens: TypographyTokens,
-    base: Typography,
-    overrides: Partial<Record<TypographyStyleKey, Partial<TextStyle>>>
-  ) {
-    super(tokens);
-    this.#base = base;
-    this.#overrides = overrides;
-  }
+	constructor(
+		tokens: TypographyTokens,
+		base: Typography,
+		overrides: Partial<Record<TypographyStyleKey, Partial<TextStyle>>>,
+	) {
+		super(tokens);
+		this.#base = base;
+		this.#overrides = overrides;
+	}
 
-  #resolve(key: TypographyStyleKey): TextStyle {
-    const override = this.#overrides[key];
-    const base = (this.#base as unknown as Record<string, TextStyle>)[key];
-    return override ? { ...base, ...override } : base;
-  }
+	#resolve(key: TypographyStyleKey): TextStyle {
+		const override = this.#overrides[key];
+		const base = (this.#base as unknown as Record<string, TextStyle>)[key];
+		return override ? { ...base, ...override } : base;
+	}
 
-  // ─── Baseline
-  override get displayLarge() { return this.#resolve("displayLarge"); }
-  override get displayMedium() { return this.#resolve("displayMedium"); }
-  override get displaySmall() { return this.#resolve("displaySmall"); }
-  override get headlineLarge() { return this.#resolve("headlineLarge"); }
-  override get headlineMedium() { return this.#resolve("headlineMedium"); }
-  override get headlineSmall() { return this.#resolve("headlineSmall"); }
-  override get titleLarge() { return this.#resolve("titleLarge"); }
-  override get titleMedium() { return this.#resolve("titleMedium"); }
-  override get titleSmall() { return this.#resolve("titleSmall"); }
-  override get bodyLarge() { return this.#resolve("bodyLarge"); }
-  override get bodyMedium() { return this.#resolve("bodyMedium"); }
-  override get bodySmall() { return this.#resolve("bodySmall"); }
-  override get labelLarge() { return this.#resolve("labelLarge"); }
-  override get labelMedium() { return this.#resolve("labelMedium"); }
-  override get labelSmall() { return this.#resolve("labelSmall"); }
-  // ─── Emphasized
-  override get displayLargeEmphasized() { return this.#resolve("displayLargeEmphasized"); }
-  override get displayMediumEmphasized() { return this.#resolve("displayMediumEmphasized"); }
-  override get displaySmallEmphasized() { return this.#resolve("displaySmallEmphasized"); }
-  override get headlineLargeEmphasized() { return this.#resolve("headlineLargeEmphasized"); }
-  override get headlineMediumEmphasized() { return this.#resolve("headlineMediumEmphasized"); }
-  override get headlineSmallEmphasized() { return this.#resolve("headlineSmallEmphasized"); }
-  override get titleLargeEmphasized() { return this.#resolve("titleLargeEmphasized"); }
-  override get titleMediumEmphasized() { return this.#resolve("titleMediumEmphasized"); }
-  override get titleSmallEmphasized() { return this.#resolve("titleSmallEmphasized"); }
-  override get bodyLargeEmphasized() { return this.#resolve("bodyLargeEmphasized"); }
-  override get bodyMediumEmphasized() { return this.#resolve("bodyMediumEmphasized"); }
-  override get bodySmallEmphasized() { return this.#resolve("bodySmallEmphasized"); }
-  override get labelLargeEmphasized() { return this.#resolve("labelLargeEmphasized"); }
-  override get labelMediumEmphasized() { return this.#resolve("labelMediumEmphasized"); }
-  override get labelSmallEmphasized() { return this.#resolve("labelSmallEmphasized"); }
+	// ─── Baseline
+	override get displayLarge() {
+		return this.#resolve("displayLarge");
+	}
+	override get displayMedium() {
+		return this.#resolve("displayMedium");
+	}
+	override get displaySmall() {
+		return this.#resolve("displaySmall");
+	}
+	override get headlineLarge() {
+		return this.#resolve("headlineLarge");
+	}
+	override get headlineMedium() {
+		return this.#resolve("headlineMedium");
+	}
+	override get headlineSmall() {
+		return this.#resolve("headlineSmall");
+	}
+	override get titleLarge() {
+		return this.#resolve("titleLarge");
+	}
+	override get titleMedium() {
+		return this.#resolve("titleMedium");
+	}
+	override get titleSmall() {
+		return this.#resolve("titleSmall");
+	}
+	override get bodyLarge() {
+		return this.#resolve("bodyLarge");
+	}
+	override get bodyMedium() {
+		return this.#resolve("bodyMedium");
+	}
+	override get bodySmall() {
+		return this.#resolve("bodySmall");
+	}
+	override get labelLarge() {
+		return this.#resolve("labelLarge");
+	}
+	override get labelMedium() {
+		return this.#resolve("labelMedium");
+	}
+	override get labelSmall() {
+		return this.#resolve("labelSmall");
+	}
+	// ─── Emphasized
+	override get displayLargeEmphasized() {
+		return this.#resolve("displayLargeEmphasized");
+	}
+	override get displayMediumEmphasized() {
+		return this.#resolve("displayMediumEmphasized");
+	}
+	override get displaySmallEmphasized() {
+		return this.#resolve("displaySmallEmphasized");
+	}
+	override get headlineLargeEmphasized() {
+		return this.#resolve("headlineLargeEmphasized");
+	}
+	override get headlineMediumEmphasized() {
+		return this.#resolve("headlineMediumEmphasized");
+	}
+	override get headlineSmallEmphasized() {
+		return this.#resolve("headlineSmallEmphasized");
+	}
+	override get titleLargeEmphasized() {
+		return this.#resolve("titleLargeEmphasized");
+	}
+	override get titleMediumEmphasized() {
+		return this.#resolve("titleMediumEmphasized");
+	}
+	override get titleSmallEmphasized() {
+		return this.#resolve("titleSmallEmphasized");
+	}
+	override get bodyLargeEmphasized() {
+		return this.#resolve("bodyLargeEmphasized");
+	}
+	override get bodyMediumEmphasized() {
+		return this.#resolve("bodyMediumEmphasized");
+	}
+	override get bodySmallEmphasized() {
+		return this.#resolve("bodySmallEmphasized");
+	}
+	override get labelLargeEmphasized() {
+		return this.#resolve("labelLargeEmphasized");
+	}
+	override get labelMediumEmphasized() {
+		return this.#resolve("labelMediumEmphasized");
+	}
+	override get labelSmallEmphasized() {
+		return this.#resolve("labelSmallEmphasized");
+	}
 }
 
 // ─── Token → Property lookup (avoids recreating the map on every fromToken call) ──
 
 type TypographyProp = {
-  [K in keyof Typography]: Typography[K] extends TextStyle ? K : never;
+	[K in keyof Typography]: Typography[K] extends TextStyle ? K : never;
 }[keyof Typography];
 
 const TOKEN_TO_PROP: Record<TypographyKeyTokens, TypographyProp> = {
-  [TypographyKeyTokens.DisplayLarge]: "displayLarge",
-  [TypographyKeyTokens.DisplayMedium]: "displayMedium",
-  [TypographyKeyTokens.DisplaySmall]: "displaySmall",
-  [TypographyKeyTokens.HeadlineLarge]: "headlineLarge",
-  [TypographyKeyTokens.HeadlineMedium]: "headlineMedium",
-  [TypographyKeyTokens.HeadlineSmall]: "headlineSmall",
-  [TypographyKeyTokens.TitleLarge]: "titleLarge",
-  [TypographyKeyTokens.TitleMedium]: "titleMedium",
-  [TypographyKeyTokens.TitleSmall]: "titleSmall",
-  [TypographyKeyTokens.BodyLarge]: "bodyLarge",
-  [TypographyKeyTokens.BodyMedium]: "bodyMedium",
-  [TypographyKeyTokens.BodySmall]: "bodySmall",
-  [TypographyKeyTokens.LabelLarge]: "labelLarge",
-  [TypographyKeyTokens.LabelMedium]: "labelMedium",
-  [TypographyKeyTokens.LabelSmall]: "labelSmall",
-  [TypographyKeyTokens.DisplayLargeEmphasized]: "displayLargeEmphasized",
-  [TypographyKeyTokens.DisplayMediumEmphasized]: "displayMediumEmphasized",
-  [TypographyKeyTokens.DisplaySmallEmphasized]: "displaySmallEmphasized",
-  [TypographyKeyTokens.HeadlineLargeEmphasized]: "headlineLargeEmphasized",
-  [TypographyKeyTokens.HeadlineMediumEmphasized]: "headlineMediumEmphasized",
-  [TypographyKeyTokens.HeadlineSmallEmphasized]: "headlineSmallEmphasized",
-  [TypographyKeyTokens.TitleLargeEmphasized]: "titleLargeEmphasized",
-  [TypographyKeyTokens.TitleMediumEmphasized]: "titleMediumEmphasized",
-  [TypographyKeyTokens.TitleSmallEmphasized]: "titleSmallEmphasized",
-  [TypographyKeyTokens.BodyLargeEmphasized]: "bodyLargeEmphasized",
-  [TypographyKeyTokens.BodyMediumEmphasized]: "bodyMediumEmphasized",
-  [TypographyKeyTokens.BodySmallEmphasized]: "bodySmallEmphasized",
-  [TypographyKeyTokens.LabelLargeEmphasized]: "labelLargeEmphasized",
-  [TypographyKeyTokens.LabelMediumEmphasized]: "labelMediumEmphasized",
-  [TypographyKeyTokens.LabelSmallEmphasized]: "labelSmallEmphasized",
+	[TypographyKeyTokens.DisplayLarge]: "displayLarge",
+	[TypographyKeyTokens.DisplayMedium]: "displayMedium",
+	[TypographyKeyTokens.DisplaySmall]: "displaySmall",
+	[TypographyKeyTokens.HeadlineLarge]: "headlineLarge",
+	[TypographyKeyTokens.HeadlineMedium]: "headlineMedium",
+	[TypographyKeyTokens.HeadlineSmall]: "headlineSmall",
+	[TypographyKeyTokens.TitleLarge]: "titleLarge",
+	[TypographyKeyTokens.TitleMedium]: "titleMedium",
+	[TypographyKeyTokens.TitleSmall]: "titleSmall",
+	[TypographyKeyTokens.BodyLarge]: "bodyLarge",
+	[TypographyKeyTokens.BodyMedium]: "bodyMedium",
+	[TypographyKeyTokens.BodySmall]: "bodySmall",
+	[TypographyKeyTokens.LabelLarge]: "labelLarge",
+	[TypographyKeyTokens.LabelMedium]: "labelMedium",
+	[TypographyKeyTokens.LabelSmall]: "labelSmall",
+	[TypographyKeyTokens.DisplayLargeEmphasized]: "displayLargeEmphasized",
+	[TypographyKeyTokens.DisplayMediumEmphasized]: "displayMediumEmphasized",
+	[TypographyKeyTokens.DisplaySmallEmphasized]: "displaySmallEmphasized",
+	[TypographyKeyTokens.HeadlineLargeEmphasized]: "headlineLargeEmphasized",
+	[TypographyKeyTokens.HeadlineMediumEmphasized]: "headlineMediumEmphasized",
+	[TypographyKeyTokens.HeadlineSmallEmphasized]: "headlineSmallEmphasized",
+	[TypographyKeyTokens.TitleLargeEmphasized]: "titleLargeEmphasized",
+	[TypographyKeyTokens.TitleMediumEmphasized]: "titleMediumEmphasized",
+	[TypographyKeyTokens.TitleSmallEmphasized]: "titleSmallEmphasized",
+	[TypographyKeyTokens.BodyLargeEmphasized]: "bodyLargeEmphasized",
+	[TypographyKeyTokens.BodyMediumEmphasized]: "bodyMediumEmphasized",
+	[TypographyKeyTokens.BodySmallEmphasized]: "bodySmallEmphasized",
+	[TypographyKeyTokens.LabelLargeEmphasized]: "labelLargeEmphasized",
+	[TypographyKeyTokens.LabelMediumEmphasized]: "labelMediumEmphasized",
+	[TypographyKeyTokens.LabelSmallEmphasized]: "labelSmallEmphasized",
 };
 
 // ─── React Context API ────────────────────────────────────────────────────────
@@ -342,7 +459,7 @@ export const TypographyContext = createContext<Typography>(defaultTypography);
  * ```
  */
 export function useTypography(): Typography {
-  return useContext(TypographyContext);
+	return useContext(TypographyContext);
 }
 
 // ─── TypographyProvider ───────────────────────────────────────────────────────
@@ -351,30 +468,30 @@ export function useTypography(): Typography {
  * Props for {@link TypographyProvider}.
  */
 export interface TypographyProviderProps {
-  /** The child tree that will have access to the provided typography. */
-  children: ReactNode;
-  /**
-   * A fully custom {@link Typography} instance.
-   * When provided, `fontFamily` and `fontVariationAxes` are ignored.
-   */
-  typography?: Typography;
-  /**
-   * Shorthand to override the CSS `font-family` for all typography styles.
-   * Ignored when `typography` is provided.
-   *
-   * @example "'Roboto', sans-serif"
-   */
-  fontFamily?: string;
-  /**
-   * Variable font axes to apply globally via `font-variation-settings`.
-   * Merged on top of the defaults (`ROND: 100`). Only the axes you specify
-   * will be overridden; unspecified axes retain font defaults.
-   * Ignored when `typography` is provided.
-   *
-   * @example { ROND: 50 }  // half-rounded
-   * @example { ROND: 0 }   // sharp corners
-   */
-  fontVariationAxes?: FontVariationAxes;
+	/** The child tree that will have access to the provided typography. */
+	children: ReactNode;
+	/**
+	 * A fully custom {@link Typography} instance.
+	 * When provided, `fontFamily` and `fontVariationAxes` are ignored.
+	 */
+	typography?: Typography;
+	/**
+	 * Shorthand to override the CSS `font-family` for all typography styles.
+	 * Ignored when `typography` is provided.
+	 *
+	 * @example "'Roboto', sans-serif"
+	 */
+	fontFamily?: string;
+	/**
+	 * Variable font axes to apply globally via `font-variation-settings`.
+	 * Merged on top of the defaults (`ROND: 100`). Only the axes you specify
+	 * will be overridden; unspecified axes retain font defaults.
+	 * Ignored when `typography` is provided.
+	 *
+	 * @example { ROND: 50 }  // half-rounded
+	 * @example { ROND: 0 }   // sharp corners
+	 */
+	fontVariationAxes?: FontVariationAxes;
 }
 
 /**
@@ -419,22 +536,24 @@ export interface TypographyProviderProps {
  * ```
  */
 export function TypographyProvider({
-  children,
-  typography,
-  fontFamily,
-  fontVariationAxes,
+	children,
+	typography,
+	fontFamily,
+	fontVariationAxes,
 }: TypographyProviderProps) {
-  const value = useMemo<Typography>(() => {
-    if (typography) return typography;
-    if (fontFamily || fontVariationAxes) {
-      return new Typography(new TypographyTokens({ fontFamily, fontVariationAxes }));
-    }
-    return defaultTypography;
-  }, [typography, fontFamily, fontVariationAxes]);
+	const value = useMemo<Typography>(() => {
+		if (typography) return typography;
+		if (fontFamily || fontVariationAxes) {
+			return new Typography(
+				new TypographyTokens({ fontFamily, fontVariationAxes }),
+			);
+		}
+		return defaultTypography;
+	}, [typography, fontFamily, fontVariationAxes]);
 
-  return (
-    <TypographyContext.Provider value={value}>
-      {children}
-    </TypographyContext.Provider>
-  );
+	return (
+		<TypographyContext.Provider value={value}>
+			{children}
+		</TypographyContext.Provider>
+	);
 }

@@ -1,11 +1,9 @@
 "use client";
 
 import {
-	Code2,
 	Compass,
 	Home,
 	LayoutGrid,
-	Search,
 	Settings,
 } from "lucide-react";
 import { motion } from "motion/react";
@@ -78,14 +76,6 @@ export function NavigationRail() {
 
 	return (
 		<aside className="fixed bottom-4 left-4 right-4 lg:static lg:w-22 bg-m3-surface-container z-50 flex flex-row lg:flex-col items-center justify-around lg:justify-start py-3 lg:py-6 lg:gap-8 shrink-0 rounded-full lg:h-fit shadow-lg lg:shadow-none backdrop-blur-md lg:backdrop-blur-none border border-m3-outline-variant/20">
-			<motion.div
-				whileHover={{ scale: 1.05 }}
-				whileTap={{ scale: 0.95 }}
-				className="hidden lg:flex w-12 h-12 bg-m3-surface-container rounded-full items-center justify-center cursor-pointer mb-2 elevation-1 hover:elevation-2 transition-all"
-			>
-				<Search className="text-m3-on-surface-variant w-5 h-5" />
-			</motion.div>
-
 			<NavItem icon={Home} label="Home" href="/" active={pathname === "/"} />
 			<NavItem
 				icon={Compass}
@@ -93,12 +83,12 @@ export function NavigationRail() {
 				href="/get-started"
 				active={pathname === "/get-started"}
 			/>
-			<NavItem
-				icon={Code2}
-				label="Develop"
-				href="/develop"
-				active={pathname === "/develop"}
-			/>
+			{/* <NavItem
+				icon={Pencil}
+				label="Styles"
+				href="/styles"
+				active={pathname === "/styles"}
+			/> */}
 			<NavItem
 				icon={LayoutGrid}
 				label="Components"

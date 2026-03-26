@@ -222,7 +222,7 @@ export function ProgressExamples() {
 							</div>
 							<div className="md:w-1/2 w-full flex flex-col gap-8 justify-center items-center">
 								<div className="flex flex-wrap items-center gap-6 sm:gap-12 justify-center w-full">
-									<div className="flex flex-col items-center gap-4 min-w-[100px]">
+									<div className="flex flex-col items-center gap-4 min-w-25">
 										<ProgressIndicator
 											variant="circular"
 											shape="wavy"
@@ -274,7 +274,7 @@ export function ProgressExamples() {
 							</div>
 							<div className="md:w-1/2 w-full flex flex-col gap-8 justify-center items-center">
 								<div className="flex flex-wrap items-center gap-6 sm:gap-12 justify-center w-full">
-									<div className="flex flex-col items-center gap-4 min-w-[100px]">
+									<div className="flex flex-col items-center gap-4 min-w-25">
 										<ProgressIndicator
 											variant="circular"
 											aria-label="Indeterminate circular flat"

@@ -149,46 +149,48 @@ export default function ButtonGroupsPage() {
 								<span className="text-sm font-medium text-m3-on-surface-variant">
 									Default Size (sm) - Inner Radius: 8px
 								</span>
-								<ButtonGroup
-									variant="connected"
-									showCheck
-									className="flex-wrap justify-center"
-								>
-									{["Day", "Week", "Month", "Year"].map((item) => (
-										<Button
-											key={`sm-${item}`}
-											variant="toggle"
-											selected={selectedDay === item}
-											onClick={() => setSelectedDay(item)}
-											className="mb-2"
-										>
-											{item}
-										</Button>
-									))}
-								</ButtonGroup>
+								<div className="w-full overflow-x-auto pb-2 flex justify-start md:justify-center">
+									<ButtonGroup
+										variant="connected"
+										showCheck
+										className="min-w-max"
+									>
+										{["Day", "Week", "Month", "Year"].map((item) => (
+											<Button
+												key={`sm-${item}`}
+												variant="toggle"
+												selected={selectedDay === item}
+												onClick={() => setSelectedDay(item)}
+											>
+												{item}
+											</Button>
+										))}
+									</ButtonGroup>
+								</div>
 							</div>
 
 							<div className="flex flex-col items-center gap-4 w-full mt-8">
 								<span className="text-sm font-medium text-m3-on-surface-variant">
 									Large Size (lg) - Inner Radius: 16px
 								</span>
-								<ButtonGroup
-									variant="connected"
-									size="lg"
-									className="flex-wrap justify-center"
-								>
-									{["Day", "Week", "Month", "Year"].map((item) => (
-										<Button
-											key={`lg-${item}`}
-											variant="toggle"
-											selected={selectedDay === item}
-											onClick={() => setSelectedDay(item)}
-											className="mb-2"
-										>
-											{item}
-										</Button>
-									))}
-								</ButtonGroup>
+								<div className="w-full overflow-x-auto pb-2 flex justify-start md:justify-center">
+									<ButtonGroup
+										variant="connected"
+										size="lg"
+										className="min-w-max"
+									>
+										{["Day", "Week", "Month", "Year"].map((item) => (
+											<Button
+												key={`lg-${item}`}
+												variant="toggle"
+												selected={selectedDay === item}
+												onClick={() => setSelectedDay(item)}
+											>
+												{item}
+											</Button>
+										))}
+									</ButtonGroup>
+								</div>
 							</div>
 						</div>
 					</Card>
@@ -283,18 +285,20 @@ export default function ButtonGroupsPage() {
 							<p className="text-sm text-m3-on-surface-variant mb-6">
 								Allow users to select multiple options in a single group.
 							</p>
-							<ButtonGroup variant="connected">
-								{["S", "M", "L", "XL"].map((size) => (
-									<Button
-										key={size}
-										variant="toggle"
-										selected={selectedSizes.includes(size)}
-										onClick={() => toggleSize(size)}
-									>
-										{size}
-									</Button>
-								))}
-							</ButtonGroup>
+							<div className="w-full overflow-x-auto pb-2 flex justify-start">
+								<ButtonGroup variant="connected" className="min-w-max">
+									{["S", "M", "L", "XL"].map((size) => (
+										<Button
+											key={size}
+											variant="toggle"
+											selected={selectedSizes.includes(size)}
+											onClick={() => toggleSize(size)}
+										>
+											{size}
+										</Button>
+									))}
+								</ButtonGroup>
+							</div>
 						</Card>
 
 						{/* Icon Only */}
@@ -303,8 +307,8 @@ export default function ButtonGroupsPage() {
 							<p className="text-sm text-m3-on-surface-variant mb-6">
 								Compact groups for editing or formatting actions.
 							</p>
-							<div className="flex gap-8">
-								<ButtonGroup variant="connected">
+							<div className="flex flex-col lg:flex-row gap-8 w-full overflow-x-auto pb-2">
+								<ButtonGroup variant="connected" className="min-w-max">
 									<Button
 										variant="toggle"
 										selected={false}
@@ -331,7 +335,7 @@ export default function ButtonGroupsPage() {
 									</Button>
 								</ButtonGroup>
 
-								<ButtonGroup variant="standard">
+								<ButtonGroup variant="standard" className="min-w-max">
 									<Button colorStyle="tonal" className="px-3">
 										<Plus className="w-5 h-5" />
 									</Button>

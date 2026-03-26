@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const srcAssets = path.join(__dirname, '../src/assets');
 const distAssets = path.join(__dirname, '../dist/assets');
@@ -34,7 +34,7 @@ for (const file of distFiles) {
   if (fs.existsSync(file)) {
     const content = fs.readFileSync(file, 'utf-8');
     if (!content.startsWith('"use client";') && !content.startsWith("'use client';")) {
-      fs.writeFileSync(file, '"use client";\n' + content);
+      fs.writeFileSync(file, `"use client";\n${content}`);
       console.log(`✅ Prepended "use client" to ${path.basename(file)}`);
     }
   }

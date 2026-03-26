@@ -32,7 +32,7 @@ export function CodeBlock({
 		<Card
 			variant="filled"
 			className={cn(
-				"p-0 overflow-hidden bg-m3-surface-container-high",
+				"p-0 overflow-hidden max-w-full bg-m3-surface-container-high",
 				className,
 			)}
 		>
