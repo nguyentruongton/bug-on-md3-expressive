@@ -1,5 +1,3 @@
-"use client";
-
 import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import * as React from "react";
 
@@ -75,4 +73,28 @@ export function Ripple({ ripples, onRippleDone }: RippleProps) {
 			))}
 		</AnimatePresence>
 	);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Hook: useRipple
+// ─────────────────────────────────────────────────────────────────────────────
+export function useRipple() {
+	const [ripples, setRipples] = React.useState<RippleOrigin[]>([]);
+
+	const onPointerDown = React.useCallback(
+		(e: React.PointerEvent<HTMLElement>) => {
+			const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
+			const size = Math.hypot(rect.width, rect.height) * 2;
+			setRipples((prev) => [...prev, { id: Date.now(), x, y, size }]);
+		},
+		[],
+	);
+
+	const removeRipple = React.useCallback((id: number) => {
+		setRipples((prev) => prev.filter((r) => r.id !== id));
+	}, []);
+
+	return { ripples, onPointerDown, removeRipple };
 }

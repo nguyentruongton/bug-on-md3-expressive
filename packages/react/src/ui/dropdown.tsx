@@ -1,5 +1,3 @@
-"use client";
-
 import * as RadixDropdown from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -58,8 +56,8 @@ const DropdownMenuContent = React.forwardRef<
 			>
 				<motion.div
 					className={cn(
-						"z-50 min-w-[8rem] overflow-hidden",
-						"rounded-[12px] bg-m3-surface-container p-1",
+						"z-50 min-w-32 overflow-hidden",
+						"rounded-xl bg-m3-surface-container p-1",
 						"shadow-md",
 						"focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-m3-primary",
 						className,
@@ -82,8 +80,8 @@ const DropdownMenuSubContent = React.forwardRef<
 	<RadixDropdown.SubContent
 		ref={ref}
 		className={cn(
-			"z-50 min-w-[8rem] overflow-hidden",
-			"rounded-[12px] bg-m3-surface-container p-1 shadow-md",
+			"z-50 min-w-32 overflow-hidden",
+			"rounded-xl bg-m3-surface-container p-1 shadow-md",
 			"data-[state=open]:animate-in data-[state=closed]:animate-out",
 			"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 			"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -108,11 +106,11 @@ const DropdownMenuItem = React.forwardRef<
 		className={cn(
 			// MD3 State Layer behavior
 			"relative flex cursor-pointer select-none items-center gap-2",
-			"rounded-[8px] px-3 py-2 text-sm text-m3-on-surface",
+			"rounded-lg px-3 py-2 text-sm text-m3-on-surface",
 			"outline-none transition-colors duration-150",
 			"hover:bg-m3-on-surface/8",
 			"focus:bg-m3-on-surface/12",
-			"data-[disabled]:pointer-events-none data-[disabled]:opacity-38",
+			"data-disabled:pointer-events-none data-disabled:opacity-38",
 			"focus-visible:ring-0", // Radix gốc handle ring internally
 			inset && "pl-8",
 			className,
@@ -131,10 +129,10 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"relative flex cursor-pointer select-none items-center gap-2",
-			"rounded-[8px] py-2 pl-8 pr-3 text-sm text-m3-on-surface",
+			"rounded-lg py-2 pl-8 pr-3 text-sm text-m3-on-surface",
 			"outline-none transition-colors duration-150",
 			"hover:bg-m3-on-surface/8 focus:bg-m3-on-surface/12",
-			"data-[disabled]:pointer-events-none data-[disabled]:opacity-38",
+			"data-disabled:pointer-events-none data-disabled:opacity-38",
 			className,
 		)}
 		checked={checked}
@@ -159,10 +157,10 @@ const DropdownMenuRadioItem = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"relative flex cursor-pointer select-none items-center gap-2",
-			"rounded-[8px] py-2 pl-8 pr-3 text-sm text-m3-on-surface",
+			"rounded-lg py-2 pl-8 pr-3 text-sm text-m3-on-surface",
 			"outline-none transition-colors duration-150",
 			"hover:bg-m3-on-surface/8 focus:bg-m3-on-surface/12",
-			"data-[disabled]:pointer-events-none data-[disabled]:opacity-38",
+			"data-disabled:pointer-events-none data-disabled:opacity-38",
 			className,
 		)}
 		{...props}
@@ -220,7 +218,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"flex cursor-default select-none items-center gap-2",
-			"rounded-[8px] px-3 py-2 text-sm text-m3-on-surface",
+			"rounded-lg px-3 py-2 text-sm text-m3-on-surface",
 			"outline-none transition-colors duration-150",
 			"hover:bg-m3-on-surface/8 focus:bg-m3-on-surface/12",
 			"data-[state=open]:bg-m3-on-surface/8",

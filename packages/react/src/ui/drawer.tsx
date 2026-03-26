@@ -1,5 +1,3 @@
-"use client";
-
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -136,7 +134,7 @@ const DrawerContent = React.forwardRef<
 				{!hideHandle && (
 					<div
 						aria-hidden="true"
-						className="mx-auto mt-3 h-1 w-9 rounded-full bg-m3-on-surface-variant/40 flex-shrink-0"
+						className="mx-auto mt-3 h-1 w-9 rounded-full bg-m3-on-surface-variant/40 shrink-0"
 					/>
 				)}
 
@@ -190,7 +188,7 @@ const DrawerTitle = React.forwardRef<
 	<RadixDialog.Title
 		ref={ref}
 		className={cn(
-			"text-[22px] leading-[28px] font-medium text-m3-on-surface",
+			"text-[22px] leading-7 font-medium text-m3-on-surface",
 			className,
 		)}
 		{...props}

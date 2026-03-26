@@ -1,5 +1,3 @@
-"use client";
-
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -100,7 +98,7 @@ const DialogContent = React.forwardRef<
 			className={cn(
 				// MD3 Dialog shape: rounded-[28px], elevation 3
 				"fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
-				"w-[calc(100%-2rem)] max-w-[560px]",
+				"w-[calc(100%-2rem)] max-w-140",
 				"rounded-[28px] bg-m3-surface-container-high p-6",
 				"shadow-lg outline-none",
 				// Focus visible ring for keyboard users
@@ -147,7 +145,7 @@ const DialogTitle = React.forwardRef<
 	<RadixDialog.Title
 		ref={ref}
 		className={cn(
-			"text-[24px] leading-[32px] font-medium text-m3-on-surface tracking-[-0.01em]",
+			"text-[24px] leading-8 font-medium text-m3-on-surface tracking-[-0.01em]",
 			className,
 		)}
 		{...props}

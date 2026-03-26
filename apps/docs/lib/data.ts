@@ -201,6 +201,7 @@ export const componentCategories = [
 				description:
 					"Chips help people enter information, make selections, filter content, or trigger actions",
 				icon: Tag,
+				href: "/components/chips",
 			},
 			{
 				name: "Dialogs",

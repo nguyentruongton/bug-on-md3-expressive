@@ -1,8 +1,7 @@
-"use client";
-
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { cn } from "../lib/utils";
+import { Button } from "./button";
 import { Card } from "./card";
 
 interface CodeBlockProps {
@@ -40,10 +39,11 @@ export function CodeBlock({
 				<span className="text-xs font-mono text-m3-on-surface-variant">
 					{language}
 				</span>
-				<button type="button"
+				<Button
+					type="button"
 					onClick={copyToClipboard}
-					className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-m3-on-surface/5 text-m3-primary transition-colors"
 					title="Copy code"
+					colorStyle="text"
 				>
 					{copied ? (
 						<>
@@ -60,7 +60,7 @@ export function CodeBlock({
 							</span>
 						</>
 					)}
-				</button>
+				</Button>
 			</div>
 			<pre className="p-4 overflow-x-auto text-sm font-mono text-m3-on-surface">
 				{code}

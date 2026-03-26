@@ -1,5 +1,3 @@
-"use client";
-
 import { cva } from "class-variance-authority";
 import type { HTMLMotionProps } from "motion/react";
 import { AnimatePresence, domMax, LazyMotion, m } from "motion/react";
@@ -218,12 +216,18 @@ export type ButtonProps = BaseButtonProps &
 // ─────────────────────────────────────────────────────────────────────────────
 const getSizeIconPx = (size: string): number => {
 	switch (size) {
-		case "xs": return 18;
-		case "sm": return 20;
-		case "md": return 24;
-		case "lg": return 32;
-		case "xl": return 40;
-		default: return 20;
+		case "xs":
+			return 18;
+		case "sm":
+			return 20;
+		case "md":
+			return 24;
+		case "lg":
+			return 32;
+		case "xl":
+			return 40;
+		default:
+			return 20;
 	}
 };
 
@@ -256,7 +260,8 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		// When toggle is selected, use selectedColorStyle if provided, else "filled".
 		// This avoids CSS specificity battles between two bg-* classes from different
 		// CVA variants. effectiveColorStyle is the single source of truth for color.
-		const effectiveColorStyle = isToggle && isSelected ? (selectedColorStyle || "filled") : colorStyle;
+		const effectiveColorStyle =
+			isToggle && isSelected ? selectedColorStyle || "filled" : colorStyle;
 
 		// ── Shape Morphing ───────────────────────────────────────────────────
 		// When toggle selected: shape flips (round → square, square → round)
@@ -273,20 +278,27 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			pressedRadiusMap[size] ?? pressedRadiusMap.sm;
 
 		// ── Label: Sentence case ─────────────────────────────────────────────
-		const labelText = React.useMemo(() => 
-			typeof children === "string"
-				? children.charAt(0).toUpperCase() + children.slice(1).toLowerCase()
-				: children,
-			[children]
+		const labelText = React.useMemo(
+			() =>
+				typeof children === "string"
+					? children.charAt(0).toUpperCase() + children.slice(1).toLowerCase()
+					: children,
+			[children],
 		);
 
-		const iconClass = React.useMemo(() => SIZE_ICON_CLASS[size] ?? "size-5", [size]);
+		const iconClass = React.useMemo(
+			() => SIZE_ICON_CLASS[size] ?? "size-5",
+			[size],
+		);
 
 		// Let TypeScript infer MotionStyle-compatible type (not React.CSSProperties)
-		const mergedStyle = React.useMemo(() => ({
-			...SIZE_STYLES[size],
-			...style,
-		}), [size, style]);
+		const mergedStyle = React.useMemo(
+			() => ({
+				...SIZE_STYLES[size],
+				...style,
+			}),
+			[size, style],
+		);
 
 		// ── A11y: 48dp min touch target for XS / SM via invisible ::after span ─
 		const needsTouchTarget = size === "xs" || size === "sm";
@@ -311,24 +323,30 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			setRipples((prev) => prev.filter((r) => r.id !== id));
 		}, []);
 
-		const handleClick = React.useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-			if (loading) {
-				e.preventDefault();
-				return;
-			}
-			if (onClick) onClick(e);
-		}, [loading, onClick]);
-
-		const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLButtonElement>) => {
-			if (loading) return;
-			if (e.key === "Enter" || e.key === " ") {
-				if (onClick) {
+		const handleClick = React.useCallback(
+			(e: React.MouseEvent<HTMLButtonElement>) => {
+				if (loading) {
 					e.preventDefault();
-					(e.currentTarget as HTMLButtonElement).click();
+					return;
 				}
-			}
-			if (onKeyDown) onKeyDown(e);
-		}, [loading, onClick, onKeyDown]);
+				if (onClick) onClick(e);
+			},
+			[loading, onClick],
+		);
+
+		const handleKeyDown = React.useCallback(
+			(e: React.KeyboardEvent<HTMLButtonElement>) => {
+				if (loading) return;
+				if (e.key === "Enter" || e.key === " ") {
+					if (onClick) {
+						e.preventDefault();
+						(e.currentTarget as HTMLButtonElement).click();
+					}
+				}
+				if (onKeyDown) onKeyDown(e);
+			},
+			[loading, onClick, onKeyDown],
+		);
 
 		return (
 			<LazyMotion features={domMax} strict>
@@ -460,15 +478,15 @@ ButtonComponent.displayName = "Button";
 /**
  * Component Nút (Button) theo chuẩn thiết kế Material Design 3 (MD3) Expressive.
  * Tích hợp sẵn các hiệu ứng gợn sóng (ripple wave), chuyển hóa hình dạng khi tương tác (morphing shape) và các trạng thái tải.
- * 
+ *
  * @example
  * ```tsx
  * // Nút bấm thông thường
  * <Button colorStyle="filled" size="md">Nhấn vào đây</Button>
- * 
+ *
  * // Nút bấm có biểu tượng và đang chờ xử lý
  * <Button icon={<CheckIcon />} loading={isSubmitting}>Xác nhận</Button>
- * 
+ *
  * // Nút chuyển đổi trạng thái (toggle/segmented)
  * <Button variant="toggle" selected={isToggled} onClick={() => setToggled(!isToggled)}>
  *   Bật / Tắt
