@@ -74,6 +74,7 @@ export const componentCategories = [
 				name: "Icon buttons",
 				description: "Icon buttons help people take actions with a single tap",
 				icon: CircleDot,
+				href: "/components/icon-buttons",
 			},
 			{
 				name: "Segmented buttons",

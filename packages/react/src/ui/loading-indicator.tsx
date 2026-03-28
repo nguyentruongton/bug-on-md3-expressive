@@ -132,6 +132,14 @@ const IndeterminateSvg = React.memo(function IndeterminateSvg({
 }: {
 	size: number;
 }) {
+	// Trì hoãn chèn <animate> 1 frame bằng RequestAnimationFrame
+	// giúp bypass hoàn toàn lỗi Chromium đóng băng SMIL khi parent container đang thực hiện CSS transform/animation.
+	const [ready, setReady] = React.useState(false);
+	React.useEffect(() => {
+		const raf = requestAnimationFrame(() => setReady(true));
+		return () => cancelAnimationFrame(raf);
+	}, []);
+
 	return (
 		<svg
 			viewBox="4 4 40 40"
@@ -143,26 +151,30 @@ const IndeterminateSvg = React.memo(function IndeterminateSvg({
 			focusable="false"
 		>
 			<path d={SHAPE_VALUES.split(";")[0]}>
-				<animate
-					attributeName="d"
-					dur="5s"
-					repeatCount="indefinite"
-					calcMode="spline"
-					keySplines={SHAPE_KEY_SPLINES}
-					keyTimes={SHAPE_KEY_TIMES}
-					values={SHAPE_VALUES}
-				/>
-				<animateTransform
-					attributeName="transform"
-					attributeType="XML"
-					type="rotate"
-					dur="5s"
-					repeatCount="indefinite"
-					calcMode="spline"
-					keySplines={ROTATE_KEY_SPLINES}
-					keyTimes={ROTATE_KEY_TIMES}
-					values={ROTATE_VALUES}
-				/>
+				{ready && (
+					<>
+						<animate
+							attributeName="d"
+							dur="5s"
+							repeatCount="indefinite"
+							calcMode="spline"
+							keySplines={SHAPE_KEY_SPLINES}
+							keyTimes={SHAPE_KEY_TIMES}
+							values={SHAPE_VALUES}
+						/>
+						<animateTransform
+							attributeName="transform"
+							attributeType="XML"
+							type="rotate"
+							dur="5s"
+							repeatCount="indefinite"
+							calcMode="spline"
+							keySplines={ROTATE_KEY_SPLINES}
+							keyTimes={ROTATE_KEY_TIMES}
+							values={ROTATE_VALUES}
+						/>
+					</>
+				)}
 			</path>
 		</svg>
 	);

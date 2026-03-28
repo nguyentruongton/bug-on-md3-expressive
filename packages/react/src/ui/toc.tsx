@@ -1,5 +1,5 @@
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "../lib/utils";
 
 interface ToCItem {
@@ -12,47 +12,41 @@ interface TableOfContentsProps {
 }
 
 export function TableOfContents({ items }: TableOfContentsProps) {
-	const [activeId, setActiveId] = useState<string>("");
+	const [activeId, setActiveId] = useState("");
+
+	// Stabilize dependency to avoid re-subscribing on every render
+	const itemIds = useMemo(() => items.map((i) => i.id), [items]);
 
 	useEffect(() => {
+		if (typeof IntersectionObserver === "undefined") return;
+
 		const observer = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						setActiveId(entry.target.id);
-					}
+					if (entry.isIntersecting) setActiveId(entry.target.id);
 				}
 			},
 			{ rootMargin: "-100px 0% -80% 0%" },
 		);
 
-		for (const item of items) {
-			const element = document.getElementById(item.id);
-			if (element) observer.observe(element);
+		for (const id of itemIds) {
+			const el = document.getElementById(id);
+			if (el) observer.observe(el);
 		}
 
 		return () => observer.disconnect();
-	}, [items]);
+	}, [itemIds]);
 
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
 		e.preventDefault();
-		const element = document.getElementById(id);
-		if (element) {
-			const offset = 100;
-			const bodyRect = document.body.getBoundingClientRect().top;
-			const elementRect = element.getBoundingClientRect().top;
-			const elementPosition = elementRect - bodyRect;
-			const offsetPosition = elementPosition - offset;
-
-			window.scrollTo({
-				top: offsetPosition,
-				behavior: "smooth",
-			});
-		}
+		document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 	};
 
 	return (
-		<nav className="hidden xl:block sticky top-24 self-start w-64 ml-12 border-l border-m3-surface-variant pl-6">
+		<nav
+			aria-label="On this page"
+			className="hidden xl:block sticky top-24 self-start w-64 ml-12 border-l border-m3-surface-variant pl-6"
+		>
 			<h4 className="text-xs font-bold text-m3-on-surface-variant uppercase tracking-widest mb-4">
 				On this page
 			</h4>
@@ -62,6 +56,7 @@ export function TableOfContents({ items }: TableOfContentsProps) {
 						<a
 							href={`#${item.id}`}
 							onClick={(e) => handleClick(e, item.id)}
+							aria-current={activeId === item.id ? "true" : undefined}
 							className={cn(
 								"text-sm transition-colors hover:text-m3-primary block",
 								activeId === item.id

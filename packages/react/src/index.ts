@@ -67,6 +67,8 @@ export {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "./ui/dropdown";
+export type { BaseIconButtonProps, IconButtonProps } from "./ui/icon-button";
+export { IconButton } from "./ui/icon-button";
 export type { LoadingIndicatorProps } from "./ui/loading-indicator";
 export { LoadingIndicator } from "./ui/loading-indicator";
 export type {
