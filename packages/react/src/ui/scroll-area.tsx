@@ -59,12 +59,12 @@ const ScrollArea = React.forwardRef<
 				ref={ref}
 				type={radixType}
 				scrollHideDelay={scrollHideDelay}
-				className={cn("relative overflow-hidden", className)}
+				className={cn("relative overflow-hidden flex flex-col", className)}
 				{...props}
 			>
 				<RadixScrollArea.Viewport
 					className={cn(
-						"h-full w-full rounded-[inherit]",
+						"h-full w-full flex-1 min-h-0 rounded-[inherit]",
 						"outline-none focus-visible:ring-2 focus-visible:ring-m3-primary focus-visible:ring-offset-1",
 						viewportClassName,
 					)}
@@ -104,13 +104,10 @@ const ScrollAreaScrollbar = React.forwardRef<
 		className={cn(
 			"flex touch-none select-none transition-all duration-300 ease-in-out",
 			"absolute z-50",
-			// Vertical
 			orientation === "vertical" &&
 				"right-0 top-0 bottom-0 w-2.5 border-l border-l-transparent p-px",
-			// Horizontal
 			orientation === "horizontal" &&
 				"bottom-0 left-0 right-0 h-2.5 flex-col border-t border-t-transparent p-px",
-			// Fade in/out via data-state
 			"data-[state=hidden]:opacity-0 data-[state=visible]:opacity-100",
 			className,
 		)}
@@ -120,7 +117,6 @@ const ScrollAreaScrollbar = React.forwardRef<
 			className={cn(
 				"relative flex-1 rounded-full bg-m3-on-surface/25 transition-colors duration-200",
 				"hover:bg-m3-on-surface/40 active:bg-m3-on-surface/55",
-				// Expanded hit area
 				"before:absolute before:left-1/2 before:top-1/2 before:min-h-11 before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2",
 			)}
 		/>

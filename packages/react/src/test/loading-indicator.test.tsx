@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { LoadingIndicator } from "../ui/loading-indicator";
 
@@ -66,14 +66,16 @@ describe("LoadingIndicator", () => {
 	});
 
 	// ─── Indeterminate Mode (SMIL) ───────────────────────────────────────────
-	it("renders SVG path with SMIL shape morphing animation in indeterminate mode", () => {
+	it("renders SVG path with SMIL shape morphing animation in indeterminate mode", async () => {
 		const { container } = render(
 			<LoadingIndicator aria-label="Loading" />,
 		);
 		const path = container.querySelector("path");
 		expect(path).toBeInTheDocument();
-		const animateEl = path?.querySelector("animate[attributeName='d']");
-		expect(animateEl).toBeInTheDocument();
+		await waitFor(() => {
+			const animateEl = path?.querySelector("animate[attributeName='d']");
+			expect(animateEl).toBeInTheDocument();
+		});
 	});
 
 	// ─── Variants ────────────────────────────────────────────────────────────

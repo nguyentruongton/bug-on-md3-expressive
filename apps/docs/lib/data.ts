@@ -208,6 +208,7 @@ export const componentCategories = [
 				name: "Dialogs",
 				description: "Dialogs provide important prompts in a user flow",
 				icon: MessageSquare,
+				href: "/components/dialogs",
 			},
 			{
 				name: "Divider",

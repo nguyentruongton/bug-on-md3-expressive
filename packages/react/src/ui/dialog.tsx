@@ -3,6 +3,8 @@ import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
+import { IconButton } from "./icon-button";
+import { ScrollArea } from "./scroll-area";
 
 // ─── MD3 Spring Config (Expressive) ──────────────────────────────────────────
 const MD3_SPRING = {
@@ -22,7 +24,7 @@ const MD3_OVERLAY_ANIM = {
 };
 
 const MD3_CONTENT_ANIM = {
-	initial: { opacity: 0, scale: 0.9, y: 16 },
+	initial: { opacity: 0, scale: 0.85, y: 24 },
 	animate: { opacity: 1, scale: 1, y: 0, transition: MD3_SPRING },
 	exit: {
 		opacity: 0,
@@ -30,6 +32,12 @@ const MD3_CONTENT_ANIM = {
 		y: 8,
 		transition: { duration: 0.15, ease: "easeIn" as const },
 	},
+};
+
+const MD3_FULLSCREEN_ANIM = {
+	initial: { y: "100%" },
+	animate: { y: 0, transition: MD3_SPRING },
+	exit: { y: "100%", transition: { duration: 0.2, ease: "easeIn" as const } },
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -41,9 +49,21 @@ export interface DialogProps {
 
 export interface DialogContentProps
 	extends React.ComponentPropsWithoutRef<typeof RadixDialog.Content> {
-	/** Ẩn nút close mặc định */
+	/** Hide the default close button (X icon) */
 	hideCloseButton?: boolean;
-	/** Override container width */
+	className?: string;
+}
+
+export interface DialogFullScreenContentProps
+	extends React.ComponentPropsWithoutRef<typeof RadixDialog.Content> {
+	/** Title text shown in the top app bar area */
+	title?: string;
+	/** Label for the primary action button in the top bar (e.g. "Save") */
+	actionLabel?: string;
+	/** Callback when action button is clicked */
+	onAction?: () => void;
+	/** Show divider between header and body when content is scrolled */
+	showDivider?: boolean;
 	className?: string;
 }
 
@@ -67,9 +87,12 @@ const DialogPortal = ({
 	children: React.ReactNode;
 }) => (
 	<RadixDialog.Portal forceMount>
-		<AnimatePresence mode="wait">{open && children}</AnimatePresence>
+		<AnimatePresence>
+			{open ? React.Children.toArray(children) : null}
+		</AnimatePresence>
 	</RadixDialog.Portal>
 );
+DialogPortal.displayName = "DialogPortal";
 
 const DialogOverlay = React.forwardRef<
 	React.ComponentRef<typeof RadixDialog.Overlay>,
@@ -77,11 +100,7 @@ const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<RadixDialog.Overlay ref={ref} asChild {...props}>
 		<motion.div
-			className={cn(
-				"fixed inset-0 z-50 bg-black/32",
-				// a11y: screen reader sees this as decorative overlay
-				className,
-			)}
+			className={cn("fixed inset-0 z-50 bg-black/32", className)}
 			aria-hidden="true"
 			{...MD3_OVERLAY_ANIM}
 		/>
@@ -93,16 +112,13 @@ const DialogContent = React.forwardRef<
 	React.ComponentRef<typeof RadixDialog.Content>,
 	DialogContentProps
 >(({ className, children, hideCloseButton = false, ...props }, ref) => (
-	<RadixDialog.Content ref={ref} asChild {...props}>
+	<RadixDialog.Content ref={ref} asChild aria-describedby={undefined} {...props}>
 		<motion.div
 			className={cn(
-				// MD3 Dialog shape: rounded-[28px], elevation 3
 				"fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
 				"w-[calc(100%-2rem)] max-w-140",
 				"rounded-[28px] bg-m3-surface-container-high p-6",
-				"shadow-lg outline-none",
-				// Focus visible ring for keyboard users
-				"focus-visible:ring-2 focus-visible:ring-m3-primary",
+				"shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-m3-primary",
 				className,
 			)}
 			role="dialog"
@@ -110,17 +126,15 @@ const DialogContent = React.forwardRef<
 		>
 			{children}
 			{!hideCloseButton && (
-				<RadixDialog.Close
-					className={cn(
-						"absolute right-4 top-4 rounded-full p-2",
-						"text-m3-on-surface-variant",
-						"hover:bg-m3-on-surface/8",
-						"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-m3-primary focus-visible:ring-offset-2",
-						"transition-colors duration-200",
-					)}
-					aria-label="Đóng hộp thoại"
-				>
-					<X className="h-5 w-5" aria-hidden="true" />
+				<RadixDialog.Close asChild aria-label="Close dialog">
+					<IconButton
+						size="sm"
+						colorStyle="filled"
+						className="absolute right-4 top-4"
+						aria-label="Close"
+					>
+						<X aria-hidden="true" />
+					</IconButton>
 				</RadixDialog.Close>
 			)}
 		</motion.div>
@@ -128,12 +142,27 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = "DialogContent";
 
-// ─── Title & Description ──────────────────────────────────────────────────────
+// ─── Header & Related ────────────────────────────────────────────────────────
+const DialogIcon = React.forwardRef<
+	HTMLDivElement,
+	React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => (
+	<div
+		ref={ref}
+		className={cn("flex justify-center mb-4 text-m3-secondary", className)}
+		aria-hidden="true"
+		{...props}
+	>
+		{children}
+	</div>
+));
+DialogIcon.displayName = "DialogIcon";
+
 const DialogHeader = ({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-	<div className={cn("flex flex-col gap-1 mb-4", className)} {...props} />
+	<div className={cn("flex flex-col gap-2 mb-4", className)} {...props} />
 );
 DialogHeader.displayName = "DialogHeader";
 
@@ -141,11 +170,12 @@ DialogHeader.displayName = "DialogHeader";
 const DialogTitle = React.forwardRef<
 	React.ComponentRef<typeof RadixDialog.Title>,
 	React.ComponentPropsWithoutRef<typeof RadixDialog.Title>
->(({ className, ...props }, ref) => (
+>(({ className, asChild, ...props }, ref) => (
 	<RadixDialog.Title
 		ref={ref}
+		asChild={asChild}
 		className={cn(
-			"text-[24px] leading-8 font-medium text-m3-on-surface tracking-[-0.01em]",
+			"text-[24px] leading-8 font-normal text-m3-on-surface tracking-[0em]",
 			className,
 		)}
 		{...props}
@@ -156,14 +186,36 @@ DialogTitle.displayName = "DialogTitle";
 const DialogDescription = React.forwardRef<
 	React.ComponentRef<typeof RadixDialog.Description>,
 	React.ComponentPropsWithoutRef<typeof RadixDialog.Description>
->(({ className, ...props }, ref) => (
+>(({ className, asChild, ...props }, ref) => (
 	<RadixDialog.Description
 		ref={ref}
+		asChild={asChild}
 		className={cn("text-sm text-m3-on-surface-variant leading-5", className)}
 		{...props}
 	/>
 ));
 DialogDescription.displayName = "DialogDescription";
+
+// ─── Body & Footer ───────────────────────────────────────────────────────────
+const DialogBody = React.forwardRef<
+	HTMLDivElement,
+	React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, dir, ...props }, ref) => (
+	<ScrollArea
+		ref={ref}
+		type="hover"
+		dir={dir as "ltr" | "rtl" | undefined}
+		className={cn(
+			"max-h-[calc(85dvh-200px)] -mx-6",
+			className,
+		)}
+		viewportClassName="px-6"
+		{...props}
+	>
+		{children}
+	</ScrollArea>
+));
+DialogBody.displayName = "DialogBody";
 
 const DialogFooter = ({
 	className,
@@ -178,35 +230,69 @@ DialogFooter.displayName = "DialogFooter";
 
 const DialogClose = RadixDialog.Close;
 
-// ─── Composite component ──────────────────────────────────────────────────────
+// ─── Full Screen Content Variant ──────────────────────────────────────────────
+const DialogFullScreenContent = React.forwardRef<
+	React.ComponentRef<typeof RadixDialog.Content>,
+	DialogFullScreenContentProps
+>(({ className, children, title, actionLabel, onAction, showDivider, ...props }, ref) => (
+	<RadixDialog.Content ref={ref} asChild aria-describedby={undefined} {...props}>
+		<motion.div
+			className={cn(
+				"fixed inset-0 z-50 w-full h-full bg-m3-surface flex flex-col",
+				"outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-m3-primary",
+				className,
+			)}
+			role="dialog"
+			{...MD3_FULLSCREEN_ANIM}
+		>
+			<div className="flex shrink-0 items-center px-4 h-14 gap-2 bg-m3-surface">
+				<RadixDialog.Close asChild aria-label="Close dialog">
+					<IconButton size="sm" colorStyle="filled" aria-label="Close">
+						<X aria-hidden="true" />
+					</IconButton>
+				</RadixDialog.Close>
+
+				{title && (
+					<DialogTitle className="flex-1 text-[22px] leading-7 font-medium truncate pr-2">
+						{title}
+					</DialogTitle>
+				)}
+
+				{actionLabel && onAction && (
+					<button
+						type="button"
+						onClick={onAction}
+						className="text-sm font-medium text-m3-primary px-3 py-2 rounded-full hover:bg-m3-primary/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-m3-primary transition-colors whitespace-nowrap"
+					>
+						{actionLabel}
+					</button>
+				)}
+			</div>
+
+			{showDivider && (
+				<hr className="border-m3-outline-variant w-full shrink-0 m-0" />
+			)}
+
+			<ScrollArea type="hover" className="flex-1 w-full" viewportClassName="p-6">
+				{children}
+			</ScrollArea>
+		</motion.div>
+	</RadixDialog.Content>
+));
+DialogFullScreenContent.displayName = "DialogFullScreenContent";
+
 export {
 	Dialog,
+	DialogBody,
 	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
+	DialogFullScreenContent,
 	DialogHeader,
+	DialogIcon,
 	DialogOverlay,
 	DialogPortal,
 	DialogTitle,
 	DialogTrigger,
 };
-
-// ─── Usage pattern
-// Sử dụng tại `apps/docs`:
-//   <Dialog open={open} onOpenChange={setOpen}>
-//     <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
-//     <DialogPortal open={open}>
-//       <DialogOverlay />
-//       <DialogContent>
-//         <DialogHeader>
-//           <DialogTitle>Xác nhận xóa</DialogTitle>
-//           <DialogDescription>Hành động này không thể hoàn tác.</DialogDescription>
-//         </DialogHeader>
-//         <DialogFooter>
-//           <DialogClose asChild><Button colorStyle="text">Hủy</Button></DialogClose>
-//           <Button colorStyle="filled">Xác nhận</Button>
-//         </DialogFooter>
-//       </DialogContent>
-//     </DialogPortal>
-//   </Dialog>

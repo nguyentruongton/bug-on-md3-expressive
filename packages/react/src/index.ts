@@ -21,15 +21,18 @@ export { Card } from "./ui/card";
 export type { ChipProps } from "./ui/chip";
 export { Chip } from "./ui/chip";
 export { CodeBlock } from "./ui/code-block";
-export type { DialogContentProps, DialogProps } from "./ui/dialog";
+export type { DialogContentProps, DialogFullScreenContentProps, DialogProps } from "./ui/dialog";
 // Dialog
 export {
 	Dialog,
+	DialogBody,
 	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
+	DialogFullScreenContent,
 	DialogHeader,
+	DialogIcon,
 	DialogOverlay,
 	DialogPortal,
 	DialogTitle,
