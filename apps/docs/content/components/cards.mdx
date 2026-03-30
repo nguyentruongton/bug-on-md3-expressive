@@ -1,0 +1,83 @@
+---
+title: Cards
+description: Cards contain content and actions about a single subject. Expressive cards use motion, elevation, and depth to communicate information hierarchy and interactivity.
+---
+
+Cards are flexible containers that group related information and actions. They adapt their rendering element based on interactivity — static for display, `<button>` for actions, or `<a>` for navigation. Expressive cards animate elevation on hover and show Ripple effects on tap.
+
+<ComponentPreview name="card-variants" />
+
+## Interactive Types
+
+The `Card` component automatically selects the correct element based on the props you pass:
+
+- **Static** (default) — renders as `<div>`. Best when the card contains its own distinct actions.
+- **Button** — renders as `<motion.button>` when `onClick` is provided. Features elevation morphing and Ripple.
+- **Link** — renders as `<motion.a>` when `href` is provided. Adds `rel="noreferrer"` automatically for `target="_blank"`.
+
+<ComponentPreview name="card-interactive" />
+
+## Disabled State
+
+Disabled cards drop to 38% opacity, block pointer events, add `aria-disabled="true"`, and remove keyboard access (`tabIndex=-1`).
+
+<ComponentPreview name="card-disabled" />
+
+## Usage
+
+```tsx
+import { Card, Button } from "@bug-on/md3-react";
+
+// Static card (div)
+<Card variant="elevated" className="p-6">
+  <h3>Weather Today</h3>
+  <p>28°C, partly cloudy</p>
+  <Button colorStyle="tonal">See forecast</Button>
+</Card>
+
+// Interactive button card (onClick)
+<Card
+  variant="filled"
+  className="p-6 text-left"
+  onClick={() => console.log("Clicked!")}
+>
+  <h3>Go to Analytics</h3>
+  <p>View your performance metrics.</p>
+</Card>
+
+// Link card (href)
+<Card
+  variant="outlined"
+  className="p-6"
+  href="/analytics"
+>
+  <h3>Analytics</h3>
+</Card>
+
+// Disabled card
+<Card variant="elevated" className="p-6" onClick={handleClick} disabled>
+  <h3>Unavailable</h3>
+</Card>
+```
+
+## Accessibility
+
+- Static cards (no `onClick` or `href`) render as `<div>` with no interactive role — they are not focusable.
+- Button cards render as `<button type="button">` and are fully keyboard accessible.
+- Link cards render as `<a>` with descriptive content and `rel="noreferrer"` for `target="_blank"`.
+- The `disabled` prop sets `aria-disabled="true"` and disables pointer events and keyboard focus.
+- Ripple effects are suppressed when `prefers-reduced-motion` is active.
+
+## API Reference
+
+### Card
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"elevated" \| "filled" \| "outlined"` | `"elevated"` | Visual style of the card surface. |
+| `onClick` | `() => void` | — | When provided, renders as `<button>` with ripple and elevation animation. |
+| `href` | `string` | — | When provided, renders as `<a>` (link card). |
+| `target` | `string` | — | Link target (e.g. `"_blank"`). Adds `rel="noreferrer"` automatically. |
+| `disabled` | `boolean` | `false` | Disables interaction, focus, and sets `aria-disabled`. |
+| `className` | `string` | — | Additional Tailwind classes. |
+| `children` | `ReactNode` | — | Card content. |

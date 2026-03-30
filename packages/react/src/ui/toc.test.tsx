@@ -1,5 +1,11 @@
 import { describe, expect, it, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import {
+	render,
+	screen,
+	fireEvent,
+	waitFor,
+	act,
+} from "@testing-library/react";
 
 // Mock implementation
 let mockObserve: Mock<(element: Element) => void>;
@@ -50,7 +56,7 @@ describe("TableOfContents", () => {
 				<div id="section-1">Content 1</div>
 				<div id="section-2">Content 2</div>
 				<TableOfContents items={mockItems} />
-			</>
+			</>,
 		);
 
 		const firstLink = screen.getByText("Section 1");
@@ -83,12 +89,12 @@ describe("TableOfContents", () => {
 			<>
 				<div id="section-1">Content 1</div>
 				<TableOfContents items={mockItems} />
-			</>
+			</>,
 		);
 
 		const firstLink = screen.getByText("Section 1");
 		const target = document.getElementById("section-1");
-		
+
 		if (target) {
 			const scrollSpy = vi.fn();
 			target.scrollIntoView = scrollSpy;

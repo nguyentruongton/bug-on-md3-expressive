@@ -1,0 +1,53 @@
+---
+title: "Scroll Area"
+description: "Augments native scroll functionality for custom, cross-browser styling with a minimal, MD3 Expressive pill-shaped scrollbar."
+---
+
+Augments native scroll functionality for custom, cross-browser styling with a minimal, MD3 Expressive pill-shaped scrollbar.
+
+## Vertical Scroll
+
+The default orientation. Hover over the container to show the scrollbar.
+
+<ComponentPreview name="scroll-area-vertical" />
+
+## Horizontal Scroll
+
+Set `orientation="horizontal"` to scroll wide content.
+
+<ComponentPreview name="scroll-area-horizontal" />
+
+## Both Axes
+
+`orientation="both"` renders both scrollbars with a corner filler.
+
+<ComponentPreview name="scroll-area-both" />
+
+## Behavior Variants
+
+Control when the scrollbar is visible via the `type` prop.
+
+<ComponentPreview name="scroll-area-behavior" />
+
+## Usage Guidelines
+
+### When to use
+- Long lists or content that exceeds the container height.
+- Wide data tables that extend beyond the viewport.
+- Chat message feeds, timelines, or logs.
+
+### Best practices
+- Always define a fixed height or max-height on the container.
+- Prefer `type="always"` when scrollability isn't obvious from context.
+- Use `type="scroll"` for compact mobile experiences.
+- Never rely on native scrollbars for consistent styling.
+
+## API Reference
+
+### ScrollArea
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `type` | `'auto' \| 'always' \| 'scroll' \| 'hover' \| 'none'` | `'hover'` | Describes the nature of scrollbar visibility. |
+| `orientation` | `'vertical' \| 'horizontal' \| 'both'` | `'vertical'` | The axis/axes that should allow scrolling. |
+| `scrollHideDelay` | `number` | `600` | If `type="scroll"`, how long after scrolling to hide the bar. |

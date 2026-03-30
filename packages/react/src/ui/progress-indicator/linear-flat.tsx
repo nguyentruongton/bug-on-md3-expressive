@@ -31,14 +31,29 @@ export const FlatLinearTrack = React.memo<{
 				<>
 					<m.div
 						className="absolute inset-y-0"
-						style={{ backgroundColor: trackColor, borderRadius: radius, width: "100%" }}
-						initial={{ [isRtl ? "right" : "left"]: `calc(max(${minActiveWidth}px, 0%) + ${gapSize}px)` }}
-						animate={{ [isRtl ? "right" : "left"]: `calc(max(${minActiveWidth}px, ${value}%) + ${gapSize}px)` }}
+						style={{
+							backgroundColor: trackColor,
+							borderRadius: radius,
+							width: "100%",
+						}}
+						initial={{
+							[isRtl ? "right" : "left"]:
+								`calc(max(${minActiveWidth}px, 0%) + ${gapSize}px)`,
+						}}
+						animate={{
+							[isRtl ? "right" : "left"]:
+								`calc(max(${minActiveWidth}px, ${value}%) + ${gapSize}px)`,
+						}}
 						transition={{ duration: 0.4, ease: [0.2, 0, 0, 1] }}
 					/>
 					<m.div
 						className="absolute inset-y-0"
-						style={{ backgroundColor: activeColor, borderRadius: radius, minWidth: minActiveWidth, ...(isRtl ? { right: 0 } : { left: 0 }) }}
+						style={{
+							backgroundColor: activeColor,
+							borderRadius: radius,
+							minWidth: minActiveWidth,
+							...(isRtl ? { right: 0 } : { left: 0 }),
+						}}
 						initial={{ width: `${minActiveWidth}px` }}
 						animate={{ width: `${value}%` }}
 						transition={{ duration: 0.4, ease: [0.2, 0, 0, 1] }}
@@ -46,7 +61,10 @@ export const FlatLinearTrack = React.memo<{
 				</>
 			) : (
 				<>
-					<div className="absolute inset-0" style={{ backgroundColor: trackColor, borderRadius: radius }} />
+					<div
+						className="absolute inset-0"
+						style={{ backgroundColor: trackColor, borderRadius: radius }}
+					/>
 					<m.div
 						className="absolute inset-y-0"
 						style={{ backgroundColor: activeColor, borderRadius: radius }}

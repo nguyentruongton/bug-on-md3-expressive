@@ -35,18 +35,15 @@ const md3Plugin = plugin(({ addBase, addUtilities }) => {
 			"--color-m3-outline": "var(--md-sys-color-outline)",
 			"--color-m3-outline-variant": "var(--md-sys-color-outline-variant)",
 
-			"--color-m3-indicator-active":
-				"var(--md-sys-color-indicator-active)",
+			"--color-m3-indicator-active": "var(--md-sys-color-indicator-active)",
 			"--color-m3-indicator-container":
 				"var(--md-sys-color-indicator-container)",
 			"--color-m3-indicator-contained-active":
 				"var(--md-sys-color-indicator-contained-active)",
 			"--color-m3-indicator-contained-container":
 				"var(--md-sys-color-indicator-contained-container)",
-			"--color-m3-indicator-track":
-				"var(--md-sys-color-indicator-track)",
-			"--color-m3-indicator-stop":
-				"var(--md-sys-color-indicator-stop)",
+			"--color-m3-indicator-track": "var(--md-sys-color-indicator-track)",
+			"--color-m3-indicator-stop": "var(--md-sys-color-indicator-stop)",
 
 			"--radius-m3-none": "var(--md-sys-shape-corner-none, 0px)",
 			"--radius-m3-xs": "var(--md-sys-shape-corner-extra-small, 4px)",

@@ -1,7 +1,7 @@
 export { useMediaQuery } from "./hooks/useMediaQuery";
-export type { RippleOptions } from "./hooks/useRipple";
 // Hooks
-export { useRipple } from "./hooks/useRipple";
+/** @deprecated Use `useRippleState` (Framer Motion) from the main package instead. DOM-only ripple. */
+export { useRipple as useDOMRipple } from "./hooks/useRipple";
 // Utils
 export { cn } from "./lib/utils";
 // Types
@@ -20,8 +20,13 @@ export type { CardProps } from "./ui/card";
 export { Card } from "./ui/card";
 export type { ChipProps } from "./ui/chip";
 export { Chip } from "./ui/chip";
+export type { CodeBlockProps } from "./ui/code-block";
 export { CodeBlock } from "./ui/code-block";
-export type { DialogContentProps, DialogFullScreenContentProps, DialogProps } from "./ui/dialog";
+export type {
+	DialogContentProps,
+	DialogFullScreenContentProps,
+	DialogProps,
+} from "./ui/dialog";
 // Dialog
 export {
 	Dialog,
@@ -52,7 +57,6 @@ export {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./ui/drawer";
-// Dropdown Menu
 export {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -70,6 +74,10 @@ export {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "./ui/dropdown";
+// Dropdown Menu
+export type { FABPositionProps, FABProps } from "./ui/fab";
+// Floating Action Button
+export { FAB, FABPosition } from "./ui/fab";
 export type { BaseIconButtonProps, IconButtonProps } from "./ui/icon-button";
 export { IconButton } from "./ui/icon-button";
 export type { LoadingIndicatorProps } from "./ui/loading-indicator";
@@ -80,8 +88,12 @@ export type {
 	ProgressIndicatorProps,
 } from "./ui/progress-indicator";
 export { ProgressIndicator } from "./ui/progress-indicator";
-export type { RippleOrigin } from "./ui/ripple";
-export { Ripple } from "./ui/ripple";
+export type {
+	RippleOrigin,
+	RippleProps,
+	UseRippleStateOptions,
+} from "./ui/ripple";
+export { Ripple, useRipple, useRippleState } from "./ui/ripple";
 // ScrollArea
 export type {
 	ScrollAreaOrientation,
@@ -92,6 +104,7 @@ export {
 	ScrollArea,
 	ScrollAreaScrollbar,
 } from "./ui/scroll-area";
+export type { ToCItem, TableOfContentsProps } from "./ui/toc";
 export { TableOfContents } from "./ui/toc";
 export type {
 	TextStyle,

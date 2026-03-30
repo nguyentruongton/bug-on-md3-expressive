@@ -36,8 +36,12 @@
 	/* Indicator tokens — Loading & Progress */
 	--md-sys-color-indicator-active: var(--md-sys-color-primary);
 	--md-sys-color-indicator-container: var(--md-sys-color-secondary-container);
-	--md-sys-color-indicator-contained-active: var(--md-sys-color-on-primary-container);
-	--md-sys-color-indicator-contained-container: var(--md-sys-color-primary-container);
+	--md-sys-color-indicator-contained-active: var(
+		--md-sys-color-on-primary-container
+	);
+	--md-sys-color-indicator-contained-container: var(
+		--md-sys-color-primary-container
+	);
 	--md-sys-color-indicator-track: var(--md-sys-color-surface-variant);
 	--md-sys-color-indicator-stop: var(--md-sys-color-primary);
 }
@@ -82,8 +86,12 @@
 	/* Indicator tokens — Dark */
 	--md-sys-color-indicator-active: var(--md-sys-color-primary);
 	--md-sys-color-indicator-container: var(--md-sys-color-secondary-container);
-	--md-sys-color-indicator-contained-active: var(--md-sys-color-on-primary-container);
-	--md-sys-color-indicator-contained-container: var(--md-sys-color-primary-container);
+	--md-sys-color-indicator-contained-active: var(
+		--md-sys-color-on-primary-container
+	);
+	--md-sys-color-indicator-contained-container: var(
+		--md-sys-color-primary-container
+	);
 	--md-sys-color-indicator-track: var(--md-sys-color-surface-variant);
 	--md-sys-color-indicator-stop: var(--md-sys-color-primary);
 }

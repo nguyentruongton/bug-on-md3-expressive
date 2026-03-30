@@ -30,16 +30,16 @@ describe("Button Loading State", () => {
 				Submit
 			</Button>,
 		);
-		
+
 		const button = screen.getByRole("button", { name: "Submit" });
 		await userEvent.click(button);
-		
+
 		expect(handleClick).not.toHaveBeenCalled();
 	});
 
 	it("replaces leading icon with loading indicator", () => {
 		const FakeIcon = <svg data-testid="fake-icon" />;
-		
+
 		const { rerender } = render(
 			<Button icon={FakeIcon} iconPosition="leading">
 				Submit

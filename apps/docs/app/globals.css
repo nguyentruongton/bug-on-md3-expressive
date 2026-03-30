@@ -8,7 +8,6 @@
 /* Explicit scan required components in workspace */
 @source "../../../packages/react/src";
 
-
 /* Map MD3 tokens → Tailwind v4 utility classes */
 @theme {
 	/* Fonts */
@@ -143,4 +142,19 @@ body {
 		),
 		radial-gradient(at 0% 100%, hsla(250, 100%, 85%, 0.6) 0px, transparent 50%),
 		radial-gradient(at 50% 50%, hsla(0, 100%, 90%, 0.4) 0px, transparent 60%);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Shiki Dual-Theme: Light / Dark                                              */
+/* Kết nối với MD3 theme system qua data-theme attribute trên <html>           */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Light mode: dùng --shiki-light colors (mặc định) */
+.shiki span {
+	color: var(--shiki-light);
+}
+
+/* Dark mode: khi data-theme="dark" được set bởi applyTheme() */
+[data-theme="dark"] .shiki span {
+	color: var(--shiki-dark);
 }

@@ -1,20 +1,22 @@
 /**
- * Chip – Material Design 3 Expressive
+ * @file chip.tsx
  *
- * Implements 4 chip variants as specified in MD3:
- *   - `assist`     → Triggered actions spanning multiple apps. Flat (bordered) or Elevated.
- *   - `filter`     → Toggleable selections. Animated checkmark on select.
- *   - `input`      → Entities/tags with optional avatar and a dedicated remove button.
- *   - `suggestion` → Contextual dynamic recommendations. Flat (bordered) or Elevated.
+ * MD3 Expressive Chip component — 4 variants.
  *
+ * - `assist`     → Triggered actions spanning multiple apps. Flat (bordered) or Elevated.
+ * - `filter`     → Toggleable selections. Animated checkmark on select.
+ * - `input`      → Entities/tags with optional avatar and a dedicated remove button.
+ * - `suggestion` → Contextual dynamic recommendations. Flat (bordered) or Elevated.
+ *
+ * @remarks
  * Token references (Kotlin source):
- *   AssistChipTokens, FilterChipTokens, InputChipTokens, SuggestionChipTokens
+ * AssistChipTokens, FilterChipTokens, InputChipTokens, SuggestionChipTokens
  *
  * Architecture:
- *   - Styling: cva + cn (clsx/tailwind-merge)
- *   - Animation: Framer Motion (LazyMotion + domMax) for animated checkmark
- *   - Ripple: Ripple component + useRipple hook from ./ripple.tsx
- *   - A11y: role=checkbox (filter), role=button (others); full keyboard support
+ * - Styling: `cva` + `cn` (clsx/tailwind-merge)
+ * - Animation: Framer Motion (`LazyMotion` + `domMax`) for animated checkmark
+ * - Ripple: `Ripple` + `useRippleState` from `./ripple.tsx`
+ * - A11y: `role="checkbox"` (filter), `role="button"` (others); full keyboard support
  *
  * @see https://m3.material.io/components/chips/overview
  */
@@ -23,11 +25,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { AnimatePresence, domMax, LazyMotion, m } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
-import { Ripple, useRipple } from "./ripple";
+import { Ripple, useRippleState } from "./ripple";
 
+// ─────────────────────────────────────────────────────────────────────────────
 // Internal Icons
+// ─────────────────────────────────────────────────────────────────────────────
 
-
+/**
+ * Animated checkmark icon for selected Filter chips.
+ * @internal
+ */
 function CheckIcon({ className }: { className?: string }) {
 	return (
 		<svg
@@ -48,7 +55,10 @@ function CheckIcon({ className }: { className?: string }) {
 	);
 }
 
-
+/**
+ * Close (×) icon for the trailing remove button on Input chips.
+ * @internal
+ */
 function CloseIcon({ className }: { className?: string }) {
 	return (
 		<svg
@@ -134,8 +144,6 @@ const chipVariants = cva(
 	},
 );
 
-
-
 export interface ChipProps
 	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
 	/**
@@ -204,8 +212,6 @@ export interface ChipProps
 	onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-
-
 const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 	(
 		{
@@ -224,8 +230,9 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 		},
 		ref,
 	) => {
-		const { ripples, onPointerDown, removeRipple } = useRipple();
-
+		const { ripples, onPointerDown, removeRipple } = useRippleState({
+			disabled,
+		});
 
 		const isFilter = variant === "filter";
 		const isInput = variant === "input";
@@ -252,68 +259,62 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 		 */
 		const hasLeadingContent = isFilter || !!resolvedLeadingIcon;
 
-
 		// Source: AssistChipDefaults.ContentPadding / inputChipPadding in Chip.kt
-		// No icons:         px-4   (16px each side)
-		// Leading only:     pl-2 pr-4
-		// Trailing only:    pl-4 pr-2
-		// Both:             px-2
-
-		const paddingClass = cn(
-			// Standard chips
-			!isInput && !hasLeadingContent && !hasTrailingContent && "px-4",
-			!isInput && hasLeadingContent && !hasTrailingContent && "pl-2 pr-4",
-			!isInput && !hasLeadingContent && hasTrailingContent && "pl-4 pr-2",
-			!isInput && hasLeadingContent && hasTrailingContent && "px-2",
-			// Input chips (Spec: 12px or 4px left padding)
-			isInput && !hasLeadingContent && !hasTrailingContent && "px-3",
-			isInput && hasLeadingContent && !hasTrailingContent && "pl-1 pr-3",
-			isInput && !hasLeadingContent && hasTrailingContent && "pl-3 pr-2",
-			isInput && hasLeadingContent && hasTrailingContent && "pl-1 pr-2",
+		// No icons:      px-4 | Input: px-3
+		// Leading only:  pl-2 pr-4 | Input: pl-1 pr-3
+		// Trailing only: pl-4 pr-2 | Input: pl-3 pr-2
+		// Both:          px-2 | Input: pl-1 pr-2
+		const paddingClass = React.useMemo(
+			() =>
+				cn(
+					!isInput && !hasLeadingContent && !hasTrailingContent && "px-4",
+					!isInput && hasLeadingContent && !hasTrailingContent && "pl-2 pr-4",
+					!isInput && !hasLeadingContent && hasTrailingContent && "pl-4 pr-2",
+					!isInput && hasLeadingContent && hasTrailingContent && "px-2",
+					isInput && !hasLeadingContent && !hasTrailingContent && "px-3",
+					isInput && hasLeadingContent && !hasTrailingContent && "pl-1 pr-3",
+					isInput && !hasLeadingContent && hasTrailingContent && "pl-3 pr-2",
+					isInput && hasLeadingContent && hasTrailingContent && "pl-1 pr-2",
+				),
+			[isInput, hasLeadingContent, hasTrailingContent],
 		);
 
-
-
-		const stateClass = cn(
-			// Selected state: FlatSelectedContainerColor / SelectedContainerColor
-			(isFilter || isInput) &&
-				selected &&
-				"bg-m3-secondary-container text-m3-on-secondary-container border-none before:bg-m3-on-secondary-container",
-
-			// Elevated (not selected): ElevatedContainerColor = SurfaceContainerLow
-			// Source: AssistChipTokens / SuggestionChipTokens / FilterChipTokens
-			elevated &&
-				!selected &&
-				"bg-m3-surface-container-low border-none elevation-1",
-
-			// Elevated + selected filter chip still gets shadow
-			elevated && isFilter && selected && "elevation-1",
-
-			// Disabled state overrides
-			// Source: DisabledLabelTextOpacity = 0.38, FlatDisabledOutlineOpacity = 0.12
-			disabled && "opacity-[0.38] pointer-events-none cursor-not-allowed",
-			disabled && !selected && "border-m3-outline-variant/[.12]",
-			disabled &&
-				selected &&
-				"bg-m3-on-surface/[.12] text-m3-on-surface border-none",
+		// Selected / elevated / disabled state overrides.
+		// Source: MD3 tokens — DisabledLabelTextOpacity=0.38, FlatDisabledOutlineOpacity=0.12
+		const stateClass = React.useMemo(
+			() =>
+				cn(
+					(isFilter || isInput) &&
+						selected &&
+						"bg-m3-secondary-container text-m3-on-secondary-container border-none before:bg-m3-on-secondary-container",
+					elevated &&
+						!selected &&
+						"bg-m3-surface-container-low border-none elevation-1",
+					elevated && isFilter && selected && "elevation-1",
+					disabled && "opacity-[0.38] pointer-events-none cursor-not-allowed",
+					disabled && !selected && "border-m3-outline-variant/[.12]",
+					disabled &&
+						selected &&
+						"bg-m3-on-surface/[.12] text-m3-on-surface border-none",
+				),
+			[isFilter, isInput, selected, elevated, disabled],
 		);
 
-
-		// Assist: IconColor = Primary (AssistChipTokens.IconColor)
-		// Suggestion: LeadingIconColor = Primary
-		// Filter unselected: UnselectedLeadingIconColor = Primary
-		// Filter selected: SelectedLeadingIconColor = OnSecondaryContainer (via text-inherit)
-		// Input unselected: UnselectedLeadingIconColor = OnSurfaceVariant
-		// Input selected: SelectedLeadingIconColor = Primary
-
-		const leadingIconColorClass = cn(
-			(variant === "assist" || variant === "suggestion") && "text-m3-primary",
-			isFilter && !selected && "text-m3-primary",
-			isFilter && selected && "text-m3-on-secondary-container",
-			isInput && !selected && "text-m3-on-surface-variant",
-			isInput && selected && "text-m3-primary",
+		// Leading icon color tokens:
+		// assist/suggestion → Primary | filter unselected → Primary
+		// filter selected → OnSecondaryContainer | input unselected → OnSurfaceVariant | input selected → Primary
+		const leadingIconColorClass = React.useMemo(
+			() =>
+				cn(
+					(variant === "assist" || variant === "suggestion") &&
+						"text-m3-primary",
+					isFilter && !selected && "text-m3-primary",
+					isFilter && selected && "text-m3-on-secondary-container",
+					isInput && !selected && "text-m3-on-surface-variant",
+					isInput && selected && "text-m3-primary",
+				),
+			[variant, isFilter, isInput, selected],
 		);
-
 
 		const isCompound = !!onRemove;
 		const Root = (isCompound ? "div" : "button") as React.ElementType;
@@ -518,4 +519,27 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 
 ChipImpl.displayName = "Chip";
 
+/**
+ * MD3 Expressive Chip — 4-variant interactive tag component.
+ *
+ * @remarks
+ * - `filter` chips accept `selected` and render an animated checkmark.
+ * - `input` chips accept `onRemove` to render a compound close button.
+ * - `elevated` is supported on `assist`, `filter` (unselected), and `suggestion`.
+ * - Fully accessible: `role="checkbox"` for filter, `role="group"` for compound chips.
+ *
+ * @example
+ * ```tsx
+ * // Assist chip
+ * <Chip variant="assist" label="Share" onClick={share} />
+ *
+ * // Filter chip
+ * <Chip variant="filter" label="Unread" selected={showUnread} onClick={toggle} />
+ *
+ * // Input chip with remove
+ * <Chip variant="input" label="React" onRemove={() => removeTag("React")} />
+ * ```
+ *
+ * @see https://m3.material.io/components/chips/overview
+ */
 export const Chip = React.memo(ChipImpl);

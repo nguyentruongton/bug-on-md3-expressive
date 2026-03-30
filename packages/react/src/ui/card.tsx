@@ -1,14 +1,18 @@
 /**
- * Card – Material Design 3 Expressive
+ * @file card.tsx
+ *
+ * MD3 Expressive Card component.
  *
  * Two modes (mirrors Android Card.kt architecture):
- *   - Static  → plain <div>, no interaction
- *   - Interactive → <motion.button> or <motion.a>, with Ripple + elevation animation
+ * - **Static**      → plain `<div>`, no interaction
+ * - **Interactive** → `<motion.button>` or `<motion.a>`, with Ripple + elevation animation
  *
  * Elevation levels (from ElevatedCardTokens / FilledCardTokens / OutlinedCardTokens / Elevation.kt):
- *   Level 0 = "none"
- *   Level 1 = box-shadow ~1dp
- *   Level 2 = box-shadow ~2dp
+ * - Level 0 = "none"
+ * - Level 1 = box-shadow ~1dp
+ * - Level 2 = box-shadow ~2dp
+ *
+ * @see https://m3.material.io/components/cards/overview
  */
 
 import { cva, type VariantProps } from "class-variance-authority";
@@ -16,7 +20,7 @@ import type { HTMLMotionProps } from "motion/react";
 import { domMax, LazyMotion, m } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
-import { Ripple, useRipple } from "./ripple";
+import { Ripple, useRippleState } from "./ripple";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MD3 Elevation Shadows (from packages/tailwind/src/index.ts)
@@ -145,7 +149,7 @@ const CardImpl = React.forwardRef<HTMLElement, CardProps>(
 		const safeVariant = variant as CardVariant;
 		const isInteractive = !!onClick || !!href || interactive;
 		const elevationProps = useCardElevation(safeVariant, disabled);
-		const { ripples, onPointerDown, removeRipple } = useRipple();
+		const { ripples, onPointerDown, removeRipple } = useRippleState();
 
 		const baseClass = cn(
 			cardVariants({ variant }),

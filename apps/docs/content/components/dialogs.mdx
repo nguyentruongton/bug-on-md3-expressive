@@ -1,0 +1,127 @@
+---
+title: Dialogs
+description: Dialogs provide important prompts in a user flow. They inform users about critical information, require decisions, or involve multiple tasks.
+---
+
+Dialogs focus user attention exclusively on one task or a piece of information via a modal overlay. Expressive dialogs use spring-based motion for entrance/exit animations and clear typography hierarchy.
+
+<ComponentPreview name="dialog-basic" />
+
+## Icon Dialog
+
+Adding a `DialogIcon` provides visual emphasis on the nature of the prompt — for example, warnings, information, or destructive actions.
+
+<ComponentPreview name="dialog-icon" />
+
+## Scrollable Content
+
+Use `DialogBody` to create a scrollable region inside the dialog. The title and footer remain sticky while the body scrolls independently.
+
+<ComponentPreview name="dialog-scrollable" />
+
+## Full-screen Dialog
+
+Full-screen dialogs cover the entire viewport. They are ideal for complex tasks like forms or detailed record editing on mobile-first layouts.
+
+<ComponentPreview name="dialog-fullscreen" />
+
+## Usage
+
+```tsx
+import {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogBody,
+  DialogIcon,
+  DialogFullScreenContent,
+} from "@bug-on/md3-react";
+
+// Basic alert dialog
+function AlertDialog() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button colorStyle="filled">Open</Button>
+      </DialogTrigger>
+      <DialogPortal open={open}>
+        <DialogOverlay />
+        <DialogContent>
+          <DialogIcon>
+            <AlertTriangle className="w-6 h-6" />
+          </DialogIcon>
+          <DialogTitle>Discard draft?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone.
+          </DialogDescription>
+          <DialogFooter>
+            <Button colorStyle="text" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button colorStyle="text" onClick={() => setOpen(false)}>Discard</Button>
+          </DialogFooter>
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
+  );
+}
+```
+
+## Accessibility
+
+- `DialogTitle` is required and maps to `aria-labelledby` on the dialog element.
+- `DialogDescription` maps to `aria-describedby`. If the dialog has no description, pass `aria-describedby={undefined}` to `DialogContent`.
+- When open, focus is trapped inside the dialog and restored to the trigger on close.
+- The `DialogOverlay` dismisses the dialog on click (set `onOpenChange` accordingly).
+- Pressing `Escape` closes the dialog — this is handled automatically.
+- Full-screen dialogs set `role="dialog"` and include a close button accessible via keyboard.
+
+## API Reference
+
+### Dialog
+
+Root context provider. Wraps all dialog sub-components.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | — | Controls open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Callback when open state changes. |
+
+### DialogPortal
+
+Renders dialog into a portal. Must wrap `DialogOverlay` and `DialogContent`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | — | Must mirror `Dialog`'s `open` prop to drive animations. |
+
+### DialogContent
+
+The modal container. Includes spring animation.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `aria-describedby` | `string \| undefined` | auto | Set to `undefined` if no `DialogDescription` is used. |
+| `className` | `string` | — | Extra classes for the container. |
+
+### DialogFullScreenContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | **Required.** Header title text. |
+| `actionLabel` | `string` | — | Label for the primary action button. |
+| `onAction` | `() => void` | — | Callback for the primary action. |
+| `showDivider` | `boolean` | `false` | Shows a divider below the header. |
+
+### DialogBody
+
+Scrollable region inside `DialogContent`. Use as child of `DialogDescription` with `asChild`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `string` | — | Override `max-h` to control scroll height (e.g. `max-h-75`). |

@@ -194,7 +194,9 @@ describe("Chip Component", () => {
 
 		it("elevated=false → no surface-container-low class", () => {
 			const { container } = renderChip({ elevated: false });
-			expect(container.firstChild).not.toHaveClass("bg-m3-surface-container-low");
+			expect(container.firstChild).not.toHaveClass(
+				"bg-m3-surface-container-low",
+			);
 		});
 	});
 

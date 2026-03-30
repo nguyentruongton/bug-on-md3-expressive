@@ -1,0 +1,52 @@
+---
+title: "Typography"
+description: "MD3 Expressive provides 30 text styles powered by Google Sans Flex."
+---
+
+MD3 Expressive provides 30 text styles — 15 baseline and 15 emphasized — powered by **Google Sans Flex**, a variable font with the `ROND` roundness axis set to maximum by default.
+
+## Baseline & Emphasized Styles
+
+<ComponentPreview name="typography-showcase" />
+
+## ROND Playground
+
+<ComponentPreview name="typography-rond-playground" />
+
+## Code Example
+
+```tsx
+import { TypographyProvider, useTypography } from '@bug-on/md3-react';
+
+// 1. Wrap your app
+<TypographyProvider>
+  <App />
+</TypographyProvider>
+
+// 2. Consume in a component
+function MyComponent() {
+  const typography = useTypography();
+  return <p style={typography.bodyLarge}>Hello world</p>;
+}
+
+// 3. Custom font + variable axes
+<TypographyProvider
+  fontFamily="'Inter', sans-serif"
+  fontVariationAxes={{ ROND: 50 }}
+>
+  <App />
+</TypographyProvider>
+
+// 4. Override a single style via copy()
+const boldBody = typography.copy({ bodyLarge: { fontWeight: 700 } });
+```
+
+## API Reference
+
+### TypographyProvider
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `fontFamily` | `string` | `'Google Sans Flex', system-ui, sans-serif` | The font family string. |
+| `fontVariationAxes` | `Record<string, number \| string>` | `{ ROND: 100 }` | Settings for variable font axes like roundness. |
+| `defaultValues` | `TypographyTokens` | MD3 Defaults | Optional overrides for typography scales. |

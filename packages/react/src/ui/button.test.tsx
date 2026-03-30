@@ -249,9 +249,7 @@ describe("Button Component", () => {
 			);
 			// aria-label should be undefined (not set) for non-string children
 			// unless explicitly provided
-			expect(screen.getByRole("button")).not.toHaveAttribute(
-				"aria-label",
-			);
+			expect(screen.getByRole("button")).not.toHaveAttribute("aria-label");
 		});
 	});
 });

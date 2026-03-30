@@ -1,0 +1,86 @@
+/**
+ * @file shared/constants.ts
+ *
+ * Shared animation constants for MD3 Expressive UI components.
+ * Centralises spring transition configs and motion variant objects to avoid
+ * duplication across button, icon-button, FAB, and other interactive components.
+ *
+ * @see https://m3.material.io/foundations/animation/overview
+ */
+
+import type { Target, TargetAndTransition, Transition } from "motion/react";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Spring Transitions
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fast critically-damped spring — used for border-radius morphing.
+ *
+ * - Duration: 200ms
+ * - Bounce: 0 (no overshoot → prevents negative radius jitter)
+ *
+ * @example
+ * ```tsx
+ * <m.button transition={{ borderRadius: SPRING_TRANSITION_FAST }}>...</m.button>
+ * ```
+ */
+export const SPRING_TRANSITION_FAST: Transition = {
+	type: "spring",
+	bounce: 0,
+	duration: 0.2,
+} as const;
+
+/**
+ * Standard critically-damped spring — used for icon/content scale animations.
+ *
+ * - Duration: 300ms
+ * - Bounce: 0 (no overshoot)
+ *
+ * @example
+ * ```tsx
+ * <m.span transition={SPRING_TRANSITION}>...</m.span>
+ * ```
+ */
+export const SPRING_TRANSITION: Transition = {
+	type: "spring",
+	bounce: 0,
+	duration: 0.3,
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Icon Span Motion Variants
+// Used for icon/loading indicator swap animation inside FAB and IconButton.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Framer Motion variants for animating icon spans in/out.
+ *
+ * Scale from near-zero → 1 on enter; back to near-zero on exit.
+ * The near-zero value (0.01) avoids the SMIL freeze bug on Chromium
+ * that occurs when an element starts at exactly `scale(0)`.
+ *
+ * @example
+ * ```tsx
+ * <AnimatePresence mode="wait">
+ *   {loading ? (
+ *     <m.span key="loading" {...ICON_SPAN_VARIANTS} transition={SPRING_TRANSITION}>
+ *       <LoadingIndicator />
+ *     </m.span>
+ *   ) : (
+ *     <m.span key="icon" {...ICON_SPAN_VARIANTS} transition={SPRING_TRANSITION}>
+ *       {icon}
+ *     </m.span>
+ *   )}
+ * </AnimatePresence>
+ * ```
+ */
+export const ICON_SPAN_VARIANTS: {
+	initial: Target;
+	animate: TargetAndTransition;
+	exit: TargetAndTransition;
+} = {
+	initial: { scale: 0.01 },
+	animate: { scale: 1 },
+	exit: { scale: 0.01 },
+} as const;

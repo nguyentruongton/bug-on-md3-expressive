@@ -1,172 +1,175 @@
-"use client";
-
-import { Button, Card, TableOfContents } from "@bug-on/md3-react";
-import { ArrowUp, ChevronRight, Maximize } from "lucide-react";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import matter from "gray-matter";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { notFound } from "next/navigation";
+import { getMDXComponents } from "@/components/mdx/mdx-components";
+import { TocRegistrar } from "@/components/mdx/toc-registrar";
+import type { Metadata } from "next";
 
-export default function ComponentPage() {
-	const params = useParams();
-	const slug = params.slug as string;
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
 
-	// Format slug back to title (e.g., "navigation-bar" -> "Navigation Bar")
-	const title = slug
-		.split("-")
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-		.join(" ");
+const CONTENT_DIR = path.join(process.cwd(), "content", "components");
 
-	const tocItems = [
-		{ id: "variants", label: `${title} Variants` },
-		{ id: "motion", label: "Expressive Motion" },
-	];
+function getMDXFilePath(slug: string): string {
+	return path.join(CONTENT_DIR, `${slug}.mdx`);
+}
+
+function getMDXContent(
+	slug: string,
+): { content: string; data: Record<string, string> } | null {
+	const filePath = getMDXFilePath(slug);
+	try {
+		const raw = fs.readFileSync(filePath, "utf-8");
+		const { content, data } = matter(raw);
+		return { content, data };
+	} catch {
+		return null;
+	}
+}
+
+/** Extract headings (## and ###) for the TableOfContents component */
+function extractHeadings(content: string): { id: string; label: string }[] {
+	const lines = content.split("\n");
+	const headings: { id: string; label: string }[] = [];
+
+	for (const line of lines) {
+		const h2Match = /^##\s+(.+)$/.exec(line);
+		const h3Match = /^###\s+(.+)$/.exec(line);
+		const match = h2Match ?? h3Match;
+		if (match) {
+			const label = match[1].trim();
+			// Replicate rehype-slug ID generation (lowercase, spaces→hyphens, remove specials)
+			const id = label
+				.toLowerCase()
+				.replace(/[^a-z0-9\s-]/g, "")
+				.replace(/\s+/g, "-")
+				.replace(/-+/g, "-")
+				.trim();
+			headings.push({ id, label });
+		}
+	}
+	return headings;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Static Params
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function generateStaticParams() {
+	try {
+		const files = fs.readdirSync(CONTENT_DIR);
+		return files
+			.filter((f) => f.endsWith(".mdx"))
+			.map((f) => ({ slug: f.replace(/\.mdx$/, "") }));
+	} catch {
+		return [];
+	}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Metadata
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const { slug } = await params;
+	const mdx = getMDXContent(slug);
+	if (!mdx) return {};
+
+	const title = (mdx.data.title as string | undefined) ?? slug;
+	const description = (mdx.data.description as string | undefined) ?? "";
+
+	return {
+		title: `${title} – Bug Ổn MD3 Expressive`,
+		description,
+	};
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Page
+// ─────────────────────────────────────────────────────────────────────────────
+
+export default async function ComponentPage({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}) {
+	const { slug } = await params;
+	const mdx = getMDXContent(slug);
+
+	// Falls through to hardcode generic page if no MDX file found
+	if (!mdx) notFound();
+
+	const { content, data } = mdx;
+	const title = (data.title as string | undefined) ?? slug;
+	const tocItems = extractHeadings(content);
+	const components = getMDXComponents();
 
 	return (
-		<div className="w-full max-w-7xl mx-auto px-4 md:px-8 py-8 lg:py-12 flex flex-col xl:flex-row gap-12">
-			<div className="flex-1 min-w-0">
+		<>
+			{/* Register TOC items with the global context (client-side) */}
+			<TocRegistrar items={tocItems} />
+
+			<div className="w-full max-w-4xl mx-auto px-4 md:px-8 py-8 lg:py-12">
 				{/* Breadcrumbs */}
-				<nav className="flex items-center gap-2 mb-8">
+				<nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-8">
 					<Link
-						className="text-m3-primary font-medium text-sm hover:underline"
 						href="/components"
+						className="text-m3-primary font-medium text-sm hover:underline"
 					>
 						Components
 					</Link>
-					<ChevronRight className="w-4 h-4 text-m3-on-surface-variant" />
-					<span className="text-m3-on-surface text-sm font-bold">{title}</span>
+					<ChevronRight
+						className="w-4 h-4 text-m3-on-surface-variant"
+						aria-hidden="true"
+					/>
+					<span
+						className="text-m3-on-surface text-sm font-bold"
+						aria-current="page"
+					>
+						{title}
+					</span>
 				</nav>
 
-				{/* Content Section */}
-				<div className="mb-12">
-					<span className="text-m3-primary font-medium tracking-wide uppercase text-sm">
+				{/* Page title from frontmatter */}
+				<div className="mb-10">
+					<span className="text-m3-primary font-medium tracking-widest uppercase text-xs">
 						MATERIAL DESIGN 3
 					</span>
-					<h1 className="text-4xl sm:text-6xl font-normal tracking-tight mt-2 mb-6">
+					<h1 className="text-4xl sm:text-5xl font-normal tracking-tight mt-2 mb-4 text-m3-on-surface">
 						{title}
 					</h1>
-					<p className="text-lg sm:text-xl text-m3-on-surface-variant leading-relaxed">
-						{title} contain content and actions about a single subject.
-						Expressive {title.toLowerCase()} use motion, elevation, and depth to
-						communicate information hierarchy and interactivity.
-					</p>
+					{data.description && (
+						<p className="text-lg text-m3-on-surface-variant leading-relaxed max-w-2xl">
+							{data.description}
+						</p>
+					)}
 				</div>
 
-				{/* Card Types Section (Generic for now) */}
-				<section id="variants" className="mb-20 scroll-mt-24">
-					<h2 className="text-2xl font-medium text-m3-on-surface mb-8">
-						{title} Variants
-					</h2>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						<Card variant="elevated">
-							<div className="h-40 bg-m3-primary-container/30 rounded-m3-md mb-4 flex items-center justify-center text-m3-on-primary-container font-bold">
-								Elevated
-							</div>
-							<p className="text-m3-on-surface-variant text-sm mb-6">
-								Elevated {title.toLowerCase()} use shadows to show depth and
-								separation from the background.
-							</p>
-							<Button colorStyle="text" className="self-start mt-auto -ml-4">
-								VIEW MORE
-							</Button>
-						</Card>
-
-						<Card variant="filled">
-							<div className="h-40 bg-m3-secondary-container/30 rounded-m3-md mb-4 flex items-center justify-center text-m3-on-secondary-container font-bold">
-								Filled
-							</div>
-							<p className="text-m3-on-surface-variant text-sm mb-6">
-								Filled {title.toLowerCase()} provide a subtle contrast using
-								background fills instead of elevation.
-							</p>
-							<Button colorStyle="text" className="self-start mt-auto -ml-4">
-								VIEW MORE
-							</Button>
-						</Card>
-
-						<Card variant="outlined">
-							<div className="h-40 border-2 border-m3-outline/20 rounded-m3-md mb-4 flex items-center justify-center text-m3-on-surface font-bold">
-								Outlined
-							</div>
-							<p className="text-m3-on-surface-variant text-sm mb-6">
-								Outlined {title.toLowerCase()} focus on clean boundaries and
-								provide the lowest visual emphasis.
-							</p>
-							<Button colorStyle="text" className="self-start mt-auto -ml-4">
-								VIEW MORE
-							</Button>
-						</Card>
-					</div>
-				</section>
-
-				{/* Motion Section */}
-				<section
-					id="motion"
-					className="bg-m3-surface-container rounded-m3-xl p-6 md:p-8 mb-20 scroll-mt-24"
-				>
-					<div className="flex flex-col lg:flex-row gap-12">
-						<div className="flex-1">
-							<h2 className="text-2xl font-medium text-m3-on-surface mb-4">
-								Expressive Motion
-							</h2>
-							<p className="text-m3-on-surface-variant mb-6 leading-relaxed">
-								Motion in MD3 {title.toLowerCase()} isn&apos;t just decoration.
-								It communicates change of state and focus. When a user interacts
-								with an expressive {title.toLowerCase()}:
-							</p>
-							<ul className="space-y-6">
-								<li className="flex gap-4">
-									<ArrowUp className="w-6 h-6 text-m3-primary shrink-0" />
-									<div>
-										<p className="font-medium text-m3-on-surface text-sm mb-1">
-											Vertical Lift
-										</p>
-										<p className="text-sm text-m3-on-surface-variant">
-											Elevation increases to simulate interaction.
-										</p>
-									</div>
-								</li>
-								<li className="flex gap-4">
-									<Maximize className="w-6 h-6 text-m3-primary shrink-0" />
-									<div>
-										<p className="font-medium text-m3-on-surface text-sm mb-1">
-											Scale Transition
-										</p>
-										<p className="text-sm text-m3-on-surface-variant">
-											The element slightly expands on focus.
-										</p>
-									</div>
-								</li>
-							</ul>
-						</div>
-
-						<div className="flex-1 flex items-center justify-center">
-							<Card
-								variant="elevated"
-								className="w-full max-w-sm bg-m3-surface"
-							>
-								<div className="flex items-center gap-4 mb-6">
-									<div className="w-12 h-12 rounded-m3-full bg-m3-primary-container flex items-center justify-center text-m3-on-primary-container font-bold text-lg">
-										{title.charAt(0)}
-									</div>
-									<div>
-										<h4 className="font-medium text-m3-on-surface">
-											Interactive {title}
-										</h4>
-										<p className="text-xs text-m3-on-surface-variant">
-											Preview Element
-										</p>
-									</div>
-								</div>
-								<div className="space-y-3">
-									<div className="h-2.5 bg-m3-surface-variant rounded-m3-full w-full"></div>
-									<div className="h-2.5 bg-m3-surface-variant rounded-m3-full w-5/6"></div>
-								</div>
-							</Card>
-						</div>
-					</div>
-				</section>
+				{/* MDX Content */}
+				<div className="mdx-content">
+					<MDXRemote
+						source={content}
+						components={components}
+						options={{
+							mdxOptions: {
+								remarkPlugins: [remarkGfm],
+								rehypePlugins: [rehypeSlug],
+							},
+						}}
+					/>
+				</div>
 			</div>
-
-			<TableOfContents items={tocItems} />
-		</div>
+		</>
 	);
 }

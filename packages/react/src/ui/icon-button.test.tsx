@@ -405,11 +405,13 @@ describe("IconButton Component", () => {
 			const spinnerWrapper = container.querySelector(
 				"span.flex.items-center.justify-center.shrink-0",
 			);
-			
+
 			// Đối với lỗi SMIL freezing trên Chrome, Inline style không được phép có "opacity: 0"
 			// Nếu có thẻ style, đảm bảo không có giá trị này.
 			if (spinnerWrapper?.hasAttribute("style")) {
-				expect(spinnerWrapper.getAttribute("style")).not.toContain("opacity: 0");
+				expect(spinnerWrapper.getAttribute("style")).not.toContain(
+					"opacity: 0",
+				);
 			}
 			// Đảm bảo AnimatePresence render đúng 1 wrapper
 			expect(spinnerWrapper).not.toBeNull();

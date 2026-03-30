@@ -1,3 +1,17 @@
+/**
+ * @file button.tsx
+ *
+ * MD3 Expressive Button component.
+ *
+ * Spec: https://m3.material.io/components/buttons/overview
+ * Sizing (May 2025):
+ *   XS → h:32dp  | px: 12dp | icon: 18dp | gap: 8dp
+ *   SM → h:40dp  | px: 16dp | icon: 20dp | gap: 8dp
+ *   MD → h:56dp  | px: 24dp | icon: 24dp | gap: 8dp
+ *   LG → h:96dp  | px: 48dp | icon: 32dp | gap: 12dp
+ *   XL → h:136dp | px: 48dp | icon: 40dp | gap: 12dp
+ */
+
 import { cva } from "class-variance-authority";
 import type { HTMLMotionProps } from "motion/react";
 import { AnimatePresence, domMax, LazyMotion, m } from "motion/react";
@@ -5,16 +19,19 @@ import * as React from "react";
 import { cn } from "../lib/utils";
 import { LoadingIndicator } from "./loading-indicator";
 import { ProgressIndicator } from "./progress-indicator";
-import { Ripple, type RippleOrigin } from "./ripple";
+import { Ripple, useRippleState } from "./ripple";
+import { SPRING_TRANSITION, SPRING_TRANSITION_FAST } from "./shared/constants";
+import { TouchTarget } from "./shared/touch-target";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MD3 Expressive Button – Sizing Specs (May 2025)
-//   XS → h:32dp  | px: 12dp | icon: 18dp | gap: 8dp
-//   SM → h:40dp  | px: 16dp | icon: 20dp | gap: 8dp
-//   MD → h:56dp  | px: 24dp | icon: 24dp | gap: 8dp
-//   LG → h:96dp  | px: 48dp | icon: 32dp | gap: 12dp
-//   XL → h:136dp | px: 48dp | icon: 40dp | gap: 12dp
+// Design Tokens
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Per-size layout styles.
+ * Heights and paddings are taken directly from the MD3 Expressive spec (May 2025).
+ * @internal
+ */
 const SIZE_STYLES: Record<string, React.CSSProperties> = {
 	xs: {
 		height: "2rem",
@@ -48,6 +65,10 @@ const SIZE_STYLES: Record<string, React.CSSProperties> = {
 	},
 };
 
+/**
+ * Per-size label typography classes.
+ * @internal
+ */
 const SIZE_TEXT_CLASS: Record<string, string> = {
 	xs: "text-xs  font-medium tracking-wide",
 	sm: "text-sm  font-medium tracking-wide",
@@ -56,7 +77,11 @@ const SIZE_TEXT_CLASS: Record<string, string> = {
 	xl: "text-xl  font-medium tracking-wide",
 };
 
-// MD3 icon sizes: XS=18dp, SM=20dp, MD=24dp, LG=32dp, XL=40dp
+/**
+ * Per-size icon container Tailwind classes.
+ * MD3 icon sizes: XS=18dp, SM=20dp, MD=24dp, LG=32dp, XL=40dp.
+ * @internal
+ */
 const SIZE_ICON_CLASS: Record<string, string> = {
 	xs: "size-[1.125rem]",
 	sm: "size-5",
@@ -66,7 +91,7 @@ const SIZE_ICON_CLASS: Record<string, string> = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MD3 Expressive Morphing – border-radius (px) per shape × size
+// Shape Morphing — Border Radius Maps
 //
 // IMPORTANT: Do NOT use 9999 for the "pill" default radius.
 // CSS clips any border-radius > height/2 identically, so animating from
@@ -76,8 +101,16 @@ const SIZE_ICON_CLASS: Record<string, string> = {
 //
 // Size heights: xs=32dp, sm=40dp, md=56dp, lg=96dp, xl=136dp
 // ─────────────────────────────────────────────────────────────────────────────
+
+/** Per-size border radius values for a given shape state. */
 type MorphRadius = { default: number; pressed: number };
 
+/**
+ * Border-radius token map for the "round" (pill) shape variant.
+ * Values equal `height / 2` for each size to ensure the pill stays perceptually
+ * smooth during spring animation (no dead zone artefact).
+ * @internal
+ */
 const ROUND_RADIUS: Record<string, MorphRadius> = {
 	xs: { default: 16, pressed: 8 },
 	sm: { default: 20, pressed: 10 },
@@ -86,6 +119,11 @@ const ROUND_RADIUS: Record<string, MorphRadius> = {
 	xl: { default: 68, pressed: 40 },
 };
 
+/**
+ * Border-radius token map for the "square" (rounded-square) shape variant.
+ * Pressed values compress inward following MD3 Expressive morphing spec.
+ * @internal
+ */
 const SQUARE_RADIUS: Record<string, MorphRadius> = {
 	xs: { default: 4, pressed: 2 },
 	sm: { default: 8, pressed: 4 },
@@ -95,8 +133,9 @@ const SQUARE_RADIUS: Record<string, MorphRadius> = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Color Variants
+// Color Variants (CVA)
 // ─────────────────────────────────────────────────────────────────────────────
+
 const buttonColorVariants = cva(
 	[
 		"relative w-fit shrink-0 inline-flex flex-row items-center justify-center",
@@ -150,60 +189,83 @@ const buttonColorVariants = cva(
 // Use HTMLMotionProps<"button"> as the base to avoid onDrag / event handler
 // conflicts between native React and Framer Motion's extended prop types.
 // ─────────────────────────────────────────────────────────────────────────────
+
 type MotionButtonProps = Omit<HTMLMotionProps<"button">, "children" | "color">;
 
 /**
- * Thuộc tính cơ bản của nút theo chuẩn thiết kế Material Design 3 (MD3) Expressive.
+ * Base props shared between the standard and toggle button variants.
+ *
+ * @see {@link ButtonProps} for the complete discriminated union type.
+ * @see https://m3.material.io/components/buttons/overview
  */
 export interface BaseButtonProps extends MotionButtonProps {
 	/**
-	 * Biến thể màu sắc của nút theo MD3.
+	 * Visual style variant following MD3 color roles.
 	 * @default "filled"
 	 */
 	colorStyle?: "elevated" | "filled" | "tonal" | "outlined" | "text";
 	/**
-	 * Biến thể màu sắc khi nút được chọn (chỉ áp dụng cho nút chuyển đổi trạng thái - toggle).
+	 * Color style applied when the toggle button is in the *selected* state.
+	 * Only meaningful when `variant="toggle"`.
+	 * Falls back to `"filled"` when not specified.
 	 */
 	selectedColorStyle?: "elevated" | "filled" | "tonal" | "outlined" | "text";
 	/**
-	 * Kích thước của nút, hỗ trợ từ XS đến XL.
+	 * Button size following MD3 Expressive size scale.
 	 * @default "sm"
 	 */
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
 	/**
-	 * Định dạng viền của nút: hình viên thuốc (round) hoặc hình vuông có bo góc (square).
+	 * Container shape — controls border-radius morphing.
+	 * - `round`: pill shape (CornerFull), morphs to rounded-square when toggled.
+	 * - `square`: rounded-square, morphs to pill when toggled.
 	 * @default "round"
 	 */
 	shape?: "round" | "square";
 	/**
-	 * Biểu tượng bên trong nút. Kích thước tự động được căn chỉnh theo `size` của nút dựa trên thông số thiết kế MD3.
+	 * Optional leading or trailing icon node.
+	 * Size is automatically scaled to match the button's `size` prop.
 	 */
 	icon?: React.ReactNode;
 	/**
-	 * Vị trí xuất hiện của biểu tượng so với nội dung chữ.
+	 * Position of the icon relative to the label text.
 	 * @default "leading"
 	 */
 	iconPosition?: "leading" | "trailing";
 	/**
-	 * Nếu `true`, nút sẽ chuyển sang trạng thái chờ hiển thị vòng quay tải và bị vô hiệu hóa tương tác.
+	 * When `true`, replaces the icon with an animated loading indicator
+	 * and prevents interaction.
 	 * @default false
 	 */
 	loading?: boolean;
 	/**
-	 * Phong cách hiển thị của vòng quay tải khi ở trạng thái chờ:
-	 * - `loading-indicator`: Hình khối thay đổi (morphing) đồng bộ với MD3 Expressive.
-	 * - `circular`: Vòng quay tròn cổ điển (classic spinner).
+	 * Controls which loading spinner is shown while `loading={true}`.
+	 * - `loading-indicator`: MD3 Expressive morphing shape (default).
+	 * - `circular`: Classic circular spinner.
 	 * @default "loading-indicator"
 	 */
 	loadingVariant?: "loading-indicator" | "circular";
-	/**
-	 * Nội dung con của nút (chủ yếu được hiển thị dưới dạng nhãn chữ).
-	 */
+	/** Button label — any React content, typically a string. */
 	children: React.ReactNode;
 }
 
 /**
- * Thuộc tính hoàn chỉnh của nút, bao gồm cấu hình là nút thông thường hay là nút trạng thái (toggle) yêu cầu thêm thuộc tính `selected`.
+ * Complete `Button` props — discriminated union that enforces
+ * `selected` is only valid for `variant="toggle"`.
+ *
+ * @example
+ * ```tsx
+ * // Standard button
+ * <Button colorStyle="filled" size="md">Confirm</Button>
+ *
+ * // Toggle button (selected state required)
+ * <Button variant="toggle" selected={isActive} onClick={toggle}>Filter</Button>
+ *
+ * // With leading icon and loading state
+ * <Button icon={<CheckIcon />} loading={isSubmitting}>Save</Button>
+ * ```
+ *
+ * @see https://m3.material.io/components/buttons/overview
  */
 export type ButtonProps = BaseButtonProps &
 	(
@@ -212,8 +274,14 @@ export type ButtonProps = BaseButtonProps &
 	);
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Component
+// Helpers
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Returns the icon pixel-size for a given button size.
+ * MD3 icon sizes: XS=18, SM=20, MD=24, LG=32, XL=40.
+ * @internal
+ */
 const getSizeIconPx = (size: string): number => {
 	switch (size) {
 		case "xs":
@@ -230,6 +298,10 @@ const getSizeIconPx = (size: string): number => {
 			return 20;
 	}
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Component
+// ─────────────────────────────────────────────────────────────────────────────
 
 const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
@@ -263,7 +335,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const effectiveColorStyle =
 			isToggle && isSelected ? selectedColorStyle || "filled" : colorStyle;
 
-		// ── Shape Morphing ───────────────────────────────────────────────────
+		// ── Shape Morphing ───────────────────────────────────────────────
 		// When toggle selected: shape flips (round → square, square → round)
 		const effectiveShape = isSelected
 			? shape === "round"
@@ -277,7 +349,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const { pressed: pressedRadius } =
 			pressedRadiusMap[size] ?? pressedRadiusMap.sm;
 
-		// ── Label: Sentence case ─────────────────────────────────────────────
+		// ── Label: Sentence case ─────────────────────────────────────────
 		const labelText = React.useMemo(
 			() =>
 				typeof children === "string"
@@ -291,7 +363,6 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			[size],
 		);
 
-		// Let TypeScript infer MotionStyle-compatible type (not React.CSSProperties)
 		const mergedStyle = React.useMemo(
 			() => ({
 				...SIZE_STYLES[size],
@@ -300,28 +371,13 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			[size, style],
 		);
 
-		// ── A11y: 48dp min touch target for XS / SM via invisible ::after span ─
+		// ── A11y: 48dp min touch target for XS / SM ──────────────────────
 		const needsTouchTarget = size === "xs" || size === "sm";
 
-		// ── Ripple state ─────────────────────────────────────────────────────
-		const [ripples, setRipples] = React.useState<RippleOrigin[]>([]);
-
-		const handlePointerDown = React.useCallback(
-			(e: React.PointerEvent<HTMLButtonElement>) => {
-				if (loading) return; // Không trigger ripple khi đang loading
-				const rect = e.currentTarget.getBoundingClientRect();
-				const x = e.clientX - rect.left;
-				const y = e.clientY - rect.top;
-				// Ripple must entirely fill button: diagonal = max size needed
-				const size = Math.hypot(rect.width, rect.height) * 2;
-				setRipples((prev) => [...prev, { id: Date.now(), x, y, size }]);
-			},
-			[loading],
-		);
-
-		const removeRipple = React.useCallback((id: number) => {
-			setRipples((prev) => prev.filter((r) => r.id !== id));
-		}, []);
+		// ── Ripple ───────────────────────────────────────────────────────
+		const { ripples, onPointerDown, removeRipple } = useRippleState({
+			disabled: loading,
+		});
 
 		const handleClick = React.useCallback(
 			(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -361,7 +417,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					aria-busy={loading ? true : undefined}
 					aria-disabled={loading ? true : restProps.disabled}
 					onClick={handleClick}
-					onPointerDown={handlePointerDown}
+					onPointerDown={onPointerDown}
 					onKeyDown={handleKeyDown}
 					style={mergedStyle}
 					// ── Expressive Morphing ──────────────────────────────────
@@ -377,11 +433,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					animate={{ borderRadius: animateRadius }}
 					whileTap={{ borderRadius: pressedRadius }}
 					transition={{
-						borderRadius: {
-							type: "spring",
-							bounce: 0,
-							duration: 0.2,
-						},
+						borderRadius: SPRING_TRANSITION_FAST,
 					}}
 					className={cn(
 						buttonColorVariants({ colorStyle: effectiveColorStyle }),
@@ -395,12 +447,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					{...restProps}
 				>
 					{/* Invisible touch-target expander (min 48×48dp) for small buttons */}
-					{needsTouchTarget && (
-						<span
-							aria-hidden="true"
-							className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 min-w-12 min-h-12 cursor-pointer pointer-events-none"
-						/>
-					)}
+					{needsTouchTarget && <TouchTarget />}
 
 					{/* ── MD3 Expressive Ripple layer ───────────────────────── */}
 					<Ripple ripples={ripples} onRippleDone={removeRipple} />
@@ -411,11 +458,10 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 								initial={{ width: 0, opacity: 0, scale: 0.5 }}
 								animate={{ width: "auto", opacity: 1, scale: 1 }}
 								exit={{ width: 0, opacity: 0, scale: 0.5 }}
-								transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+								transition={SPRING_TRANSITION}
 								aria-hidden={loading ? undefined : "true"}
 								className={cn(
 									"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full overflow-hidden",
-									// Khi loading, nếu không có iconClass nào, ta vẫn giữ size box bằng cách lấy iconClass tương ứng với size Button.
 									iconClass,
 								)}
 							>
@@ -445,7 +491,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					<m.span
 						layout="size"
 						className="inline-flex items-center gap-[inherit]"
-						transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+						transition={SPRING_TRANSITION}
 					>
 						{labelText}
 					</m.span>
@@ -456,7 +502,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 								initial={{ width: 0, opacity: 0, scale: 0.5 }}
 								animate={{ width: "auto", opacity: 1, scale: 1 }}
 								exit={{ width: 0, opacity: 0, scale: 0.5 }}
-								transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+								transition={SPRING_TRANSITION}
 								aria-hidden="true"
 								className={cn(
 									"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full overflow-hidden",
@@ -476,21 +522,32 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 ButtonComponent.displayName = "Button";
 
 /**
- * Component Nút (Button) theo chuẩn thiết kế Material Design 3 (MD3) Expressive.
- * Tích hợp sẵn các hiệu ứng gợn sóng (ripple wave), chuyển hóa hình dạng khi tương tác (morphing shape) và các trạng thái tải.
+ * MD3 Expressive Button component.
+ *
+ * Supports all five MD3 color styles, five sizes, shape morphing on toggle,
+ * leading/trailing icons, and an animated loading state.
+ *
+ * @remarks
+ * - `variant="toggle"` requires `selected: boolean` — enforced by the type system.
+ * - When `loading={true}`, the button is visually dimmed, pointer events are
+ *   blocked, and `aria-busy` is set for screen readers.
+ * - Shape morphs smoothly between pill ↔ rounded-square when toggle state changes,
+ *   using a critically-damped spring (no overshoot artefacts).
  *
  * @example
  * ```tsx
- * // Nút bấm thông thường
- * <Button colorStyle="filled" size="md">Nhấn vào đây</Button>
+ * // Standard filled button
+ * <Button colorStyle="filled" size="md">Confirm</Button>
  *
- * // Nút bấm có biểu tượng và đang chờ xử lý
- * <Button icon={<CheckIcon />} loading={isSubmitting}>Xác nhận</Button>
+ * // Button with icon
+ * <Button icon={<CheckIcon />} loading={isSubmitting}>Save</Button>
  *
- * // Nút chuyển đổi trạng thái (toggle/segmented)
- * <Button variant="toggle" selected={isToggled} onClick={() => setToggled(!isToggled)}>
- *   Bật / Tắt
+ * // Toggle button
+ * <Button variant="toggle" selected={isActive} onClick={toggle}>
+ *   Filter
  * </Button>
  * ```
+ *
+ * @see https://m3.material.io/components/buttons/overview
  */
 export const Button = React.memo(ButtonComponent);

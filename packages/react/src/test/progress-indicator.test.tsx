@@ -7,20 +7,14 @@ describe("ProgressIndicator", () => {
 	describe("Linear - Flat", () => {
 		it("renders with role='progressbar'", () => {
 			render(
-				<ProgressIndicator
-					variant="linear"
-					aria-label="Uploading file"
-				/>,
+				<ProgressIndicator variant="linear" aria-label="Uploading file" />,
 			);
 			expect(screen.getByRole("progressbar")).toBeInTheDocument();
 		});
 
 		it("applies required aria-label", () => {
 			render(
-				<ProgressIndicator
-					variant="linear"
-					aria-label="Uploading file"
-				/>,
+				<ProgressIndicator variant="linear" aria-label="Uploading file" />,
 			);
 			expect(screen.getByRole("progressbar")).toHaveAttribute(
 				"aria-label",
@@ -43,12 +37,7 @@ describe("ProgressIndicator", () => {
 		});
 
 		it("does not show aria-valuenow for indeterminate state", () => {
-			render(
-				<ProgressIndicator
-					variant="linear"
-					aria-label="Loading"
-				/>,
-			);
+			render(<ProgressIndicator variant="linear" aria-label="Loading" />);
 			expect(screen.getByRole("progressbar")).not.toHaveAttribute(
 				"aria-valuenow",
 			);
@@ -70,11 +59,7 @@ describe("ProgressIndicator", () => {
 
 		it("shows stop indicator dot in determinate mode by default", () => {
 			const { container } = render(
-				<ProgressIndicator
-					variant="linear"
-					value={50}
-					aria-label="Loading"
-				/>,
+				<ProgressIndicator variant="linear" value={50} aria-label="Loading" />,
 			);
 			const dot = container.querySelector(".rounded-full[aria-hidden='true']");
 			expect(dot).toBeInTheDocument();
@@ -99,14 +84,9 @@ describe("ProgressIndicator", () => {
 
 		it("stop indicator is NOT shown for indeterminate state", () => {
 			const { container } = render(
-				<ProgressIndicator
-					variant="linear"
-					aria-label="Loading"
-				/>,
+				<ProgressIndicator variant="linear" aria-label="Loading" />,
 			);
-			const dot = container.querySelector(
-				".rounded-full[aria-hidden='true']",
-			);
+			const dot = container.querySelector(".rounded-full[aria-hidden='true']");
 			expect(dot).toBeNull();
 		});
 
@@ -122,7 +102,6 @@ describe("ProgressIndicator", () => {
 			expect(screen.getByRole("progressbar")).toBeInTheDocument();
 		});
 
-
 		it("hides stop indicator when showStopIndicator=false", () => {
 			const { container } = render(
 				<ProgressIndicator
@@ -132,9 +111,7 @@ describe("ProgressIndicator", () => {
 					aria-label="Loading"
 				/>,
 			);
-			const dot = container.querySelector(
-				".rounded-full[aria-hidden='true']",
-			);
+			const dot = container.querySelector(".rounded-full[aria-hidden='true']");
 			expect(dot).toBeNull();
 		});
 
@@ -146,19 +123,13 @@ describe("ProgressIndicator", () => {
 					className="test-class"
 				/>,
 			);
-			expect(screen.getByRole("progressbar").className).toContain(
-				"test-class",
-			);
+			expect(screen.getByRole("progressbar").className).toContain("test-class");
 		});
 
 		it("active indicator has minWidth (dot) when value is 0 — MD3 spec", () => {
 			// MD3 spec: "When progress first begins, the active indicator appears as a dot."
 			const { container } = render(
-				<ProgressIndicator
-					variant="linear"
-					value={0}
-					aria-label="Starting"
-				/>,
+				<ProgressIndicator variant="linear" value={0} aria-label="Starting" />,
 			);
 			// The animated div inside the track should have minWidth set (not zero)
 			// Track background is the first absolute div, active is the second absolute div.
@@ -229,9 +200,7 @@ describe("ProgressIndicator", () => {
 					aria-label="Loading wavy no stop"
 				/>,
 			);
-			const dot = container.querySelector(
-				".rounded-full[aria-hidden='true']",
-			);
+			const dot = container.querySelector(".rounded-full[aria-hidden='true']");
 			expect(dot).toBeNull();
 		});
 	});
@@ -240,20 +209,14 @@ describe("ProgressIndicator", () => {
 	describe("Circular", () => {
 		it("renders with role='progressbar'", () => {
 			render(
-				<ProgressIndicator
-					variant="circular"
-					aria-label="Loading circular"
-				/>,
+				<ProgressIndicator variant="circular" aria-label="Loading circular" />,
 			);
 			expect(screen.getByRole("progressbar")).toBeInTheDocument();
 		});
 
 		it("renders SVG with circle elements", () => {
 			const { container } = render(
-				<ProgressIndicator
-					variant="circular"
-					aria-label="Loading circular"
-				/>,
+				<ProgressIndicator variant="circular" aria-label="Loading circular" />,
 			);
 			const circles = container.querySelectorAll("circle");
 			expect(circles.length).toBeGreaterThanOrEqual(2);
@@ -275,11 +238,7 @@ describe("ProgressIndicator", () => {
 
 		it("applies custom size via inline style", () => {
 			render(
-				<ProgressIndicator
-					variant="circular"
-					size={64}
-					aria-label="Loading"
-				/>,
+				<ProgressIndicator variant="circular" size={64} aria-label="Loading" />,
 			);
 			const el = screen.getByRole("progressbar");
 			expect(el.style.width).toBe("64px");
@@ -287,12 +246,7 @@ describe("ProgressIndicator", () => {
 		});
 
 		it("does not show aria-valuenow for indeterminate", () => {
-			render(
-				<ProgressIndicator
-					variant="circular"
-					aria-label="Loading"
-				/>,
-			);
+			render(<ProgressIndicator variant="circular" aria-label="Loading" />);
 			expect(screen.getByRole("progressbar")).not.toHaveAttribute(
 				"aria-valuenow",
 			);
@@ -344,7 +298,9 @@ describe("ProgressIndicator", () => {
 					/>
 				</div>,
 			);
-			expect(container.querySelector("[role='progressbar']")).toBeInTheDocument();
+			expect(
+				container.querySelector("[role='progressbar']"),
+			).toBeInTheDocument();
 		});
 	});
 });

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-	Compass,
-	Home,
-	LayoutGrid,
-	Settings,
-} from "lucide-react";
+import { Compass, Home, LayoutGrid, Settings } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -75,7 +70,7 @@ export function NavigationRail() {
 	const { toggleDrawer, isDrawerOpen } = useLayout();
 
 	return (
-		<aside className="fixed bottom-4 left-4 right-4 lg:static lg:w-22 bg-m3-surface-container z-50 flex flex-row lg:flex-col items-center justify-around lg:justify-start py-3 lg:py-6 lg:gap-8 shrink-0 rounded-full lg:h-fit shadow-lg lg:shadow-none backdrop-blur-md lg:backdrop-blur-none border border-m3-outline-variant/20">
+		<aside className="fixed bottom-4 left-4 right-4 lg:static lg:w-22 bg-m3-surface z-50 flex flex-row lg:flex-col items-center justify-around lg:justify-start py-3 lg:py-6 lg:gap-8 shrink-0 rounded-full lg:h-fit shadow-lg lg:shadow-none backdrop-blur-md lg:backdrop-blur-none">
 			<NavItem icon={Home} label="Home" href="/" active={pathname === "/"} />
 			<NavItem
 				icon={Compass}

@@ -87,7 +87,7 @@ describe("Dialog", () => {
 
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
 
-		const closeBtn = screen.getByLabelText("Close dialog");
+		const closeBtn = screen.getByLabelText("Close");
 		await user.click(closeBtn);
 
 		expect(handleOpenChange).toHaveBeenCalledWith(false);
@@ -133,7 +133,7 @@ describe("Dialog", () => {
 				</DialogPortal>
 			</Dialog>,
 		);
-		expect(screen.queryByLabelText("Close dialog")).not.toBeInTheDocument();
+		expect(screen.queryByLabelText("Close")).not.toBeInTheDocument();
 	});
 
 	it("calls onOpenChange when closed via Escape", async () => {
@@ -181,7 +181,8 @@ describe("Dialog", () => {
 		);
 		const body = screen.getByTestId("body");
 		expect(body).toBeInTheDocument();
-		expect(body.className).toContain("overflow-y-auto");
+		// DialogBody is a flex container; ScrollArea inside handles overflow
+		expect(body.className).toContain("flex");
 	});
 
 	it("renders DialogFooter with end-aligned buttons", () => {

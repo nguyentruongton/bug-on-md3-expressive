@@ -39,22 +39,33 @@ export const CircularProgress = React.forwardRef<
 
 		const BASELINE_SIZE = 48;
 		const scaleFactor = size / BASELINE_SIZE;
-		const effectiveAmplitude = React.useMemo(() => amplitude ?? 1.6 * scaleFactor, [amplitude, scaleFactor]);
-		const effectiveWavelength = React.useMemo(() => wavelength ?? 15 * scaleFactor, [wavelength, scaleFactor]);
+		const effectiveAmplitude = React.useMemo(
+			() => amplitude ?? 1.6 * scaleFactor,
+			[amplitude, scaleFactor],
+		);
+		const effectiveWavelength = React.useMemo(
+			() => wavelength ?? 15 * scaleFactor,
+			[wavelength, scaleFactor],
+		);
 
-		const wavyActivePath = React.useMemo(() => 
-			isWavy
-				? generateWavyCircularPath(
-						center,
-						radius,
-						effectiveAmplitude,
-						effectiveWavelength,
-					)
-				: null
-		, [isWavy, center, radius, effectiveAmplitude, effectiveWavelength]);
+		const wavyActivePath = React.useMemo(
+			() =>
+				isWavy
+					? generateWavyCircularPath(
+							center,
+							radius,
+							effectiveAmplitude,
+							effectiveWavelength,
+						)
+					: null,
+			[isWavy, center, radius, effectiveAmplitude, effectiveWavelength],
+		);
 
 		const circumference = React.useMemo(() => 2 * Math.PI * radius, [radius]);
-		const gapForTrack = React.useMemo(() => (gapSize + trackHeight) / circumference, [gapSize, trackHeight, circumference]);
+		const gapForTrack = React.useMemo(
+			() => (gapSize + trackHeight) / circumference,
+			[gapSize, trackHeight, circumference],
+		);
 		const activeAngularFraction = isDeterminate ? clampedValue / 100 : 0;
 
 		const trackOffset = isDeterminate ? activeAngularFraction + gapForTrack : 0;

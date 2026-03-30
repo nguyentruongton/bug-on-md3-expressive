@@ -36,8 +36,8 @@ describe("LoadingIndicator Component", () => {
 	it("delays rendering of <animate> tags by 1 frame to prevent SMIL freezing", async () => {
 		const { container } = render(<LoadingIndicator aria-label="Loading" />);
 		const svg = container.querySelector("svg");
-		
-		// Ngay Frame 0 (lúc thẻ SVG vừa vẽ lên DOM), chưa được phép có <animate> 
+
+		// Ngay Frame 0 (lúc thẻ SVG vừa vẽ lên DOM), chưa được phép có <animate>
 		// để tránh đụng độ Chromium layout optimization (culling) gây tê liệt animation
 		expect(svg?.querySelector("animate")).toBeNull();
 		expect(svg?.querySelector("animateTransform")).toBeNull();
@@ -50,8 +50,12 @@ describe("LoadingIndicator Component", () => {
 		// Sang Frame 1, thẻ <animate> phải được inject vào trong DOM để khởi sinh đồng hồ SMIL
 		expect(svg?.querySelector("animate")).not.toBeNull();
 		expect(svg?.querySelector("animateTransform")).not.toBeNull();
-		expect(svg?.querySelector("animate")?.getAttribute("attributeName")).toBe("d");
-		expect(svg?.querySelector("animateTransform")?.getAttribute("attributeName")).toBe("transform");
+		expect(svg?.querySelector("animate")?.getAttribute("attributeName")).toBe(
+			"d",
+		);
+		expect(
+			svg?.querySelector("animateTransform")?.getAttribute("attributeName"),
+		).toBe("transform");
 	});
 
 	it("supports custom size and color", () => {
@@ -62,7 +66,7 @@ describe("LoadingIndicator Component", () => {
 		const svg = container.querySelector("svg");
 		expect(svg).toHaveAttribute("width", "48");
 		expect(svg).toHaveAttribute("height", "48");
-		
+
 		const styleStr = wrapper.getAttribute("style") || "";
 		expect(styleStr).toMatch(/color:\s*(red|rgb\(255,\s*0,\s*0\))/);
 	});

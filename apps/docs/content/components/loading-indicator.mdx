@@ -1,0 +1,40 @@
+---
+title: "Loading Indicator"
+description: "Loading indicators display progress of a process for a short wait time."
+---
+
+Loading indicators display progress of a process for a short wait time (under 5 seconds) inside an element. They morph through 7 unique Material design shapes.
+
+## Variants
+
+<ComponentPreview name="loading-indicator-variants" />
+
+## Flexible Sizing
+
+<ComponentPreview name="loading-indicator-sizes" />
+
+## Use Cases
+
+<ComponentPreview name="loading-indicator-use-cases" />
+
+## Usage Guidelines
+
+### When to use
+- To indicate that a process is ongoing, such as loading data or submitting a form.
+- When the wait time is expected to be short (under 5 seconds).
+
+### Best practices
+- Provide an `aria-label` to communicate the state to screen readers.
+- Ensure appropriate contrast for the uncontained variant against its background.
+- Use the contained variant when the loading indicator is overlaid on complex backgrounds or images for better visibility.
+
+## API Reference
+
+### LoadingIndicator
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `variant` | `'uncontained' \| 'contained'` | `'uncontained'` | The visual style. Contained puts the indicator inside a background surface. |
+| `size` | `number` | `24` | The size of the bounds (in pixels). The indicator will scale perfectly. |
+| `color` | `string` | `'var(--m3-primary)'` | Uses `primary` color normally, but can be overridden (e.g., `currentColor`). |
+| `speedMultiplier` | `number` | `1` | Customize animation speed. |

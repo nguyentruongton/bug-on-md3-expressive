@@ -118,7 +118,10 @@ describe("Card Component", () => {
 
 		it("interactive card: has aria-disabled when disabled=true", () => {
 			renderCard({ onClick: vi.fn(), disabled: true });
-			expect(screen.getByRole("button")).toHaveAttribute("aria-disabled", "true");
+			expect(screen.getByRole("button")).toHaveAttribute(
+				"aria-disabled",
+				"true",
+			);
 		});
 
 		it("interactive card: has tabIndex=-1 when disabled", () => {
@@ -128,7 +131,9 @@ describe("Card Component", () => {
 
 		it("interactive card: has 'pointer-events-none' class when disabled", () => {
 			renderCard({ onClick: vi.fn(), disabled: true });
-			expect(screen.getByRole("button").className).toContain("pointer-events-none");
+			expect(screen.getByRole("button").className).toContain(
+				"pointer-events-none",
+			);
 		});
 
 		it("interactive card: has 'opacity-[0.38]' class when disabled", () => {
@@ -156,7 +161,9 @@ describe("Card Component", () => {
 
 		it("filled variant → bg-m3-surface-container-highest", () => {
 			const { container } = renderCard({ variant: "filled" });
-			expect(container.firstChild).toHaveClass("bg-m3-surface-container-highest");
+			expect(container.firstChild).toHaveClass(
+				"bg-m3-surface-container-highest",
+			);
 		});
 
 		it("outlined variant → bg-m3-surface + border-m3-outline-variant", () => {

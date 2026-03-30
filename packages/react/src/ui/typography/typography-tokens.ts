@@ -49,24 +49,24 @@ import { TypeScaleTokens } from "./type-scale-tokens";
  * ```
  */
 export interface FontVariationAxes {
-  /**
-   * Roundness axis of Google Sans Flex Variable Font.
-   * Range: `0` (sharp corners) – `100` (fully rounded).
-   * @default 100
-   */
-  ROND?: number;
-  /**
-   * Weight axis. Overrides `font-weight` via variation settings.
-   * @default font default
-   */
-  wght?: number;
-  /**
-   * Width axis. Controls glyph condensation/expansion.
-   * @default font default
-   */
-  wdth?: number;
-  /** Any additional named variation axis supported by the font. */
-  [axis: string]: number | undefined;
+	/**
+	 * Roundness axis of Google Sans Flex Variable Font.
+	 * Range: `0` (sharp corners) – `100` (fully rounded).
+	 * @default 100
+	 */
+	ROND?: number;
+	/**
+	 * Weight axis. Overrides `font-weight` via variation settings.
+	 * @default font default
+	 */
+	wght?: number;
+	/**
+	 * Width axis. Controls glyph condensation/expansion.
+	 * @default font default
+	 */
+	wdth?: number;
+	/** Any additional named variation axis supported by the font. */
+	[axis: string]: number | undefined;
 }
 
 /**
@@ -74,7 +74,7 @@ export interface FontVariationAxes {
  * Sets `ROND` to `100` for maximum roundness; all other axes use font defaults.
  */
 export const DEFAULT_FONT_VARIATION_AXES: Readonly<FontVariationAxes> =
-  Object.freeze({ ROND: 100 });
+	Object.freeze({ ROND: 100 });
 
 /**
  * Serializes a {@link FontVariationAxes} map into a CSS `font-variation-settings` string.
@@ -85,13 +85,11 @@ export const DEFAULT_FONT_VARIATION_AXES: Readonly<FontVariationAxes> =
  * // → '"ROND" 100, "wght" 700'
  * ```
  */
-export function serializeFontVariationAxes(
-  axes: FontVariationAxes
-): string {
-  return Object.entries(axes)
-    .filter(([, v]) => v !== undefined)
-    .map(([k, v]) => `"${k}" ${v}`)
-    .join(", ");
+export function serializeFontVariationAxes(axes: FontVariationAxes): string {
+	return Object.entries(axes)
+		.filter(([, v]) => v !== undefined)
+		.map(([k, v]) => `"${k}" ${v}`)
+		.join(", ");
 }
 
 /**
@@ -99,7 +97,7 @@ export function serializeFontVariationAxes(
  * Equivalent to `'"ROND" 100'`.
  */
 export const MD3_EXPRESSIVE_FONT_VARIATION: string = serializeFontVariationAxes(
-  DEFAULT_FONT_VARIATION_AXES
+	DEFAULT_FONT_VARIATION_AXES,
 );
 
 // ─── TextStyle ────────────────────────────────────────────────────────────────
@@ -111,22 +109,22 @@ export const MD3_EXPRESSIVE_FONT_VARIATION: string = serializeFontVariationAxes(
  * The `fontVariationSettings` field carries the serialized variable-font axes.
  */
 export interface TextStyle {
-  /** CSS `font-family` value. */
-  readonly fontFamily: string;
-  /** CSS `font-weight` numeric value (e.g. `400`, `700`). */
-  readonly fontWeight: number;
-  /** CSS `font-size` in `rem` units. */
-  readonly fontSize: string;
-  /** CSS `line-height` in `rem` units. */
-  readonly lineHeight: string;
-  /** CSS `letter-spacing` in `px` units. */
-  readonly letterSpacing: string;
-  /**
-   * CSS `font-variation-settings` string.
-   * @example '"ROND" 100'
-   * @example '"ROND" 50, "wght" 600'
-   */
-  readonly fontVariationSettings: string;
+	/** CSS `font-family` value. */
+	readonly fontFamily: string;
+	/** CSS `font-weight` numeric value (e.g. `400`, `700`). */
+	readonly fontWeight: number;
+	/** CSS `font-size` in `rem` units. */
+	readonly fontSize: string;
+	/** CSS `line-height` in `rem` units. */
+	readonly lineHeight: string;
+	/** CSS `letter-spacing` in `px` units. */
+	readonly letterSpacing: string;
+	/**
+	 * CSS `font-variation-settings` string.
+	 * @example '"ROND" 100'
+	 * @example '"ROND" 50, "wght" 600'
+	 */
+	readonly fontVariationSettings: string;
 }
 
 // ─── TypographyTokens Options ─────────────────────────────────────────────────
@@ -135,21 +133,21 @@ export interface TextStyle {
  * Constructor options for {@link TypographyTokens}.
  */
 export interface TypographyTokensOptions {
-  /**
-   * Custom CSS `font-family` string. When provided, overrides the default
-   * Google Sans Flex font for all token styles.
-   *
-   * @example "'Roboto', sans-serif"
-   */
-  fontFamily?: string;
-  /**
-   * Variable font axes to apply via `font-variation-settings`.
-   * Merged on top of {@link DEFAULT_FONT_VARIATION_AXES}.
-   * Provide only the axes you want to override.
-   *
-   * @example { ROND: 0 } // sharp corners
-   */
-  fontVariationAxes?: FontVariationAxes;
+	/**
+	 * Custom CSS `font-family` string. When provided, overrides the default
+	 * Google Sans Flex font for all token styles.
+	 *
+	 * @example "'Roboto', sans-serif"
+	 */
+	fontFamily?: string;
+	/**
+	 * Variable font axes to apply via `font-variation-settings`.
+	 * Merged on top of {@link DEFAULT_FONT_VARIATION_AXES}.
+	 * Provide only the axes you want to override.
+	 *
+	 * @example { ROND: 0 } // sharp corners
+	 */
+	fontVariationAxes?: FontVariationAxes;
 }
 
 // ─── Internal factory ─────────────────────────────────────────────────────────
@@ -163,19 +161,19 @@ type TokenRecord = Record<string, string | number>;
  * @internal
  */
 function buildStyle(
-  prefix: string,
-  fontFamily: string | undefined,
-  fontVariationSettings: string
+	prefix: string,
+	fontFamily: string | undefined,
+	fontVariationSettings: string,
 ): TextStyle {
-  const t = TypeScaleTokens as TokenRecord;
-  return Object.freeze({
-    fontFamily: fontFamily ?? (t[`${prefix}Font`] as string),
-    fontWeight: t[`${prefix}Weight`] as number,
-    fontSize: t[`${prefix}Size`] as string,
-    lineHeight: t[`${prefix}LineHeight`] as string,
-    letterSpacing: t[`${prefix}Tracking`] as string,
-    fontVariationSettings,
-  });
+	const t = TypeScaleTokens as TokenRecord;
+	return Object.freeze({
+		fontFamily: fontFamily ?? (t[`${prefix}Font`] as string),
+		fontWeight: t[`${prefix}Weight`] as number,
+		fontSize: t[`${prefix}Size`] as string,
+		lineHeight: t[`${prefix}LineHeight`] as string,
+		letterSpacing: t[`${prefix}Tracking`] as string,
+		fontVariationSettings,
+	});
 }
 
 // ─── TypographyTokens ─────────────────────────────────────────────────────────
@@ -208,95 +206,155 @@ function buildStyle(
  * ```
  */
 export class TypographyTokens {
-  readonly #fontFamily: string | undefined;
-  readonly #fontVariationSettings: string;
+	readonly #fontFamily: string | undefined;
+	readonly #fontVariationSettings: string;
 
-  constructor(options: TypographyTokensOptions | string = {}) {
-    // Support legacy string signature: new TypographyTokens("'Inter', sans-serif")
-    if (typeof options === "string") {
-      this.#fontFamily = options;
-      this.#fontVariationSettings = MD3_EXPRESSIVE_FONT_VARIATION;
-    } else {
-      this.#fontFamily = options.fontFamily;
-      const axes: FontVariationAxes = options.fontVariationAxes
-        ? { ...DEFAULT_FONT_VARIATION_AXES, ...options.fontVariationAxes }
-        : DEFAULT_FONT_VARIATION_AXES;
-      this.#fontVariationSettings = serializeFontVariationAxes(axes);
-    }
-  }
+	constructor(options: TypographyTokensOptions | string = {}) {
+		// Support legacy string signature: new TypographyTokens("'Inter', sans-serif")
+		if (typeof options === "string") {
+			this.#fontFamily = options;
+			this.#fontVariationSettings = MD3_EXPRESSIVE_FONT_VARIATION;
+		} else {
+			this.#fontFamily = options.fontFamily;
+			const axes: FontVariationAxes = options.fontVariationAxes
+				? { ...DEFAULT_FONT_VARIATION_AXES, ...options.fontVariationAxes }
+				: DEFAULT_FONT_VARIATION_AXES;
+			this.#fontVariationSettings = serializeFontVariationAxes(axes);
+		}
+	}
 
-  // Helper to lazily build + cache a style on first access
-  #cache: Map<string, TextStyle> = new Map();
-  #get(prefix: string): TextStyle {
-    let style = this.#cache.get(prefix);
-    if (!style) {
-      style = buildStyle(prefix, this.#fontFamily, this.#fontVariationSettings);
-      this.#cache.set(prefix, style);
-    }
-    return style;
-  }
+	// Helper to lazily build + cache a style on first access
+	#cache: Map<string, TextStyle> = new Map();
+	#get(prefix: string): TextStyle {
+		let style = this.#cache.get(prefix);
+		if (!style) {
+			style = buildStyle(prefix, this.#fontFamily, this.#fontVariationSettings);
+			this.#cache.set(prefix, style);
+		}
+		return style;
+	}
 
-  // ─── Baseline Styles (15) ──────────────────────────────────────────────────
-  /** Display Large – `57px`, weight 400 */
-  get DisplayLarge(): TextStyle { return this.#get("DisplayLarge"); }
-  /** Display Medium – `45px`, weight 400 */
-  get DisplayMedium(): TextStyle { return this.#get("DisplayMedium"); }
-  /** Display Small – `36px`, weight 400 */
-  get DisplaySmall(): TextStyle { return this.#get("DisplaySmall"); }
-  /** Headline Large – `32px`, weight 400 */
-  get HeadlineLarge(): TextStyle { return this.#get("HeadlineLarge"); }
-  /** Headline Medium – `28px`, weight 400 */
-  get HeadlineMedium(): TextStyle { return this.#get("HeadlineMedium"); }
-  /** Headline Small – `24px`, weight 400 */
-  get HeadlineSmall(): TextStyle { return this.#get("HeadlineSmall"); }
-  /** Title Large – `22px`, weight 400 */
-  get TitleLarge(): TextStyle { return this.#get("TitleLarge"); }
-  /** Title Medium – `16px`, weight 500 */
-  get TitleMedium(): TextStyle { return this.#get("TitleMedium"); }
-  /** Title Small – `14px`, weight 500 */
-  get TitleSmall(): TextStyle { return this.#get("TitleSmall"); }
-  /** Body Large – `16px`, weight 400 */
-  get BodyLarge(): TextStyle { return this.#get("BodyLarge"); }
-  /** Body Medium – `14px`, weight 400 */
-  get BodyMedium(): TextStyle { return this.#get("BodyMedium"); }
-  /** Body Small – `12px`, weight 400 */
-  get BodySmall(): TextStyle { return this.#get("BodySmall"); }
-  /** Label Large – `14px`, weight 500 */
-  get LabelLarge(): TextStyle { return this.#get("LabelLarge"); }
-  /** Label Medium – `12px`, weight 500 */
-  get LabelMedium(): TextStyle { return this.#get("LabelMedium"); }
-  /** Label Small – `11px`, weight 500 */
-  get LabelSmall(): TextStyle { return this.#get("LabelSmall"); }
+	// ─── Baseline Styles (15) ──────────────────────────────────────────────────
+	/** Display Large – `57px`, weight 400 */
+	get DisplayLarge(): TextStyle {
+		return this.#get("DisplayLarge");
+	}
+	/** Display Medium – `45px`, weight 400 */
+	get DisplayMedium(): TextStyle {
+		return this.#get("DisplayMedium");
+	}
+	/** Display Small – `36px`, weight 400 */
+	get DisplaySmall(): TextStyle {
+		return this.#get("DisplaySmall");
+	}
+	/** Headline Large – `32px`, weight 400 */
+	get HeadlineLarge(): TextStyle {
+		return this.#get("HeadlineLarge");
+	}
+	/** Headline Medium – `28px`, weight 400 */
+	get HeadlineMedium(): TextStyle {
+		return this.#get("HeadlineMedium");
+	}
+	/** Headline Small – `24px`, weight 400 */
+	get HeadlineSmall(): TextStyle {
+		return this.#get("HeadlineSmall");
+	}
+	/** Title Large – `22px`, weight 400 */
+	get TitleLarge(): TextStyle {
+		return this.#get("TitleLarge");
+	}
+	/** Title Medium – `16px`, weight 500 */
+	get TitleMedium(): TextStyle {
+		return this.#get("TitleMedium");
+	}
+	/** Title Small – `14px`, weight 500 */
+	get TitleSmall(): TextStyle {
+		return this.#get("TitleSmall");
+	}
+	/** Body Large – `16px`, weight 400 */
+	get BodyLarge(): TextStyle {
+		return this.#get("BodyLarge");
+	}
+	/** Body Medium – `14px`, weight 400 */
+	get BodyMedium(): TextStyle {
+		return this.#get("BodyMedium");
+	}
+	/** Body Small – `12px`, weight 400 */
+	get BodySmall(): TextStyle {
+		return this.#get("BodySmall");
+	}
+	/** Label Large – `14px`, weight 500 */
+	get LabelLarge(): TextStyle {
+		return this.#get("LabelLarge");
+	}
+	/** Label Medium – `12px`, weight 500 */
+	get LabelMedium(): TextStyle {
+		return this.#get("LabelMedium");
+	}
+	/** Label Small – `11px`, weight 500 */
+	get LabelSmall(): TextStyle {
+		return this.#get("LabelSmall");
+	}
 
-  // ─── Emphasized Styles (15) – MD3 Expressive ──────────────────────────────
-  /** Display Large Emphasized – `57px`, weight 800 */
-  get DisplayLargeEmphasized(): TextStyle { return this.#get("DisplayLargeEmphasized"); }
-  /** Display Medium Emphasized – `45px`, weight 800 */
-  get DisplayMediumEmphasized(): TextStyle { return this.#get("DisplayMediumEmphasized"); }
-  /** Display Small Emphasized – `36px`, weight 800 */
-  get DisplaySmallEmphasized(): TextStyle { return this.#get("DisplaySmallEmphasized"); }
-  /** Headline Large Emphasized – `32px`, weight 800 */
-  get HeadlineLargeEmphasized(): TextStyle { return this.#get("HeadlineLargeEmphasized"); }
-  /** Headline Medium Emphasized – `28px`, weight 800 */
-  get HeadlineMediumEmphasized(): TextStyle { return this.#get("HeadlineMediumEmphasized"); }
-  /** Headline Small Emphasized – `24px`, weight 800 */
-  get HeadlineSmallEmphasized(): TextStyle { return this.#get("HeadlineSmallEmphasized"); }
-  /** Title Large Emphasized – `22px`, weight 700 */
-  get TitleLargeEmphasized(): TextStyle { return this.#get("TitleLargeEmphasized"); }
-  /** Title Medium Emphasized – `16px`, weight 700 */
-  get TitleMediumEmphasized(): TextStyle { return this.#get("TitleMediumEmphasized"); }
-  /** Title Small Emphasized – `14px`, weight 700 */
-  get TitleSmallEmphasized(): TextStyle { return this.#get("TitleSmallEmphasized"); }
-  /** Body Large Emphasized – `16px`, weight 700 */
-  get BodyLargeEmphasized(): TextStyle { return this.#get("BodyLargeEmphasized"); }
-  /** Body Medium Emphasized – `14px`, weight 700 */
-  get BodyMediumEmphasized(): TextStyle { return this.#get("BodyMediumEmphasized"); }
-  /** Body Small Emphasized – `12px`, weight 700 */
-  get BodySmallEmphasized(): TextStyle { return this.#get("BodySmallEmphasized"); }
-  /** Label Large Emphasized – `14px`, weight 800 */
-  get LabelLargeEmphasized(): TextStyle { return this.#get("LabelLargeEmphasized"); }
-  /** Label Medium Emphasized – `12px`, weight 800 */
-  get LabelMediumEmphasized(): TextStyle { return this.#get("LabelMediumEmphasized"); }
-  /** Label Small Emphasized – `11px`, weight 800 */
-  get LabelSmallEmphasized(): TextStyle { return this.#get("LabelSmallEmphasized"); }
+	// ─── Emphasized Styles (15) – MD3 Expressive ──────────────────────────────
+	/** Display Large Emphasized – `57px`, weight 800 */
+	get DisplayLargeEmphasized(): TextStyle {
+		return this.#get("DisplayLargeEmphasized");
+	}
+	/** Display Medium Emphasized – `45px`, weight 800 */
+	get DisplayMediumEmphasized(): TextStyle {
+		return this.#get("DisplayMediumEmphasized");
+	}
+	/** Display Small Emphasized – `36px`, weight 800 */
+	get DisplaySmallEmphasized(): TextStyle {
+		return this.#get("DisplaySmallEmphasized");
+	}
+	/** Headline Large Emphasized – `32px`, weight 800 */
+	get HeadlineLargeEmphasized(): TextStyle {
+		return this.#get("HeadlineLargeEmphasized");
+	}
+	/** Headline Medium Emphasized – `28px`, weight 800 */
+	get HeadlineMediumEmphasized(): TextStyle {
+		return this.#get("HeadlineMediumEmphasized");
+	}
+	/** Headline Small Emphasized – `24px`, weight 800 */
+	get HeadlineSmallEmphasized(): TextStyle {
+		return this.#get("HeadlineSmallEmphasized");
+	}
+	/** Title Large Emphasized – `22px`, weight 700 */
+	get TitleLargeEmphasized(): TextStyle {
+		return this.#get("TitleLargeEmphasized");
+	}
+	/** Title Medium Emphasized – `16px`, weight 700 */
+	get TitleMediumEmphasized(): TextStyle {
+		return this.#get("TitleMediumEmphasized");
+	}
+	/** Title Small Emphasized – `14px`, weight 700 */
+	get TitleSmallEmphasized(): TextStyle {
+		return this.#get("TitleSmallEmphasized");
+	}
+	/** Body Large Emphasized – `16px`, weight 700 */
+	get BodyLargeEmphasized(): TextStyle {
+		return this.#get("BodyLargeEmphasized");
+	}
+	/** Body Medium Emphasized – `14px`, weight 700 */
+	get BodyMediumEmphasized(): TextStyle {
+		return this.#get("BodyMediumEmphasized");
+	}
+	/** Body Small Emphasized – `12px`, weight 700 */
+	get BodySmallEmphasized(): TextStyle {
+		return this.#get("BodySmallEmphasized");
+	}
+	/** Label Large Emphasized – `14px`, weight 800 */
+	get LabelLargeEmphasized(): TextStyle {
+		return this.#get("LabelLargeEmphasized");
+	}
+	/** Label Medium Emphasized – `12px`, weight 800 */
+	get LabelMediumEmphasized(): TextStyle {
+		return this.#get("LabelMediumEmphasized");
+	}
+	/** Label Small Emphasized – `11px`, weight 800 */
+	get LabelSmallEmphasized(): TextStyle {
+		return this.#get("LabelSmallEmphasized");
+	}
 }

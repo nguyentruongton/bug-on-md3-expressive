@@ -1,0 +1,66 @@
+---
+title: "Icon Buttons"
+description: "Icon buttons let people take action with a single icon."
+---
+
+Icon buttons let people take action with a single icon. They are compact, high-density components used for the most frequent actions — like liking, bookmarking, or sharing. They morph in shape and color to communicate context and state.
+
+## Icon Button Types
+
+<ComponentPreview name="icon-button-types" />
+
+## Toggle & Shape Morph
+
+<ComponentPreview name="icon-button-toggle" />
+
+## Sizes
+
+<ComponentPreview name="icon-button-sizes" />
+
+## Shapes
+
+<ComponentPreview name="icon-button-shapes" />
+
+## Loading State
+
+<ComponentPreview name="icon-button-loading" />
+
+## Usage Guidelines
+
+### When to use
+- Frequent, well-understood actions (like, save, share).
+- Compact toolbars and action bars where space is limited.
+- Secondary actions alongside text or other components.
+- Toggle states with clear visual affordance (filled/tonal).
+
+### Accessibility
+- **aria-label is required** — icon buttons have no text label.
+- Toggle buttons use aria-pressed for screen readers.
+- Loading state exposes aria-busy=true to assistive tech.
+- XS/SM sizes have 48×48dp touch target (WCAG 2.5.5).
+
+### Variant hierarchy
+- **Filled** — highest emphasis, primary action.
+- **Tonal** — medium-high, softer visual weight.
+- **Outlined** — medium emphasis, supports toggle.
+- **Standard** — lowest emphasis, toolbars.
+
+### Best practices
+- Use only one filled icon button per section.
+- Pair icon buttons with tooltips for clarity.
+- Do not place more than 3–4 icon buttons in a row.
+- Match size to content density: MD/LG for FAB-like usage.
+
+## API Reference
+
+### IconButton
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `colorStyle` | `'standard' \| 'filled' \| 'tonal' \| 'outlined'` | `'standard'` | The visual variant of the icon button. |
+| `variant` | `'action' \| 'toggle'` | `'action'` | Determines if the button acts as a toggle. |
+| `selected` | `boolean` | `false` | Required when `variant="toggle"`. Represents the on/off state. |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | The size of the icon button. |
+| `shape` | `'round' \| 'square'` | `'round'` | The base shape of the icon button. |
+| `loading` | `boolean` | `false` | Displays a loading state. |
+| `loadingVariant` | `'circular' \| 'loading-indicator'` | `'loading-indicator'` | The type of loading indicator to show. |

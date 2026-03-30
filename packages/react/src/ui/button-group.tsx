@@ -6,7 +6,8 @@ import type { ButtonProps } from "./button";
 /**
  * Thuộc tính truyền vào cho thành phần nhóm nút (Button Group).
  */
-export interface ButtonGroupProps extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
+export interface ButtonGroupProps
+	extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
 	/**
 	 * Cấu trúc hiển thị của nhóm nút:
 	 * - `standard`: Các nút cách xa và có khoảng cách độc lập với nhau (gap).
@@ -19,23 +20,23 @@ export interface ButtonGroupProps extends React.FieldsetHTMLAttributes<HTMLField
 	 * @default "horizontal"
 	 */
 	orientation?: "horizontal" | "vertical";
-	/** 
-	 * Đặt thành `true` nếu bạn muốn nhóm hiển thị dạng `standard` giãn đều lấp đầy toàn bộ khu vực chứa (container). 
+	/**
+	 * Đặt thành `true` nếu bạn muốn nhóm hiển thị dạng `standard` giãn đều lấp đầy toàn bộ khu vực chứa (container).
 	 * @default false
 	 */
 	fullWidth?: boolean;
-	/** 
-	 * Áp dụng thống nhất chung một kích thước (`size`) cho tất cả các con trong nhóm (ghi đè kích thước lẻ từng nút). 
+	/**
+	 * Áp dụng thống nhất chung một kích thước (`size`) cho tất cả các con trong nhóm (ghi đè kích thước lẻ từng nút).
 	 */
 	size?: "xs" | "sm" | "md" | "lg" | "xl";
-	/** 
+	/**
 	 * Bật/tắt hiệu ứng thu phóng độ rộng / khoảng đệm (Morphing Width) khi nhấn vào các nút (áp dụng cho nhóm `standard`).
-	 * @default true 
+	 * @default true
 	 */
 	morphingWidth?: boolean;
-	/** 
+	/**
 	 * Tự động hiển thị biểu tượng (icon) Check khi một nút trạng thái nằm trong nhóm được chỉ định là `selected={true}`.
-	 * @default false 
+	 * @default false
 	 */
 	showCheck?: boolean;
 }
@@ -76,7 +77,10 @@ const PRESSED_RADIUS_MAP: Record<string, number> = {
 	xl: 40,
 };
 
-const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupProps>(
+const ButtonGroupComponent = React.forwardRef<
+	HTMLFieldSetElement,
+	ButtonGroupProps
+>(
 	(
 		{
 			className,
@@ -93,9 +97,9 @@ const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupPr
 	) => {
 		const [pressedIndex, setPressedIndex] = React.useState<number | null>(null);
 
-		const childrenArray = React.useMemo(() => 
-			React.Children.toArray(children).filter(React.isValidElement),
-			[children]
+		const childrenArray = React.useMemo(
+			() => React.Children.toArray(children).filter(React.isValidElement),
+			[children],
 		);
 		const count = childrenArray.length;
 
@@ -131,7 +135,7 @@ const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupPr
 					const innerRadius = INNER_RADIUS_MAP[itemSize] || 8;
 
 					// Inject style động
-					const dynamicStyle: React.CSSProperties = { 
+					const dynamicStyle: React.CSSProperties = {
 						...element.props.style,
 						"--m3-inner-rad": `${innerRadius}px`,
 					} as React.CSSProperties;
@@ -145,7 +149,11 @@ const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupPr
 					}
 
 					// 1. STANDARD GROUP: Xử lý hiệu ứng Morphing Width khi press
-					if (variant === "standard" && orientation === "horizontal" && morphingWidth) {
+					if (
+						variant === "standard" &&
+						orientation === "horizontal" &&
+						morphingWidth
+					) {
 						const isPressed = pressedIndex === index;
 						const isNeighbor =
 							pressedIndex !== null && Math.abs(pressedIndex - index) === 1;
@@ -170,11 +178,11 @@ const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupPr
 							dynamicStyle.transition =
 								"padding 0.2s cubic-bezier(0.2, 0, 0, 1)";
 						}
-						
+
 						const pressedRadius = PRESSED_RADIUS_MAP[itemSize] || 10;
 
 						motionPropsToOverride = {
-							whileTap: { 
+							whileTap: {
 								scale: 0.98,
 								borderRadius: pressedRadius,
 							},
@@ -185,7 +193,6 @@ const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupPr
 					// 2. CONNECTED GROUP: Xử lý trạng thái Selected và Border Radius
 					let connectedClasses = "";
 					if (variant === "connected") {
-						
 						// Ưu tiên z-index khi selected/hover để đè viền lên nhau
 						if (isSelected) {
 							connectedClasses = "z-20";
@@ -193,18 +200,47 @@ const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupPr
 
 						const r = PILL_RADIUS_MAP[itemSize] || 20;
 						const i = innerRadius;
-						let tl = r, tr = r, br = r, bl = r;
+						let tl = r,
+							tr = r,
+							br = r,
+							bl = r;
 
 						if (!isSelected) {
 							if (orientation === "horizontal") {
-								if (isFirst && !isLast) { tl = r; tr = i; br = i; bl = r; }
-								else if (!isFirst && isLast) { tl = i; tr = r; br = r; bl = i; }
-								else if (!isFirst && !isLast) { tl = i; tr = i; br = i; bl = i; }
+								if (isFirst && !isLast) {
+									tl = r;
+									tr = i;
+									br = i;
+									bl = r;
+								} else if (!isFirst && isLast) {
+									tl = i;
+									tr = r;
+									br = r;
+									bl = i;
+								} else if (!isFirst && !isLast) {
+									tl = i;
+									tr = i;
+									br = i;
+									bl = i;
+								}
 							} else {
 								// vertical
-								if (isFirst && !isLast) { tl = r; tr = r; br = i; bl = i; }
-								else if (!isFirst && isLast) { tl = i; tr = i; br = r; bl = r; }
-								else if (!isFirst && !isLast) { tl = i; tr = i; br = i; bl = i; }
+								if (isFirst && !isLast) {
+									tl = r;
+									tr = r;
+									br = i;
+									bl = i;
+								} else if (!isFirst && isLast) {
+									tl = i;
+									tr = i;
+									br = r;
+									bl = r;
+								} else if (!isFirst && !isLast) {
+									tl = i;
+									tr = i;
+									br = i;
+									bl = i;
+								}
 							}
 						}
 
@@ -213,18 +249,21 @@ const ButtonGroupComponent = React.forwardRef<HTMLFieldSetElement, ButtonGroupPr
 						dynamicStyle.borderTopRightRadius = `${tr}px`;
 						dynamicStyle.borderBottomRightRadius = `${br}px`;
 						dynamicStyle.borderBottomLeftRadius = `${bl}px`;
-						
+
 						// Transition CSS thuần
-						dynamicStyle.transition = "border-top-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-top-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), padding 0.2s cubic-bezier(0.2, 0, 0, 1), flex 0.2s cubic-bezier(0.2, 0, 0, 1)";
+						dynamicStyle.transition =
+							"border-top-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-top-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), padding 0.2s cubic-bezier(0.2, 0, 0, 1), flex 0.2s cubic-bezier(0.2, 0, 0, 1)";
 
 						// VÔ HIỆU HÓA Framer Motion borderRadius trên children Button bằng cách override explicit corners
-						const animateProps = 
-							typeof element.props.animate === "object" && !Array.isArray(element.props.animate) 
-								? element.props.animate 
+						const animateProps =
+							typeof element.props.animate === "object" &&
+							!Array.isArray(element.props.animate)
+								? element.props.animate
 								: {};
-						const whileTapProps = 
-							typeof element.props.whileTap === "object" && !Array.isArray(element.props.whileTap) 
-								? element.props.whileTap 
+						const whileTapProps =
+							typeof element.props.whileTap === "object" &&
+							!Array.isArray(element.props.whileTap)
+								? element.props.whileTap
 								: {};
 
 						// Tính toán corners khi pressed: tất cả corners đều thu về innerRadius hoặc pressedRadius
@@ -291,7 +330,7 @@ ButtonGroupComponent.displayName = "ButtonGroup";
  * Component Nhóm Nút (Button Group) được sử dụng để gom nhóm nhiều nút có công năng tương tự lại với nhau.
  * Hỗ trợ tạo các bộ nút độc lập (Standard) hoặc khối liên kết liền mạch (Connected/Segmented Buttons).
  * Kế thừa cơ chế chuyển động kết hợp liền mạch của MD3 Expressive.
- * 
+ *
  * @example
  * ```tsx
  * // Nhóm nút tiêu chuẩn rời rạc (Standard)
@@ -299,7 +338,7 @@ ButtonGroupComponent.displayName = "ButtonGroup";
  *   <Button>Lựa chọn 1</Button>
  *   <Button>Lựa chọn 2</Button>
  * </ButtonGroup>
- * 
+ *
  * // Nhóm nút liền khối (Connected Segmented Button)
  * <ButtonGroup variant="connected" showCheck fullWidth>
  *   <Button variant="toggle" selected={view === "day"} onClick={() => setView("day")}>Ngày</Button>

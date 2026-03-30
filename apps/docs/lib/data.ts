@@ -46,11 +46,13 @@ export const componentCategories = [
 				description:
 					"Button groups organize buttons and add interactions between them",
 				icon: Layers,
+				href: "/components/button-groups",
 			},
 			{
 				name: "Buttons",
 				description: "Buttons prompt most actions in a UI",
 				icon: MousePointerClick,
+				href: "/components/buttons",
 			},
 			{
 				name: "Extended FABs",
@@ -65,10 +67,11 @@ export const componentCategories = [
 				icon: Menu,
 			},
 			{
-				name: "Floating action buttons (FABs)",
+				name: "FABs",
 				description:
 					"Floating action buttons (FABs) help people take primary actions",
 				icon: Plus,
+				href: "/components/fabs",
 			},
 			{
 				name: "Icon buttons",
@@ -121,7 +124,7 @@ export const componentCategories = [
 				description:
 					"Progress indicators show the status of a process in real time",
 				icon: MoreHorizontal,
-				href: "/components/progress-indicator",
+				href: "/components/progress-indicators",
 			},
 		],
 	},
@@ -184,6 +187,7 @@ export const componentCategories = [
 				name: "Cards",
 				description: "Cards display content and actions about a single subject",
 				icon: CreditCard,
+				href: "/components/cards",
 			},
 			{
 				name: "Carousel",
@@ -283,6 +287,17 @@ export const componentCategories = [
 				name: "Tooltips",
 				description: "Tooltips display brief labels or messages",
 				icon: MessageCircle,
+			},
+		],
+	},
+	{
+		title: "Styles",
+		items: [
+			{
+				name: "Typography",
+				description: "Typography styles and text scales",
+				icon: Type,
+				href: "/components/typography",
 			},
 		],
 	},

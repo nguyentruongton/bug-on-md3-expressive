@@ -15,11 +15,21 @@ describe("TypographyTokens", () => {
 	it("creates 30 styles (15 baseline + 15 emphasized)", () => {
 		const tokens = new TypographyTokens();
 		const baseline = [
-			"BodyLarge", "BodyMedium", "BodySmall",
-			"DisplayLarge", "DisplayMedium", "DisplaySmall",
-			"HeadlineLarge", "HeadlineMedium", "HeadlineSmall",
-			"LabelLarge", "LabelMedium", "LabelSmall",
-			"TitleLarge", "TitleMedium", "TitleSmall",
+			"BodyLarge",
+			"BodyMedium",
+			"BodySmall",
+			"DisplayLarge",
+			"DisplayMedium",
+			"DisplaySmall",
+			"HeadlineLarge",
+			"HeadlineMedium",
+			"HeadlineSmall",
+			"LabelLarge",
+			"LabelMedium",
+			"LabelSmall",
+			"TitleLarge",
+			"TitleMedium",
+			"TitleSmall",
 		] as const;
 		const emphasized = baseline.map((k) => `${k}Emphasized` as const);
 

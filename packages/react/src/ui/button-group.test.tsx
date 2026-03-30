@@ -63,7 +63,8 @@ describe("ButtonGroup Component", () => {
 
 		const buttons = container.querySelectorAll("button");
 		// Check that the custom transition is injected via style
-		const expectedTransition = "border-top-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-top-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), padding 0.2s cubic-bezier(0.2, 0, 0, 1), flex 0.2s cubic-bezier(0.2, 0, 0, 1)";
+		const expectedTransition =
+			"border-top-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-top-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-right-radius 0.25s cubic-bezier(0.2, 0, 0, 1), border-bottom-left-radius 0.25s cubic-bezier(0.2, 0, 0, 1), padding 0.2s cubic-bezier(0.2, 0, 0, 1), flex 0.2s cubic-bezier(0.2, 0, 0, 1)";
 		expect(buttons[0]).toHaveStyle({ transition: expectedTransition });
 		expect(buttons[1]).toHaveStyle({ transition: expectedTransition });
 	});

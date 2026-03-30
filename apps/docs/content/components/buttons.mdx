@@ -1,0 +1,99 @@
+---
+title: Buttons
+description: Buttons let people take action and make choices with one tap. They communicate actions that users can take and are typically placed throughout the UI.
+---
+
+Buttons help people take the most important actions. They communicate calls to action on forms, dialogs, and pages. Expressive buttons feature spring-based shape morphing that communicates interactivity through motion.
+
+<ComponentPreview name="button-variants" />
+
+## With Icons
+
+Icons help communicate the button's action and can be placed before (leading) or after (trailing) the label.
+
+<ComponentPreview name="button-icons" />
+
+## Loading State
+
+Buttons support two loading variants. Use `loadingVariant="loading-indicator"` for expressive MD3 shape morphing (ideal for AI generation, uploads), or `loadingVariant="circular"` for a traditional spinner (ideal for form submissions, data syncing).
+
+Click a button below to trigger its loading state:
+
+<ComponentPreview name="button-loading" />
+
+## Toggle Button
+
+Toggle buttons morph from **round** (unselected) to **square** (selected) using Expressive shape animation. They also support icon transitions from outlined to filled.
+
+<ComponentPreview name="button-toggle" />
+
+## Sizes
+
+Buttons support 5 sizes following M3 Expressive spec: `xs`, `sm` (default), `md`, `lg`, `xl`.
+
+<ComponentPreview name="button-sizes" />
+
+## Disabled State
+
+<ComponentPreview name="button-disabled" />
+
+## Usage
+
+```tsx
+import { Button } from "@bug-on/md3-react";
+import { Plus, Send } from "lucide-react";
+
+// Basic variants
+<Button colorStyle="filled">Save</Button>
+<Button colorStyle="outlined">Cancel</Button>
+
+// With leading icon
+<Button colorStyle="filled" icon={<Plus className="w-5 h-5" />}>
+  Add Item
+</Button>
+
+// With trailing icon
+<Button colorStyle="text" icon={<Send className="w-5 h-5" />} iconPosition="trailing">
+  Send
+</Button>
+
+// Toggle button
+<Button
+  colorStyle="outlined"
+  variant="toggle"
+  selected={saved}
+  onClick={() => setSaved(!saved)}
+>
+  {saved ? "Saved" : "Save"}
+</Button>
+
+// Loading state
+<Button loading loadingVariant="loading-indicator">
+  Uploading...
+</Button>
+```
+
+## Accessibility
+
+- All buttons render as semantic `<button type="button">` or `<button type="submit">`.
+- The `disabled` prop sets `aria-disabled="true"` and removes the element from the tab order.
+- Loading state automatically applies `aria-busy="true"` to prevent accidental double-submission.
+- Toggle buttons set `aria-pressed` to communicate their selected state to screen readers.
+- Focus rings are visible on keyboard navigation and comply with WCAG 2.4.11 Focus Appearance.
+
+## API Reference
+
+### Button
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `colorStyle` | `"elevated" \| "filled" \| "tonal" \| "outlined" \| "text"` | `"filled"` | Visual variant determining color and elevation. |
+| `variant` | `"default" \| "toggle"` | `"default"` | Set to `"toggle"` for shape-morphing toggle behavior. |
+| `selected` | `boolean` | `false` | Controls toggle state (requires `variant="toggle"`). |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"sm"` | Button height and padding scale. |
+| `shape` | `"round" \| "square"` | `"round"` | Override corner radius. |
+| `icon` | `ReactNode` | — | Icon to display inside the button. |
+| `iconPosition` | `"leading" \| "trailing"` | `"leading"` | Icon placement relative to the label. |
+| `loading` | `boolean` | `false` | Shows a loading indicator in place of the icon. |
+| `loadingVariant` | `"loading-indicator" \| "circular"` | `"loading-indicator"` | Style of the loading indicator. |
+| `disabled` | `boolean` | `false` | Disables the button and removes it from tab order. |

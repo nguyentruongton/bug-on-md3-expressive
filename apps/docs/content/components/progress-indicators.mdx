@@ -1,0 +1,51 @@
+---
+title: "Progress Indicator"
+description: "Progress indicators show the status of a process in real time."
+---
+
+Progress indicators show the real-time status of a process. Features include determinate and indeterminate modes, circular indicators, and expressive wavy linear bars.
+
+## Interactive Playground
+
+<ComponentPreview name="progress-playground" />
+
+## Linear Progress
+
+<ComponentPreview name="progress-linear-variants" />
+
+## Circular Progress
+
+<ComponentPreview name="progress-circular-variants" />
+
+## Use Cases
+
+<ComponentPreview name="progress-use-cases" />
+
+## Usage Guidelines
+
+### When to use
+- Show elapsed time or progress over time.
+- Display a determinate indicator when the progression can be calculated against a specific target.
+- Display an indeterminate indicator when duration is unknown.
+
+### Accessibility
+- Provide an `aria-label` to communicate the loading state to screen readers.
+- Determinate variants automatically expose `aria-valuemin="0"` and `aria-valuemax="100"` along with the current `aria-valuenow`.
+
+## API Reference
+
+### ProgressIndicator
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `variant` | `'linear' \| 'circular'` | `'linear'` | The type of progress indicator to render. |
+| `value` | `number \| undefined` | `undefined` | The amount of progress (0-100). If omitted, indicator is indeterminate. |
+| `shape` | `'flat' \| 'wavy'` | `'flat'` | Defines the visual appearance of the active indicator. |
+| `trackShape` | `'flat' \| 'wavy'` | `'flat'` | (Linear only) defines the visual appearance of the track. |
+| `size` | `number` | `48` | (Circular only) the diameter in pixels. |
+| `trackHeight` | `number` | `4` | The thickness of the track and indicator. |
+| `gapSize` | `number` | `4` | Spacing between the indicator and the track. |
+| `amplitude` | `number` | `4` | The height of the waves (if shape='wavy'). |
+| `wavelength` | `number` | `20` | The length of a single wave cycle (if shape='wavy'). |
+| `waveSpeed` | `number` | `1` | Controls how fast the wave animates. |
+| `crawlerSpeed` | `number` | `1` | (Indeterminate only) Controls the overall movement speed. |

@@ -1,0 +1,55 @@
+---
+title: "Button Groups"
+description: "Button groups allow users to group related actions or selections."
+---
+
+Button groups allow users to group related actions or selections. They come in two primary flavors: **Standard** (spaced) and **Connected** (segmented).
+
+## Standard Variant
+
+The standard variant maintains a gap between buttons. In horizontal orientation, it features a unique **fluid expansion effect** where the pressed button expands slightly while others contract, creating a highly expressive interaction.
+
+<ComponentPreview name="button-group-standard" />
+
+## Connected Variant
+
+Connected groups (also known as Segmented Buttons) join buttons together for a seamless look. Roundness is automatically removed from inner corners to create a unified component.
+
+<ComponentPreview name="button-group-connected" />
+
+## Orientation
+
+Both variants support horizontal and vertical orientations.
+
+<ComponentPreview name="button-group-orientation" />
+
+## Practical Use Cases
+
+Explore various ways to combine buttons within a group.
+
+<ComponentPreview name="button-group-use-cases" />
+
+## Usage Guidelines
+
+### When to use
+- To switch between different views of the same data (e.g., Map vs. List).
+- To filter content based on mutually exclusive categories.
+- To group related actions that affect a specific object or area.
+
+### Best practices
+- Keep the number of segments between 2 and 5 for optimal usability.
+- Ensure text labels are concise and clearly differentiate the options.
+- Clearly indicate the selected state using visual contrast or the `toggle` variant.
+- Use **Standard** variant for distinctive actions and **Connected** variant for choosing options (Segmented Buttons).
+
+## API Reference
+
+### ButtonGroup
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `variant` | `'standard' \| 'connected'` | `'standard'` | The visual style of the group. Connected joins buttons together. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | The direction the buttons are laid out. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | The size of the buttons in the group. Passes down to children. |
+| `showCheck` | `boolean` | `false` | For connected variant: whether to show a check icon on selected items. |
+| `morphingWidth` | `boolean` | `true` | For standard horizontal: enables the width morphing effect on press. |

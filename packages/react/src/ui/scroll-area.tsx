@@ -51,8 +51,7 @@ const ScrollArea = React.forwardRef<
 		},
 		ref,
 	) => {
-		const radixType: RadixScrollAreaType =
-			type === "none" ? "always" : type;
+		const radixType: RadixScrollAreaType = type === "none" ? "always" : type;
 
 		return (
 			<RadixScrollArea.Root
@@ -64,7 +63,7 @@ const ScrollArea = React.forwardRef<
 			>
 				<RadixScrollArea.Viewport
 					className={cn(
-						"h-full w-full flex-1 min-h-0 rounded-[inherit]",
+						"h-full w-full flex-1 min-h-0 min-w-0 rounded-[inherit]",
 						"outline-none focus-visible:ring-2 focus-visible:ring-m3-primary focus-visible:ring-offset-1",
 						viewportClassName,
 					)}
@@ -137,7 +136,4 @@ const ScrollAreaCorner = React.forwardRef<
 ));
 ScrollAreaCorner.displayName = "ScrollAreaCorner";
 
-export {
-	ScrollArea,
-	ScrollAreaScrollbar,
-};
+export { ScrollArea, ScrollAreaScrollbar };

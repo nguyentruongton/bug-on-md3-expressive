@@ -2,6 +2,7 @@ import { TypographyProvider } from "@bug-on/md3-react";
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutProvider } from "@/lib/layout-context";
+import { TocProvider } from "@/lib/toc-context";
 import "@bug-on/md3-react/typography.css";
 import "./globals.css";
 import type { Metadata } from "next";
@@ -24,9 +25,11 @@ export default function RootLayout({
 			>
 				<ThemeProvider>
 					<LayoutProvider>
-						<TypographyProvider>
-							<LayoutWrapper>{children}</LayoutWrapper>
-						</TypographyProvider>
+						<TocProvider>
+							<TypographyProvider>
+								<LayoutWrapper>{children}</LayoutWrapper>
+							</TypographyProvider>
+						</TocProvider>
 					</LayoutProvider>
 				</ThemeProvider>
 			</body>

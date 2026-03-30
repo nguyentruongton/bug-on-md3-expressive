@@ -1,0 +1,50 @@
+---
+title: "Chips"
+description: "Chips help people enter information, make selections, filter content, or trigger actions."
+---
+
+Chips help people enter information, make selections, filter content, or trigger actions. They appear as a group of interactive elements to enhance a person's current journey — unlike buttons, which progress them through the product.
+
+## Assist Chip
+
+Represents smart or automated actions that can span multiple apps. They should appear dynamically and contextually in a UI. Available in flat (bordered) and elevated styles.
+
+<ComponentPreview name="chip-assist" />
+
+## Filter Chip
+
+Filter chips use tags or descriptive words to filter content. They toggle between selected and unselected states. When selected, a checkmark animates in — and the outline transitions out.
+
+<ComponentPreview name="chip-filter" />
+
+## Input Chip
+
+Input chips represent a complex piece of information in compact form, such as an entity (person, place, or thing). They can include a leading icon or avatar, and a remove (×) button.
+
+<ComponentPreview name="chip-input" />
+
+## Suggestion Chip
+
+Suggestion chips provide dynamic suggestions that help users make decisions or take action based on their current context.
+
+<ComponentPreview name="chip-suggestion" />
+
+## States
+
+<ComponentPreview name="chip-states" />
+
+## API Reference
+
+### Chip
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `variant` | `'assist' \| 'filter' \| 'input' \| 'suggestion'` | `'assist'` | The visual style and behavior of the chip. |
+| `label` | `ReactNode` | Required | The text content of the chip. |
+| `elevated` | `boolean` | `false` | If true, applies an elevated style (available for assist, filter, and suggestion chips). |
+| `selected` | `boolean` | `false` | The selected state (mainly used for filter and input chips). |
+| `disabled` | `boolean` | `false` | Disables the chip, lowering its opacity and preventing interactions. |
+| `leadingIcon` | `ReactElement` | `undefined` | An optional icon displayed before the label. |
+| `avatar` | `ReactElement` | `undefined` | An optional avatar displayed before the label (mostly for input chips). |
+| `onRemove` | `(e) => void` | `undefined` | Callback fired when the remove icon is clicked (adds the '×' button for input chips). |
+| `onClick` | `(e) => void` | `undefined` | Callback fired when the chip is clicked. |

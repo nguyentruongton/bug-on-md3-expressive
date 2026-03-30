@@ -51,19 +51,33 @@ export const WavyLinearTrack = React.memo<{
 	React.useEffect(() => {
 		if (isDeterminate) {
 			const fraction = clampedValue / 100;
-			
+
 			// Xử lý Flattening Logic dựa trên prop determinateAnimation
 			let targetAmp = amplitude;
 			if (determinateAnimation === "md3") {
 				targetAmp = fraction <= 0.1 || fraction >= 0.95 ? 0 : amplitude;
 			}
-			
-			animate(amplitudeMV, targetAmp, { type: "spring", bounce: 0, duration: 0.5 });
+
+			animate(amplitudeMV, targetAmp, {
+				type: "spring",
+				bounce: 0,
+				duration: 0.5,
+			});
 			animate(fractionMV, fraction, { duration: 0.4, ease: [0.2, 0, 0, 1] });
 		}
-	}, [clampedValue, isDeterminate, amplitude, amplitudeMV, fractionMV, determinateAnimation]);
+	}, [
+		clampedValue,
+		isDeterminate,
+		amplitude,
+		amplitudeMV,
+		fractionMV,
+		determinateAnimation,
+	]);
 
-	const activeWavelength = Math.max(1, isDeterminate ? wavelength : indeterminateWavelength);
+	const activeWavelength = Math.max(
+		1,
+		isDeterminate ? wavelength : indeterminateWavelength,
+	);
 	const trackAmp = trackShape === "wavy" ? amplitude : 0;
 
 	useAnimationFrame((time) => {
@@ -81,37 +95,49 @@ export const WavyLinearTrack = React.memo<{
 		if (isDeterminate) {
 			const fraction = fractionMV.get();
 			const barHead = fraction * width;
-			
+
 			const adjHead = Math.max(capWidth, Math.min(width - capWidth, barHead));
 			const adjTail = capWidth;
 
 			if (fraction > 0 && adjHead - adjTail > 0.1) {
-				activePathD = getSinePath(adjTail, adjHead, phase, activeWavelength, currentAmp);
+				activePathD = getSinePath(
+					adjTail,
+					adjHead,
+					phase,
+					activeWavelength,
+					currentAmp,
+				);
 			} else if (fraction === 0) {
 				activePathD = `M ${capWidth} 0 L ${capWidth + 0.01} 0`;
 			}
 
 			const trackStart = adjHead + totalGap;
 			if (trackStart < width - capWidth) {
-				trackD = getSinePath(trackStart, width - capWidth, phase, activeWavelength, trackAmp);
+				trackD = getSinePath(
+					trackStart,
+					width - capWidth,
+					phase,
+					activeWavelength,
+					trackAmp,
+				);
 			}
-		} 
+		}
 		// 2. CHẾ ĐỘ KHÔNG XÁC ĐỊNH (INDETERMINATE)
 		else {
 			const safeCrawlerSpeed = Math.max(0.1, crawlerSpeed);
-			const activeLines: { tail: number, head: number }[] = [];
+			const activeLines: { tail: number; head: number }[] = [];
 
 			if (indeterminateAnimation === "continuous") {
 				const cycle = 2000 / safeCrawlerSpeed;
 				const fraction = (time % cycle) / cycle;
 				activeLines.push({
 					tail: easeInOutCubic(Math.max(0, fraction * 1.5 - 0.5)),
-					head: easeInOutCubic(Math.min(1, fraction * 1.5))
+					head: easeInOutCubic(Math.min(1, fraction * 1.5)),
 				});
 			} else {
 				const cycle = 1750 / safeCrawlerSpeed;
 				const t = (time % cycle) * safeCrawlerSpeed;
-				
+
 				const l1H = easeInOutCubic(Math.max(0, Math.min(1, t / 1000)));
 				const l1T = easeInOutCubic(Math.max(0, Math.min(1, (t - 250) / 1000)));
 				const l2H = easeInOutCubic(Math.max(0, Math.min(1, (t - 650) / 850)));
@@ -121,15 +147,33 @@ export const WavyLinearTrack = React.memo<{
 				activeLines.push({ tail: l2T, head: l2H });
 			}
 
-			const segments = activeLines.map(line => {
-				const barTail = line.tail * width;
-				const barHead = line.head * width;
-				const adjTail = Math.max(capWidth, Math.min(width - capWidth, barTail));
-				const adjHead = Math.max(capWidth, Math.min(width - capWidth, barHead));
-				return { adjTail, adjHead };
-			}).filter(seg => seg.adjHead - seg.adjTail > 0.1);
+			const segments = activeLines
+				.map((line) => {
+					const barTail = line.tail * width;
+					const barHead = line.head * width;
+					const adjTail = Math.max(
+						capWidth,
+						Math.min(width - capWidth, barTail),
+					);
+					const adjHead = Math.max(
+						capWidth,
+						Math.min(width - capWidth, barHead),
+					);
+					return { adjTail, adjHead };
+				})
+				.filter((seg) => seg.adjHead - seg.adjTail > 0.1);
 
-			activePathD = segments.map(seg => getSinePath(seg.adjTail, seg.adjHead, phase, activeWavelength, currentAmp)).join(" ");
+			activePathD = segments
+				.map((seg) =>
+					getSinePath(
+						seg.adjTail,
+						seg.adjHead,
+						phase,
+						activeWavelength,
+						currentAmp,
+					),
+				)
+				.join(" ");
 
 			let currentTrackX = capWidth;
 			for (const seg of segments) {
@@ -140,12 +184,20 @@ export const WavyLinearTrack = React.memo<{
 				currentTrackX = Math.max(currentTrackX, seg.adjHead + totalGap);
 			}
 			if (currentTrackX < width - capWidth) {
-				trackD += getSinePath(currentTrackX, width - capWidth, phase, activeWavelength, trackAmp);
+				trackD += getSinePath(
+					currentTrackX,
+					width - capWidth,
+					phase,
+					activeWavelength,
+					trackAmp,
+				);
 			}
 		}
 
-		if (activePathRef.current) activePathRef.current.setAttribute("d", activePathD);
-		if (trackPathRef.current) trackPathRef.current.setAttribute("d", trackD.trim());
+		if (activePathRef.current)
+			activePathRef.current.setAttribute("d", activePathD);
+		if (trackPathRef.current)
+			trackPathRef.current.setAttribute("d", trackD.trim());
 	});
 
 	return (
@@ -158,13 +210,15 @@ export const WavyLinearTrack = React.memo<{
 				<svg
 					className="absolute inset-0 w-full h-full"
 					style={{
-						overflow: "visible", 
+						overflow: "visible",
 						transform: isRtl ? "scaleX(-1)" : undefined,
 					}}
 					aria-labelledby={titleId}
 				>
 					<title id={titleId}>
-						{isDeterminate ? `Progress: ${clampedValue}%` : "Indeterminate loading progress"}
+						{isDeterminate
+							? `Progress: ${clampedValue}%`
+							: "Indeterminate loading progress"}
 					</title>
 					<g transform={`translate(0, ${svgHeight / 2})`}>
 						<path

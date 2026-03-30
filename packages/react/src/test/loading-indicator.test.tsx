@@ -67,9 +67,7 @@ describe("LoadingIndicator", () => {
 
 	// ─── Indeterminate Mode (SMIL) ───────────────────────────────────────────
 	it("renders SVG path with SMIL shape morphing animation in indeterminate mode", async () => {
-		const { container } = render(
-			<LoadingIndicator aria-label="Loading" />,
-		);
+		const { container } = render(<LoadingIndicator aria-label="Loading" />);
 		const path = container.querySelector("path");
 		expect(path).toBeInTheDocument();
 		await waitFor(() => {
@@ -80,9 +78,7 @@ describe("LoadingIndicator", () => {
 
 	// ─── Variants ────────────────────────────────────────────────────────────
 	it("renders default uncontained variant without container background", () => {
-		const { container } = render(
-			<LoadingIndicator aria-label="Loading" />,
-		);
+		const { container } = render(<LoadingIndicator aria-label="Loading" />);
 		const inner = container.querySelector(".rounded-full");
 		expect(inner).toBeNull();
 	});
@@ -119,20 +115,14 @@ describe("LoadingIndicator", () => {
 
 	// ─── General ─────────────────────────────────────────────────────────────
 	it("renders an SVG element inside", () => {
-		const { container } = render(
-			<LoadingIndicator aria-label="Loading" />,
-		);
+		const { container } = render(<LoadingIndicator aria-label="Loading" />);
 		const svg = container.querySelector("svg");
 		expect(svg).toBeInTheDocument();
 		expect(svg).toHaveAttribute("aria-hidden", "true");
 	});
 
 	it("merges custom className", () => {
-		render(
-			<LoadingIndicator aria-label="Loading" className="my-custom" />,
-		);
-		expect(screen.getByRole("progressbar").className).toContain(
-			"my-custom",
-		);
+		render(<LoadingIndicator aria-label="Loading" className="my-custom" />);
+		expect(screen.getByRole("progressbar").className).toContain("my-custom");
 	});
 });

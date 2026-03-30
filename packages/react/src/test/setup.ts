@@ -49,7 +49,10 @@ if (!globalThis.PointerEvent) {
 	}
 	// Use any here for global registration as it's a known environment issue
 	// but we cast it as unknown first to satisfy some strict linting
-	vi.stubGlobal("PointerEvent", PointerEventMock as unknown as typeof PointerEvent);
+	vi.stubGlobal(
+		"PointerEvent",
+		PointerEventMock as unknown as typeof PointerEvent,
+	);
 }
 
 // Mock HTMLElement prototype to return dimensions
@@ -64,7 +67,10 @@ class IntersectionObserverMock implements IntersectionObserver {
 	readonly root: Element | null = null;
 	readonly rootMargin: string = "";
 	readonly thresholds: ReadonlyArray<number> = [];
-	constructor(public callback: IntersectionObserverCallback, _options?: IntersectionObserverInit) {}
+	constructor(
+		public callback: IntersectionObserverCallback,
+		_options?: IntersectionObserverInit,
+	) {}
 	observe = vi.fn((_element: Element) => {});
 	unobserve = vi.fn((_element: Element) => {});
 	disconnect = vi.fn(() => {});

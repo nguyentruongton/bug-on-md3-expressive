@@ -6,7 +6,10 @@ import { FlatLinearTrack } from "./linear-flat";
 import { WavyLinearTrack } from "./linear-wavy";
 import type { LinearProgressProps } from "./types";
 
-export const LinearProgress = React.forwardRef<HTMLDivElement, LinearProgressProps>(
+export const LinearProgress = React.forwardRef<
+	HTMLDivElement,
+	LinearProgressProps
+>(
 	(
 		{
 			value,
@@ -46,23 +49,27 @@ export const LinearProgress = React.forwardRef<HTMLDivElement, LinearProgressPro
 
 		const isWavy = shape === "wavy";
 		const resolvedTrackShape = trackShape ?? shape;
-		
+
 		const effectiveAmplitude = React.useMemo(() => amplitude ?? 3, [amplitude]);
-		const svgHeight = React.useMemo(() => 
-			isWavy ? trackHeight + effectiveAmplitude * 2 : trackHeight
-		, [isWavy, trackHeight, effectiveAmplitude]);
+		const svgHeight = React.useMemo(
+			() => (isWavy ? trackHeight + effectiveAmplitude * 2 : trackHeight),
+			[isWavy, trackHeight, effectiveAmplitude],
+		);
 
-		const shouldShowStop = React.useMemo(() => 
-			isDeterminate &&
-			resolvedTrackShape === "flat" &&
-			(showStopIndicator === true ||
-				(showStopIndicator === "auto" && isDeterminate))
-		, [isDeterminate, resolvedTrackShape, showStopIndicator]);
+		const shouldShowStop = React.useMemo(
+			() =>
+				isDeterminate &&
+				resolvedTrackShape === "flat" &&
+				(showStopIndicator === true ||
+					(showStopIndicator === "auto" && isDeterminate)),
+			[isDeterminate, resolvedTrackShape, showStopIndicator],
+		);
 
-		const stopSize = React.useMemo(() => 
-			Math.max(2, trackHeight > 4 ? 4 : trackHeight / 2)
-		, [trackHeight]);
-		
+		const stopSize = React.useMemo(
+			() => Math.max(2, trackHeight > 4 ? 4 : trackHeight / 2),
+			[trackHeight],
+		);
+
 		const stopOffset = (trackHeight - stopSize) / 2;
 
 		const activeColor = color || "var(--md-sys-color-indicator-active)";

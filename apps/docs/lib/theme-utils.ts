@@ -69,4 +69,8 @@ export function applyTheme(sourceColorHex: string, mode: ThemeMode = "light") {
 		// Update Tailwind arbitrary variables (used by apps/docs utilities)
 		root.style.setProperty(`--color-m3-${kebabKey}`, value);
 	}
+
+	// Toggle data-theme attribute for Shiki dual-theme CSS switching.
+	// CSS in globals.css uses [data-theme="dark"] .shiki span { color: var(--shiki-dark) }
+	root.setAttribute("data-theme", mode);
 }

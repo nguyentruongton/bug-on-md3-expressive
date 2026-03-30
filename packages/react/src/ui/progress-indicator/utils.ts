@@ -9,7 +9,10 @@ export function generateWavyCircularPath(
 	wavelength: number,
 ): string {
 	const circumference = 2 * Math.PI * radius;
-	const numWaves = Math.max(3, Math.round(circumference / Math.max(1, wavelength)));
+	const numWaves = Math.max(
+		3,
+		Math.round(circumference / Math.max(1, wavelength)),
+	);
 	const steps = numWaves * 4;
 	const dt = (2 * Math.PI) / steps;
 

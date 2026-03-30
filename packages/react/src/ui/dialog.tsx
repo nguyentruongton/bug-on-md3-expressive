@@ -1,3 +1,15 @@
+/**
+ * @file dialog.tsx
+ *
+ * MD3 Expressive Dialog component.
+ *
+ * Builds on Radix UI Dialog primitives wrapped in Framer Motion for
+ * spring-based entrance/exit animations matching the MD3 Expressive spec.
+ * Provides both standard and full-screen variants.
+ *
+ * @see https://m3.material.io/components/dialogs/overview
+ */
+
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -41,33 +53,73 @@ const MD3_FULLSCREEN_ANIM = {
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
+
+/**
+ * Root-level Dialog props. Mirrors Radix `Dialog.Root` controlled-open API.
+ *
+ * @example
+ * ```tsx
+ * const [open, setOpen] = React.useState(false);
+ * <Dialog open={open} onOpenChange={setOpen}>
+ *   <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
+ *   <DialogContent>
+ *     <DialogHeader><DialogTitle>Confirm action</DialogTitle></DialogHeader>
+ *   </DialogContent>
+ * </Dialog>
+ * ```
+ */
 export interface DialogProps {
+	/** Whether the dialog is open (controlled). Omit for uncontrolled. */
 	open?: boolean;
+	/** Called when the open state should change. */
 	onOpenChange?: (open: boolean) => void;
+	/** Dialog trigger + content. */
 	children: React.ReactNode;
 }
 
+/**
+ * Props for the standard `DialogContent` container.
+ *
+ * @see {@link DialogContent}
+ */
 export interface DialogContentProps
 	extends React.ComponentPropsWithoutRef<typeof RadixDialog.Content> {
-	/** Hide the default close button (X icon) */
+	/** Hide the default close button (X icon). @default false */
 	hideCloseButton?: boolean;
 	className?: string;
 }
 
+/**
+ * Props for the full-screen `DialogFullScreenContent` variant.
+ *
+ * @remarks
+ * Full-screen dialogs expand to fill the entire screen and include a top app bar
+ * with optional title, a close icon, and an action button.
+ *
+ * @see {@link DialogFullScreenContent}
+ * @see https://m3.material.io/components/dialogs/guidelines#full-screen
+ */
 export interface DialogFullScreenContentProps
 	extends React.ComponentPropsWithoutRef<typeof RadixDialog.Content> {
-	/** Title text shown in the top app bar area */
+	/** Title text shown in the top app bar area. */
 	title?: string;
-	/** Label for the primary action button in the top bar (e.g. "Save") */
+	/** Label for the primary action button in the top bar (e.g. "Save"). */
 	actionLabel?: string;
-	/** Callback when action button is clicked */
+	/** Called when the primary action button is clicked. */
 	onAction?: () => void;
-	/** Show divider between header and body when content is scrolled */
+	/** Show a divider between header and body when content is scrolled. @default false */
 	showDivider?: boolean;
 	className?: string;
 }
 
 // ─── Re-exports wrapper ───────────────────────────────────────────────────────
+
+/**
+ * Root Dialog component — wraps Radix `Dialog.Root`.
+ *
+ * @remarks Controlled via `open`/`onOpenChange`. For uncontrolled usage,
+ * omit both props and rely on `DialogTrigger` child.
+ */
 const Dialog = ({ open, onOpenChange, children }: DialogProps) => (
 	<RadixDialog.Root open={open} onOpenChange={onOpenChange}>
 		{children}
@@ -75,6 +127,7 @@ const Dialog = ({ open, onOpenChange, children }: DialogProps) => (
 );
 Dialog.displayName = "Dialog";
 
+/** Trigger element that toggles Dialog open state. Accepts `asChild`. */
 const DialogTrigger = RadixDialog.Trigger;
 DialogTrigger.displayName = "DialogTrigger";
 
@@ -112,7 +165,12 @@ const DialogContent = React.forwardRef<
 	React.ComponentRef<typeof RadixDialog.Content>,
 	DialogContentProps
 >(({ className, children, hideCloseButton = false, ...props }, ref) => (
-	<RadixDialog.Content ref={ref} asChild aria-describedby={undefined} {...props}>
+	<RadixDialog.Content
+		ref={ref}
+		asChild
+		aria-describedby={undefined}
+		{...props}
+	>
 		<motion.div
 			className={cn(
 				"fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
@@ -205,10 +263,7 @@ const DialogBody = React.forwardRef<
 		ref={ref}
 		type="hover"
 		dir={dir as "ltr" | "rtl" | undefined}
-		className={cn(
-			"max-h-[calc(85dvh-200px)] -mx-6",
-			className,
-		)}
+		className={cn("max-h-[calc(85dvh-200px)] -mx-6", className)}
 		viewportClassName="px-6"
 		{...props}
 	>
@@ -234,51 +289,73 @@ const DialogClose = RadixDialog.Close;
 const DialogFullScreenContent = React.forwardRef<
 	React.ComponentRef<typeof RadixDialog.Content>,
 	DialogFullScreenContentProps
->(({ className, children, title, actionLabel, onAction, showDivider, ...props }, ref) => (
-	<RadixDialog.Content ref={ref} asChild aria-describedby={undefined} {...props}>
-		<motion.div
-			className={cn(
-				"fixed inset-0 z-50 w-full h-full bg-m3-surface flex flex-col",
-				"outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-m3-primary",
-				className,
-			)}
-			role="dialog"
-			{...MD3_FULLSCREEN_ANIM}
+>(
+	(
+		{
+			className,
+			children,
+			title,
+			actionLabel,
+			onAction,
+			showDivider,
+			...props
+		},
+		ref,
+	) => (
+		<RadixDialog.Content
+			ref={ref}
+			asChild
+			aria-describedby={undefined}
+			{...props}
 		>
-			<div className="flex shrink-0 items-center px-4 h-14 gap-2 bg-m3-surface">
-				<RadixDialog.Close asChild aria-label="Close dialog">
-					<IconButton size="sm" colorStyle="filled" aria-label="Close">
-						<X aria-hidden="true" />
-					</IconButton>
-				</RadixDialog.Close>
+			<motion.div
+				className={cn(
+					"fixed inset-0 z-50 w-full h-full bg-m3-surface flex flex-col",
+					"outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-m3-primary",
+					className,
+				)}
+				role="dialog"
+				{...MD3_FULLSCREEN_ANIM}
+			>
+				<div className="flex shrink-0 items-center px-4 h-14 gap-2 bg-m3-surface">
+					<RadixDialog.Close asChild aria-label="Close dialog">
+						<IconButton size="sm" colorStyle="filled" aria-label="Close">
+							<X aria-hidden="true" />
+						</IconButton>
+					</RadixDialog.Close>
 
-				{title && (
-					<DialogTitle className="flex-1 text-[22px] leading-7 font-medium truncate pr-2">
-						{title}
-					</DialogTitle>
+					{title && (
+						<DialogTitle className="flex-1 text-[22px] leading-7 font-medium truncate pr-2">
+							{title}
+						</DialogTitle>
+					)}
+
+					{actionLabel && onAction && (
+						<button
+							type="button"
+							onClick={onAction}
+							className="text-sm font-medium text-m3-primary px-3 py-2 rounded-full hover:bg-m3-primary/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-m3-primary transition-colors whitespace-nowrap"
+						>
+							{actionLabel}
+						</button>
+					)}
+				</div>
+
+				{showDivider && (
+					<hr className="border-m3-outline-variant w-full shrink-0 m-0" />
 				)}
 
-				{actionLabel && onAction && (
-					<button
-						type="button"
-						onClick={onAction}
-						className="text-sm font-medium text-m3-primary px-3 py-2 rounded-full hover:bg-m3-primary/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-m3-primary transition-colors whitespace-nowrap"
-					>
-						{actionLabel}
-					</button>
-				)}
-			</div>
-
-			{showDivider && (
-				<hr className="border-m3-outline-variant w-full shrink-0 m-0" />
-			)}
-
-			<ScrollArea type="hover" className="flex-1 w-full" viewportClassName="p-6">
-				{children}
-			</ScrollArea>
-		</motion.div>
-	</RadixDialog.Content>
-));
+				<ScrollArea
+					type="hover"
+					className="flex-1 w-full"
+					viewportClassName="p-6"
+				>
+					{children}
+				</ScrollArea>
+			</motion.div>
+		</RadixDialog.Content>
+	),
+);
 DialogFullScreenContent.displayName = "DialogFullScreenContent";
 
 export {
