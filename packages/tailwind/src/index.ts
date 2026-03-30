@@ -1,6 +1,6 @@
 import plugin from "tailwindcss/plugin";
 
-const md3Plugin = plugin(({ addBase, addUtilities }) => {
+const md3Plugin = plugin(({ addBase, addComponents, addUtilities }) => {
 	addBase({
 		":root": {
 			"--color-m3-primary": "var(--md-sys-color-primary)",
@@ -55,6 +55,27 @@ const md3Plugin = plugin(({ addBase, addUtilities }) => {
 		},
 	});
 
+	// ── Material Symbols Icon base class ────────────────────────────────────
+	// CSS variables drive font-variation-settings so utility classes and
+	// inline style props can all influence the same axes without specificity wars.
+	addComponents({
+		".md-icon": {
+			fontFamily: "var(--md-icon-font, 'Material Symbols Outlined')",
+			fontWeight: "normal",
+			fontStyle: "normal",
+			fontSize: "var(--md-icon-size, 24px)",
+			lineHeight: "1",
+			display: "inline-block",
+			whiteSpace: "nowrap",
+			wordWrap: "normal",
+			direction: "ltr",
+			textRendering: "optimizeLegibility",
+			"-webkit-font-smoothing": "antialiased",
+			fontVariationSettings:
+				"'FILL' var(--md-icon-fill, 0), 'wght' var(--md-icon-weight, 400), 'GRAD' var(--md-icon-grade, 0), 'opsz' var(--md-icon-opsz, 24)",
+		},
+	});
+
 	addUtilities({
 		".elevation-0": { boxShadow: "none" },
 		".elevation-1": {
@@ -76,6 +97,58 @@ const md3Plugin = plugin(({ addBase, addUtilities }) => {
 		".elevation-5": {
 			boxShadow:
 				"0px 4px 4px 0px rgba(0,0,0,.3), 0px 8px 12px 6px rgba(0,0,0,.15)",
+		},
+		// ── Icon variant utilities ─────────────────────────────────────────────
+		// Set --md-icon-font to switch between Material Symbols font families.
+		".icon-outlined": {
+			"--md-icon-font": "'Material Symbols Outlined'",
+			fontFamily: "'Material Symbols Outlined'",
+		},
+		".icon-rounded": {
+			"--md-icon-font": "'Material Symbols Rounded'",
+			fontFamily: "'Material Symbols Rounded'",
+		},
+		".icon-sharp": {
+			"--md-icon-font": "'Material Symbols Sharp'",
+			fontFamily: "'Material Symbols Sharp'",
+		},
+		// ── Fill axis utilities ────────────────────────────────────────────────
+		".icon-fill-0": { "--md-icon-fill": "0" },
+		".icon-fill-1": { "--md-icon-fill": "1" },
+		// ── Weight axis utilities ──────────────────────────────────────────────
+		".icon-weight-100": { "--md-icon-weight": "100" },
+		".icon-weight-200": { "--md-icon-weight": "200" },
+		".icon-weight-300": { "--md-icon-weight": "300" },
+		".icon-weight-400": { "--md-icon-weight": "400" },
+		".icon-weight-500": { "--md-icon-weight": "500" },
+		".icon-weight-600": { "--md-icon-weight": "600" },
+		".icon-weight-700": { "--md-icon-weight": "700" },
+		// ── Grade axis utilities ───────────────────────────────────────────────
+		// Named aliases match common usage patterns from MD3 spec.
+		".icon-grade-low": { "--md-icon-grade": "-25" },
+		".icon-grade-default": { "--md-icon-grade": "0" },
+		".icon-grade-high": { "--md-icon-grade": "200" },
+		// ── Optical size + font-size combined utilities ────────────────────────
+		// opsz axis must match the rendered size for best optical quality.
+		".icon-size-20": {
+			"--md-icon-size": "20px",
+			"--md-icon-opsz": "20",
+			fontSize: "20px",
+		},
+		".icon-size-24": {
+			"--md-icon-size": "24px",
+			"--md-icon-opsz": "24",
+			fontSize: "24px",
+		},
+		".icon-size-40": {
+			"--md-icon-size": "40px",
+			"--md-icon-opsz": "40",
+			fontSize: "40px",
+		},
+		".icon-size-48": {
+			"--md-icon-size": "48px",
+			"--md-icon-opsz": "48",
+			fontSize: "48px",
 		},
 	});
 });

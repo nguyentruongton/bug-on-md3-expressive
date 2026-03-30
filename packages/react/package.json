@@ -11,14 +11,10 @@
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.js"
 		},
-		"./typography.css": {
-			"style": "./dist/typography.css",
-			"default": "./dist/typography.css"
-		},
-		"./index.css": {
-			"style": "./dist/index.css",
-			"default": "./dist/index.css"
-		}
+		"./typography.css": "./dist/typography.css",
+		"./index.css": "./dist/index.css",
+		"./material-symbols-cdn.css": "./dist/material-symbols-cdn.css",
+		"./material-symbols-self-hosted.css": "./dist/material-symbols-self-hosted.css"
 	},
 	"files": [
 		"dist",

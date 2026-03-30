@@ -1,0 +1,61 @@
+/*
+ * Material Symbols — CDN version (Google Fonts)
+ *
+ * USAGE IN APP'S HTML <head>:
+ * Add preconnect hints BEFORE this CSS loads for fastest performance:
+ *
+ *   <link rel="preconnect" href="https://fonts.googleapis.com" />
+ *   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+ *
+ * Then import this CSS:
+ *   import '@bug-on/md3-react/material-symbols-cdn.css'
+ *
+ * WHY TWO preconnect?
+ * Google Fonts serves the CSS stylesheet from fonts.googleapis.com
+ * but the actual .woff2 font files come from fonts.gstatic.com (different origin).
+ * The crossorigin attribute is required for font files (CORS request).
+ *
+ * FONT-DISPLAY NOTE for icon fonts:
+ * We use font-display: block (NOT swap) because:
+ * - swap would briefly show raw text like "arrow_forward" before icon loads = jarring layout shift
+ * - block hides text during load period (max 3s), then shows icon = cleaner UX
+ * - optional is NOT suitable: if font misses the load window, icons never appear
+ */
+
+/*
+ * INSTRUCTION:
+ * Use the <MaterialSymbolsPreconnect /> component to load the actual Google Fonts CSS!
+ * 
+ * We NO LONGER use @import url(...) here because CSS bundlers (like Next.js/Webpack)
+ * often merge global CSS files and push @import statements below regular CSS rules.
+ * According to CSS spec, any @import MUST be at the very top, so it breaks randomly.
+ * Loading via `<link rel="stylesheet">` (handled by MaterialSymbolsPreconnect) is fully robust.
+ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * BASE ICON STYLES
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * This class ensures that Material Symbols render correctly as ligatures
+ * across all browsers and prevents common layout issues.
+ */
+.md-icon {
+	font-family: inherit; /* Set dynamically by the Icon component */
+	font-weight: normal;
+	font-style: normal;
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+
+	/* Enable ligature rendering support for modern browsers */
+	font-feature-settings: "liga";
+
+	/* Improved rendering quality */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}

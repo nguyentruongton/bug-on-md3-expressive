@@ -1,8 +1,12 @@
-import { TypographyProvider } from "@bug-on/md3-react";
+import {
+	MaterialSymbolsPreconnect,
+	TypographyProvider,
+} from "@bug-on/md3-react";
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutProvider } from "@/lib/layout-context";
 import { TocProvider } from "@/lib/toc-context";
+import "@bug-on/md3-react/material-symbols-cdn.css";
 import "@bug-on/md3-react/typography.css";
 import "./globals.css";
 import type { Metadata } from "next";
@@ -19,6 +23,11 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
+			<head>
+				<MaterialSymbolsPreconnect
+					variants={["outlined", "rounded", "sharp"]}
+				/>
+			</head>
 			<body
 				suppressHydrationWarning
 				className="antialiased bg-mesh-gradient text-m3-on-surface font-md3-expressive overflow-x-hidden"

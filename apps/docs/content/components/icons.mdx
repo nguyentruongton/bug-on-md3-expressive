@@ -1,0 +1,81 @@
+---
+title: "Icons"
+description: "Material Symbols Variable Font integration with customizable axes and hardware-accelerated animations."
+---
+
+The `<Icon />` component provides a highly performant wrapper around Google's **Material Symbols** variable font. Instead of shipping static SVG files, it leverages a single variable font file capable of infinite interpolation across 4 distinct typography axes: Fill (`FILL`), Weight (`wght`), Grade (`GRAD`), and Optical Size (`opsz`), along with 3 geometric variations.
+
+## Setup & Configuration
+
+Before using the component, you must load the Material Symbols font in your application. We provide a pre-compiled CSS file with `@font-face` definitions that stream the required fonts directly from Google Fonts CDN.
+
+### Option 1: Global CSS Import (Recommended)
+Import the provided CSS file directly into your global stylesheet (e.g., `globals.css`):
+
+```css
+@import "@bug-on/md3-react/material-symbols.css";
+```
+
+### Option 2: Next.js Font Optimization
+For Next.js applications, you can host the variable font locally and prevent layout shift (FOUT) using `localFont` or `next/font/google`:
+
+```tsx
+// app/layout.tsx
+import localFont from "next/font/local";
+
+const materialSymbols = localFont({
+  src: "../public/fonts/MaterialSymbolsOutlined-VariableFont.woff2",
+  variable: "--font-material-symbols",
+  display: "block",
+});
+
+export default function RootLayout({ children }) {
+  return <html className={materialSymbols.variable}>{children}</html>;
+}
+```
+
+---
+
+## Basic Usage & Variants
+
+Material Symbols offers three distinct stylistic variants: `outlined` (default), `rounded`, and `sharp`. 
+
+<ComponentPreview name="icon-basic" />
+
+## Variable Font Axes (Playground)
+
+The true power of a variable font lies in its axes. The `<Icon />` component exposes 4 direct properties to manipulate the font's appearance down to the pixel. 
+
+- **Fill:** `0` (unfilled) to `1` (solid).
+- **Weight:** `100` (Thin) to `700` (Bold). Default is `400`.
+- **Grade:** `-50` (Low emphasis) to `200` (High emphasis). Modifies thickness without changing metrics.
+- **Optical Size:** `20`, `24`, `40`, `48`. Optimizes stroke rendering for specific pixel sizes.
+
+<ComponentPreview name="icon-axes" />
+
+## Hardware-Accelerated Animation
+
+Variable font axes can be interpolated perfectly using CSS transitions. By setting the `animateFill` property to `true`, the `<Icon />` component utilizes `motion/react` spring transitions to morph between `fill={0}` and `fill={1}` states dynamically.
+
+<ComponentPreview name="icon-animated" />
+
+## Tailwind CSS Integration
+
+The component seamlessly integrates with the `@bug-on/tailwind` plugin. Native component properties map directly to CSS variables (`--md-icon-*`), allowing you to override variants and axes using utility classes.
+
+<ComponentPreview name="icon-tailwind" />
+
+## API Reference
+
+### IconProps
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `children` | `string` | **Required** | The ligature string name of the icon (e.g., `"favorite"`). |
+| `variant` | `'outlined' \| 'rounded' \| 'sharp'` | `'outlined'` | The stylistic geometric variant to load. |
+| `fill` | `0 \| 1 \| number` | `0` | Fill axis, `0` for line-art, `1` for solid. Accepts decimals. |
+| `weight` | `number` | `400` | Stroke thickness (100–700). |
+| `grade` | `number` | `0` | Emphasis modifier (-50 to 200). Useful for hover states. |
+| `opticalSize` | `20 \| 24 \| 40 \| 48` | `24` | Size optimization for the font geometry. |
+| `size` | `number` | `24` | Sets the visual `font-size` in pixels, and bounds the width/height. |
+| `animateFill` | `boolean` | `false` | Enables spring animations when changing the `fill` prop. |

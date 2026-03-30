@@ -29,6 +29,7 @@ import {
 	Radio,
 	ScrollText,
 	Search,
+	Shapes,
 	SlidersHorizontal,
 	SplitSquareHorizontal,
 	Tag,
@@ -299,6 +300,13 @@ export const componentCategories = [
 				description: "Typography styles and text scales",
 				icon: Type,
 				href: "/components/typography",
+			},
+			{
+				name: "Icons",
+				description:
+					"Material Symbols variable font integration, configuration, and variants",
+				icon: Shapes,
+				href: "/components/icons",
 			},
 		],
 	},

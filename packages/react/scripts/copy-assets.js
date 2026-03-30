@@ -24,6 +24,21 @@ if (fs.existsSync(srcCss)) {
 	console.log("✅ Copied typography.css to dist/typography.css");
 }
 
+// Copy Material Symbols CSS variants
+const cssVariants = [
+	"material-symbols-cdn.css",
+	"material-symbols-self-hosted.css",
+];
+
+for (const file of cssVariants) {
+	const srcPath = path.join(__dirname, `../src/assets/${file}`);
+	const distPath = path.join(__dirname, `../dist/${file}`);
+	if (fs.existsSync(srcPath)) {
+		fs.copyFileSync(srcPath, distPath);
+		console.log(`✅ Copied ${file} to dist/${file}`);
+	}
+}
+
 // Prepend "use client" to JS/MJS output files to support React Server Components
 const distFiles = [
 	path.join(__dirname, "../dist/index.js"),

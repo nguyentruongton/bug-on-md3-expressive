@@ -1,0 +1,105 @@
+/*
+ * Material Symbols — Self-Hosted version
+ *
+ * SETUP STEPS:
+ *
+ * Step 1 — Download font files
+ * Truy cập: https://github.com/google/material-design-icons/tree/master/variablefont
+ * Download file: MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].woff2
+ * (và Rounded / Sharp nếu cần)
+ *
+ * Step 2 — Place font files in your app
+ * Recommended location: public/fonts/ hoặc src/assets/fonts/
+ * Example: public/fonts/MaterialSymbolsOutlined.woff2
+ *
+ * Step 3 — Copy và điều chỉnh @font-face block bên dưới
+ * Thay đổi src url() để trỏ đúng đường dẫn trong project của bạn
+ *
+ * Step 4 — Import file này:
+ *   import '@bug-on/md3-react/material-symbols-self-hosted.css'
+ *
+ * PERFORMANCE NOTES:
+ * - Self-hosting tốt hơn CDN khi bạn dùng CDN + HTTP/2 cho static assets
+ * - Nếu không có CDN, Google Fonts CDN có thể nhanh hơn do cache sharing
+ * - Dùng font-display: block cho icon fonts (xem lý do ở file CDN)
+ * - WOFF2 là format duy nhất cần thiết (100% modern browser support, Brotli compression)
+ * - Không cần WOFF fallback nữa
+ *
+ * SUBSETTING (QUAN TRỌNG để giảm file size):
+ * Full variable font ~295 KB. Sau khi subset còn ~1-2 KB cho vài chục icons.
+ * Dùng tool: https://everythingfonts.com/subsetter
+ * Hoặc dùng Google Fonts text parameter để subset trên CDN:
+ *   ?family=Material+Symbols+Outlined&text=home%20search%20settings
+ *
+ * GDPR NOTE:
+ * Self-hosting loại bỏ việc gửi user IP đến Google servers,
+ * giải quyết GDPR compliance requirement.
+ */
+
+@font-face {
+	font-family: "Material Symbols Outlined";
+	font-style: normal;
+	/* Khai báo full axis range để browser biết đây là variable font */
+	font-weight: 100 700;
+	/* font-display: block là bắt buộc cho icon fonts:
+   * - Tránh render text thô "arrow_forward" thay vì icon
+   * - Max 3s block, sau đó icon xuất hiện
+   * Tham khảo: https://web.dev/articles/font-best-practices#icon_fonts */
+	font-display: block;
+	src: url("/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].woff2")
+		format("woff2");
+	/* unicode-range: chỉ load font khi page chứa ký tự trong range này.
+   * Material Symbols dùng PUA (Private Use Area) cho ligatures. */
+}
+
+/*
+ * Rounded variant — uncomment nếu dùng
+ *
+@font-face {
+  font-family: 'Material Symbols Rounded';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url('/fonts/MaterialSymbolsRounded[FILL,GRAD,opsz,wght].woff2') format('woff2');
+}
+*/
+
+/*
+ * Sharp variant — uncomment nếu dùng
+ *
+@font-face {
+  font-family: 'Material Symbols Sharp';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url('/fonts/MaterialSymbolsSharp[FILL,GRAD,opsz,wght].woff2') format('woff2');
+}
+*/
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * BASE ICON STYLES
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * This class ensures that Material Symbols render correctly as ligatures
+ * across all browsers and prevents common layout issues.
+ */
+.md-icon {
+	font-family: inherit; /* Set dynamically by the Icon component */
+	font-weight: normal;
+	font-style: normal;
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+
+	/* Enable ligature rendering support for modern browsers */
+	font-feature-settings: "liga";
+
+	/* Improved rendering quality */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}

@@ -12,7 +12,9 @@
 			"!!**/.next",
 			"!!**/dist",
 			"!!**/node_modules",
-			"!!**/coverage"
+			"!!**/coverage",
+			"!!**/.agent",
+			"!!**/.vscode"
 		]
 	},
 	"formatter": {

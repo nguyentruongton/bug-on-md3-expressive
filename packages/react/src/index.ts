@@ -2,6 +2,7 @@ export { useMediaQuery } from "./hooks/useMediaQuery";
 // Hooks
 /** @deprecated Use `useRippleState` (Framer Motion) from the main package instead. DOM-only ripple. */
 export { useRipple as useDOMRipple } from "./hooks/useRipple";
+export { MaterialSymbolsPreconnect } from "./lib/material-symbols-preconnect";
 // Utils
 export { cn } from "./lib/utils";
 // Types
@@ -86,6 +87,9 @@ export type {
 } from "./ui/fab-menu";
 // FAB Menu
 export { FABMenu, FABMenuItem, ToggleFAB } from "./ui/fab-menu";
+// Icon — Material Symbols variable font
+export type { IconProps } from "./ui/icon";
+export { Icon } from "./ui/icon";
 export type { BaseIconButtonProps, IconButtonProps } from "./ui/icon-button";
 export { IconButton } from "./ui/icon-button";
 export type { LoadingIndicatorProps } from "./ui/loading-indicator";
