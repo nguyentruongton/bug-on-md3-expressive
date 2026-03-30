@@ -1,0 +1,111 @@
+---
+title: Floating Action Button (FAB) Menu
+description: The FAB menu opens from a Floating Action Button to display multiple related actions with smooth MD3 staggered animations.
+---
+
+Floating Action Button menus help group related actions under a single, prominent floating button. On tap, the FAB transforms and reveals a list of specific actions.
+
+<ComponentPreview name="fab-menu-default" />
+
+## Color Variants
+
+FAB menus can use primary, secondary, or tertiary colors. This applies to both the central toggle FAB and the individual list items as per Material Design 3 Expressive guidelines.
+
+<ComponentPreview name="fab-menu-variants" />
+
+## Sizes
+
+FAB menus support the three MD3 Expressive FAB sizes for the main toggle button. The `fabSize` prop controls the initial size of the FAB (`baseline`, `medium`, `large`). 
+
+*Note: The menu items themselves remain a consistent size to maintain a reliable touch target area.*
+
+<ComponentPreview name="fab-menu-sizes" />
+
+## Alignment
+
+You can align the menu items to unfold from `end` (default behavior starting from the trailing edge) or `start` based on positioning and design requirements.
+
+<ComponentPreview name="fab-menu-alignment" />
+
+## Icon Only (Advanced)
+
+While menu items usually require text for clarity and accessibility, you can visually hide the text labels for more compact displays by utilizing Tailwind CSS classes in the item's `className` property.
+
+<ComponentPreview name="fab-menu-icon-only" />
+
+## Accessibility
+
+- Full keyboard support is implemented. Pressing `Escape` will close the FAB menu and return focus to the toggle button.
+- Focus is trapped or rationally directed when the menu is open, allowing `Tab` or `Arrow Keys` to cycle through the available menu actions.
+- ARIA semantics (`menu`, `menuitem`, `button`, `aria-expanded`, `aria-haspopup`) are strictly enforced for screen reader compatibility.
+- Ensure every `FABMenuItemData` has a clear, descriptive `label` even if it is visually hidden.
+
+## Usage
+
+```tsx
+import { FABMenu } from "@bug-on/md3-react";
+import { PenSquare, Copy, Share2, Trash2 } from "lucide-react";
+import * as React from "react";
+
+export default function MyComponent() {
+  const [expanded, setExpanded] = React.useState(false);
+
+  return (
+    <FABMenu
+      expanded={expanded}
+      onToggle={setExpanded}
+      aria-label="Document actions"
+      items={[
+        {
+          id: "edit",
+          label: "Edit",
+          icon: <PenSquare />,
+          onClick: () => console.log("Edit"),
+        },
+        {
+          id: "share",
+          label: "Share",
+          icon: <Share2 />,
+          onClick: () => console.log("Share"),
+        },
+        {
+          id: "delete",
+          label: "Delete",
+          icon: <Trash2 />,
+          disabled: true,
+          onClick: () => console.log("Delete"),
+        },
+      ]}
+    />
+  );
+}
+```
+
+## API Reference
+
+### FABMenu
+
+The primary orchestrator component representing the morphing FAB and the staggered list of actions.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `expanded` | `boolean` | — | **Required.** Determines if the menu actions are currently visible. |
+| `onToggle` | `(expanded: boolean) => void` | — | **Required.** Callback invoked when the toggle FAB is clicked or menu interactions require closing. |
+| `items` | `FABMenuItemData[]` | — | **Required.** Array of objects representing each actionable menu item. |
+| `colorVariant` | `"primary" \| "secondary" \| "tertiary"` | `"primaryContainer"` | Which MD3 color system theme is applied. |
+| `fabSize` | `"baseline" \| "medium" \| "large"` | `"baseline"` | The dimensions of the unexpanded FAB. |
+| `alignment` | `"start" \| "end"` | `"end"` | Origins of staggered layout growth. |
+| `className` | `string` | — | Extra wrapper tailwind classes (useful for `absolute` positioning). |
+
+### FABMenuItemData
+
+The interface object detailing the content and behavior of each individual menu item.
+
+| Property | Type | Default | Description |
+|------|------|---------|-------------|
+| `id` | `string` | — | **Required.** Unique identifier for the item slice. |
+| `label` | `string` | — | **Required.** Tooltip title, accessible text, and visible text for this menu item. |
+| `icon` | `React.ReactNode` | — | The React component icon to display on the left side of the label. |
+| `onClick` | `() => void` | — | Action triggered when the item is pressed. |
+| `disabled` | `boolean` | `false` | Sets native `disabled` state and blocks interactions. |
+| `className` | `string` | — | Optional stylistic overrides per menu item. |

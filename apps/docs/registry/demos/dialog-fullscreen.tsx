@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
 	Button,
 	Dialog,
@@ -11,6 +10,7 @@ import {
 	DialogTrigger,
 } from "@bug-on/md3-react";
 import { User } from "lucide-react";
+import * as React from "react";
 
 export default function DialogFullScreen() {
 	const [open, setOpen] = React.useState(false);

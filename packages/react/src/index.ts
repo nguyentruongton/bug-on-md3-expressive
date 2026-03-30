@@ -78,6 +78,14 @@ export {
 export type { FABPositionProps, FABProps } from "./ui/fab";
 // Floating Action Button
 export { FAB, FABPosition } from "./ui/fab";
+export type {
+	FABMenuItemData,
+	FABMenuItemProps,
+	FABMenuProps,
+	ToggleFABProps,
+} from "./ui/fab-menu";
+// FAB Menu
+export { FABMenu, FABMenuItem, ToggleFAB } from "./ui/fab-menu";
 export type { BaseIconButtonProps, IconButtonProps } from "./ui/icon-button";
 export { IconButton } from "./ui/icon-button";
 export type { LoadingIndicatorProps } from "./ui/loading-indicator";
@@ -104,7 +112,7 @@ export {
 	ScrollArea,
 	ScrollAreaScrollbar,
 } from "./ui/scroll-area";
-export type { ToCItem, TableOfContentsProps } from "./ui/toc";
+export type { TableOfContentsProps, ToCItem } from "./ui/toc";
 export { TableOfContents } from "./ui/toc";
 export type {
 	TextStyle,

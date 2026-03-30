@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { Card } from "@bug-on/md3-react";
 import { ExternalLink } from "lucide-react";
+import * as React from "react";
 
 export default function CardInteractive() {
 	const [clicks, setClicks] = React.useState(0);

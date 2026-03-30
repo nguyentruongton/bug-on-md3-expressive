@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
 	Button,
 	Dialog,
@@ -14,6 +13,7 @@ import {
 	DialogTrigger,
 } from "@bug-on/md3-react";
 import { AlertTriangle } from "lucide-react";
+import * as React from "react";
 
 export default function DialogIcon_() {
 	const [open, setOpen] = React.useState(false);

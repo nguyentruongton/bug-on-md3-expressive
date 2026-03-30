@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import type { BaseButtonProps } from "@bug-on/md3-react";
 import { Button } from "@bug-on/md3-react";
+import * as React from "react";
 
 type LoadingDemoProps = { label: string } & Partial<
 	Omit<BaseButtonProps, "loading" | "children">

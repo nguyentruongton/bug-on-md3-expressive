@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
 	Button,
 	Dialog,
@@ -13,6 +12,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@bug-on/md3-react";
+import * as React from "react";
 
 export default function DialogScrollable() {
 	const [open, setOpen] = React.useState(false);

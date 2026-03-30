@@ -1,15 +1,15 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import matter from "gray-matter";
+import { ChevronRight } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx/mdx-components";
 import { TocRegistrar } from "@/components/mdx/toc-registrar";
-import type { Metadata } from "next";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers

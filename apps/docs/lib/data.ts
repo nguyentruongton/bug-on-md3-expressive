@@ -61,10 +61,11 @@ export const componentCategories = [
 				icon: PlusSquare,
 			},
 			{
-				name: "FAB menu",
+				name: "FAB Menu",
 				description:
 					"The floating action button (FAB) menu opens from a FAB to display multiple related actions",
 				icon: Menu,
+				href: "/components/fab-menu",
 			},
 			{
 				name: "FABs",

@@ -92,10 +92,10 @@ const MORPH_RADIUS: Record<
 		extended_pressed: number;
 	}
 > = {
-	sm: { default: 20, pressed: 10, extended: 20, extended_pressed: 10 },
-	md: { default: 28, pressed: 16, extended: 16, extended_pressed: 10 },
-	lg: { default: 48, pressed: 28, extended: 28, extended_pressed: 20 },
-	xl: { default: 68, pressed: 40, extended: 40, extended_pressed: 28 },
+	sm: { default: 12, pressed: 8, extended: 12, extended_pressed: 8 },
+	md: { default: 16, pressed: 10, extended: 16, extended_pressed: 10 },
+	lg: { default: 28, pressed: 20, extended: 28, extended_pressed: 20 },
+	xl: { default: 40, pressed: 28, extended: 40, extended_pressed: 28 },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

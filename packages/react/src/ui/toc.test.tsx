@@ -1,11 +1,11 @@
-import { describe, expect, it, vi, beforeEach, type Mock } from "vitest";
 import {
+	act,
+	fireEvent,
 	render,
 	screen,
-	fireEvent,
 	waitFor,
-	act,
 } from "@testing-library/react";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 
 // Mock implementation
 let mockObserve: Mock<(element: Element) => void>;

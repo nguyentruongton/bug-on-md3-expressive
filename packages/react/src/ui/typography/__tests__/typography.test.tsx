@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { Typography, TypographyProvider, useTypography } from "../typography";
 import { TypographyKeyTokens } from "../typography-key-tokens";
 import {
-	TypographyTokens,
-	serializeFontVariationAxes,
 	DEFAULT_FONT_VARIATION_AXES,
+	serializeFontVariationAxes,
+	TypographyTokens,
 } from "../typography-tokens";
 
 describe("Typography", () => {
