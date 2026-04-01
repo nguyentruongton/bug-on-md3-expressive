@@ -43,8 +43,7 @@ While menu items usually require text for clarity and accessibility, you can vis
 ## Usage
 
 ```tsx
-import { FABMenu } from "@bug-on/md3-react";
-import { PenSquare, Copy, Share2, Trash2 } from "lucide-react";
+import { FABMenu, Icon } from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function MyComponent() {
@@ -59,19 +58,19 @@ export default function MyComponent() {
         {
           id: "edit",
           label: "Edit",
-          icon: <PenSquare />,
+          icon: <Icon name="edit" />,
           onClick: () => console.log("Edit"),
         },
         {
           id: "share",
           label: "Share",
-          icon: <Share2 />,
+          icon: <Icon name="share" />,
           onClick: () => console.log("Share"),
         },
         {
           id: "delete",
           label: "Delete",
-          icon: <Trash2 />,
+          icon: <Icon name="delete" />,
           disabled: true,
           onClick: () => console.log("Delete"),
         },

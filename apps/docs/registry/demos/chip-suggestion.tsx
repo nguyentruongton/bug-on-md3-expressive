@@ -1,7 +1,6 @@
 "use client";
 
-import { Chip } from "@bug-on/md3-react";
-import { Search } from "lucide-react";
+import { Chip, Icon } from "@bug-on/md3-react";
 import { useState } from "react";
 
 export default function ChipSuggestionDemo() {
@@ -27,7 +26,7 @@ export default function ChipSuggestionDemo() {
 							key={s}
 							variant="suggestion"
 							label={s}
-							leadingIcon={<Search className="w-4.5 h-4.5" />}
+							leadingIcon={<Icon name="search" className="w-4.5 h-4.5" />}
 							onClick={() =>
 								setSelectedSuggestion(s === selectedSuggestion ? null : s)
 							}

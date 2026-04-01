@@ -43,8 +43,12 @@
 	font-family: inherit; /* Set dynamically by the Icon component */
 	font-weight: normal;
 	font-style: normal;
-	display: inline-block;
-	line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1em;
+	height: 1em;
+	line-height: normal;
 	text-transform: none;
 	letter-spacing: normal;
 	word-wrap: normal;

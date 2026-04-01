@@ -1,8 +1,8 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
+import { Icon } from "./icon";
 
 // ─── MD3 Expressive Drawer Animation ─────────────────────────────────────────
 // Slide từ dưới lên, spring physics giống Google Material's "Emphasized" easing
@@ -150,7 +150,7 @@ const DrawerContent = React.forwardRef<
 						)}
 						aria-label="Đóng bảng điều khiển"
 					>
-						<X className="h-5 w-5" aria-hidden="true" />
+						<Icon name="close" size={20} aria-hidden="true" />
 					</RadixDialog.Close>
 				)}
 

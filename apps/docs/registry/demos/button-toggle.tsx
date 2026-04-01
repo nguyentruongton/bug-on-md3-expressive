@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@bug-on/md3-react";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Button, Icon } from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function ButtonToggle() {
@@ -17,9 +16,9 @@ export default function ButtonToggle() {
 					onClick={() => setBookmarked(!bookmarked)}
 					icon={
 						bookmarked ? (
-							<BookmarkCheck className="w-5 h-5 fill-current" />
+							<Icon name="bookmark" size={20} fill={1} />
 						) : (
-							<Bookmark className="w-5 h-5" />
+							<Icon name="bookmark" size={20} />
 						)
 					}
 				>

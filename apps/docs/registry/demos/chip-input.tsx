@@ -1,7 +1,6 @@
 "use client";
 
-import { Chip } from "@bug-on/md3-react";
-import { Calendar, MapPin, Tag, User } from "lucide-react";
+import { Chip, Icon } from "@bug-on/md3-react";
 import { useState } from "react";
 
 export default function ChipInputDemo() {
@@ -47,19 +46,19 @@ export default function ChipInputDemo() {
 					<Chip
 						variant="input"
 						label="Location"
-						leadingIcon={<MapPin className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="location_on" className="w-4.5 h-4.5" />}
 						onRemove={() => {}}
 					/>
 					<Chip
 						variant="input"
 						label="Calendar"
-						leadingIcon={<Calendar className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="calendar_today" className="w-4.5 h-4.5" />}
 						onRemove={() => {}}
 					/>
 					<Chip
 						variant="input"
 						label="Tag"
-						leadingIcon={<Tag className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="label" className="w-4.5 h-4.5" />}
 						onRemove={() => {}}
 					/>
 				</div>
@@ -111,7 +110,7 @@ export default function ChipInputDemo() {
 						variant="input"
 						label="Icon — selected"
 						selected
-						leadingIcon={<User className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="person" className="w-4.5 h-4.5" />}
 						onRemove={() => {}}
 					/>
 				</div>

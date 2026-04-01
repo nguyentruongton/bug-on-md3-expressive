@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { Icon } from "@bug-on/md3-react";
 import matter from "gray-matter";
-import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -129,8 +129,10 @@ export default async function ComponentPage({
 					>
 						Components
 					</Link>
-					<ChevronRight
-						className="w-4 h-4 text-m3-on-surface-variant"
+					<Icon
+						name="chevron_right"
+						size={16}
+						className=" text-m3-on-surface-variant"
 						aria-hidden="true"
 					/>
 					<span

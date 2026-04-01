@@ -363,9 +363,10 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 									opacity: { duration: 0.15, ease: "easeOut" },
 								}}
 								className={cn(
-									"flex items-center justify-center shrink-0 overflow-hidden",
+									"flex items-center justify-center shrink-0 overflow-hidden [&_.md-icon]:text-[length:inherit]!",
 									leadingIconColorClass,
 								)}
+								style={{ fontSize: 18 }}
 								aria-hidden="true"
 							>
 								{resolvedLeadingIcon}
@@ -384,9 +385,10 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 							<span
 								key="leading-icon"
 								className={cn(
-									"flex items-center justify-center shrink-0 w-4.5 h-4.5",
+									"flex items-center justify-center shrink-0 w-4.5 h-4.5 [&_.md-icon]:text-[length:inherit]!",
 									leadingIconColorClass,
 								)}
+								style={{ fontSize: 18 }}
 								aria-hidden="true"
 							>
 								{resolvedLeadingIcon}
@@ -499,11 +501,12 @@ const ChipImpl = React.forwardRef<HTMLButtonElement, ChipProps>(
 							) : trailingIcon ? (
 								<span
 									className={cn(
-										"flex items-center justify-center w-4.5 h-4.5",
+										"flex items-center justify-center w-4.5 h-4.5 [&_.md-icon]:text-[length:inherit]!",
 										selected
 											? "text-m3-on-secondary-container"
 											: "text-m3-on-surface-variant",
 									)}
+									style={{ fontSize: 18 }}
 									aria-hidden="true"
 								>
 									{trailingIcon}

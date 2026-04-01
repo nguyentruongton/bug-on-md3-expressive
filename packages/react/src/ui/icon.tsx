@@ -60,7 +60,7 @@ export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
 	 * Explicit `font-size` override in px. The `opsz` axis still follows `opticalSize`.
 	 * @example size={18} opticalSize={20}
 	 */
-	size?: number;
+	size?: number | "inherit";
 
 	/**
 	 * Animate the FILL axis transition with a spring (uses `SPRING_TRANSITION_FAST`).
@@ -92,7 +92,7 @@ const IconComponent = React.forwardRef<HTMLSpanElement, IconProps>(
 
 		const computedStyle: React.CSSProperties = {
 			fontFamily: VARIANT_FONT[variant],
-			fontSize: size != null ? `${size}px` : `${opticalSize}px`,
+			fontSize: size === "inherit" ? "inherit" : (size != null ? `${size}px` : `${opticalSize}px`),
 			fontVariationSettings,
 			...style,
 		};
@@ -102,7 +102,7 @@ const IconComponent = React.forwardRef<HTMLSpanElement, IconProps>(
 				<LazyMotion features={domMax} strict>
 					<m.span
 						ref={ref}
-						className={cn("md-icon select-none", className)}
+						className={cn("md-icon inline-flex items-center justify-center shrink-0 select-none", className)}
 						aria-hidden="true"
 						animate={{ fontVariationSettings }}
 						transition={SPRING_TRANSITION_FAST}
@@ -119,7 +119,7 @@ const IconComponent = React.forwardRef<HTMLSpanElement, IconProps>(
 		return (
 			<span
 				ref={ref}
-				className={cn("md-icon select-none", className)}
+				className={cn("md-icon inline-flex items-center justify-center shrink-0 select-none", className)}
 				aria-hidden="true"
 				style={computedStyle}
 				{...restProps}

@@ -1,8 +1,7 @@
 "use client";
 
 import type { BaseIconButtonProps } from "@bug-on/md3-react";
-import { IconButton } from "@bug-on/md3-react";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Icon, IconButton } from "@bug-on/md3-react";
 import { useEffect, useState } from "react";
 
 function LoadingIconButtonDemo(
@@ -49,21 +48,21 @@ export default function IconButtonLoadingDemo() {
 						aria-label="Tải lên"
 						colorStyle="filled"
 						loadingVariant="loading-indicator"
-						icon={<Plus />}
+						icon={<Icon name="add" />}
 						size="md"
 					/>
 					<LoadingIconButtonDemo
 						aria-label="Tìm kiếm"
 						colorStyle="tonal"
 						loadingVariant="loading-indicator"
-						icon={<Search />}
+						icon={<Icon name="search" />}
 						size="md"
 					/>
 					<LoadingIconButtonDemo
 						aria-label="Cài đặt"
 						colorStyle="outlined"
 						loadingVariant="loading-indicator"
-						icon={<Settings />}
+						icon={<Icon name="settings" />}
 						size="md"
 					/>
 				</div>
@@ -84,21 +83,21 @@ export default function IconButtonLoadingDemo() {
 						aria-label="Tải lên"
 						colorStyle="filled"
 						loadingVariant="circular"
-						icon={<Loader2 />}
+						icon={<Icon name="progress_activity" />}
 						size="md"
 					/>
 					<LoadingIconButtonDemo
 						aria-label="Tìm kiếm"
 						colorStyle="tonal"
 						loadingVariant="circular"
-						icon={<Search />}
+						icon={<Icon name="search" />}
 						size="md"
 					/>
 					<LoadingIconButtonDemo
 						aria-label="Standard loading"
 						colorStyle="standard"
 						loadingVariant="circular"
-						icon={<Settings />}
+						icon={<Icon name="settings" />}
 						size="md"
 					/>
 				</div>

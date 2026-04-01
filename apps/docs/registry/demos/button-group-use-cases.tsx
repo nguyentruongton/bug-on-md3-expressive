@@ -1,7 +1,6 @@
 "use client";
 
-import { Button, ButtonGroup } from "@bug-on/md3-react";
-import { Plus, X } from "lucide-react";
+import { Button, ButtonGroup, Icon } from "@bug-on/md3-react";
 import React from "react";
 
 export default function ButtonGroupUseCasesDemo() {
@@ -73,10 +72,10 @@ export default function ButtonGroupUseCasesDemo() {
 
 					<ButtonGroup variant="standard" className="min-w-max">
 						<Button colorStyle="tonal" className="px-3">
-							<Plus className="w-5 h-5" />
+							<Icon name="add" size={20} />
 						</Button>
 						<Button colorStyle="filled" className="px-3">
-							<X className="w-5 h-5" />
+							<Icon name="close" size={20} />
 						</Button>
 					</ButtonGroup>
 				</div>

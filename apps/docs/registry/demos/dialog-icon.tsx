@@ -11,8 +11,8 @@ import {
 	DialogPortal,
 	DialogTitle,
 	DialogTrigger,
+	Icon,
 } from "@bug-on/md3-react";
-import { AlertTriangle } from "lucide-react";
 import * as React from "react";
 
 export default function DialogIcon_() {
@@ -27,7 +27,7 @@ export default function DialogIcon_() {
 				<DialogOverlay />
 				<DialogContent>
 					<DialogIcon>
-						<AlertTriangle className="w-6 h-6 text-m3-error" />
+						<Icon name="warning" size={24} className=" text-m3-error" />
 					</DialogIcon>
 					<DialogTitle>Delete all cached data?</DialogTitle>
 					<DialogDescription>

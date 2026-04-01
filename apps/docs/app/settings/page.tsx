@@ -1,7 +1,6 @@
 "use client";
 
-import { Button, Card } from "@bug-on/md3-react";
-import { Check, Moon, Palette, Sun } from "lucide-react";
+import { Button, Card, Icon } from "@bug-on/md3-react";
 import { useTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +37,7 @@ export default function SettingsPage() {
 				{/* Color Picker */}
 				<Card variant="outlined" className="p-8 bg-m3-surface-container-lowest">
 					<div className="flex items-center gap-3 mb-6">
-						<Palette className="w-6 h-6 text-m3-primary" />
+						<Icon name="palette" size={24} className=" text-m3-primary" />
 						<h2 className="text-2xl font-medium text-m3-on-surface">
 							Dynamic Color
 						</h2>
@@ -73,7 +72,7 @@ export default function SettingsPage() {
 									}}
 								>
 									{sourceColor === color.hex && (
-										<Check className="w-6 h-6 text-white" />
+										<Icon name="check" size={24} className=" text-white" />
 									)}
 								</div>
 							</button>
@@ -118,9 +117,9 @@ export default function SettingsPage() {
 				<Card variant="outlined" className="p-8 bg-m3-surface-container-lowest">
 					<div className="flex items-center gap-3 mb-6">
 						{mode === "light" ? (
-							<Sun className="w-6 h-6 text-m3-primary" />
+							<Icon name="light_mode" size={24} className=" text-m3-primary" />
 						) : (
-							<Moon className="w-6 h-6 text-m3-primary" />
+							<Icon name="dark_mode" size={24} className=" text-m3-primary" />
 						)}
 						<h2 className="text-2xl font-medium text-m3-on-surface">
 							Theme Mode
@@ -137,20 +136,24 @@ export default function SettingsPage() {
 							colorStyle={mode === "light" ? "tonal" : "outlined"}
 							className="justify-start gap-4 h-14 px-6"
 							onClick={() => setMode("light")}
-							icon={<Sun className="w-5 h-5" />}
+							icon={<Icon name="light_mode" size={20} />}
 						>
 							Light Theme
-							{mode === "light" && <Check className="ml-auto w-5 h-5" />}
+							{mode === "light" && (
+								<Icon name="check" size={20} className="ml-auto " />
+							)}
 						</Button>
 
 						<Button
 							colorStyle={mode === "dark" ? "tonal" : "outlined"}
 							className="justify-start gap-4 h-14 px-6"
 							onClick={() => setMode("dark")}
-							icon={<Moon className="w-5 h-5" />}
+							icon={<Icon name="dark_mode" size={20} />}
 						>
 							Dark Theme
-							{mode === "dark" && <Check className="ml-auto w-5 h-5" />}
+							{mode === "dark" && (
+								<Icon name="check" size={20} className="ml-auto " />
+							)}
 						</Button>
 					</div>
 				</Card>

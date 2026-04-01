@@ -1,7 +1,7 @@
-import { Check } from "lucide-react";
 import * as React from "react";
 import { cn } from "../lib/utils";
 import type { ButtonProps } from "./button";
+import { Icon } from "./icon";
 
 /**
  * Thuộc tính truyền vào cho thành phần nhóm nút (Button Group).
@@ -145,7 +145,7 @@ const ButtonGroupComponent = React.forwardRef<
 					const isSelected = element.props.selected === true;
 
 					if (showCheck && isSelected && !explicitIcon) {
-						explicitIcon = <Check aria-hidden="true" />;
+						explicitIcon = <Icon name="check" aria-hidden="true" />;
 					}
 
 					// 1. STANDARD GROUP: Xử lý hiệu ứng Morphing Width khi press

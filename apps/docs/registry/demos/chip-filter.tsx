@@ -1,12 +1,7 @@
 "use client";
 
-import { Chip } from "@bug-on/md3-react";
-import { Bookmark, Camera, Music, Star } from "lucide-react";
+import { Chip, Icon } from "@bug-on/md3-react";
 import { useState } from "react";
-
-const Icon = ({ icon: IconComponent }: { icon: React.ElementType }) => (
-	<IconComponent className="w-4.5 h-4.5" />
-);
 
 function FilterChipToggle({
 	label,
@@ -14,7 +9,7 @@ function FilterChipToggle({
 	elevated,
 }: {
 	label: string;
-	icon?: React.ElementType;
+	icon?: string;
 	elevated?: boolean;
 }) {
 	const [selected, setSelected] = useState(false);
@@ -24,7 +19,7 @@ function FilterChipToggle({
 			label={label}
 			selected={selected}
 			elevated={elevated}
-			leadingIcon={icon ? <Icon icon={icon} /> : undefined}
+			leadingIcon={icon ? <Icon name={icon} className="w-4.5 h-4.5" /> : undefined}
 			onClick={() => setSelected((v) => !v)}
 		/>
 	);
@@ -39,9 +34,9 @@ export default function ChipFilterDemo() {
 				</p>
 				<div className="flex flex-wrap gap-2">
 					<FilterChipToggle label="Starred" />
-					<FilterChipToggle label="Bookmarked" icon={Bookmark} />
-					<FilterChipToggle label="Music" icon={Music} />
-					<FilterChipToggle label="Photography" icon={Camera} />
+					<FilterChipToggle label="Bookmarked" icon="bookmark" />
+					<FilterChipToggle label="Music" icon="music_note" />
+					<FilterChipToggle label="Photography" icon="photo_camera" />
 				</div>
 			</div>
 
@@ -56,13 +51,13 @@ export default function ChipFilterDemo() {
 						variant="filter"
 						label="Icon — unselected"
 						selected={false}
-						leadingIcon={<Star className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="star" className="w-4.5 h-4.5" />}
 					/>
 					<Chip
 						variant="filter"
 						label="Icon — selected"
 						selected
-						leadingIcon={<Star className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="star" className="w-4.5 h-4.5" />}
 					/>
 				</div>
 			</div>
@@ -73,7 +68,7 @@ export default function ChipFilterDemo() {
 				</p>
 				<div className="flex flex-wrap gap-2">
 					<FilterChipToggle label="Elevated filter" elevated />
-					<FilterChipToggle label="With icon" elevated icon={Star} />
+					<FilterChipToggle label="With icon" elevated icon="star" />
 				</div>
 			</div>
 		</div>

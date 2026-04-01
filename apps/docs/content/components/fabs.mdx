@@ -34,20 +34,19 @@ A lowered FAB sits at the same elevation as the content below it. Use `lowered` 
 ## Usage
 
 ```tsx
-import { FAB } from "@bug-on/md3-react";
-import { Pencil } from "lucide-react";
+import { FAB, Icon } from "@bug-on/md3-react";
 
 // Default FAB
-<FAB icon={<Pencil />} aria-label="Edit" />
+<FAB icon={<Icon name="edit" />} aria-label="Edit" />
 
 // Large FAB with tertiary color
-<FAB size="large" colorStyle="tertiary" icon={<Pencil />} aria-label="Edit" />
+<FAB size="large" colorStyle="tertiary" icon={<Icon name="edit" />} aria-label="Edit" />
 
 // FAB with loading state
-<FAB icon={<Pencil />} aria-label="Saving" loading />
+<FAB icon={<Icon name="edit" />} aria-label="Saving" loading />
 
 // Hidden FAB (e.g., while scrolling down)
-<FAB icon={<Pencil />} aria-label="Compose" visible={!isScrollingDown} />
+<FAB icon={<Icon name="edit" />} aria-label="Compose" visible={!isScrollingDown} />
 ```
 
 Use `FABPosition` to pin the FAB to the bottom-right corner:
@@ -56,7 +55,7 @@ Use `FABPosition` to pin the FAB to the bottom-right corner:
 import { FAB, FABPosition } from "@bug-on/md3-react";
 
 <FABPosition bottom="1.5rem" right="1.5rem" safeArea>
-  <FAB icon={<Pencil />} aria-label="Compose" />
+  <FAB icon={<Icon name="edit" />} aria-label="Compose" />
 </FABPosition>
 ```
 

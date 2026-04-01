@@ -1,7 +1,6 @@
 "use client";
 
-import { FABMenu, useTypography } from "@bug-on/md3-react";
-import { Download, Edit2, Share2, Trash2 } from "lucide-react";
+import { FABMenu, Icon, useTypography } from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function FABMenuIconOnly() {
@@ -12,25 +11,25 @@ export default function FABMenuIconOnly() {
 		{
 			id: "download",
 			label: "Download",
-			icon: <Download />,
+			icon: <Icon name="download" />,
 			onClick: () => console.log("Download"),
 		},
 		{
 			id: "edit",
 			label: "Edit",
-			icon: <Edit2 />,
+			icon: <Icon name="edit" />,
 			onClick: () => console.log("Edit"),
 		},
 		{
 			id: "share",
 			label: "Share",
-			icon: <Share2 />,
+			icon: <Icon name="share" />,
 			onClick: () => console.log("Share"),
 		},
 		{
 			id: "delete",
 			label: "Delete",
-			icon: <Trash2 />,
+			icon: <Icon name="delete" />,
 			onClick: () => console.log("Delete"),
 		},
 	];

@@ -11,10 +11,10 @@
  */
 
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
+import { Icon } from "./icon";
 import { IconButton } from "./icon-button";
 import { ScrollArea } from "./scroll-area";
 
@@ -191,7 +191,7 @@ const DialogContent = React.forwardRef<
 						className="absolute right-4 top-4"
 						aria-label="Close"
 					>
-						<X aria-hidden="true" />
+						<Icon name="close" aria-hidden="true" />
 					</IconButton>
 				</RadixDialog.Close>
 			)}
@@ -320,7 +320,7 @@ const DialogFullScreenContent = React.forwardRef<
 				<div className="flex shrink-0 items-center px-4 h-14 gap-2 bg-m3-surface">
 					<RadixDialog.Close asChild aria-label="Close dialog">
 						<IconButton size="sm" colorStyle="filled" aria-label="Close">
-							<X aria-hidden="true" />
+							<Icon name="close" aria-hidden="true" />
 						</IconButton>
 					</RadixDialog.Close>
 

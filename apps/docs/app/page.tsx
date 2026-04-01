@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { Icon } from "@bug-on/md3-react";
 import Link from "next/link";
 
 export default function Page() {
@@ -22,7 +22,7 @@ export default function Page() {
 					className="inline-flex items-center gap-2 px-6 py-3 md:px-8 md:py-4 bg-m3-primary text-m3-on-primary rounded-full text-base md:text-lg font-medium hover:shadow-lg transition-all active:scale-95"
 				>
 					Explore Components
-					<ArrowRight className="w-5 h-5" />
+					<Icon name="arrow_forward" size={20} />
 				</Link>
 			</div>
 		</div>

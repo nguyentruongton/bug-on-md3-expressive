@@ -1,7 +1,6 @@
 "use client";
 
-import { IconButton } from "@bug-on/md3-react";
-import { Star } from "lucide-react";
+import { Icon, IconButton } from "@bug-on/md3-react";
 
 export default function IconButtonShapesDemo() {
 	return (
@@ -26,7 +25,7 @@ export default function IconButtonShapesDemo() {
 								shape="round"
 								size={size}
 							>
-								<Star />
+								<Icon name="star" />
 							</IconButton>
 						))}
 					</div>
@@ -44,7 +43,7 @@ export default function IconButtonShapesDemo() {
 								shape="square"
 								size={size}
 							>
-								<Star />
+								<Icon name="star" />
 							</IconButton>
 						))}
 					</div>

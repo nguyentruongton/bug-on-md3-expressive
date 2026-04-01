@@ -1,7 +1,6 @@
 "use client";
 
-import { Chip } from "@bug-on/md3-react";
-import { Calendar, Camera, MapPin } from "lucide-react";
+import { Chip, Icon } from "@bug-on/md3-react";
 
 export default function ChipAssistDemo() {
 	return (
@@ -15,17 +14,17 @@ export default function ChipAssistDemo() {
 					<Chip
 						variant="assist"
 						label="Add to calendar"
-						leadingIcon={<Calendar className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="calendar_today" className="w-4.5 h-4.5" />}
 					/>
 					<Chip
 						variant="assist"
 						label="Find nearby"
-						leadingIcon={<MapPin className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="location_on" className="w-4.5 h-4.5" />}
 					/>
 					<Chip
 						variant="assist"
 						label="Take photo"
-						leadingIcon={<Camera className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="photo_camera" className="w-4.5 h-4.5" />}
 					/>
 				</div>
 			</div>
@@ -40,13 +39,13 @@ export default function ChipAssistDemo() {
 						variant="assist"
 						elevated
 						label="Add to calendar"
-						leadingIcon={<Calendar className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="calendar_today" className="w-4.5 h-4.5" />}
 					/>
 					<Chip
 						variant="assist"
 						elevated
 						label="Find nearby"
-						leadingIcon={<MapPin className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="location_on" className="w-4.5 h-4.5" />}
 					/>
 				</div>
 			</div>

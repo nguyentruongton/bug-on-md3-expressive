@@ -1,7 +1,6 @@
 "use client";
 
-import { Button, ButtonGroup } from "@bug-on/md3-react";
-import { Check, Plus, X } from "lucide-react";
+import { Button, ButtonGroup, Icon } from "@bug-on/md3-react";
 import React from "react";
 
 export default function ButtonGroupOrientationDemo() {
@@ -17,21 +16,21 @@ export default function ButtonGroupOrientationDemo() {
 					<Button
 						colorStyle="outlined"
 						className="justify-start"
-						icon={<Plus className="w-4 h-4" />}
+						icon={<Icon name="add" size={16} />}
 					>
 						New Task
 					</Button>
 					<Button
 						colorStyle="outlined"
 						className="justify-start"
-						icon={<Check className="w-4 h-4" />}
+						icon={<Icon name="check" size={16} />}
 					>
 						Mark Done
 					</Button>
 					<Button
 						colorStyle="tonal"
 						className="justify-start"
-						icon={<X className="w-4 h-4" />}
+						icon={<Icon name="close" size={16} />}
 					>
 						Dismiss
 					</Button>

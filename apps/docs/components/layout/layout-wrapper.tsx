@@ -1,7 +1,6 @@
 "use client";
 
-import { ScrollArea, TableOfContents } from "@bug-on/md3-react";
-import { BookOpen, X } from "lucide-react";
+import { Icon, ScrollArea, TableOfContents } from "@bug-on/md3-react";
 import { AnimatePresence, motion } from "motion/react";
 import { NavigationDrawer } from "@/components/layout/navigation-drawer";
 import { NavigationRail } from "@/components/layout/navigation-rail";
@@ -70,7 +69,7 @@ function TocMobileDrawer() {
 								aria-label="Close table of contents"
 								className="p-2 rounded-full text-m3-on-surface-variant hover:bg-m3-surface-variant/50 transition-colors"
 							>
-								<X className="w-4 h-4" aria-hidden="true" />
+								<Icon name="close" size={16} aria-hidden="true" />
 							</button>
 						</div>
 
@@ -113,7 +112,7 @@ function TocMobileTrigger() {
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0.8 }}
 		>
-			<BookOpen className="w-5 h-5" aria-hidden="true" />
+			<Icon name="menu_book" size={20} aria-hidden="true" />
 		</motion.button>
 	);
 }

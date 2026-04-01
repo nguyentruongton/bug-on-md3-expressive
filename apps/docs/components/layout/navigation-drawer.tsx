@@ -1,7 +1,6 @@
 "use client";
 
-import { ScrollArea } from "@bug-on/md3-react";
-import { Search } from "lucide-react";
+import { Icon, ScrollArea } from "@bug-on/md3-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -69,7 +68,11 @@ export function NavigationDrawer() {
 
 			<div className="relative mb-4 px-4 shrink-0">
 				<div className="absolute inset-y-0 left-0 pl-8 flex items-center pointer-events-none">
-					<Search className="text-m3-on-surface-variant w-4 h-4" />
+					<Icon
+						name="search"
+						size={16}
+						className="text-m3-on-surface-variant "
+					/>
 				</div>
 				<input
 					className="block w-full pl-11 pr-4 py-3 border-none bg-m3-surface-container-highest/50 text-m3-on-surface text-sm rounded-full focus:ring-2 focus:ring-m3-primary focus:bg-m3-surface-container-highest transition-all outline-none"

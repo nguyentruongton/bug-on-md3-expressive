@@ -1,7 +1,6 @@
 "use client";
 
-import { IconButton } from "@bug-on/md3-react";
-import { Bookmark, Heart, Star } from "lucide-react";
+import { Icon, IconButton } from "@bug-on/md3-react";
 import { useState } from "react";
 
 export default function IconButtonToggleDemo() {
@@ -38,7 +37,10 @@ export default function IconButtonToggleDemo() {
 							onClick={() => setLikedFilled(!likedFilled)}
 							size="md"
 						>
-							<Heart className={likedFilled ? "fill-current" : ""} />
+							<Icon
+								name="favorite"
+								className={likedFilled ? "fill-current" : ""}
+							/>
 						</IconButton>
 						<span className="text-sm text-m3-on-surface-variant italic">
 							{likedFilled
@@ -62,7 +64,7 @@ export default function IconButtonToggleDemo() {
 							onClick={() => setLikedTonal(!likedTonal)}
 							size="md"
 						>
-							<Star className={likedTonal ? "fill-current" : ""} />
+							<Icon name="star" className={likedTonal ? "fill-current" : ""} />
 						</IconButton>
 						<span className="text-sm text-m3-on-surface-variant italic">
 							{likedTonal
@@ -86,7 +88,10 @@ export default function IconButtonToggleDemo() {
 							onClick={() => setBookmarkedOutlined(!bookmarkedOutlined)}
 							size="md"
 						>
-							<Bookmark className={bookmarkedOutlined ? "fill-current" : ""} />
+							<Icon
+								name="bookmark"
+								className={bookmarkedOutlined ? "fill-current" : ""}
+							/>
 						</IconButton>
 						<span className="text-sm text-m3-on-surface-variant italic">
 							{bookmarkedOutlined
@@ -110,7 +115,10 @@ export default function IconButtonToggleDemo() {
 							onClick={() => setStarredStandard(!starredStandard)}
 							size="md"
 						>
-							<Star className={starredStandard ? "fill-current" : ""} />
+							<Icon
+								name="star"
+								className={starredStandard ? "fill-current" : ""}
+							/>
 						</IconButton>
 						<span className="text-sm text-m3-on-surface-variant italic">
 							{starredStandard
@@ -137,7 +145,10 @@ export default function IconButtonToggleDemo() {
 							size="md"
 							onClick={() => setShapeFilled(!shapeFilled)}
 						>
-							<Heart className={shapeFilled ? "fill-current" : ""} />
+							<Icon
+								name="favorite"
+								className={shapeFilled ? "fill-current" : ""}
+							/>
 						</IconButton>
 						<span className="text-xs text-m3-on-surface-variant">
 							shape=&quot;round&quot;
@@ -153,7 +164,10 @@ export default function IconButtonToggleDemo() {
 							size="md"
 							onClick={() => setShapeTonal(!shapeTonal)}
 						>
-							<Heart className={shapeTonal ? "fill-current" : ""} />
+							<Icon
+								name="favorite"
+								className={shapeTonal ? "fill-current" : ""}
+							/>
 						</IconButton>
 						<span className="text-xs text-m3-on-surface-variant">
 							shape=&quot;square&quot;

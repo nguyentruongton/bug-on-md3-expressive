@@ -1,7 +1,6 @@
 "use client";
 
-import { FABMenu, useTypography } from "@bug-on/md3-react";
-import { Copy, PenSquare, Share2, Trash2 } from "lucide-react";
+import { FABMenu, Icon, useTypography } from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function FABMenuDefault() {
@@ -29,25 +28,25 @@ export default function FABMenuDefault() {
 					{
 						id: "compose",
 						label: "Compose",
-						icon: <PenSquare />,
+						icon: <Icon name="edit" />,
 						onClick: () => console.log("Compose clicked"),
 					},
 					{
 						id: "copy",
 						label: "Copy Link",
-						icon: <Copy />,
+						icon: <Icon name="content_copy" />,
 						onClick: () => console.log("Copy Link clicked"),
 					},
 					{
 						id: "share",
 						label: "Share",
-						icon: <Share2 />,
+						icon: <Icon name="share" />,
 						onClick: () => console.log("Share clicked"),
 					},
 					{
 						id: "delete",
 						label: "Delete",
-						icon: <Trash2 />,
+						icon: <Icon name="delete" />,
 						onClick: () => console.log("Delete clicked"),
 					},
 				]}

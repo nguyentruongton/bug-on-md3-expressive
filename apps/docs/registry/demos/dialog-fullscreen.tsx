@@ -8,8 +8,8 @@ import {
 	DialogOverlay,
 	DialogPortal,
 	DialogTrigger,
+	Icon,
 } from "@bug-on/md3-react";
-import { User } from "lucide-react";
 import * as React from "react";
 
 export default function DialogFullScreen() {
@@ -36,7 +36,11 @@ export default function DialogFullScreen() {
 						{/* Avatar */}
 						<div className="flex flex-col items-center gap-3">
 							<div className="w-20 h-20 rounded-full bg-m3-surface-container-highest flex items-center justify-center">
-								<User className="w-10 h-10 text-m3-on-surface-variant" />
+								<Icon
+									name="person"
+									size={40}
+									className=" text-m3-on-surface-variant"
+								/>
 							</div>
 							<span className="text-m3-primary text-sm font-medium">
 								Edit photo

@@ -53,9 +53,6 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
-      lucide-react:
-        specifier: ^0.477.0
-        version: 0.477.0(react@19.2.4)
       motion:
         specifier: ^12.23.24
         version: 12.36.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -138,9 +135,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      lucide-react:
-        specifier: ^0.477.0
-        version: 0.477.0(react@19.2.4)
       motion:
         specifier: '>=12.0.0'
         version: 12.36.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -2374,11 +2368,6 @@ packages:
   lru-cache@11.2.7:
     resolution: {integrity: sha512-aY/R+aEsRelme17KGQa/1ZSIpLpNYYrhcrepKTZgE+W3WM16YMCaPwOHLHsmopZHELU0Ojin1lPVxKR0MihncA==}
     engines: {node: 20 || >=22}
-
-  lucide-react@0.477.0:
-    resolution: {integrity: sha512-yCf7aYxerFZAbd8jHJxjwe1j7jEMPptjnaOqdYeirFnEy85cNR3/L+o0I875CYFYya+eEVzZSbNuRk8BZPDpVw==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -5487,10 +5476,6 @@ snapshots:
   lru-cache@10.4.3: {}
 
   lru-cache@11.2.7: {}
-
-  lucide-react@0.477.0(react@19.2.4):
-    dependencies:
-      react: 19.2.4
 
   lz-string@1.5.0: {}
 

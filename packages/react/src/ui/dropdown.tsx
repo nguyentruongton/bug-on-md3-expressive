@@ -1,8 +1,8 @@
 import * as RadixDropdown from "@radix-ui/react-dropdown-menu";
-import { Check, ChevronRight, Circle } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
+import { Icon } from "./icon";
 
 // ─── MD3 Dropdown Animation ───────────────────────────────────────────────────
 const MD3_MENU_ANIM = {
@@ -140,7 +140,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 	>
 		<span className="absolute left-2 flex h-4 w-4 items-center justify-center">
 			<RadixDropdown.ItemIndicator>
-				<Check className="h-4 w-4" aria-hidden="true" />
+				<Icon name="check" size={16} aria-hidden="true" />
 			</RadixDropdown.ItemIndicator>
 		</span>
 		{children}
@@ -167,7 +167,7 @@ const DropdownMenuRadioItem = React.forwardRef<
 	>
 		<span className="absolute left-2 flex h-4 w-4 items-center justify-center">
 			<RadixDropdown.ItemIndicator>
-				<Circle className="h-2 w-2 fill-current" aria-hidden="true" />
+				<Icon name="circle" fill={1} size={8} aria-hidden="true" />
 			</RadixDropdown.ItemIndicator>
 		</span>
 		{children}
@@ -228,7 +228,12 @@ const DropdownMenuSubTrigger = React.forwardRef<
 		{...props}
 	>
 		{children}
-		<ChevronRight className="ml-auto h-4 w-4" aria-hidden="true" />
+		<Icon
+			name="chevron_right"
+			size={16}
+			className="ml-auto"
+			aria-hidden="true"
+		/>
 	</RadixDropdown.SubTrigger>
 ));
 DropdownMenuSubTrigger.displayName = "DropdownMenuSubTrigger";

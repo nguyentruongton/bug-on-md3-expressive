@@ -1,6 +1,6 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
+import { Icon } from "@bug-on/md3-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import * as React from "react";
@@ -8,7 +8,7 @@ import * as React from "react";
 interface ComponentCardProps {
 	title: string;
 	description: string;
-	icon: LucideIcon;
+	icon: string;
 }
 
 const MotionLink = motion.create(Link);
@@ -16,7 +16,7 @@ const MotionLink = motion.create(Link);
 export const ComponentCard = React.memo(function ComponentCard({
 	title,
 	description,
-	icon: Icon,
+	icon,
 }: ComponentCardProps) {
 	const slug = title.toLowerCase().replace(/\s+/g, "-");
 
@@ -29,8 +29,9 @@ export const ComponentCard = React.memo(function ComponentCard({
 		>
 			<div className="aspect-3/2 rounded-3xl bg-[#EADDFF] flex items-center justify-center overflow-hidden transition-colors group-hover:bg-[#D0BCFF]">
 				<Icon
-					className="w-16 h-16 text-[#4F378B] opacity-40 transition-transform duration-300"
-					strokeWidth={1.5}
+					name={icon}
+					size={64}
+					className="text-[#4F378B] opacity-40 transition-transform duration-300"
 				/>
 			</div>
 			<div className="px-1">

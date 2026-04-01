@@ -1,6 +1,5 @@
-import { FAB } from "@bug-on/md3-react";
-import { Pencil } from "lucide-react";
+import { FAB, Icon } from "@bug-on/md3-react";
 
 export default function FabDefault() {
-	return <FAB icon={<Pencil />} aria-label="Chỉnh sửa" />;
+	return <FAB icon={<Icon name="edit" />} aria-label="Chỉnh sửa" />;
 }

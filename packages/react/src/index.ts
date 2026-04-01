@@ -19,6 +19,9 @@ export type { ButtonGroupProps } from "./ui/button-group";
 export { ButtonGroup } from "./ui/button-group";
 export type { CardProps } from "./ui/card";
 export { Card } from "./ui/card";
+// Checkbox — MD3 Expressive tri-state checkbox
+export type { CheckboxProps, CheckboxState, TriStateCheckboxProps } from "./ui/checkbox";
+export { Checkbox, TriStateCheckbox } from "./ui/checkbox";
 export type { ChipProps } from "./ui/chip";
 export { Chip } from "./ui/chip";
 export type { CodeBlockProps } from "./ui/code-block";

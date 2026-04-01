@@ -1,9 +1,9 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
+import { Icon } from "./icon";
 import { ScrollArea } from "./scroll-area";
 
 const COPY_RESET_DELAY = 2000;
@@ -42,15 +42,22 @@ function CopyButton({
 		>
 			{copied ? (
 				<>
-					<Check className="w-3.5 h-3.5 text-m3-primary" aria-hidden="true" />
+					<Icon
+						name="check"
+						size={14}
+						className="text-m3-primary"
+						aria-hidden="true"
+					/>
 					<span className="text-[10px] font-bold uppercase tracking-wider text-m3-primary">
 						Copied!
 					</span>
 				</>
 			) : (
 				<>
-					<Copy
-						className="w-3.5 h-3.5 text-m3-on-surface-variant"
+					<Icon
+						name="content_copy"
+						size={14}
+						className="text-m3-on-surface-variant"
 						aria-hidden="true"
 					/>
 					<span className="text-[10px] font-bold uppercase tracking-wider text-m3-on-surface-variant">

@@ -1,7 +1,6 @@
 "use client";
 
-import { IconButton } from "@bug-on/md3-react";
-import { Heart, Settings } from "lucide-react";
+import { Icon, IconButton } from "@bug-on/md3-react";
 
 export default function IconButtonSizesDemo() {
 	return (
@@ -47,7 +46,7 @@ export default function IconButtonSizesDemo() {
 							colorStyle={colorStyle}
 							size={size}
 						>
-							<Heart />
+							<Icon name="favorite" />
 						</IconButton>
 						<span className="text-xs text-m3-on-surface-variant text-center whitespace-pre-line">
 							{label}
@@ -66,7 +65,7 @@ export default function IconButtonSizesDemo() {
 						size="xs"
 						colorStyle="outlined"
 					>
-						<Settings />
+						<Icon name="settings" />
 					</IconButton>
 					<span className="text-xs text-m3-on-surface-variant italic">
 						← 32dp button, 48dp tap area

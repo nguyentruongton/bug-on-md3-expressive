@@ -1,7 +1,6 @@
 "use client";
 
-import { Chip } from "@bug-on/md3-react";
-import { Calendar } from "lucide-react";
+import { Chip, Icon } from "@bug-on/md3-react";
 
 export default function ChipStatesDemo() {
 	return (
@@ -20,7 +19,7 @@ export default function ChipStatesDemo() {
 						variant="assist"
 						label="With icon"
 						disabled
-						leadingIcon={<Calendar className="w-4.5 h-4.5" />}
+						leadingIcon={<Icon name="calendar_today" className="w-4.5 h-4.5" />}
 					/>
 					<Chip variant="filter" label="Filter" disabled />
 					<Chip variant="filter" label="Filter selected" disabled selected />

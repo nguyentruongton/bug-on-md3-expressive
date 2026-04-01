@@ -1,5 +1,4 @@
-import { Button, Card } from "@bug-on/md3-react";
-import { Image as ImageIcon } from "lucide-react";
+import { Button, Card, Icon } from "@bug-on/md3-react";
 
 export default function CardVariants() {
 	return (
@@ -7,7 +6,7 @@ export default function CardVariants() {
 			{/* Elevated */}
 			<Card variant="elevated" className="flex flex-col">
 				<div className="h-28 bg-m3-primary-container/30 flex items-center justify-center text-m3-primary mb-4 rounded-t-m3-lg">
-					<ImageIcon className="w-8 h-8 opacity-50" />
+					<Icon name="image" size={32} className=" opacity-50" />
 				</div>
 				<div className="px-6 pb-6 flex flex-col flex-1">
 					<h3 className="text-lg font-medium text-m3-on-surface mb-2">
@@ -25,7 +24,7 @@ export default function CardVariants() {
 			{/* Filled */}
 			<Card variant="filled" className="flex flex-col">
 				<div className="h-28 bg-m3-secondary-container/30 flex items-center justify-center text-m3-secondary mb-4 rounded-t-m3-lg">
-					<ImageIcon className="w-8 h-8 opacity-50" />
+					<Icon name="image" size={32} className=" opacity-50" />
 				</div>
 				<div className="px-6 pb-6 flex flex-col flex-1">
 					<h3 className="text-lg font-medium text-m3-on-surface mb-2">
@@ -43,7 +42,7 @@ export default function CardVariants() {
 			{/* Outlined */}
 			<Card variant="outlined" className="flex flex-col">
 				<div className="h-28 bg-m3-surface-variant/20 border-b border-m3-outline-variant flex items-center justify-center mb-4 rounded-t-m3-lg">
-					<ImageIcon className="w-8 h-8 opacity-50" />
+					<Icon name="image" size={32} className=" opacity-50" />
 				</div>
 				<div className="px-6 pb-6 flex flex-col flex-1">
 					<h3 className="text-lg font-medium text-m3-on-surface mb-2">

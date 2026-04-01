@@ -40,20 +40,19 @@ Buttons support 5 sizes following M3 Expressive spec: `xs`, `sm` (default), `md`
 ## Usage
 
 ```tsx
-import { Button } from "@bug-on/md3-react";
-import { Plus, Send } from "lucide-react";
+import { Button, Icon } from "@bug-on/md3-react";
 
 // Basic variants
 <Button colorStyle="filled">Save</Button>
 <Button colorStyle="outlined">Cancel</Button>
 
 // With leading icon
-<Button colorStyle="filled" icon={<Plus className="w-5 h-5" />}>
+<Button colorStyle="filled" icon={<Icon name="add" size={20} />}>
   Add Item
 </Button>
 
 // With trailing icon
-<Button colorStyle="text" icon={<Send className="w-5 h-5" />} iconPosition="trailing">
+<Button colorStyle="text" icon={<Icon name="send" size={20} />} iconPosition="trailing">
   Send
 </Button>
 

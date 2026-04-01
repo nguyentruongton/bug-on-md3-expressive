@@ -1,22 +1,22 @@
+
 "use client";
 
-import { Compass, Home, LayoutGrid, Settings } from "lucide-react";
+import { Icon } from "@bug-on/md3-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type * as React from "react";
 import { useLayout } from "@/lib/layout-context";
 import { cn } from "@/lib/utils";
 
 interface NavItemProps {
-	icon: React.ElementType;
+	icon: string;
 	label: string;
 	href?: string;
 	onClick?: () => void;
 	active?: boolean;
 }
 
-function NavItem({ icon: Icon, label, href, onClick, active }: NavItemProps) {
+function NavItem({ icon, label, href, onClick, active }: NavItemProps) {
 	const Inner = (
 		<motion.div
 			whileHover={{ scale: 1.05 }}
@@ -33,9 +33,9 @@ function NavItem({ icon: Icon, label, href, onClick, active }: NavItemProps) {
 				)}
 			>
 				{active ? (
-					<Icon className="text-m3-on-secondary-container w-5.5 h-5.5 filled-icon" />
+					<Icon name={icon} fill={1} size={22} className="text-m3-on-secondary-container" />
 				) : (
-					<Icon className="text-m3-on-surface-variant w-5.5 h-5.5" />
+					<Icon name={icon} size={22} className="text-m3-on-surface-variant" />
 				)}
 			</div>
 			<span
@@ -71,9 +71,9 @@ export function NavigationRail() {
 
 	return (
 		<aside className="fixed bottom-4 left-4 right-4 lg:static lg:w-22 bg-m3-surface z-50 flex flex-row lg:flex-col items-center justify-around lg:justify-start py-3 lg:py-6 lg:gap-8 shrink-0 rounded-full lg:h-fit shadow-lg lg:shadow-none backdrop-blur-md lg:backdrop-blur-none">
-			<NavItem icon={Home} label="Home" href="/" active={pathname === "/"} />
+			<NavItem icon="home" label="Home" href="/" active={pathname === "/"} />
 			<NavItem
-				icon={Compass}
+				icon="explore"
 				label="Get started"
 				href="/get-started"
 				active={pathname === "/get-started"}
@@ -85,7 +85,7 @@ export function NavigationRail() {
 				active={pathname === "/styles"}
 			/> */}
 			<NavItem
-				icon={LayoutGrid}
+				icon="grid_view"
 				label="Components"
 				onClick={toggleDrawer}
 				active={pathname.startsWith("/components") || isDrawerOpen}
@@ -93,7 +93,7 @@ export function NavigationRail() {
 
 			<div className="mt-auto lg:mt-auto flex flex-col lg:flex-row items-center justify-center pt-0">
 				<NavItem
-					icon={Settings}
+					icon="settings"
 					label="Settings"
 					href="/settings"
 					active={pathname === "/settings"}

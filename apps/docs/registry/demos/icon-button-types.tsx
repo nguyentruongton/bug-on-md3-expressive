@@ -1,17 +1,6 @@
 "use client";
 
-import { IconButton } from "@bug-on/md3-react";
-import {
-	Bookmark,
-	Edit3,
-	Heart,
-	Plus,
-	Search,
-	Settings,
-	Share2,
-	Star,
-	Trash2,
-} from "lucide-react";
+import { Icon, IconButton } from "@bug-on/md3-react";
 
 export default function IconButtonTypesDemo() {
 	return (
@@ -30,16 +19,16 @@ export default function IconButtonTypesDemo() {
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
 					<IconButton aria-label="Thêm">
-						<Plus />
+						<Icon name="add" />
 					</IconButton>
 					<IconButton aria-label="Cài đặt">
-						<Settings />
+						<Icon name="settings" />
 					</IconButton>
 					<IconButton aria-label="Chỉnh sửa">
-						<Edit3 />
+						<Icon name="edit" />
 					</IconButton>
 					<IconButton aria-label="Chia sẻ" disabled>
-						<Share2 />
+						<Icon name="share" />
 					</IconButton>
 				</div>
 			</div>
@@ -58,16 +47,16 @@ export default function IconButtonTypesDemo() {
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
 					<IconButton aria-label="Thêm" colorStyle="filled">
-						<Plus />
+						<Icon name="add" />
 					</IconButton>
 					<IconButton aria-label="Tìm kiếm" colorStyle="filled">
-						<Search />
+						<Icon name="search" />
 					</IconButton>
 					<IconButton aria-label="Xóa" colorStyle="filled">
-						<Trash2 />
+						<Icon name="delete" />
 					</IconButton>
 					<IconButton aria-label="Thêm (disabled)" colorStyle="filled" disabled>
-						<Plus />
+						<Icon name="add" />
 					</IconButton>
 				</div>
 			</div>
@@ -86,20 +75,20 @@ export default function IconButtonTypesDemo() {
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
 					<IconButton aria-label="Yêu thích" colorStyle="tonal">
-						<Heart />
+						<Icon name="favorite" />
 					</IconButton>
 					<IconButton aria-label="Đánh dấu sao" colorStyle="tonal">
-						<Star />
+						<Icon name="star" />
 					</IconButton>
 					<IconButton aria-label="Chia sẻ" colorStyle="tonal">
-						<Share2 />
+						<Icon name="share" />
 					</IconButton>
 					<IconButton
 						aria-label="Chia sẻ (disabled)"
 						colorStyle="tonal"
 						disabled
 					>
-						<Share2 />
+						<Icon name="share" />
 					</IconButton>
 				</div>
 			</div>
@@ -118,20 +107,20 @@ export default function IconButtonTypesDemo() {
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
 					<IconButton aria-label="Lưu" colorStyle="outlined">
-						<Bookmark />
+						<Icon name="bookmark" />
 					</IconButton>
 					<IconButton aria-label="Chỉnh sửa" colorStyle="outlined">
-						<Edit3 />
+						<Icon name="edit" />
 					</IconButton>
 					<IconButton aria-label="Cài đặt" colorStyle="outlined">
-						<Settings />
+						<Icon name="settings" />
 					</IconButton>
 					<IconButton
 						aria-label="Lưu (disabled)"
 						colorStyle="outlined"
 						disabled
 					>
-						<Bookmark />
+						<Icon name="bookmark" />
 					</IconButton>
 				</div>
 			</div>

@@ -1,20 +1,19 @@
-import { Button } from "@bug-on/md3-react";
-import { Plus, Send, Trash2 } from "lucide-react";
+import { Button, Icon } from "@bug-on/md3-react";
 
 export default function ButtonWithIcons() {
 	return (
 		<div className="flex flex-wrap items-center justify-center gap-4">
-			<Button colorStyle="filled" icon={<Plus className="w-5 h-5" />}>
+			<Button colorStyle="filled" icon={<Icon name="add" size={20} />}>
 				Leading Icon
 			</Button>
 			<Button
 				colorStyle="tonal"
-				icon={<Send className="w-5 h-5" />}
+				icon={<Icon name="send" size={20} />}
 				iconPosition="trailing"
 			>
 				Trailing Icon
 			</Button>
-			<Button colorStyle="outlined" icon={<Trash2 className="w-5 h-5" />}>
+			<Button colorStyle="outlined" icon={<Icon name="delete" size={20} />}>
 				Delete
 			</Button>
 		</div>

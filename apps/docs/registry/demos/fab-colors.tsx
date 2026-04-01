@@ -1,7 +1,6 @@
 "use client";
 
-import { FAB } from "@bug-on/md3-react";
-import { Pencil, Plus, Share2, Star } from "lucide-react";
+import { FAB, Icon } from "@bug-on/md3-react";
 
 const COLOR_VARIANTS = [
 	{ colorStyle: "primary", label: "Primary" },
@@ -10,16 +9,16 @@ const COLOR_VARIANTS = [
 	{ colorStyle: "surface", label: "Surface" },
 ] as const;
 
-const ICONS = [Pencil, Plus, Share2, Star, Pencil, Plus];
+const ICONS = ["edit", "add", "share", "star"];
 
 export default function FabColors() {
 	return (
 		<div className="flex flex-wrap items-center justify-center gap-6">
 			{COLOR_VARIANTS.map(({ colorStyle, label }, i) => {
-				const Icon = ICONS[i];
+				const iconName = ICONS[i];
 				return (
 					<div key={colorStyle} className="flex flex-col items-center gap-2">
-						<FAB colorStyle={colorStyle} icon={<Icon />} aria-label={label} />
+						<FAB colorStyle={colorStyle} icon={<Icon name={iconName} />} aria-label={label} />
 						<span className="text-xs text-m3-on-surface-variant">{label}</span>
 					</div>
 				);

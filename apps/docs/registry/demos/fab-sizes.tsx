@@ -1,7 +1,6 @@
 "use client";
 
-import { FAB } from "@bug-on/md3-react";
-import { Pencil } from "lucide-react";
+import { FAB, Icon } from "@bug-on/md3-react";
 
 export default function FabSizes() {
 	return (
@@ -10,7 +9,7 @@ export default function FabSizes() {
 				<div key={size} className="flex flex-col items-center gap-3">
 					<FAB
 						size={size}
-						icon={<Pencil />}
+						icon={<Icon name="edit" />}
 						aria-label={`FAB kích thước ${size}`}
 					/>
 					<span className="text-xs text-m3-on-surface-variant capitalize">

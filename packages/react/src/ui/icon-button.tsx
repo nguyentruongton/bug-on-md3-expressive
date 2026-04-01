@@ -474,9 +474,10 @@ const IconButtonComponent = React.forwardRef<
 								transition={SPRING_TRANSITION}
 								aria-hidden="true"
 								className={cn(
-									"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full",
+									"flex items-center justify-center shrink-0 [&_svg]:w-full [&_svg]:h-full [&_.md-icon]:text-[length:inherit]!",
 									iconClass,
 								)}
+								style={{ fontSize: iconPx }}
 							>
 								{children}
 							</m.span>
