@@ -84,3 +84,37 @@ export const ICON_SPAN_VARIANTS: {
 	animate: { scale: 1 },
 	exit: { scale: 0.01 },
 } as const;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MD3 TextField Animation Constants
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * MD3 Standard easing curve — used for label float, active indicator expand.
+ * cubic-bezier(0.2, 0, 0, 1)
+ *
+ * @see https://m3.material.io/foundations/animation/easing-and-duration
+ */
+export const MD3_STANDARD_EASING: [number, number, number, number] = [0.2, 0, 0, 1];
+
+/**
+ * Duration for floating label transition: 150ms.
+ * Used when label moves between inline position ↔ floated position.
+ */
+export const MD3_LABEL_FLOAT_DURATION = 0.15;
+
+/**
+ * Duration for active indicator expand/collapse: 200ms.
+ * Used for the bottom border (filled) and outline (outlined) on focus.
+ */
+export const MD3_INDICATOR_DURATION = 0.2;
+
+/**
+ * Duration for supporting text / error text appear/disappear: 120ms.
+ */
+export const MD3_SUPPORTING_DURATION = 0.12;
+
+/**
+ * Duration for trailing icon appear/disappear (clear button, password toggle): 100ms.
+ */
+export const MD3_ICON_SWAP_DURATION = 0.1;

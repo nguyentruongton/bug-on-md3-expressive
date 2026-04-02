@@ -121,11 +121,21 @@ export {
 } from "./ui/scroll-area";
 export type { TableOfContentsProps, ToCItem } from "./ui/toc";
 export { TableOfContents } from "./ui/toc";
+// TextField — MD3 Expressive
+export type {
+	TextFieldHandle,
+	TextFieldInputType,
+	TextFieldProps,
+	TextFieldTrailingIconMode,
+	TextFieldVariant,
+} from "./ui/text-field";
+export { TextField } from "./ui/text-field";
 export type {
 	TextStyle,
 	TypeScaleTokensType,
 	TypographyProviderProps,
 } from "./ui/typography";
+
 // Typography - MD3 Expressive
 export {
 	MD3_EXPRESSIVE_FONT_VARIATION,

@@ -226,6 +226,7 @@ export const componentCategories = [
 				name: "Text fields",
 				description: "Text fields let users enter text into a UI",
 				icon: "match_case",
+				href: "/components/text-fields",
 			},
 			{
 				name: "Toolbars",
