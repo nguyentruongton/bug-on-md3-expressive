@@ -13,6 +13,9 @@ export type {
 	PolymorphicProps,
 	PolymorphicRef,
 } from "./types/md3";
+export type { BadgedBoxProps, BadgeProps } from "./ui/badge";
+// Badge — MD3 Expressive status indicator
+export { Badge, BadgedBox } from "./ui/badge";
 export type { BaseButtonProps, ButtonProps } from "./ui/button";
 export { Button } from "./ui/button";
 export type { ButtonGroupProps } from "./ui/button-group";
@@ -20,7 +23,11 @@ export { ButtonGroup } from "./ui/button-group";
 export type { CardProps } from "./ui/card";
 export { Card } from "./ui/card";
 // Checkbox — MD3 Expressive tri-state checkbox
-export type { CheckboxProps, CheckboxState, TriStateCheckboxProps } from "./ui/checkbox";
+export type {
+	CheckboxProps,
+	CheckboxState,
+	TriStateCheckboxProps,
+} from "./ui/checkbox";
 export { Checkbox, TriStateCheckbox } from "./ui/checkbox";
 export type { ChipProps } from "./ui/chip";
 export { Chip } from "./ui/chip";
@@ -97,12 +104,21 @@ export type { BaseIconButtonProps, IconButtonProps } from "./ui/icon-button";
 export { IconButton } from "./ui/icon-button";
 export type { LoadingIndicatorProps } from "./ui/loading-indicator";
 export { LoadingIndicator } from "./ui/loading-indicator";
+// Navigation Rail
+export type {
+	NavigationRailItemProps,
+	NavigationRailLabelVisibility,
+	NavigationRailProps,
+	NavigationRailVariant,
+} from "./ui/navigation-rail";
+export { NavigationRail, NavigationRailItem } from "./ui/navigation-rail";
 export type {
 	CircularProgressProps,
 	LinearProgressProps,
 	ProgressIndicatorProps,
 } from "./ui/progress-indicator";
 export { ProgressIndicator } from "./ui/progress-indicator";
+
 export type {
 	RippleOrigin,
 	RippleProps,
@@ -119,8 +135,6 @@ export {
 	ScrollArea,
 	ScrollAreaScrollbar,
 } from "./ui/scroll-area";
-export type { TableOfContentsProps, ToCItem } from "./ui/toc";
-export { TableOfContents } from "./ui/toc";
 // TextField — MD3 Expressive
 export type {
 	TextFieldHandle,
@@ -130,6 +144,8 @@ export type {
 	TextFieldVariant,
 } from "./ui/text-field";
 export { TextField } from "./ui/text-field";
+export type { TableOfContentsProps, ToCItem } from "./ui/toc";
+export { TableOfContents } from "./ui/toc";
 export type {
 	TextStyle,
 	TypeScaleTokensType,

@@ -78,8 +78,14 @@ export const OutlineContainer = React.memo(function OutlineContainer({
 	const notchDuration = prefersReduced ? 0 : MD3_LABEL_FLOAT_DURATION;
 	const ease = MD3_STANDARD_EASING;
 
-	const borderColor = getOutlineColor(isFocused, isError, isHovered, isDisabled);
-	const borderWidth = isFocused || isError ? TF_SIZE.outlineThick : TF_SIZE.outlineThin;
+	const borderColor = getOutlineColor(
+		isFocused,
+		isError,
+		isHovered,
+		isDisabled,
+	);
+	const borderWidth =
+		isFocused || isError ? TF_SIZE.outlineThick : TF_SIZE.outlineThin;
 
 	// Calculate offset for notch (always 16px from the edge in M3 Outlined)
 	const leftSegmentWidth = TF_SIZE.paddingStart;

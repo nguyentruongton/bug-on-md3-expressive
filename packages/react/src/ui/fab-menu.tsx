@@ -1,11 +1,11 @@
 /**
  * @file fab-menu.tsx
  *
- * MD3 Expressive FAB Menu component.
+ * Component FAB Menu theo phong cách MD3 Expressive.
  *
- * Provides a toggleable FAB that reveals a staggered list of action items.
- * Implements the MD3 FloatingActionButtonMenu pattern with full accessibility
- * support (keyboard navigation, focus management, ARIA roles).
+ * Cung cấp một Floating Action Button (FAB) dạng toggle để mở một danh sách các hành động có hiệu ứng stagger (xếp tầng).
+ * Tuân thủ mô hình FloatingActionButtonMenu của MD3 với sự hỗ trợ tiếp cận (accessibility) đầy đủ
+ * (điều hướng bàn phím, quản lý focus, các vai trò ARIA).
  *
  * @see https://m3.material.io/components/floating-action-button/overview
  */
@@ -129,132 +129,132 @@ const ALIGNMENT_TRANSFORM_ORIGIN: Record<string, string> = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Data shape for a single FAB menu item entry.
+ * Định dạng dữ liệu cho từng hành động (item) trong biểu mẫu menu của FAB.
  *
- * When `label` is omitted the item renders as a square icon-only tile.
+ * Nếu bỏ qua thuộc tính `label`, item sẽ render dạng ô vuông chỉ có icon.
  */
 export interface FABMenuItemData {
-	/** Unique identifier for React key and focus management. */
+	/** Một ID duy nhất để dùng cho key react và quản lý focus. */
 	id: string;
-	/** Optional text label rendered beside the icon. Omit for icon-only items. */
+	/** Label hiển thị cạnh icon (tuỳ chọn). Không thêm thuộc tính này nếu muốn hiển thị chỉ có icon (icon-only). */
 	label?: string;
-	/** Icon node — typically a single SVG icon component. */
+	/** Node của Icon — thường là một component SVG Icon duy nhất. */
 	icon: React.ReactNode;
-	/** Called when the item is activated (click or keyboard Enter/Space). */
+	/** Gọi hàm ngay lập tức khi item được kích hoạt (click hoặc nhấn Enter/Phím cách). */
 	onClick: () => void;
 	/**
-	 * When `true`, the item is visually and functionally disabled.
-	 * Uses `aria-disabled` instead of HTML `disabled` so the item stays focusable.
+	 * Khi `true`, vô hiệu hoá item về mặt hình thức lẫn tương tác rẽ nhánh.
+	 * Vẫn dùng `aria-disabled` thay vì HTML `disabled` nhằm giữ nó lấy được focus phục vụ cho accessibility.
 	 * @default false
 	 */
 	disabled?: boolean;
-	/** Additional class names applied to the item container. */
+	/** Thêm CSS classes bổ sung dùng cho wrapper chính của item. */
 	className?: string;
 }
 
 /**
- * Props for the `FABMenu` orchestration component.
+ * Các props điều khiển Component chính `FABMenu`.
  *
  * @remarks
- * FABMenu manages the open/close state, focus lifecycle, keyboard navigation,
- * and animation orchestration. The `expanded` state is controlled externally
- * so it can be driven by route changes, business logic, etc.
+ * FABMenu quản lý vòng đời trạng thái mở/đóng menu (open/close), quản lý focus, điều khiển phím,
+ * và điều hướng hiệu ứng chuyển động. Trạng thái `expanded` được truyền từ ngoài (controlled state),
+ * do đó bạn có thể quản lý qua react state, hoặc dùng router hay business logic khác.
  */
 export interface FABMenuProps {
-	/** Whether the FAB Menu is currently open/expanded. */
+	/** FAB Menu có đang mở (mở rộng)/hiển thị hay không. */
 	expanded: boolean;
-	/** Callback invoked when the toggle FAB is clicked. */
+	/** Hàm handler kích hoạt khi Toggle FAB được người dùng tương tác, hoặc khi dismiss backdrop. */
 	onToggle: (expanded: boolean) => void;
-	/** List of action items (2–6 recommended by MD3 spec). */
+	/** Danh sách các action items (Spec MD3 đề nghị 2-6 item là hoàn hảo). */
 	items: FABMenuItemData[];
 	/**
-	 * MD3 color container role for the FAB and menu items.
+	 * Vai trò màu (color role container) MD3 cho cái nút FAB lẫn các menu items.
 	 * @default "primary"
 	 */
 	colorVariant?: "primary" | "secondary" | "tertiary";
 	/**
-	 * Initial size of the ToggleFAB (collapses to a circular close button when open).
+	 * Kích cỡ khởi tạo cho cái ToggleFAB (FAB biến hình thành cục đóng dấu X khi nó expanded).
 	 * @default "baseline"
 	 */
 	fabSize?: "baseline" | "medium" | "large";
 	/**
-	 * Horizontal alignment of menu items relative to the FAB.
-	 * - `"end"`: items align to the right (trailing edge, default for RTL-aware layouts)
-	 * - `"start"`: items align to the left
-	 * - `"center"`: items are centered over the FAB
+	 * Căn lề của danh sách menu items tương quan với cái Toggle FAB.
+	 * - `"end"`: Các items dồn hết theo lề phía tay phải (trailing edge, default cực hữu hiệu đối với RTL design).
+	 * - `"start"`: Các items dồn hết dọc theo lề trái.
+	 * - `"center"`: Các item sẽ được căn ra giữa chiều dọc, căn giữa tâm khối với cái FAB.
 	 * @default "end"
 	 */
 	alignment?: "start" | "end" | "center";
-	/** Additional class names for the outermost container div. */
+	/** Thuộc tính cho CSS component root để đè. */
 	className?: string;
 	/**
-	 * When `true`, clicking the backdrop/scrim behind the menu closes it.
+	 * Nếu `true`, khi menu đang hiện ra, click chuột ra phía sau (màn xám mờ backdrop) để đóng menu.
 	 * @default true
 	 */
 	closeOnBackdropClick?: boolean;
 	/**
-	 * When `true`, focus moves to the LAST item (closest to FAB) when menu opens.
-	 * When `false`, focus moves to the FIRST item (top of list).
+	 * Nếu `true`, focus sẽ tự động chạy xuống item CUỐI (sát bên trên cái nút FAB) khi menu vừa loé mờ ra.
+	 * Nếu `false`, focus sẽ bay lên item ĐẦU TIÊN của danh sách (cao nhất trên màn hình).
 	 * @default true
 	 */
 	focusLast?: boolean;
-	/** `aria-label` for the ToggleFAB. Required for accessibility. */
+	/** Bắt buộc truyền `aria-label` cho ToggleFAB để đáp ứng Accessibility. */
 	"aria-label"?: string;
 }
 
 /**
- * Props for the standalone `ToggleFAB` component.
+ * Props thuộc component `ToggleFAB` đứng độc lập.
  */
 export interface ToggleFABProps {
-	/** Whether the FAB is in the checked (open/expanded) state. */
+	/** Nút có đang trong trạng thái được kích hoạt check (expanded). */
 	expanded: boolean;
-	/** Called when the FAB is clicked. */
+	/** Gọi khi xảy ra sự kiện Toggle nút. */
 	onToggle: (expanded: boolean) => void;
 	/**
-	 * Icon render prop — receives the current checked progress (0→1)
-	 * so the icon can morph (e.g., from Add to Close).
+	 * Function sinh Icon - nhận về tiến độ `progress` trong khoảng `0` -> `1` (Từ Chưa Expanded -> Đã Expanded)
+	 * Dùng cho các hiệu ứng morphing Icon khi animtion render (VD: Từ Cộng thành Đóng).
 	 *
 	 * @example
 	 * ```tsx
-	 * icon={(progress) => progress > 0.5 ? <CloseIcon /> : <AddIcon />}
+	 * icon={(progress) => progress > 0.5 ? <Icon name="close" /> : <Icon name="add" />}
 	 * ```
 	 */
 	icon: (progress: number) => React.ReactNode;
-	/** MD3 color container role. @default "primary" */
+	/** Vai trò màu container chuẩn MD3. @default "primary" */
 	colorVariant?: "primary" | "secondary" | "tertiary";
-	/** Initial FAB size (morphs to circle when expanded). @default "baseline" */
+	/** Kích thước của cục FAB ban đầu (Sau khi nhấn sẽ thu tròn). @default "baseline" */
 	fabSize?: "baseline" | "medium" | "large";
-	/** Additional class names. */
+	/** CSS Class linh tinh bổ sung thêm. */
 	className?: string;
-	/** `aria-label` for the button. Required. */
+	/** Thuộc tính đọc thẻ accessibility. Bắt buộc có. */
 	"aria-label"?: string;
-	/** Controls `aria-expanded` attribute. */
+	/** Kiểm soát giá trị của ID để link với menu qua aria-controls. */
 	"aria-controls"?: string;
-	/** Passed through to the underlying button element. */
+	/** Trỏ id component. */
 	id?: string;
 }
 
 /**
- * Props for the `FABMenuItem` component.
+ * Props thuộc component một món item đơn lẻ `FABMenuItem`.
  */
 export interface FABMenuItemProps {
-	/** Icon node. */
+	/** Node của icon hiện. */
 	icon: React.ReactNode;
-	/** Optional text label. If omitted, renders as an icon-only square tile. */
+	/** Tên nhãn mô tả kế bên icon cho item này. Hoặc ẩn nó đi nếu không mong đợi. */
 	label?: string;
-	/** Called when the item is activated. */
+	/** Hàm bắn ra khi item được kích. */
 	onClick: () => void;
-	/** Disables interaction while keeping the item focusable. @default false */
+	/** Vô hiệu hóa hành vi tương tác item mà vẫn cho phép bàn phím tab bấm dính lấy focus. @default false */
 	disabled?: boolean;
-	/** MD3 color container role. @default "primary" */
+	/** Container tông màu. @default "primary" */
 	colorVariant?: "primary" | "secondary" | "tertiary";
-	/** Additional class names. */
+	/** Custom CSS className. */
 	className?: string;
-	/** Index within the menu (used for stagger animation `custom` prop). */
+	/** Số index liệt kê trong mảng dùng tính render delay (Dành cho animation cấu trúc `custom`). */
 	index?: number;
-	/** Total number of items (used to compute stagger order). */
+	/** Tổng danh sách items có mảng. */
 	totalItems?: number;
-	/** `tabIndex` driven by focus management logic. */
+	/** Giá trị logic `tabIndex` dùng điều khiển thao tác phím Tab thủ công. */
 	tabIndex?: number;
 }
 
@@ -407,18 +407,20 @@ const ToggleFABComponent = React.forwardRef<HTMLButtonElement, ToggleFABProps>(
 ToggleFABComponent.displayName = "ToggleFAB";
 
 /**
- * Toggleable FAB for use with `FABMenu` or as a standalone toggle button.
+ * Nút Toggle FAB (Biến hình) có thể được dùng độc lập đứng một mình (standalone) hoặc kết nối để kích hoạt mở cả nùi Menu ở dưới con `FABMenu`.
  *
- * Animates container size, corner radius (square → circle), and background color
- * as `expanded` transitions from false → true.
+ * Sức ép hiệu ứng kích thước khung nền sẽ chuyển từ vuôn/vát cạnh sang hình tròn hẵn (square → circle), chuyển biến cả màu sắc
+ * khi mà cờ `expanded` chuyển tiếp từ false sang → true.
  *
  * @example
  * ```tsx
+ * const [open, setOpen] = React.useState(false);
  * <ToggleFAB
  *   expanded={open}
  *   onToggle={setOpen}
+ *   colorVariant="primary"
  *   aria-label="Toggle actions"
- *   icon={(progress) => progress > 0.5 ? <CloseIcon /> : <AddIcon />}
+ *   icon={(progress) => progress > 0.5 ? <Icon name="close" /> : <Icon name="add" />}
  * />
  * ```
  */
@@ -429,15 +431,16 @@ export const ToggleFAB = React.memo(ToggleFABComponent);
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * A single action item within a `FABMenu`.
+ * Một item thực hiện một loại hành động duy nhất trong `FABMenu`.
  *
- * Renders as a pill-shaped chip with icon and optional label.
- * When `label` is omitted, renders as an icon-only square tile.
- * Includes MD3 Ripple press feedback and WCAG 2.5.5 compliant 48dp touch target.
+ * Render hình dạng viên thuốc bao quanh icon cùng với label diễn giải.
+ * Khi `label` bỏ trống, nó sẽ render thành một cục thẻ gạch ốp màu vuông vức chứa chữ mỗi cái icon.
+ * Component chứa gợn sóng MD3 Ripple cùng 48dp chuẩn vùng target đụng diện chuẩn WCAG 2.5.5 cho cảm ứng.
  *
  * @remarks
- * Disabled items use `aria-disabled="true"` instead of HTML `disabled` so
- * they remain keyboard-focusable (MD3 accessibility requirement).
+ * Những thành phần khi bị tắt (vô hiệu tương tác) thì chỉ được dùng role `aria-disabled="true"` ở lớp div bề mặt thay vì lấy
+ *  thuộc tính gốc `disabled` của HTML. Nhờ đó, item tuy xám mờ không bấm được phím chuột vẫn sẽ có khả năng focus qua vòng đời tab phím bàn phím
+ * (quy chuẩn chặt chẽ của Material Design 3).
  */
 export function FABMenuItem({
 	icon,
@@ -527,25 +530,31 @@ export function FABMenuItem({
 /**
  * MD3 Expressive FAB Menu.
  *
- * A toggleable FAB that reveals a staggered list of action items above it.
- * Implements full MD3 accessibility:
- *  - `role="menu"` on the items container
- *  - `role="menuitem"` on each item
- *  - Focus management: open → first/last item; close → ToggleFAB
- *  - Keyboard: Escape closes, Arrow Up/Down navigates, Tab/Shift+Tab cycles
+ * Bộ mở rộng Floating Action Button. Khi tương tác bật vào toggle-button (FAB con lai), sẽ trút ra mớ tác vụ menu ở xếp dọc (hoặc lan ra) từ trên đè ngược xuống trên nó.
+ *
+ * Accessibility thực thi chuẩn MD3 toàn phần:
+ *  - thẻ `role="menu"` trang bị cho thẻ hộp div làm luống container
+ *  - trang bị thẻ `role="menuitem"` trên mảng items thành phần con
+ *  - Lifecycle Focus cho trải nghiệm hoàn mỹ: Mở phím bật -> Focus thẳng lên item cao/thấp đầu/cuối cùng menu; Đóng tắt menu -> Focus trả về ngược lại ToggleFAB
+ *  - Tính năng Bàn Phím: Lách Escape nhấn tắt nhắm, Nhấn phím hướng lên-xuống(ArrowUp/Down) để di chuyển, Móc Tab(hoặc là Shift+Tab) nhảy lăng quăng qua các item.
  *
  * @example
  * ```tsx
- * const [open, setOpen] = React.useState(false)
+ * const [open, setOpen] = React.useState(false);
+ *
+ * const items = [
+ *   { id: 'share', icon: <Icon name="share" />, label: 'Chia sẻ', onClick: () => console.log('Share') },
+ *   { id: 'edit', icon: <Icon name="edit" />, label: 'Chỉnh sửa', onClick: () => console.log('Edit') },
+ *   { id: 'delete', icon: <Icon name="delete" />, label: 'Xóa bớt', disabled: true, onClick: () => {} }
+ * ];
  *
  * <FABMenu
  *   expanded={open}
  *   onToggle={setOpen}
- *   aria-label="Actions"
- *   items={[
- *     { id: 'share', icon: <ShareIcon />, label: 'Share', onClick: handleShare },
- *     { id: 'edit', icon: <EditIcon />, label: 'Edit', onClick: handleEdit },
- *   ]}
+ *   aria-label="Các công cụ thao tác nhanh"
+ *   alignment="center"
+ *   colorVariant="tertiary"
+ *   items={items}
  * />
  * ```
  *

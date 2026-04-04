@@ -1,0 +1,44 @@
+---
+title: "Badges"
+description: "Badges display status or notify users of new information, typically at the top-trailing corner of an icon."
+---
+
+Badges are used to show a notification, a count, or a status indicator attached to another object (like a navigation rail item, a tab, or an icon button).
+
+## Dot Badge (Decorative)
+
+When used without children, a badge renders as a small indicator dot of `6x6px`. These dots are decorative by default (`aria-hidden="true"`), so you should provide an `aria-label` to ensure accessibility if the presence of the dot carries meaning.
+
+<ComponentPreview name="badge-dot" />
+
+## Count & Text Badges
+
+When a badge is given content, it expands to accommodate the text. A large badge has a minimum height of `16px` and truncated string formatting.
+Numeric values exceeding the `max` prop will be displayed as `{max}+`.
+
+<ComponentPreview name="badge-count" />
+
+## Interactive State & Animation
+
+Because the `Badge` uses Framer Motion, it natively supports spring animations on mount and unmount when rendered conditionally. Adding or removing a badge from the DOM directly provides a smooth appearance.
+
+<ComponentPreview name="badge-interactive" />
+
+## API Reference
+
+### Badge
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `children` | `ReactNode` | | The content inside the badge. If omitted, renders a small dot. |
+| `max` | `number` | | The maximum value to display. If number exceeds max, appears as `{max}+`. |
+| `containerColor` | `string` | MD3 `error` | Optional custom background color override. |
+| `contentColor` | `string` | MD3 `on-error` | Optional custom text color override. |
+
+### BadgedBox
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `badge` | `ReactNode` | | The badge to render. |
+| `children` | `ReactNode` | | The anchor element to attach the badge to. |
+| `badgeSize`| `'small' \| 'large'` | auto | Explicitly sets badge offsets. By default, Auto-detected from badge content. |

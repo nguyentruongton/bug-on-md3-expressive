@@ -1,4 +1,4 @@
-import { Icon } from "@bug-on/md3-react";
+import { Button, Icon } from "@bug-on/md3-react";
 import Link from "next/link";
 
 export default function Page() {
@@ -17,13 +17,13 @@ export default function Page() {
 					dynamic color schemes.
 				</p>
 
-				<Link
-					href="/components"
-					className="inline-flex items-center gap-2 px-6 py-3 md:px-8 md:py-4 bg-m3-primary text-m3-on-primary rounded-full text-base md:text-lg font-medium hover:shadow-lg transition-all active:scale-95"
+				<Button
+					size="lg"
+					asChild
+					icon={<Icon name="arrow_forward" size={20} />}
 				>
-					Explore Components
-					<Icon name="arrow_forward" size={20} />
-				</Link>
+					<Link href="/components">Explore Components</Link>
+				</Button>
 			</div>
 		</div>
 	);

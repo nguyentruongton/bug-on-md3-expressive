@@ -40,9 +40,8 @@ export const ActiveIndicator = React.memo(function ActiveIndicator({
 	const duration = prefersReduced ? 0 : MD3_INDICATOR_DURATION;
 	const ease = MD3_STANDARD_EASING;
 
-	const height = isFocused || isError
-		? TF_SIZE.indicatorThick
-		: TF_SIZE.indicatorThin;
+	const height =
+		isFocused || isError ? TF_SIZE.indicatorThick : TF_SIZE.indicatorThin;
 
 	let backgroundColor: string;
 	if (isError) {

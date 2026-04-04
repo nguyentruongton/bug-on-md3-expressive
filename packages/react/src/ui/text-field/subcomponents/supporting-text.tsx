@@ -7,7 +7,10 @@
 
 import { AnimatePresence, m } from "motion/react";
 import * as React from "react";
-import { MD3_SUPPORTING_DURATION, MD3_STANDARD_EASING } from "../../shared/constants";
+import {
+	MD3_STANDARD_EASING,
+	MD3_SUPPORTING_DURATION,
+} from "../../shared/constants";
 import { TF_COLORS } from "../text-field.tokens";
 
 export interface SupportingTextProps {
@@ -87,7 +90,9 @@ export const SupportingText = React.memo(function SupportingText({
 	const isOverLimit = maxLength !== undefined && (charCount ?? 0) > maxLength;
 
 	// Determine counter color
-	const counterColor = isOverLimit ? TF_COLORS.error : TF_COLORS.onSurfaceVariant;
+	const counterColor = isOverLimit
+		? TF_COLORS.error
+		: TF_COLORS.onSurfaceVariant;
 
 	if (!activeText && maxLength === undefined) return null;
 
@@ -105,7 +110,11 @@ export const SupportingText = React.memo(function SupportingText({
 					{activeText && (
 						<AnimatedText
 							key={isError && errorText ? "error" : "helper"}
-							motionKey={isError && errorText ? `error-${errorText}` : `helper-${supportingText}`}
+							motionKey={
+								isError && errorText
+									? `error-${errorText}`
+									: `helper-${supportingText}`
+							}
 							text={activeText}
 							className={`text-xs leading-4 block ${
 								isError ? "text-m3-error" : "text-m3-on-surface-variant"

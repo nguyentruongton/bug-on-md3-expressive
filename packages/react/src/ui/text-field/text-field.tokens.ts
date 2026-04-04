@@ -84,7 +84,8 @@ export const TF_CLASSES = {
 	// Input
 	input:
 		"bg-transparent outline-none w-full text-base text-[var(--color-m3-on-surface)] caret-[var(--color-m3-primary)] placeholder:text-[var(--color-m3-on-surface-variant)]",
-	inputNoSpinner: "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+	inputNoSpinner:
+		"[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
 
 	// States
 	disabled: "opacity-[0.38] pointer-events-none cursor-not-allowed",
@@ -94,7 +95,8 @@ export const TF_CLASSES = {
 	errorText: "text-xs text-[var(--color-m3-error)] px-4",
 
 	// Prefix / Suffix
-	prefixSuffix: "text-base text-[var(--color-m3-on-surface-variant)] select-none shrink-0",
+	prefixSuffix:
+		"text-base text-[var(--color-m3-on-surface-variant)] select-none shrink-0",
 
 	// State layer (hover)
 	stateLayer:

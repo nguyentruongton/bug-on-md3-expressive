@@ -1,9 +1,17 @@
 "use client";
 
-import { Icon, ScrollArea, TableOfContents } from "@bug-on/md3-react";
+import {
+	Icon,
+	IconButton,
+	NavigationRail,
+	NavigationRailItem,
+	ScrollArea,
+	TableOfContents,
+} from "@bug-on/md3-react";
 import { AnimatePresence, motion } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
 import { NavigationDrawer } from "@/components/layout/navigation-drawer";
-import { NavigationRail } from "@/components/layout/navigation-rail";
+import { useLayout } from "@/lib/layout-context";
 import { useToc } from "@/lib/toc-context";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -118,15 +126,111 @@ function TocMobileTrigger() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// App Navigation
+// ─────────────────────────────────────────────────────────────────────────────
+
+function AppNavigation() {
+	const pathname = usePathname();
+	const router = useRouter();
+	const { toggleDrawer, isDrawerOpen } = useLayout();
+	const items = [
+		{ icon: "home", label: "Home", href: "/", active: pathname === "/" },
+		{
+			icon: "explore",
+			label: "Get started",
+			href: "/get-started",
+			active: pathname === "/get-started",
+		},
+		{
+			icon: "grid_view",
+			label: "Components",
+			href: "/components",
+			active: pathname.startsWith("/components"),
+		},
+		{
+			icon: "settings",
+			label: "Settings",
+			href: "/settings",
+			active: pathname === "/settings",
+		},
+	];
+
+	return (
+		<>
+			{/* Desktop Rail */}
+			<NavigationRail
+				className="hidden lg:flex shadow-none"
+				xr
+				header={
+					<IconButton
+						onClick={toggleDrawer}
+						colorStyle="standard"
+						aria-label={
+							isDrawerOpen
+								? "Close navigation drawer"
+								: "Open navigation drawer"
+						}
+						size="md"
+					>
+						<Icon name={isDrawerOpen ? "menu_open" : "menu"} size={48} />
+					</IconButton>
+				}
+			>
+				{items.map((item) => (
+					<NavigationRailItem
+						key={item.label}
+						icon={<Icon name={item.icon} />}
+						label={item.label}
+						selected={item.active}
+						onClick={() => router.push(item.href)}
+					/>
+				))}
+			</NavigationRail>
+
+			{/* Mobile Bottom Bar */}
+			<nav className="fixed bottom-4 left-4 right-4 bg-m3-surface z-50 flex flex-row items-center justify-around py-2 shrink-0 rounded-full elevation-2 lg:hidden shadow-md backdrop-blur-md">
+				{items.map((item) => (
+					<NavigationRailItem
+						key={item.label}
+						className="w-16 h-14 bg-transparent outline-none focus-visible:ring-0"
+						icon={<Icon name={item.icon} />}
+						label={item.label}
+						selected={item.active}
+						onClick={() => router.push(item.href)}
+					/>
+				))}
+			</nav>
+		</>
+	);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Layout Wrapper
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
+	const { toggleDrawer, isDrawerOpen } = useLayout();
+
 	return (
-		<div className="relative flex flex-col lg:flex-row h-dvh w-full max-w-screen-2xl mx-auto lg:p-6 lg:gap-6 overflow-hidden">
+		<motion.div
+			layout
+			className="relative flex flex-col lg:flex-row h-dvh w-full max-w-screen-2xl mx-auto lg:p-6 lg:gap-6 overflow-hidden"
+		>
 			{/* Mobile Header */}
 			<header className="lg:hidden flex items-center justify-between px-6 py-4 z-10 sticky top-0">
 				<div className="flex items-center gap-3">
+					<IconButton
+						onClick={toggleDrawer}
+						colorStyle="standard"
+						className="-ml-2"
+						aria-label={
+							isDrawerOpen
+								? "Close navigation drawer"
+								: "Open navigation drawer"
+						}
+					>
+						<Icon name="menu" />
+					</IconButton>
 					<div className="w-9 h-9 bg-m3-primary rounded-[10px] flex items-center justify-center elevation-1">
 						<span className="text-m3-on-primary font-bold text-[10px] leading-tight text-center px-1">
 							MD3
@@ -138,18 +242,27 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
 				</div>
 			</header>
 
-			<NavigationRail />
+			<AppNavigation />
 			<NavigationDrawer />
 
 			{/* Main area: scrollable content */}
-			<main className="flex-1 min-w-0 overflow-hidden mb-22 lg:mb-0 lg:rounded-[2.5rem] bg-m3-surface z-0 relative flex flex-col">
+			<motion.main
+				layout
+				transition={{
+					type: "spring",
+					damping: 30,
+					stiffness: 300,
+					mass: 0.8,
+				}}
+				className="flex-1 min-w-0 overflow-hidden mb-22 lg:mb-0 lg:rounded-[2.5rem] bg-m3-surface z-0 relative flex flex-col"
+			>
 				<ScrollArea className="flex-1 min-w-0 w-full" type="hover">
 					{/* CSS Grid constraint to prevent Radix table from horizontally stretching based on child min-content */}
 					<div className="grid grid-cols-[minmax(0,1fr)] w-full">
 						<div className="min-w-0 w-full">{children}</div>
 					</div>
 				</ScrollArea>
-			</main>
+			</motion.main>
 
 			{/* Desktop TOC — outside main layout, floating right */}
 			<TocDesktopSidebar />
@@ -157,6 +270,6 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
 			{/* Mobile: right-side TOC drawer + floating trigger */}
 			<TocMobileDrawer />
 			<TocMobileTrigger />
-		</div>
+		</motion.div>
 	);
 }

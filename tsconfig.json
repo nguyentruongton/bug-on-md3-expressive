@@ -13,6 +13,11 @@
 			"@bug-on/md3-tokens": ["./packages/tokens/src"]
 		}
 	},
-	"include": ["packages/**/*.ts", "packages/**/*.tsx", "apps/**/*.ts", "apps/**/*.tsx"],
+	"include": [
+		"packages/**/*.ts",
+		"packages/**/*.tsx",
+		"apps/**/*.ts",
+		"apps/**/*.tsx"
+	],
 	"exclude": ["node_modules", "dist", ".next"]
 }

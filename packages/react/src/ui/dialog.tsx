@@ -1,11 +1,11 @@
 /**
  * @file dialog.tsx
  *
- * MD3 Expressive Dialog component.
+ * Sub-system Component Dialog theo phong cách hiển thị MD3 Expressive.
  *
- * Builds on Radix UI Dialog primitives wrapped in Framer Motion for
- * spring-based entrance/exit animations matching the MD3 Expressive spec.
- * Provides both standard and full-screen variants.
+ * Được kế thừa trên nền lõi của hệ mã Radix UI Dialog primitives đi kèm gói kén Framer Motion dùng vào việc bổ sung
+ * nhip điệu đẩy Spring ở hướng hiện vào (Entrance) cũng như bay lên (Exit); ăn liền với bản thiết kế specs MD3 Expressive siêu quyến rũ.
+ * Phục vụ cả ở chế độ Standard (Tiêu chuẩn lọt thỏm) và phiên bản Full-Screen tràn viền toàn diện.
  *
  * @see https://m3.material.io/components/dialogs/overview
  */
@@ -55,15 +55,24 @@ const MD3_FULLSCREEN_ANIM = {
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 /**
- * Root-level Dialog props. Mirrors Radix `Dialog.Root` controlled-open API.
+ * Thuộc tính của cội gốc Root `Dialog`. Chức năng làm gương phản hồi của Radix `Dialog.Root` qua dạng controlled state đóng hay mở.
  *
  * @example
  * ```tsx
  * const [open, setOpen] = React.useState(false);
+ *
  * <Dialog open={open} onOpenChange={setOpen}>
- *   <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
+ *   <DialogTrigger asChild>
+ *      <Button>Bấm Mở Dialog</Button>
+ *   </DialogTrigger>
  *   <DialogContent>
- *     <DialogHeader><DialogTitle>Confirm action</DialogTitle></DialogHeader>
+ *     <DialogHeader>
+ *        <DialogTitle>Bạn có muốn phiêu lưu không?</DialogTitle>
+ *     </DialogHeader>
+ *     <DialogBody>Chuẩn bị lên đồ rời khỏi hang nào.</DialogBody>
+ *     <DialogFooter>
+ *        <Button onClick={() => setOpen(false)} variant="text">Đóng</Button>
+ *     </DialogFooter>
  *   </DialogContent>
  * </Dialog>
  * ```
@@ -78,36 +87,36 @@ export interface DialogProps {
 }
 
 /**
- * Props for the standard `DialogContent` container.
+ * Các props được tiêm vào component bao ngoài Container `DialogContent` thuộc dạng Normal Standard.
  *
  * @see {@link DialogContent}
  */
 export interface DialogContentProps
 	extends React.ComponentPropsWithoutRef<typeof RadixDialog.Content> {
-	/** Hide the default close button (X icon). @default false */
+	/** Vô hình đi đi nút Close dấu (X) góc phải trên. @default false */
 	hideCloseButton?: boolean;
 	className?: string;
 }
 
 /**
- * Props for the full-screen `DialogFullScreenContent` variant.
+ * Thuộc tính Props của biến thể `DialogFullScreenContent` chuyên dụng dành riêng cho Mode Full-Screen tràn màn hình.
  *
  * @remarks
- * Full-screen dialogs expand to fill the entire screen and include a top app bar
- * with optional title, a close icon, and an action button.
+ * Những hộp thoại Full-screen có biệt tài tự nới rộng và xâm chiếm cả bề ngang dọc nguyên thiết bị. Nó còn thiết lập một đường Top App bar (thanh ngang đỉnh)
+ * kẹp chung cả 1 nhãn title mô tả đỉnh, một nút icon X dẹp ở rìa, thêm luôn hẳn cái nút Confirm cực xịn xò.
  *
  * @see {@link DialogFullScreenContent}
  * @see https://m3.material.io/components/dialogs/guidelines#full-screen
  */
 export interface DialogFullScreenContentProps
 	extends React.ComponentPropsWithoutRef<typeof RadixDialog.Content> {
-	/** Title text shown in the top app bar area. */
+	/** Nhãn Title nằm vùng khu vực thanh ngang Top Bar. */
 	title?: string;
-	/** Label for the primary action button in the top bar (e.g. "Save"). */
+	/** Chữ viết đính kèm bên trong cục Nút nhấn thao tác ngay trên góc Top App bar đó (VD: "Lưu lại", "Save"). */
 	actionLabel?: string;
-	/** Called when the primary action button is clicked. */
+	/** Hàm handler phát động cờ để kích chạy tính năng lưu, xác nhận kia. */
 	onAction?: () => void;
-	/** Show a divider between header and body when content is scrolled. @default false */
+	/** Rạch một làn kẻ chia cách thân body nội dung cuộn bên dưới và dòng App bar cố thủ bên trên. @default false */
 	showDivider?: boolean;
 	className?: string;
 }
@@ -115,10 +124,10 @@ export interface DialogFullScreenContentProps
 // ─── Re-exports wrapper ───────────────────────────────────────────────────────
 
 /**
- * Root Dialog component — wraps Radix `Dialog.Root`.
+ * Gốc rễ Root của Component Dialog — trạc lấp lên cái module `Dialog.Root` của nhà Radix.
  *
- * @remarks Controlled via `open`/`onOpenChange`. For uncontrolled usage,
- * omit both props and rely on `DialogTrigger` child.
+ * @remarks Cơ năng hoạt động ở chế độ Controlled (kiểm soát vòng đời ở Client) xài mảng `open`/`onOpenChange`.
+ *  Tuy thế bạn nếu không thích thì đừng có xài truyền mấy cái Props tay đôi trên, mà bỏ xài kiểu Untracked thông qua cái cục `DialogTrigger` là đủ.
  */
 const Dialog = ({ open, onOpenChange, children }: DialogProps) => (
 	<RadixDialog.Root open={open} onOpenChange={onOpenChange}>
@@ -127,7 +136,7 @@ const Dialog = ({ open, onOpenChange, children }: DialogProps) => (
 );
 Dialog.displayName = "Dialog";
 
-/** Trigger element that toggles Dialog open state. Accepts `asChild`. */
+/** Bộ Trigger gieo phát đà giúp tắt bật cờ State đóng mở của Dialog con, dùng kèm kĩ năng nhét thông qua cái cầu `asChild`. */
 const DialogTrigger = RadixDialog.Trigger;
 DialogTrigger.displayName = "DialogTrigger";
 

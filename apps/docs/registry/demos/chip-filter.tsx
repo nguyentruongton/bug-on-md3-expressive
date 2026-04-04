@@ -19,7 +19,9 @@ function FilterChipToggle({
 			label={label}
 			selected={selected}
 			elevated={elevated}
-			leadingIcon={icon ? <Icon name={icon} className="w-4.5 h-4.5" /> : undefined}
+			leadingIcon={
+				icon ? <Icon name={icon} className="w-4.5 h-4.5" /> : undefined
+			}
 			onClick={() => setSelected((v) => !v)}
 		/>
 	);

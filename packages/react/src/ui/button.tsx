@@ -12,9 +12,17 @@
  *   XL → h:136dp | px: 48dp | icon: 40dp | gap: 12dp
  */
 
+import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import type { HTMLMotionProps } from "motion/react";
-import { AnimatePresence, domMax, LazyMotion, m } from "motion/react";
+import {
+	AnimatePresence,
+	animate,
+	domMax,
+	LazyMotion,
+	m,
+	useMotionValue,
+} from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
 import { LoadingIndicator } from "./loading-indicator";
@@ -23,52 +31,21 @@ import { Ripple, useRippleState } from "./ripple";
 import { SPRING_TRANSITION, SPRING_TRANSITION_FAST } from "./shared/constants";
 import { TouchTarget } from "./shared/touch-target";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Design Tokens
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Design Tokens ────────────────────────────────────────────────────────────
 
 /**
  * Per-size layout styles.
  * Heights and paddings are taken directly from the MD3 Expressive spec (May 2025).
- * @internal
  */
 const SIZE_STYLES: Record<string, React.CSSProperties> = {
-	xs: {
-		height: "2rem",
-		minWidth: "4rem",
-		paddingInline: "0.75rem",
-		gap: "0.5rem",
-	},
-	sm: {
-		height: "2.5rem",
-		minWidth: "5rem",
-		paddingInline: "1rem",
-		gap: "0.5rem",
-	},
-	md: {
-		height: "3.5rem",
-		minWidth: "7rem",
-		paddingInline: "1.5rem",
-		gap: "0.5rem",
-	},
-	lg: {
-		height: "6rem",
-		minWidth: "11rem",
-		paddingInline: "3rem",
-		gap: "0.75rem",
-	},
-	xl: {
-		height: "8.5rem",
-		minWidth: "14rem",
-		paddingInline: "3rem",
-		gap: "0.75rem",
-	},
+	xs: { height: "2rem",   minWidth: "4rem",  paddingInline: "0.75rem", gap: "0.5rem"  },
+	sm: { height: "2.5rem", minWidth: "5rem",  paddingInline: "1rem",    gap: "0.5rem"  },
+	md: { height: "3.5rem", minWidth: "7rem",  paddingInline: "1.5rem",  gap: "0.5rem"  },
+	lg: { height: "6rem",   minWidth: "11rem", paddingInline: "3rem",    gap: "0.75rem" },
+	xl: { height: "8.5rem", minWidth: "14rem", paddingInline: "3rem",    gap: "0.75rem" },
 };
 
-/**
- * Per-size label typography classes.
- * @internal
- */
+/** Per-size label typography classes. */
 const SIZE_TEXT_CLASS: Record<string, string> = {
 	xs: "text-xs  font-medium tracking-wide",
 	sm: "text-sm  font-medium tracking-wide",
@@ -80,7 +57,6 @@ const SIZE_TEXT_CLASS: Record<string, string> = {
 /**
  * Per-size icon container Tailwind classes.
  * MD3 icon sizes: XS=18dp, SM=20dp, MD=24dp, LG=32dp, XL=40dp.
- * @internal
  */
 const SIZE_ICON_CLASS: Record<string, string> = {
 	xs: "size-[1.125rem]",
@@ -90,8 +66,19 @@ const SIZE_ICON_CLASS: Record<string, string> = {
 	xl: "size-10",
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Shape Morphing — Border Radius Maps
+/**
+ * Icon pixel-sizes for given button sizes.
+ * MD3 icon sizes: XS=18, SM=20, MD=24, LG=32, XL=40.
+ */
+const SIZE_ICON_PX: Record<string, number> = {
+	xs: 18,
+	sm: 20,
+	md: 24,
+	lg: 32,
+	xl: 40,
+};
+
+// ─── Shape Morphing ────────────────────────────────────────────────────────────
 //
 // IMPORTANT: Do NOT use 9999 for the "pill" default radius.
 // CSS clips any border-radius > height/2 identically, so animating from
@@ -100,7 +87,6 @@ const SIZE_ICON_CLASS: Record<string, string> = {
 // it snaps/jerks. Use exact half-height values instead for truly smooth morph.
 //
 // Size heights: xs=32dp, sm=40dp, md=56dp, lg=96dp, xl=136dp
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Per-size border radius values for a given shape state. */
 type MorphRadius = { default: number; pressed: number };
@@ -109,10 +95,9 @@ type MorphRadius = { default: number; pressed: number };
  * Border-radius token map for the "round" (pill) shape variant.
  * Values equal `height / 2` for each size to ensure the pill stays perceptually
  * smooth during spring animation (no dead zone artefact).
- * @internal
  */
 const ROUND_RADIUS: Record<string, MorphRadius> = {
-	xs: { default: 16, pressed: 8 },
+	xs: { default: 16, pressed: 8  },
 	sm: { default: 20, pressed: 10 },
 	md: { default: 28, pressed: 16 },
 	lg: { default: 48, pressed: 28 },
@@ -122,19 +107,16 @@ const ROUND_RADIUS: Record<string, MorphRadius> = {
 /**
  * Border-radius token map for the "square" (rounded-square) shape variant.
  * Pressed values compress inward following MD3 Expressive morphing spec.
- * @internal
  */
 const SQUARE_RADIUS: Record<string, MorphRadius> = {
-	xs: { default: 4, pressed: 2 },
-	sm: { default: 8, pressed: 4 },
+	xs: { default: 4,  pressed: 2  },
+	sm: { default: 8,  pressed: 4  },
 	md: { default: 16, pressed: 10 },
 	lg: { default: 28, pressed: 20 },
 	xl: { default: 40, pressed: 28 },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Color Variants (CVA)
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Color Variants (CVA) ──────────────────────────────────────────────────────
 
 const buttonColorVariants = cva(
 	[
@@ -184,11 +166,9 @@ const buttonColorVariants = cva(
 	},
 );
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Types
+// ─── Types ─────────────────────────────────────────────────────────────────────
 // Use HTMLMotionProps<"button"> as the base to avoid onDrag / event handler
 // conflicts between native React and Framer Motion's extended prop types.
-// ─────────────────────────────────────────────────────────────────────────────
 
 type MotionButtonProps = Omit<HTMLMotionProps<"button">, "children" | "color">;
 
@@ -245,6 +225,20 @@ export interface BaseButtonProps extends MotionButtonProps {
 	 * @default "loading-indicator"
 	 */
 	loadingVariant?: "loading-indicator" | "circular";
+	/**
+	 * When `true`, the Button renders its child element directly (using Radix Slot),
+	 * merging all button props (className, style, event handlers) onto it.
+	 * Useful for rendering a Next.js `<Link>` with Button styles.
+	 *
+	 * @example
+	 * ```tsx
+	 * <Button asChild size="lg">
+	 *   <Link href="/components">Explore Components</Link>
+	 * </Button>
+	 * ```
+	 * @default false
+	 */
+	asChild?: boolean;
 	/** Button label — any React content, typically a string. */
 	children: React.ReactNode;
 }
@@ -273,35 +267,88 @@ export type ButtonProps = BaseButtonProps &
 		| { variant: "toggle"; selected: boolean }
 	);
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Helpers ───────────────────────────────────────────────────────────────────
 
-/**
- * Returns the icon pixel-size for a given button size.
- * MD3 icon sizes: XS=18, SM=20, MD=24, LG=32, XL=40.
- * @internal
- */
-const getSizeIconPx = (size: string): number => {
-	switch (size) {
-		case "xs":
-			return 18;
-		case "sm":
-			return 20;
-		case "md":
-			return 24;
-		case "lg":
-			return 32;
-		case "xl":
-			return 40;
-		default:
-			return 20;
+function toSentenceCase(text: string): string {
+	return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
+function resolveLabel(children: React.ReactNode, asChild: boolean): React.ReactNode {
+	if (asChild) {
+		const child = React.Children.only(children) as React.ReactElement<{
+			children?: React.ReactNode;
+		}>;
+		return child.props.children;
 	}
-};
+	return typeof children === "string" ? toSentenceCase(children) : children;
+}
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Component
-// ─────────────────────────────────────────────────────────────────────────────
+/** Framer Motion-specific props to strip before forwarding to a plain DOM element. */
+const MOTION_PROP_KEYS = [
+	"animate", "exit", "initial", "transition", "variants",
+	"whileHover", "whileTap", "whileFocus", "whileDrag", "whileInView",
+	"onAnimationStart", "onAnimationComplete", "onUpdate",
+	"onDragStart", "onDragEnd", "onDrag", "onDirectionLock", "onDragTransitionEnd",
+	"layout", "layoutId", "onLayoutAnimationComplete",
+] as const;
+
+function stripMotionProps(props: Record<string, unknown>): Record<string, unknown> {
+	const result = { ...props };
+	for (const key of MOTION_PROP_KEYS) delete result[key];
+	return result;
+}
+
+function springAnimate(value: ReturnType<typeof useMotionValue<number>>, to: number) {
+	animate(value, to, { ...SPRING_TRANSITION_FAST, type: "spring" });
+}
+
+// ─── Sub-components ────────────────────────────────────────────────────────────
+
+interface LoadingSpinnerProps {
+	size: number;
+	variant: "loading-indicator" | "circular";
+}
+
+function LoadingSpinner({ size, variant }: LoadingSpinnerProps) {
+	if (variant === "loading-indicator") {
+		return <LoadingIndicator size={size} color="currentColor" aria-label="Loading" />;
+	}
+	return (
+		<ProgressIndicator
+			variant="circular"
+			size={size}
+			color="currentColor"
+			trackColor="transparent"
+			aria-label="Loading"
+		/>
+	);
+}
+
+interface AnimatedIconSlotProps {
+	iconClass: string;
+	children: React.ReactNode;
+	ariaHidden?: boolean;
+}
+
+function AnimatedIconSlot({ iconClass, children, ariaHidden }: AnimatedIconSlotProps) {
+	return (
+		<m.span
+			initial={{ width: 0, opacity: 0, scale: 0.5 }}
+			animate={{ width: "auto", opacity: 1, scale: 1 }}
+			exit={{ width: 0, opacity: 0, scale: 0.5 }}
+			transition={SPRING_TRANSITION}
+			aria-hidden={ariaHidden ? "true" : undefined}
+			className={cn(
+				"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full overflow-hidden",
+				iconClass,
+			)}
+		>
+			{children}
+		</m.span>
+	);
+}
+
+// ─── Component ─────────────────────────────────────────────────────────────────
 
 const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
@@ -318,6 +365,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			iconPosition = "leading",
 			loading = false,
 			loadingVariant = "loading-indicator",
+			asChild = false,
 			children,
 			onClick,
 			onKeyDown,
@@ -329,63 +377,61 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const isToggle = variant === "toggle";
 		const isSelected = isToggle ? !!selected : false;
 
-		// When toggle is selected, use selectedColorStyle if provided, else "filled".
-		// This avoids CSS specificity battles between two bg-* classes from different
-		// CVA variants. effectiveColorStyle is the single source of truth for color.
-		const effectiveColorStyle =
-			isToggle && isSelected ? selectedColorStyle || "filled" : colorStyle;
-
-		// ── Shape Morphing ───────────────────────────────────────────────
-		// When toggle selected: shape flips (round → square, square → round)
+		// When toggle is selected, shape flips (round ↔ square).
 		const effectiveShape = isSelected
-			? shape === "round"
-				? "square"
-				: "round"
+			? shape === "round" ? "square" : "round"
 			: shape;
 
+		// effectiveColorStyle is the single source of truth for color.
+		// Avoids CSS specificity battles between two bg-* classes.
+		const effectiveColorStyle =
+			isToggle && isSelected ? selectedColorStyle ?? "filled" : colorStyle;
+
 		const radiusMap = effectiveShape === "round" ? ROUND_RADIUS : SQUARE_RADIUS;
-		const pressedRadiusMap = shape === "round" ? ROUND_RADIUS : SQUARE_RADIUS;
 		const { default: animateRadius } = radiusMap[size] ?? radiusMap.sm;
-		const { pressed: pressedRadius } =
-			pressedRadiusMap[size] ?? pressedRadiusMap.sm;
+		const { pressed: pressedRadius } = radiusMap[size] ?? radiusMap.sm;
 
-		// ── Label: Sentence case ─────────────────────────────────────────
-		const labelText = React.useMemo(
-			() =>
-				typeof children === "string"
-					? children.charAt(0).toUpperCase() + children.slice(1).toLowerCase()
-					: children,
-			[children],
-		);
-
-		const iconClass = React.useMemo(
-			() => SIZE_ICON_CLASS[size] ?? "size-5",
-			[size],
-		);
-
-		const mergedStyle = React.useMemo(
-			() => ({
-				...SIZE_STYLES[size],
-				...style,
-			}),
-			[size, style],
-		);
-
-		// ── A11y: 48dp min touch target for XS / SM ──────────────────────
+		const iconClass = SIZE_ICON_CLASS[size] ?? "size-5";
+		const mergedStyle = { ...SIZE_STYLES[size], ...style };
+		const labelText = React.useMemo(() => resolveLabel(children, asChild), [children, asChild]);
+		const computedAriaLabel = ariaLabelProp || (typeof children === "string" ? children : undefined);
 		const needsTouchTarget = size === "xs" || size === "sm";
 
-		// ── Ripple ───────────────────────────────────────────────────────
-		const { ripples, onPointerDown, removeRipple } = useRippleState({
-			disabled: loading,
-		});
+		// Shape morphing motion value for asChild mode.
+		// Radix Slot clones the child, so Framer Motion loses DOM tracking.
+		// Instead we subscribe to motionRadius.on("change") and update style.borderRadius imperatively.
+		const motionRadius = useMotionValue(animateRadius);
+		const asChildRef = React.useRef<HTMLElement | null>(null);
+
+		// Merge forwardRef + asChildRef into a single callback ref (Slot accepts only one ref).
+		const mergedRef = React.useCallback(
+			(node: HTMLElement | null) => {
+				asChildRef.current = node;
+				if (typeof ref === "function") ref(node as HTMLButtonElement);
+				else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement;
+			},
+			[ref],
+		);
+
+		// Keep DOM borderRadius synced with motionRadius.
+		React.useEffect(
+			() => motionRadius.on("change", (v) => {
+				if (asChildRef.current) asChildRef.current.style.borderRadius = `${v}px`;
+			}),
+			[motionRadius],
+		);
+
+		// Animate to new target radius when toggle state or size changes.
+		React.useEffect(() => {
+			springAnimate(motionRadius, animateRadius);
+		}, [animateRadius, motionRadius]);
+
+		const { ripples, onPointerDown, removeRipple } = useRippleState({ disabled: loading });
 
 		const handleClick = React.useCallback(
 			(e: React.MouseEvent<HTMLButtonElement>) => {
-				if (loading) {
-					e.preventDefault();
-					return;
-				}
-				if (onClick) onClick(e);
+				if (loading) return e.preventDefault();
+				onClick?.(e);
 			},
 			[loading, onClick],
 		);
@@ -393,126 +439,121 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const handleKeyDown = React.useCallback(
 			(e: React.KeyboardEvent<HTMLButtonElement>) => {
 				if (loading) return;
-				if (e.key === "Enter" || e.key === " ") {
-					if (onClick) {
-						e.preventDefault();
-						(e.currentTarget as HTMLButtonElement).click();
-					}
+				if (onClick && (e.key === "Enter" || e.key === " ")) {
+					e.preventDefault();
+					(e.currentTarget as HTMLButtonElement).click();
 				}
-				if (onKeyDown) onKeyDown(e);
+				onKeyDown?.(e);
 			},
 			[loading, onClick, onKeyDown],
 		);
 
+		const buttonClassName = cn(
+			buttonColorVariants({ colorStyle: effectiveColorStyle }),
+			// overflow-hidden clips Ripple to match the morphing border-radius
+			"overflow-hidden",
+			SIZE_TEXT_CLASS[size],
+			needsTouchTarget && "relative",
+			loading && "pointer-events-none opacity-75 cursor-not-allowed",
+			className,
+		);
+
+		const innerContent = (
+			<>
+				{/* Invisible touch-target expander (min 48×48dp) for small buttons */}
+				{needsTouchTarget && <TouchTarget />}
+
+				{/* MD3 Expressive Ripple layer */}
+				<Ripple ripples={ripples} onRippleDone={removeRipple} />
+
+				<AnimatePresence initial={false}>
+					{(loading || (icon && iconPosition === "leading")) && (
+						<AnimatedIconSlot iconClass={iconClass} ariaHidden={!loading}>
+							{loading
+								? <LoadingSpinner size={SIZE_ICON_PX[size] ?? 20} variant={loadingVariant} />
+								: icon}
+						</AnimatedIconSlot>
+					)}
+				</AnimatePresence>
+
+				<m.span
+					layout="size"
+					className="inline-flex items-center gap-[inherit]"
+					transition={SPRING_TRANSITION}
+				>
+					{labelText}
+				</m.span>
+
+				<AnimatePresence initial={false}>
+					{icon && iconPosition === "trailing" && (
+						<AnimatedIconSlot iconClass={iconClass} ariaHidden>
+							{icon}
+						</AnimatedIconSlot>
+					)}
+				</AnimatePresence>
+			</>
+		);
+
+		// asChild: render Slot with imperative motion value driving borderRadius.
+		// Framer Motion works imperatively here because Radix Slot clones the child,
+		// breaking Framer Motion's internal DOM tracking.
+		if (asChild) {
+			const htmlProps = stripMotionProps(restProps as Record<string, unknown>);
+			const child = React.Children.only(children) as React.ReactElement<{
+				children?: React.ReactNode;
+			}>;
+
+			const handleAsChildPointerDown = (e: React.PointerEvent<HTMLElement>) => {
+				springAnimate(motionRadius, pressedRadius);
+				(onPointerDown as React.PointerEventHandler<HTMLElement>)?.(e);
+			};
+
+			const handleAsChildPointerUp = () => {
+				springAnimate(motionRadius, animateRadius);
+			};
+
+			return (
+				<LazyMotion features={domMax} strict>
+					<Slot
+						ref={mergedRef as React.Ref<HTMLButtonElement>}
+						aria-label={computedAriaLabel}
+						onClick={handleClick as React.MouseEventHandler<HTMLElement>}
+						onPointerDown={handleAsChildPointerDown}
+						onPointerUp={handleAsChildPointerUp}
+						onPointerLeave={handleAsChildPointerUp}
+						onPointerCancel={handleAsChildPointerUp}
+						onKeyDown={handleKeyDown as React.KeyboardEventHandler<HTMLElement>}
+						style={{ ...(mergedStyle as React.CSSProperties), borderRadius: `${animateRadius}px` }}
+						className={buttonClassName}
+						{...htmlProps}
+					>
+						{React.cloneElement(child, { children: innerContent })}
+					</Slot>
+				</LazyMotion>
+			);
+		}
+
+		// Default: animated m.button
 		return (
 			<LazyMotion features={domMax} strict>
 				<m.button
 					ref={ref}
 					type="button"
 					aria-pressed={isToggle ? isSelected : undefined}
-					aria-label={
-						ariaLabelProp ||
-						(typeof children === "string" ? children : undefined)
-					}
+					aria-label={computedAriaLabel}
 					aria-busy={loading ? true : undefined}
 					aria-disabled={loading ? true : restProps.disabled}
 					onClick={handleClick}
 					onPointerDown={onPointerDown}
 					onKeyDown={handleKeyDown}
 					style={mergedStyle}
-					// ── Expressive Morphing ──────────────────────────────────
-					// Shape morphs between pill ↔ rounded-square on toggle.
-					// Removed whileTap scale — ripple provides click feedback instead.
-					//
-					// NOTE: Uses spring with bounce: 0 (critically damped) for border-radius.
-					// This prevents overshoot below zero (visual jitter) while perfectly
-					// preserving velocity on rapid click interruptions, fixing the jerky morph.
-					// `layout` is intentionally NOT on this element — it conflicts with
-					// Framer Motion's layout projection correction of border-radius, causing jitter.
-					// Width changes are handled by the inner label m.span with layout instead.
 					animate={{ borderRadius: animateRadius }}
 					whileTap={{ borderRadius: pressedRadius }}
-					transition={{
-						borderRadius: SPRING_TRANSITION_FAST,
-					}}
-					className={cn(
-						buttonColorVariants({ colorStyle: effectiveColorStyle }),
-						// overflow-hidden is critical: clips Ripple to match morphing border-radius
-						"overflow-hidden",
-						SIZE_TEXT_CLASS[size],
-						needsTouchTarget ? "relative" : "",
-						loading && "pointer-events-none opacity-75 cursor-not-allowed",
-						className,
-					)}
+					transition={{ borderRadius: SPRING_TRANSITION_FAST }}
+					className={buttonClassName}
 					{...restProps}
 				>
-					{/* Invisible touch-target expander (min 48×48dp) for small buttons */}
-					{needsTouchTarget && <TouchTarget />}
-
-					{/* ── MD3 Expressive Ripple layer ───────────────────────── */}
-					<Ripple ripples={ripples} onRippleDone={removeRipple} />
-
-					<AnimatePresence initial={false}>
-						{(loading || (icon && iconPosition === "leading")) && (
-							<m.span
-								initial={{ width: 0, opacity: 0, scale: 0.5 }}
-								animate={{ width: "auto", opacity: 1, scale: 1 }}
-								exit={{ width: 0, opacity: 0, scale: 0.5 }}
-								transition={SPRING_TRANSITION}
-								aria-hidden={loading ? undefined : "true"}
-								className={cn(
-									"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full overflow-hidden",
-									iconClass,
-								)}
-							>
-								{loading ? (
-									loadingVariant === "loading-indicator" ? (
-										<LoadingIndicator
-											size={getSizeIconPx(size)}
-											color="currentColor"
-											aria-label="Loading"
-										/>
-									) : (
-										<ProgressIndicator
-											variant="circular"
-											size={getSizeIconPx(size)}
-											color="currentColor"
-											trackColor="transparent"
-											aria-label="Loading"
-										/>
-									)
-								) : (
-									icon
-								)}
-							</m.span>
-						)}
-					</AnimatePresence>
-
-					<m.span
-						layout="size"
-						className="inline-flex items-center gap-[inherit]"
-						transition={SPRING_TRANSITION}
-					>
-						{labelText}
-					</m.span>
-
-					<AnimatePresence initial={false}>
-						{icon && iconPosition === "trailing" && (
-							<m.span
-								initial={{ width: 0, opacity: 0, scale: 0.5 }}
-								animate={{ width: "auto", opacity: 1, scale: 1 }}
-								exit={{ width: 0, opacity: 0, scale: 0.5 }}
-								transition={SPRING_TRANSITION}
-								aria-hidden="true"
-								className={cn(
-									"flex items-center justify-center shrink-0 [&>svg]:w-full [&>svg]:h-full overflow-hidden",
-									iconClass,
-								)}
-							>
-								{icon}
-							</m.span>
-						)}
-					</AnimatePresence>
+					{innerContent}
 				</m.button>
 			</LazyMotion>
 		);

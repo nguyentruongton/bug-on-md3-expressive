@@ -85,7 +85,10 @@ export interface CheckboxProps {
  * `TriStateCheckbox` props — requires `state` + `onStateChange`.
  */
 export interface TriStateCheckboxProps
-	extends Omit<CheckboxProps, "checked" | "defaultChecked" | "onCheckedChange"> {
+	extends Omit<
+		CheckboxProps,
+		"checked" | "defaultChecked" | "onCheckedChange"
+	> {
 	state: CheckboxState;
 	onStateChange: (state: CheckboxState) => void;
 }
@@ -259,7 +262,9 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 		const baseState = isControlled
 			? resolveState(checked, false, stateProp)
 			: internalState;
-		const effectiveState: CheckboxState = indeterminate ? "indeterminate" : baseState;
+		const effectiveState: CheckboxState = indeterminate
+			? "indeterminate"
+			: baseState;
 
 		// ── Ripple ──────────────────────────────────────────────────────────
 		const [ripples, setRipples] = React.useState<RippleOrigin[]>([]);
@@ -276,7 +281,10 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 				const x = e.clientX - rect.left - 4;
 				const y = e.clientY - rect.top - 4;
 				const rippleSize = Math.hypot(40, 40) * 2;
-				setRipples((prev) => [...prev, { id: Date.now(), x, y, size: rippleSize }]);
+				setRipples((prev) => [
+					...prev,
+					{ id: Date.now(), x, y, size: rippleSize },
+				]);
 			},
 			[disabled],
 		);
@@ -300,7 +308,14 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 					}
 				}
 			},
-			[disabled, stateProp, checked, effectiveState, onStateChange, onCheckedChange],
+			[
+				disabled,
+				stateProp,
+				checked,
+				effectiveState,
+				onStateChange,
+				onCheckedChange,
+			],
 		);
 
 		// ── Sync indeterminate DOM property ──────────────────────────────────
@@ -320,13 +335,17 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 		const ariaChecked = isIndeterminate ? ("mixed" as const) : isChecked;
 
 		// ── Animation values ─────────────────────────────────────────────────
-		const accentColor = error ? "var(--color-m3-error)" : "var(--color-m3-primary)";
-		const onAccentColor = error ? "var(--color-m3-on-error)" : "var(--color-m3-on-primary)";
-		
+		const accentColor = error
+			? "var(--color-m3-error)"
+			: "var(--color-m3-primary)";
+		const onAccentColor = error
+			? "var(--color-m3-on-error)"
+			: "var(--color-m3-on-primary)";
+
 		// MD3 Outline color (on-surface with 38% opacity)
 		// We use a CSS variable or a static RGBA to ensure Framer Motion can animate it.
 		// Since color-mix is not animatable, we'll use the variable directly if it's a plain color,
-		// or use a fallback. Better yet, we can use the style prop for static colors 
+		// or use a fallback. Better yet, we can use the style prop for static colors
 		// and only animate opacity if needed, but here we want to animate the color itself.
 		const outlineColor = error
 			? "var(--color-m3-error)"
@@ -346,8 +365,12 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 
 		// ── State layer classes ──────────────────────────────────────────────
 		const stateLayerBg = isSelected
-			? error ? "before:bg-m3-error" : "before:bg-m3-primary"
-			: error ? "before:bg-m3-error" : "before:bg-m3-on-surface";
+			? error
+				? "before:bg-m3-error"
+				: "before:bg-m3-primary"
+			: error
+				? "before:bg-m3-error"
+				: "before:bg-m3-on-surface";
 
 		const stateLayerClass = cn(
 			"before:absolute before:inset-0 before:rounded-full before:pointer-events-none",
@@ -389,7 +412,11 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 				)}
 				aria-hidden="true"
 			>
-				<Ripple ripples={ripples} onRippleDone={removeRipple} disabled={disabled} />
+				<Ripple
+					ripples={ripples}
+					onRippleDone={removeRipple}
+					disabled={disabled}
+				/>
 			</div>
 		);
 
@@ -421,7 +448,8 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 						htmlFor={inputId}
 						className={cn(
 							"inline-flex items-center gap-2 cursor-pointer select-none",
-							disabled && "cursor-not-allowed opacity-[0.38] pointer-events-none",
+							disabled &&
+								"cursor-not-allowed opacity-[0.38] pointer-events-none",
 							className,
 						)}
 					>
@@ -430,7 +458,9 @@ const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
 							{hiddenInput}
 							<CheckboxVisual {...visualProps} />
 						</div>
-						<span className="text-sm leading-none text-m3-on-surface">{label}</span>
+						<span className="text-sm leading-none text-m3-on-surface">
+							{label}
+						</span>
 					</label>
 				</LazyMotion>
 			);

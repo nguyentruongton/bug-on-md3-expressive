@@ -119,7 +119,7 @@ export function NavigationDrawer() {
 	);
 
 	return (
-		<AnimatePresence>
+		<AnimatePresence mode="wait">
 			{isDrawerOpen && (
 				<>
 					{/* Mobile Backdrop */}
@@ -128,38 +128,45 @@ export function NavigationDrawer() {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						onClick={() => setIsDrawerOpen(false)}
-						className="fixed inset-0 bg-black/20 z-40 lg:hidden backdrop-blur-sm"
+						className="fixed inset-0 bg-black/40 z-40 lg:hidden backdrop-blur-[2px]"
+						transition={{ duration: 0.2 }}
 					/>
 
 					{/* Mobile Drawer */}
 					<motion.nav
-						initial={{ width: 0, opacity: 0, x: -50 }}
-						animate={{ width: "auto", opacity: 1, x: 0 }}
-						exit={{ width: 0, opacity: 0, x: -50 }}
-						transition={{ type: "spring", damping: 25, stiffness: 200 }}
-						className="fixed inset-y-4 left-4 z-50 flex shrink-0 rounded-[2.5rem] bg-m3-surface elevation-3 lg:hidden overflow-hidden shadow-xl"
+						initial={{ x: "-100%", opacity: 0.5 }}
+						animate={{ x: 0, opacity: 1 }}
+						exit={{ x: "-100%", opacity: 0.5 }}
+						transition={{
+							type: "spring",
+							damping: 30,
+							stiffness: 300,
+							mass: 0.8,
+						}}
+						className="fixed inset-y-4 left-4 z-50 flex shrink-0 rounded-[2.5rem] bg-m3-surface elevation-3 lg:hidden overflow-hidden shadow-2xl"
+						style={{ width: "min(280px, calc(100vw - 2rem))" }}
 					>
-						{innerContent}
+						<div className="w-full h-full flex flex-col">{innerContent}</div>
 					</motion.nav>
 
-					{/* Desktop Drawer Wrapper */}
-					<motion.div
-						initial={{ width: 0, opacity: 0 }}
-						animate={{ width: "16.25rem", opacity: 1 }}
-						exit={{ width: 0, opacity: 0 }}
-						transition={{ type: "spring", damping: 25, stiffness: 200 }}
-						className="hidden lg:flex shrink-0 h-[calc(100dvh-3rem)]"
+					{/* Desktop Drawer */}
+					<motion.nav
+						layout
+						initial={{ width: 0, opacity: 0, x: -20 }}
+						animate={{ width: "16.25rem", opacity: 1, x: 0 }}
+						exit={{ width: 0, opacity: 0, x: -20 }}
+						transition={{
+							type: "spring",
+							damping: 30,
+							stiffness: 300,
+							mass: 0.8,
+						}}
+						className="hidden lg:flex shrink-0 h-[calc(100dvh-3rem)] rounded-[2.5rem] bg-m3-surface overflow-hidden"
 					>
-						<motion.nav
-							initial={{ x: -20 }}
-							animate={{ x: 0 }}
-							exit={{ x: -20 }}
-							transition={{ type: "spring", damping: 25, stiffness: 200 }}
-							className="flex w-full rounded-[2.5rem] bg-m3-surface overflow-hidden"
-						>
+						<div className="w-65 flex flex-col h-full shrink-0">
 							{innerContent}
-						</motion.nav>
-					</motion.div>
+						</div>
+					</motion.nav>
 				</>
 			)}
 		</AnimatePresence>

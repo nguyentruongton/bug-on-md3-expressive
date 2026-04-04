@@ -49,7 +49,10 @@ export interface FloatingLabelProps {
  * The label starts at y=0 (vertically centered by flex parent).
  * When floated, it moves upward by `offset` pixels.
  */
-function getFloatedY(variant: "filled" | "outlined", containerHeight: number): number {
+function getFloatedY(
+	variant: "filled" | "outlined",
+	containerHeight: number,
+): number {
 	// Label body-large line height ≈ 24px (16px * 1.5)
 	// Label body-small line height ≈ 16px (12px * 1.33)
 	// Floated container top-padding: 8px from top of container
@@ -123,7 +126,7 @@ export const FloatingLabel = React.memo(function FloatingLabel({
 				"px-1 -mx-1", // Clear the notch gap and keep text aligned
 				variant === "outlined" && isFloated && "bg-m3-surface",
 				"left-4",
-				isDisabled && "opacity-[0.38]"
+				isDisabled && "opacity-[0.38]",
 			)}
 			animate={{ y, x, scale, color }}
 			transition={{ duration, ease }}

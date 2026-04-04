@@ -139,67 +139,65 @@ const COLOR_CLASSES: Record<
 type MotionButtonProps = Omit<HTMLMotionProps<"button">, "children" | "color">;
 
 /**
- * Props for the `FAB` component.
+ * Tham số Props dùng cho component thao tác nổi `FAB`.
  *
  * @remarks
- * - For icon-only FABS, `aria-label` is **required** (no visible text).
- * - In extended mode (`extended={true}`), `children` provides the label text
- *   and the button becomes self-labelling.
- * - `lowered` reduces the elevation shadow to match MD3's "lowered" FAB variant,
- *   used when the FAB is embedded within a component (e.g. bottom app bar).
+ * - Đảm bảo rằng đối với loại FAB chỉ show ra mỗi con Icon mà không có nhãn hiển thị (icon-only), bắt buộc phải có thuộc tính `aria-label` nhằm phục vụ (accessibility).
+ * - Ở hình thể mở rộng (khi `extended={true}`), phần nội dung truyền vào `children` chính là chuỗi Text được thể hiện cùng nút, và nó sẽ khiến nút button có label mặc định nên bạn có thể chém bớt tham số `aria-label`.
+ * - Thuộc tính cờ `lowered` (chìm) giúp giáng cấp hiệu ứng tạo bóng Shadow của thẻ, rải mảng cái shadow theo phong thái MD3 "lowered" FAB;
+ *   sử dụng khi nút FAB này vốn bị bọc bên trong bề mặt chìm đè lên component gì khác mà vốn tụi nó đã nhún ở mực sâu (Ví dụ Bottom App Bar) để thiết lập Hierarchy hài hoà.
  *
  * @see https://m3.material.io/components/floating-action-button/overview
  */
 export interface FABProps extends MotionButtonProps {
 	/**
-	 * Icon to display — typically a single SVG icon component.
-	 * Swapped out for a loading spinner when `loading={true}`.
+	 * Icon đại diện render — thông thường là truyền thẻ component Icon.
+	 * Sẽ được tráo đổi thành Spinner tự động quay khi giá trị `loading={true}`.
 	 */
 	icon: React.ReactNode;
 	/**
-	 * FAB size variant.
-	 * - `sm`: Small (40dp) — use inside content areas.
-	 * - `md`: Regular (56dp) — primary action on a screen.
-	 * - `lg`: Large (96dp) — prominent primary action.
-	 * - `xl`: Extra-large (136dp) — hero / spotlight action.
+	 * Kích thước hiển thị FAB. Tuân chuẩn.
+	 * - `sm`: Small (40dp) — Được khuyên dùng cho các không gian kín/trong lòng Content.
+	 * - `md`: Regular (56dp) — Action thứ yếu hoặc tiêu điểm màn hình. (Phần đông người dùng xài).
+	 * - `lg`: Large (96dp) — Trọng tâm thao tác quan trọng lớn nhát.
+	 * - `xl`: Extra-large (136dp) — Gây tiếng vang, dạng Spotlight cực bùng nổ của app.
 	 * @default "md"
 	 */
 	size?: "sm" | "md" | "lg" | "xl";
 	/**
-	 * MD3 color container role controlling the FAB's background and icon colour.
+	 * Container vai trò hệ thống tông màu MD3 dùng phết nền.
 	 * @default "primary"
 	 */
 	colorStyle?: "primary" | "secondary" | "tertiary" | "surface";
 	/**
-	 * When `true`, renders an extended FAB with an animated label.
-	 * The label is read from `children`.
+	 * Kích hoạt khi giá trị được đổi là `true`, sẽ diễn tả Animation bung chữ kèm theo độ dãn hình dài cho cái FAB.
+	 * Chiều rộng tự cơi nới để thích ứng chuỗi `children`.
 	 * @default false
 	 */
 	extended?: boolean;
 	/**
-	 * Label content for the extended FAB (`extended={true}`).
-	 * Typically a string.
+	 * Nơi đón lấy chữ được render cùng khi `extended={true}` bật lên.
+	 * Khuyến nghị là Text string thuần.
 	 */
 	children?: React.ReactNode;
 	/**
-	 * When `true`, uses the *lowered* elevation variant (less shadow).
-	 * Use inside bottom app bars or surfaces where elevation hierarchy demands it.
+	 * Nhấn `true`, thì rút lại shadow đi một cấp xuống độ nổi nông cạn.
+	 * Mảng bám ở Bottom bar hay Top bar Surface để ránh rườm rà.
 	 * @default false
 	 */
 	lowered?: boolean;
 	/**
-	 * When `true`, replaces the icon with an animated loading indicator
-	 * and prevents interactions.
+	 * Nhấp chuột sang `true`, đổi Icon thành cối xay Spinner chờ kết quả. Đồng loạt chặn click tương tác.
 	 * @default false
 	 */
 	loading?: boolean;
 	/**
-	 * Spinner style shown while `loading={true}`.
+	 * Có 2 chuẩn hình của Loading chờ.
 	 * @default "loading-indicator"
 	 */
 	loadingVariant?: "loading-indicator" | "circular";
 	/**
-	 * Whether the FAB is currently visible. Drives entrance/exit animations.
+	 * Hiện thẻ FAB lên layout không (Kiểm soát bằng motion scale Entrance/Exit).
 	 * @default true
 	 */
 	visible?: boolean;
@@ -210,19 +208,19 @@ export interface FABProps extends MotionButtonProps {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Props for `FABPosition` — an absolute-positioned FAB container.
+ * Interface cho component bọc thẻ `FABPosition` — Gắn lớp absolute position nhét cục FAB vào một góc cố định của góc nào đó tại trình duyệt/bề mặt render.
  *
  * @see {@link FABPosition}
  */
 export interface FABPositionProps {
 	/**
-	 * Screen corner to anchor the FAB.
+	 * Góc để niêm chặt nút FAB.
 	 * @default "bottom-right"
 	 */
 	position?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
-	/** The `<FAB>` element to position. */
+	/** Kẹp một nùi element. Mong chờ thả Node `<FAB>` vào đây.*/
 	children: React.ReactNode;
-	/** Additional class names for the position wrapper. */
+	/** CSS Class hỗ trợ chỉnh override */
 	className?: string;
 }
 
@@ -234,16 +232,17 @@ const POSITION_CLASS: Record<string, string> = {
 };
 
 /**
- * Absolute-position wrapper for a `<FAB>` element.
+ * Element bao bọc thẻ định vị Absolute cho component `<FAB>`.
  *
- * Anchors the FAB to any of the four screen corners with responsive offset spacing.
- * The parent must be `position: relative` (or a positioned ancestor within the page).
+ * Component dùng để cắm phao Neo cái FAB vào sát ở góc của screen kèm theo một cái offset space theo responsive an toàn mà lại trơn chu nhạy nhẽo.
+ * Nhưng có quy tắc gốc đó là phần tử bao bọc cha mẹ của nó PHẢI có thẻ tag css `position: relative` (hoặc ở cấp tổ tiêm của trang nào đó phải đẻ gốc rễ ra posisition).
  *
  * @example
  * ```tsx
  * <div className="relative min-h-screen">
- *   <FABPosition position="bottom-right">
- *     <FAB icon={<PencilIcon />} aria-label="Compose" />
+ *   // Cái nút sẽ xà xuống dưới cùng bên lề Trái
+ *   <FABPosition position="bottom-left">
+ *     <FAB icon={<Icon name="edit" />} aria-label="Compose New Mail" />
  *   </FABPosition>
  * </div>
  * ```
@@ -458,33 +457,46 @@ const FABComponent = React.forwardRef<HTMLButtonElement, FABProps>(
 FABComponent.displayName = "FAB";
 
 /**
- * MD3 Expressive Floating Action Button.
+ * Action nổi chính theo phong cách MD3 Expressive Floating Action Button (FAB).
  *
- * Represents the primary action of a screen. Supports size variants (SM–XL),
- * color roles, an extended mode with animated label, loading states,
- * and entrance/exit visibility animations.
+ * Phơi nhiễm các action tạo nhịp điệu kích hoạt cho người sử dụng với đủ bộ trang hoàn trọn kích thước Size (SM->XL),
+ * mang nhiều màu sắc Color role khác biệt, cung cấp một sức nén cho Label để kéo toẹt cái ống dài ra (gọi là Dạng Mở Rộng - Extended) tạo nên hành động sinh động,
+ * Trạng thái load/nhấp hiện xuất cùng animation thu scale thoát cảnh bắt mắt đầy nghệ thuật.
  *
  * @remarks
- * - `aria-label` is **required** for icon-only FABs.
- * - When `extended={true}`, the FAB automatically becomes self-labelled
- *   if `children` is a string; `aria-label` can be omitted in that case.
- * - `visible={false}` triggers a scale-out exit animation (spring).
- * - Use `FABPosition` to anchor it to a corner of the screen.
+ * - Chỉ định bắt buộc `aria-label` cho những mẫu icon bị đơn côi trơ trọi (icon-only FABs).
+ * - Trường hợp xài mode Mở Rộng qua việc truyền hàm `extended={true}`, nút FAB này tự ngộ nhận thân thế, lấy `children` dùng làm Aria label luôn hễ như `children` đó đang chứa text string.
+ *   Khi ấy bạn tha hồ cắt bỏ thuộc tính `aria-label` ra.
+ * - Lúc cho biến mất (`visible={false}`), bộ nút tung chiêu lùi về sau làm quả rút bóng thoát Scale-out qua effect spring uyển chuyển.
+ * - Sài kèm `FABPosition` bao đùm nó lại nếu bạn muốn xích nó cố định ngấm chân sâu góc màn hình hiển thị.
  *
  * @example
  * ```tsx
- * // Icon-only FAB (primary action)
- * <FAB icon={<PencilIcon />} aria-label="Compose" />
+ * // FAB cơ bản, nhỏ xinh, chỉ hiện icon.
+ * <FAB icon={<Icon name="search" />} aria-label="Nhấn tìm kiếm" size="sm" />
  *
- * // Extended FAB
- * <FAB icon={<PencilIcon />} extended>Compose</FAB>
+ * // Dịch sang dòng Extended có dòng caption chữ dài thòn
+ * const [isOpen, setOpen] = React.useState(false);
+ * <FAB
+ *   icon={<Icon name="edit" />}
+ *   extended={isOpen}
+ *   onClick={() => setOpen(!isOpen)}
+ * >
+ *   Viết tâm thư
+ * </FAB>
  *
- * // Large FAB with loading
- * <FAB icon={<UploadIcon />} size="lg" loading={sending} aria-label="Upload" />
+ * // FAB to lớn nhất dùng trạng thái chờ load Submit lên Server
+ * <FAB
+ *   icon={<Icon name="upload" />}
+ *   size="lg"
+ *   loading={isUploading}
+ *   colorStyle="secondary"
+ *   aria-label="Upload Files lên mây xanh"
+ * />
  *
- * // Anchored to bottom-right
+ * // Cố định dưới chân tay phải
  * <FABPosition position="bottom-right">
- *   <FAB icon={<PlusIcon />} aria-label="New note" />
+ *   <FAB icon={<Icon name="add" />} aria-label="Dấu Cộng sinh nảy" />
  * </FABPosition>
  * ```
  *

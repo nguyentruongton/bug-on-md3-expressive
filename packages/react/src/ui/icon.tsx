@@ -11,60 +11,60 @@ const VARIANT_FONT: Record<NonNullable<IconProps["variant"]>, string> = {
 };
 
 /**
- * Props for the {@link Icon} component.
+ * Props cho component {@link Icon}.
  *
- * All variable font axes map directly to `font-variation-settings`.
+ * Tất cả các trục biến thiên (variable font axes) được map trực tiếp sang `font-variation-settings`.
  */
 export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
 	/**
-	 * Material Symbol name in snake_case ligature format.
+	 * Tên của Material Symbol theo định dạng snake_case.
 	 * @example "home", "arrow_forward", "settings"
 	 * @see https://fonts.google.com/icons
 	 */
 	name: string;
 
 	/**
-	 * Geometric style variant — maps to the loaded font family.
+	 * Kiểu hình học (Geometric style variant) — tương ứng với font family được tải.
 	 * @default "outlined"
 	 */
 	variant?: "outlined" | "rounded" | "sharp";
 
 	/**
-	 * FILL axis. `0` = outlined, `1` = filled.
-	 * Spring-animated when `animateFill` is true.
+	 * Trục FILL. `0` = outlined (viền), `1` = filled (tràn màu).
+	 * Có hiệu ứng spring khi `animateFill` là true.
 	 * @default 0
 	 */
 	fill?: 0 | 1;
 
 	/**
-	 * wght axis — stroke weight. Match to surrounding text weight.
+	 * Trục wght — độ dày của nét (stroke weight). Nên khớp với độ dày text xung quanh.
 	 * @default 400
 	 */
 	weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 
 	/**
-	 * GRAD axis — visual weight fine-tune without affecting layout.
-	 * Use `-25` on dark backgrounds to compensate for halation.
+	 * Trục GRAD — tinh chỉnh độ dày thị giác mà không ảnh hưởng tới layout.
+	 * Dùng mức `-25` trên nền tối để bù trừ hiệu ứng phát sáng (halation).
 	 * @default 0
 	 */
 	grade?: -50 | -25 | 0 | 100 | 200;
 
 	/**
-	 * opsz axis — optical size in dp. Also sets `font-size` unless `size` is given.
-	 * Match to the rendered pixel size for best rendering quality.
+	 * Trục opsz — kích thước quang học (optical size) tính bằng dp. Dùng để thiết lập `font-size` nếu không truyền `size`.
+	 * Hãy để giá trị khớp với pixel sẽ render ra để thấy chất lượng tốt nhất.
 	 * @default 24
 	 */
 	opticalSize?: 20 | 24 | 40 | 48;
 
 	/**
-	 * Explicit `font-size` override in px. The `opsz` axis still follows `opticalSize`.
+	 * Ghi đè trực tiếp `font-size` bằng px. Trục `opsz` vẫn sẽ tuân theo thuộc tính `opticalSize`.
 	 * @example size={18} opticalSize={20}
 	 */
 	size?: number | "inherit";
 
 	/**
-	 * Animate the FILL axis transition with a spring (uses `SPRING_TRANSITION_FAST`).
-	 * Requires `motion/react` peer dependency.
+	 * Kích hoạt hiệu ứng spring mượt mà khi chuyển đổi giá trị FILL (sử dụng cấu hình `SPRING_TRANSITION_FAST`).
+	 * Yêu cầu dependency `motion/react`.
 	 * @default false
 	 * @example <Icon name="favorite" fill={isLiked ? 1 : 0} animateFill />
 	 */
@@ -92,7 +92,12 @@ const IconComponent = React.forwardRef<HTMLSpanElement, IconProps>(
 
 		const computedStyle: React.CSSProperties = {
 			fontFamily: VARIANT_FONT[variant],
-			fontSize: size === "inherit" ? "inherit" : (size != null ? `${size}px` : `${opticalSize}px`),
+			fontSize:
+				size === "inherit"
+					? "inherit"
+					: size != null
+						? `${size}px`
+						: `${opticalSize}px`,
 			fontVariationSettings,
 			...style,
 		};
@@ -102,7 +107,10 @@ const IconComponent = React.forwardRef<HTMLSpanElement, IconProps>(
 				<LazyMotion features={domMax} strict>
 					<m.span
 						ref={ref}
-						className={cn("md-icon inline-flex items-center justify-center shrink-0 select-none", className)}
+						className={cn(
+							"md-icon inline-flex items-center justify-center shrink-0 select-none",
+							className,
+						)}
 						aria-hidden="true"
 						animate={{ fontVariationSettings }}
 						transition={SPRING_TRANSITION_FAST}
@@ -119,7 +127,10 @@ const IconComponent = React.forwardRef<HTMLSpanElement, IconProps>(
 		return (
 			<span
 				ref={ref}
-				className={cn("md-icon inline-flex items-center justify-center shrink-0 select-none", className)}
+				className={cn(
+					"md-icon inline-flex items-center justify-center shrink-0 select-none",
+					className,
+				)}
 				aria-hidden="true"
 				style={computedStyle}
 				{...restProps}
@@ -133,24 +144,33 @@ const IconComponent = React.forwardRef<HTMLSpanElement, IconProps>(
 IconComponent.displayName = "Icon";
 
 /**
- * Material Symbols variable font icon.
+ * Component hiển thị Icon bằng Material Symbols (variable font).
  *
- * Load the font first:
+ * Hãy đảm bảo đã import CSS chứa font trước khi dùng:
  * ```ts
  * import '@bug-on/md3-react/material-symbols.css';
  * ```
  *
  * @remarks
- * - Names use snake_case ligatures: `"arrow_forward"`, not `"ArrowForward"`.
- * - `aria-hidden="true"` is set automatically — add accessible labels on the parent.
+ * - Đặt tên icon dùng snake_case: `"arrow_forward"`, KHÔNG PHẢI `"ArrowForward"`.
+ * - Thuộc tính `aria-hidden="true"` được tự động thêm vào — bạn cần thêm label đọc bằng giọng nói (accessible labels) ở phần tử cha.
  *
  * @example
  * ```tsx
+ * // Icon cơ bản
  * <Icon name="home" />
+ *
+ * // Tùy chỉnh trực quan (filled, nét dày)
  * <Icon name="favorite" variant="rounded" fill={1} weight={300} />
+ *
+ * // Animate khi trạng thái thay đổi
  * <Icon name="bookmark" fill={saved ? 1 : 0} animateFill />
+ *
+ * // Đổi kích thước icon cụ thể
  * <Icon name="close" size={18} opticalSize={20} />
- * <Button icon={<Icon name="add" />}>Add item</Button>
+ *
+ * // Kết hợp với các component khác
+ * <Button icon={<Icon name="add" />}>Thêm vào giỏ</Button>
  * ```
  *
  * @see https://fonts.google.com/icons

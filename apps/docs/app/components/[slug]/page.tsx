@@ -48,10 +48,8 @@ function extractHeadings(content: string): { id: string; label: string }[] {
 			// Replicate rehype-slug ID generation (lowercase, spaces→hyphens, remove specials)
 			const id = label
 				.toLowerCase()
-				.replace(/[^a-z0-9\s-]/g, "")
-				.replace(/\s+/g, "-")
-				.replace(/-+/g, "-")
-				.trim();
+				.replace(/[^a-z0-9]+/g, "-")
+				.replace(/^-+|-+$/g, "");
 			headings.push({ id, label });
 		}
 	}

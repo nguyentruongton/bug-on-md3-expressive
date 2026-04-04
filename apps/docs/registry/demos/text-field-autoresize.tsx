@@ -33,7 +33,8 @@ export default function TextFieldAutoResizeDemo() {
 
 			<div className="flex flex-col gap-2">
 				<p className="text-sm text-m3-on-surface-variant mb-2">
-					You can force scrollbars to be always visible using `scrollAreaType="always"`.
+					You can force scrollbars to be always visible using
+					`scrollAreaType="always"`.
 				</p>
 				<TextField
 					label="Always Show Scrollbar"

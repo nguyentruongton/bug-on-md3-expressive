@@ -6,7 +6,10 @@
 
 import { AnimatePresence, m } from "motion/react";
 import * as React from "react";
-import { MD3_LABEL_FLOAT_DURATION, MD3_STANDARD_EASING } from "../../shared/constants";
+import {
+	MD3_LABEL_FLOAT_DURATION,
+	MD3_STANDARD_EASING,
+} from "../../shared/constants";
 import { TF_CLASSES } from "../text-field.tokens";
 
 export interface PrefixSuffixProps {

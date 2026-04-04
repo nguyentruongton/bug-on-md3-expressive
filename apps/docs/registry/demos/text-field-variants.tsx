@@ -9,10 +9,17 @@ export default function TextFieldVariantsDemo() {
 			<TextField label="Filled" defaultValue="Hello world" />
 
 			{/* Outlined */}
-			<TextField variant="outlined" label="Outlined" defaultValue="Hello world" />
+			<TextField
+				variant="outlined"
+				label="Outlined"
+				defaultValue="Hello world"
+			/>
 
 			{/* Filled — no label */}
-			<TextField placeholder="Placeholder only (no label)" aria-label="No label field" />
+			<TextField
+				placeholder="Placeholder only (no label)"
+				aria-label="No label field"
+			/>
 
 			{/* Outlined — dense */}
 			<TextField variant="outlined" label="Dense outlined" dense />

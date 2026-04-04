@@ -1,0 +1,130 @@
+---
+title: Navigation Rail
+description: Navigation rails provide ergonomic lateral navigation for medium-to-large screens.
+---
+
+Navigation rails show primary destinations on the side of a screen. They help users navigate between distinct app sections at the top hierarchical level. Expressive navigation rails feature spring-based active indicator expansion and smooth hover ripples.
+
+<ComponentPreview name="navigation-rail-collapsed" />
+
+## Expanded Rail
+
+For wider layouts, Navigation Rails can expand to show text labels alongside icons, mimicking the behavior of a standard drawer but with rail behaviors (e.g., active pills).
+
+<ComponentPreview name="navigation-rail-expanded" />
+
+## Collapse / Expand
+
+Navigation Rails support smooth transitions between collapsed and expanded states. Use a menu icon button in the header to toggle the `variant` prop — the active indicator and labels animate fluidly.
+
+<ComponentPreview name="navigation-rail-collapse-expand" />
+
+## Modal Rail
+
+On compact or extra-small screens, Navigation Rails can function as a modal overlay layer, preserving the horizontal label layout while ensuring touch-accessibility via a backdrop.
+
+<ComponentPreview name="navigation-rail-modal" />
+
+## Spatial / XR Layout
+
+For immersive or XR (Extended Reality) use cases, the Navigation Rail can be configured for spatial interfaces. It supports two XR modes:
+
+- **Contained**: A floating pill-shaped layout that stays as a single unit.
+- **Spatialized**: An ergonomic layout where the FAB is detached from the rail container, creating an "island" architecture.
+
+### Contained XR
+<ComponentPreview name="navigation-rail-xr" />
+
+### Spatialized XR
+<ComponentPreview name="navigation-rail-spatial" />
+
+```tsx
+import { NavigationRail, NavigationRailItem, Icon } from "@bug-on/md3-react";
+
+<NavigationRail variant="collapsed">
+  <NavigationRailItem 
+    icon={<Icon name="home" />} 
+    label="Home" 
+    selected={active === 'home'} 
+    onClick={() => setActive('home')} 
+  />
+  <NavigationRailItem 
+    icon={<Icon name="search" />} 
+    label="Search" 
+    selected={active === 'search'} 
+    onClick={() => setActive('search')} 
+  />
+  <NavigationRailItem 
+    icon={<Icon name="settings" />} 
+    label="Settings" 
+    selected={active === 'settings'} 
+    onClick={() => setActive('settings')} 
+  />
+</NavigationRail>
+```
+
+## Label Visibility
+
+The `labelVisibility` prop controls how labels are displayed in `collapsed` mode. This allows you to balance clarity and space efficiency.
+
+<ComponentPreview name="navigation-rail-label-visibility" />
+
+| Value | Behavior |
+|---|---|
+| `"labeled"` (default) | Labels always shown for all items |
+| `"auto"` | Label shown only for the active item — space-efficient |
+| `"unlabeled"` | No labels — icon-only rail |
+
+```tsx
+// Space-efficient: only active item shows its label
+<NavigationRail variant="collapsed" labelVisibility="auto">
+  <NavigationRailItem icon={<Icon name="home" />} label="Home" selected />
+  <NavigationRailItem icon={<Icon name="search" />} label="Search" />
+</NavigationRail>
+```
+
+## Icon Fill
+
+Pass `<Icon>` components as item icons to get **automatic fill animation** on selection. The `fill` and `animateFill` props are injected automatically by the rail.
+
+```tsx
+// ✅ Recommended — automatic fill animation
+<NavigationRailItem icon={<Icon name="home" />} label="Home" selected />
+
+// ⚠️ Custom SVGs won't receive fill behavior automatically
+<NavigationRailItem icon={<svg>...</svg>} label="Home" selected />
+```
+
+## Accessibility
+
+- Navigation rails require valid ARIA structure: The rail container functions as a `role="navigation"` boundary containing a vertical `role="menubar"`.
+- Uses a **roving tabindex** to manage keyboard navigation. This means you can use <kbd>Arrow Up</kbd> and <kbd>Arrow Down</kbd> (or <kbd>Arrow Left</kbd> and <kbd>Arrow Right</kbd>) to traverse items efficiently without generating excessive tab stops.
+- Active items are designated with `aria-current="page"`.
+- All touch targets are minimum `48x48dp`.
+
+## API Reference
+
+### NavigationRail
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"collapsed" \| "expanded" \| "modal"` | `"collapsed"` | Visual navigation rail style. |
+| `labelVisibility` | `"labeled" \| "auto" \| "unlabeled"` | `"labeled"` | Controls label display in collapsed mode. In expanded/modal, labels are always shown. |
+| `narrow` | `boolean` | `false` | Sets a narrower rail width. Best for strict tablet splits. |
+| `xr` | `boolean \| "contained" \| "spatialized"` | `false` | Enables a floating pill-shaped layout disconnected from screen edges for Spatial/XR use-cases. |
+| `header` | `React.ReactNode` | — | Content injected at the top of the rail, usually a toggle button. |
+| `fab` | `React.ReactNode` | — | Dedicated FAB slot. Automatically positioned and spaced relative to the header. |
+| `footer` | `React.ReactNode` | — | Content injected at the bottom of the rail. |
+| `open` | `boolean` | `false` | Determines if the "modal" variant rail is visible. |
+| `onClose` | `() => void` | — | Triggered when the backdrop of a "modal" rail is clicked. |
+
+### NavigationRailItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `selected` | `boolean` | `false` | Marks the item as the active destination. |
+| `icon` | `React.ReactNode` | — | Visual indicator. Pass `<Icon>` for automatic fill animation when selected. |
+| `label` | `React.ReactNode` | — | Optional text string for the item name. |
+| `badge` | `React.ReactNode` | — | Content shown over the top right corner of the icon. |
+| `disabled` | `boolean` | `false` | Prevents interaction and mutes color visually. |
+| `onClick` | `() => void` | — | Standard click event handler. |

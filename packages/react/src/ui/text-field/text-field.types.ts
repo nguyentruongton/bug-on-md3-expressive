@@ -20,7 +20,11 @@ export type TextFieldInputType =
 	| "url"
 	| "textarea";
 
-export type TextFieldTrailingIconMode = "none" | "clear" | "password-toggle" | "custom";
+export type TextFieldTrailingIconMode =
+	| "none"
+	| "clear"
+	| "password-toggle"
+	| "custom";
 
 // ─── Imperative Handle ───────────────────────────────────────────────────────
 
@@ -156,7 +160,9 @@ export interface TextFieldProps {
 	// ── Callbacks ─────────────────────────────────────────────────────────────
 	onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 	onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-	onKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+	onKeyDown?: React.KeyboardEventHandler<
+		HTMLInputElement | HTMLTextAreaElement
+	>;
 	onKeyUp?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
 	// ── Ref ───────────────────────────────────────────────────────────────────

@@ -104,6 +104,7 @@ export const componentCategories = [
 				description:
 					"Navigation rails let people switch between UI views on mid-sized devices",
 				icon: "more_vert",
+				href: "/components/navigation-rail",
 			},
 		],
 	},
@@ -138,6 +139,7 @@ export const componentCategories = [
 				description:
 					"Badges show notifications, counts, or status information on navigation items and icons",
 				icon: "notifications",
+				href: "/components/badges",
 			},
 			{
 				name: "Cards",

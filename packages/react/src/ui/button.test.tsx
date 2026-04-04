@@ -252,4 +252,40 @@ describe("Button Component", () => {
 			expect(screen.getByRole("button")).not.toHaveAttribute("aria-label");
 		});
 	});
+
+	// ── New: asChild prop ──────────────────────────────────────────────────────
+
+	describe("asChild prop", () => {
+		it("renders children as the root element", () => {
+			render(
+				<Button asChild>
+					<a href="/test">Link Button</a>
+				</Button>
+			);
+			const link = screen.getByRole("link");
+			expect(link).toBeInTheDocument();
+			expect(link.tagName.toLowerCase()).toBe("a");
+			expect(link).toHaveAttribute("href", "/test");
+			expect(link.className).toContain("transition-[background-color,color,border-color,box-shadow,opacity,filter]");
+		});
+	});
+
+	// ── New: loading prop ──────────────────────────────────────────────────────
+
+	describe("loading prop", () => {
+		it("disables interaction and sets aria-busy", () => {
+			const handleClick = vi.fn();
+			render(<Button loading onClick={handleClick}>Submit</Button>);
+			const button = screen.getByRole("button");
+			expect(button).toHaveAttribute("aria-busy", "true");
+			
+			fireEvent.click(button);
+			expect(handleClick).not.toHaveBeenCalled();
+		});
+
+		it("renders the loading indicator", () => {
+			render(<Button loading>Submit</Button>);
+			expect(screen.getByLabelText("Loading")).toBeInTheDocument();
+		});
+	});
 });

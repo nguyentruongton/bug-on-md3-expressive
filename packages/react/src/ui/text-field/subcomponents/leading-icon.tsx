@@ -29,7 +29,8 @@ export const LeadingIcon = React.memo(function LeadingIcon({
 	isError,
 	isDisabled,
 }: LeadingIconProps) {
-	const color = isError && !isDisabled ? TF_COLORS.error : TF_COLORS.onSurfaceVariant;
+	const color =
+		isError && !isDisabled ? TF_COLORS.error : TF_COLORS.onSurfaceVariant;
 
 	return (
 		<div

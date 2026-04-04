@@ -8,6 +8,7 @@
  * ```
  */
 
+export { TextField } from "./text-field";
 export type {
 	TextFieldHandle,
 	TextFieldInputType,
@@ -15,4 +16,3 @@ export type {
 	TextFieldTrailingIconMode,
 	TextFieldVariant,
 } from "./text-field.types";
-export { TextField } from "./text-field";

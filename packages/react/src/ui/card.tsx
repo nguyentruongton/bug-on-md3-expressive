@@ -1,16 +1,34 @@
 /**
  * @file card.tsx
  *
- * MD3 Expressive Card component.
+ * Thẻ Card của bộ khung MD3 Expressive.
  *
- * Two modes (mirrors Android Card.kt architecture):
- * - **Static**      → plain `<div>`, no interaction
- * - **Interactive** → `<motion.button>` or `<motion.a>`, with Ripple + elevation animation
+ * Phân chia làm hai khía cạnh chức năng (cấu trúc tham khảo từ con ruột Android Card.kt):
+ * - **Tĩnh Lặng (Static)**    → đơn thuần mang thẻ `<div>`, yên tĩnh và không hề mảy may phản hồi có tương tác nào.
+ * - **Có phản ứng (Interactive)** → được phù phép bằng `<motion.button>` hoặc `<motion.a>`, mang bùa Ripple vẫy sống cùng khả năng nhảy vọt elevation khi lướt lên.
  *
- * Elevation levels (from ElevatedCardTokens / FilledCardTokens / OutlinedCardTokens / Elevation.kt):
- * - Level 0 = "none"
- * - Level 1 = box-shadow ~1dp
- * - Level 2 = box-shadow ~2dp
+ * Nấc độ bóng Elevation levels (dịch từ các file mã ElevatedCardTokens / FilledCardTokens / OutlinedCardTokens / Elevation.kt):
+ * - Level 0 = "none" (Bằng phẳng)
+ * - Level 1 = box-shadow ~1dp (Hơi nhỉnh nổi nhẹ)
+ * - Level 2 = box-shadow ~2dp (Bay lên cao xíu)
+ *
+ * @example
+ * ```tsx
+ * // Card tĩnh
+ * <Card variant="elevated">
+ *   <div className="p-4">Nội dung thẻ Card nhẹ nhàng</div>
+ * </Card>
+ *
+ * // Card button tương tác
+ * <Card variant="filled" onClick={() => alert('Đã nhấn!')}>
+ *   <div className="p-4">Click vào đây em ei</div>
+ * </Card>
+ *
+ * // Card làm thẻ Link a
+ * <Card variant="outlined" href="/home">
+ *   <div className="p-4">Click để chuyển trang</div>
+ * </Card>
+ * ```
  *
  * @see https://m3.material.io/components/cards/overview
  */

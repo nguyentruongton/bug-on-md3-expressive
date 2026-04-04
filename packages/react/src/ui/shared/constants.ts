@@ -95,7 +95,9 @@ export const ICON_SPAN_VARIANTS: {
  *
  * @see https://m3.material.io/foundations/animation/easing-and-duration
  */
-export const MD3_STANDARD_EASING: [number, number, number, number] = [0.2, 0, 0, 1];
+export const MD3_STANDARD_EASING: [number, number, number, number] = [
+	0.2, 0, 0, 1,
+];
 
 /**
  * Duration for floating label transition: 150ms.

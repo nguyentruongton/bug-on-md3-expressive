@@ -18,7 +18,11 @@ export default function FabColors() {
 				const iconName = ICONS[i];
 				return (
 					<div key={colorStyle} className="flex flex-col items-center gap-2">
-						<FAB colorStyle={colorStyle} icon={<Icon name={iconName} />} aria-label={label} />
+						<FAB
+							colorStyle={colorStyle}
+							icon={<Icon name={iconName} />}
+							aria-label={label}
+						/>
 						<span className="text-xs text-m3-on-surface-variant">{label}</span>
 					</div>
 				);
