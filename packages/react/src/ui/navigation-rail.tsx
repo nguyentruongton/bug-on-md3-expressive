@@ -184,7 +184,7 @@ function IconContainer({ selected, badge, children }: IconContainerProps) {
 		>
 			{children}
 			{badge && (
-				<span className="absolute -top-1 -right-1 flex min-w-3 h-3 items-center justify-center rounded-full bg-m3-error px-1 text-[10px] font-medium leading-none tracking-normal text-m3-on-error">
+				<span className="absolute -top-1 -right-1 flex min-w-3 h-3 items-center justify-center rounded-full bg-m3-error px-1 text-[10px] font-medium leading-none tracking-normal text-m3-on-error ring-[1.5px] ring-m3-surface">
 					{badge}
 				</span>
 			)}

@@ -179,7 +179,7 @@ const BadgeImpl = React.forwardRef<HTMLSpanElement, BadgeProps>(
 					exit={{ scale: 0, opacity: 0 }}
 					transition={springTransition}
 					className={cn(
-						"rounded-full",
+						"rounded-full ring-[1.5px] ring-m3-surface",
 						!containerColor && "bg-m3-error",
 						hasContent
 							? cn(
@@ -260,7 +260,9 @@ export function BadgedBox({
 	className,
 	badgeSize,
 }: BadgedBoxProps) {
-	const isLarge = badgeSize ? badgeSize === "large" : detectBadgeHasContent(badge);
+	const isLarge = badgeSize
+		? badgeSize === "large"
+		: detectBadgeHasContent(badge);
 
 	const badgePositionClass = isLarge
 		? "translate-x-[35%] -translate-y-[35%]"

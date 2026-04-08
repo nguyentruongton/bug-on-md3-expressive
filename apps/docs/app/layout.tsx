@@ -1,9 +1,10 @@
 import {
 	MaterialSymbolsPreconnect,
+	MD3ThemeProvider,
+	SnackbarProvider,
 	TypographyProvider,
 } from "@bug-on/md3-react";
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
-import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutProvider } from "@/lib/layout-context";
 import { TocProvider } from "@/lib/toc-context";
 import "@bug-on/md3-react/material-symbols-cdn.css";
@@ -32,15 +33,21 @@ export default function RootLayout({
 				suppressHydrationWarning
 				className="antialiased bg-mesh-gradient text-m3-on-surface font-md3-expressive overflow-x-hidden"
 			>
-				<ThemeProvider>
+				<MD3ThemeProvider
+					sourceColor="#6750A4"
+					defaultMode="light"
+					persistToLocalStorage
+				>
 					<LayoutProvider>
 						<TocProvider>
-							<TypographyProvider>
-								<LayoutWrapper>{children}</LayoutWrapper>
-							</TypographyProvider>
+							<SnackbarProvider>
+								<TypographyProvider>
+									<LayoutWrapper>{children}</LayoutWrapper>
+								</TypographyProvider>
+							</SnackbarProvider>
 						</TocProvider>
 					</LayoutProvider>
-				</ThemeProvider>
+				</MD3ThemeProvider>
 			</body>
 		</html>
 	);

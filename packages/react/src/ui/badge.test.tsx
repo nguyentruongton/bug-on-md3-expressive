@@ -117,9 +117,7 @@ describe("Badge", () => {
 		});
 
 		it("accepts custom containerColor prop via inline style", () => {
-			const { container } = render(
-				<Badge containerColor="blue">3</Badge>,
-			);
+			const { container } = render(<Badge containerColor="blue">3</Badge>);
 			const badge = container.firstChild as HTMLElement;
 			expect(badge.style.backgroundColor).toBe("blue");
 			// Should NOT apply default bg class when override is provided
@@ -127,9 +125,7 @@ describe("Badge", () => {
 		});
 
 		it("accepts custom contentColor prop via inline style", () => {
-			const { container } = render(
-				<Badge contentColor="white">3</Badge>,
-			);
+			const { container } = render(<Badge contentColor="white">3</Badge>);
 			const badge = container.firstChild as HTMLElement;
 			expect(badge.style.color).toBe("white");
 		});
@@ -187,7 +183,9 @@ describe("Badge", () => {
 
 	describe("className merging", () => {
 		it("merges additional className with base classes", () => {
-			const { container } = render(<Badge className="my-custom-class">3</Badge>);
+			const { container } = render(
+				<Badge className="my-custom-class">3</Badge>,
+			);
 			const badge = container.firstChild as HTMLElement;
 			expect(badge).toHaveClass("my-custom-class");
 			// Still has base classes
@@ -285,7 +283,7 @@ describe("BadgedBox", () => {
 		const wrapper = container.firstChild as HTMLElement;
 		const badgeSlot = wrapper.children[1] as HTMLElement;
 		expect(badgeSlot.className).toContain("translate-x-[50%]");
-		expect(badgeSlot.className).toContain("translate-y-[-50%]");
+		expect(badgeSlot.className).toContain("-translate-y-[50%]");
 	});
 
 	it("positions large badge at top-trailing corner with 35% offset", () => {
@@ -297,7 +295,7 @@ describe("BadgedBox", () => {
 		const wrapper = container.firstChild as HTMLElement;
 		const badgeSlot = wrapper.children[1] as HTMLElement;
 		expect(badgeSlot.className).toContain("translate-x-[35%]");
-		expect(badgeSlot.className).toContain("translate-y-[-35%]");
+		expect(badgeSlot.className).toContain("-translate-y-[35%]");
 	});
 
 	it("respects explicit badgeSize='small' prop", () => {

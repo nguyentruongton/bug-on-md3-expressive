@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import Link from "next/link";
 import { ComponentPreview } from "./component-preview";
+import { ThemeDemo } from "./theme-demo";
 
 /**
  * Returns the MDX component mapping for next-mdx-remote.
@@ -137,5 +138,6 @@ export function getMDXComponents(): MDXComponents {
 
 		// ── Custom MDX Components ─────────────────────────────────────────────
 		ComponentPreview,
+		ThemeDemo,
 	};
 }

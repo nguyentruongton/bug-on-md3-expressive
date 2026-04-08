@@ -1,0 +1,91 @@
+---
+title: Radio Button
+description: Radio buttons allow people to select one option from a set of mutually exclusive choices. Expressive radio buttons feature smooth morphing animations and distinct state layers.
+---
+
+Radio buttons should be used when the user needs to see all available options. If there are more than five options or space is limited, consider using a dropdown menu instead.
+
+## Basic Usage
+
+By default, radio buttons are grouped together via the `RadioGroup` container which manages the selection state and keyboard navigation (arrow keys to cycle through options).
+
+<ComponentPreview name="radio-button-basic" />
+
+## Horizontal Layout
+
+Radio groups can be laid out horizontally by setting the `orientation="horizontal"` prop.
+
+<ComponentPreview name="radio-button-horizontal" />
+
+## Controlled State
+
+To control the value of the radio group via React state, use the `value` and `onValueChange` props on the `<RadioGroup>` component. 
+
+<ComponentPreview name="radio-button-controlled" />
+
+## States
+
+Radio buttons support `disabled` and `error` states. 
+- The `disabled` state lowers the opacity to `0.38` and removes interactivity. It can be applied to the group or individual buttons.
+- The `error` state changes the primary colors to `m3-error` values and adjusts the hover/focus state layers accordingly.
+
+<ComponentPreview name="radio-button-states" />
+
+## Usage
+
+```tsx
+import { RadioButton, RadioGroup } from "@bug-on/md3-react";
+
+// Basic Group
+<RadioGroup name="plan" defaultValue="free">
+  <RadioButton value="free" label="Free" />
+  <RadioButton value="pro" label="Pro" />
+</RadioGroup>
+
+// Controlled Group
+const [selection, setSelection] = useState("");
+<RadioGroup name="controlled" value={selection} onValueChange={setSelection}>
+  <RadioButton value="1" label="Option 1" />
+  <RadioButton value="2" label="Option 2" />
+</RadioGroup>
+
+// Individual (Must share the same "name" to act as a native group)
+<RadioButton name="group" value="A" label="A" />
+<RadioButton name="group" value="B" label="B" error />
+```
+
+## Accessibility
+
+- The `RadioGroup` wrapper uses the `radiogroup` ARIA role and manages internal keyboard navigation via Arrow Keys.
+- Each `RadioButton` component uses a hidden `<input type="radio">` making it fully compatible with forms and Screen Readers.
+- When `label` is provided, the input is correctly wrapped inside a native `<label>` tag.
+- The `error` prop sets semantic invalid states.
+- The minimum touch target size is maintained at `48x48` for ease of interaction.
+
+## API Reference
+
+### RadioGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | **Required**. Shared name attribute applied to all child input elements. |
+| `value` | `string` | — | Controlled active value. |
+| `defaultValue` | `string` | — | Default active value for uncontrolled usage. |
+| `onValueChange` | `(value: string) => void` | — | Callback fired when the active value changes. |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` | Layout orientation of the choices. |
+| `disabled` | `boolean` | `false` | Disables interactivity across the entire group. |
+| `label` | `string` | — | Accessible label for the group. Appears as screen-reader text unless `aria-labelledby` is set. |
+
+### RadioButton
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | Value for the radio option. Crucial when used within a RadioGroup. |
+| `label` | `string` | — | Visual label text rendered next to the radio button. |
+| `selected` | `boolean` | — | Unbound controlled selection. Overwritten if inside `RadioGroup`. |
+| `defaultSelected` | `boolean` | `false` | Initial checked value for uncontrolled standalone usage. |
+| `disabled` | `boolean` | `false` | Disables interactability for this specific radio. |
+| `error` | `boolean` | `false` | Sets error visually (red stroke & fill). Also sets via `color="error"`. |
+| `color` | `"primary" \| "error"` | `"primary"` | Specific color scheme override. |
+| `name` | `string` | — | Overrides the group context native input `name`. |
+| `onClick` | `() => void` | — | Callback fired on explicit component click. |

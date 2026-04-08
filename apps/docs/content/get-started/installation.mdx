@@ -1,0 +1,67 @@
+---
+title: Installation
+description: Hướng dẫn cài đặt và tích hợp Bug Ổn MD3 Expressive vào dự án của bạn.
+---
+
+Để bắt đầu sử dụng bộ component Material Design 3 Expressive, bạn cần cài đặt các gói thư viện cần thiết và thiết lập môi trường React.
+
+## Cài đặt các gói (Packages)
+
+Thư viện được chia nhỏ thành các gói chuyên biệt. Bạn nên cài đặt ít nhất gói `@bug-on/md3-react` cho các thành phần UI.
+
+### Sử dụng pnpm (Khuyên dùng)
+
+```bash
+pnpm add @bug-on/md3-react framer-motion clsx tailwind-merge
+```
+
+### Sử dụng npm
+
+```bash
+npm install @bug-on/md3-react framer-motion clsx tailwind-merge
+```
+
+### Sử dụng yarn
+
+```bash
+yarn add @bug-on/md3-react framer-motion clsx tailwind-merge
+```
+
+## Peer Dependencies
+
+Đảm bảo dự án của bạn đã cài đặt các phiên bản tương thích của các thư viện sau:
+
+- **React**: ^18.0.0 hoặc ^19.0.0
+- **Framer Motion**: ^11.0.0 (dành cho animations)
+- **Tailwind CSS**: ^3.4.0 hoặc ^4.0.0
+
+## Thiết lập Typography & Icons
+
+Thư viện sử dụng font **Google Sans (hoặc tương đương)** và **Material Symbols**. Hãy thêm các import sau vào file CSS chính của bạn (ví dụ `globals.css` hoặc `App.css`):
+
+```css
+/* Import styles từ thư viện */
+@import "@bug-on/md3-react/typography.css";
+@import "@bug-on/md3-react/material-symbols-cdn.css";
+```
+
+Hoặc sử dụng component preconnect để tối ưu tốc độ tải:
+
+```tsx
+import { MaterialSymbolsPreconnect } from "@bug-on/md3-react";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <head>
+        <MaterialSymbolsPreconnect variants={["outlined", "rounded", "sharp"]} />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+## Bước tiếp theo
+
+Sau khi cài đặt thành công, hãy chuyển sang phần **Theme** để thiết lập hệ thống màu động Material You cho ứng dụng của bạn.

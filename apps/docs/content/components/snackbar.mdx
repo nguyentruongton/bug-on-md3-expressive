@@ -1,0 +1,87 @@
+---
+title: Snackbar
+description: Snackbars provide brief messages about app processes at the bottom of the screen.
+---
+
+Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn't interrupt the user experience, and they don't require user input to disappear.
+
+## Installation and Setup
+
+Snackbar requires a Context Provider to manage its queue and state across the application. You must wrap your application (or the part of the app where you want to show snackbars) with `<SnackbarProvider>`.
+
+```tsx
+import { SnackbarProvider } from "@bug-on/md3-react";
+
+export default function RootLayout({ children }) {
+  return (
+    <SnackbarProvider>
+      {children}
+    </SnackbarProvider>
+  );
+}
+```
+
+Once the provider is set up, you can use the `useSnackbar` hook in any child component to trigger a snackbar.
+
+## Basic Usage
+
+The `useSnackbar` hook returns a `showSnackbar` function. Call it with a message to display a snackbar.
+
+<ComponentPreview name="snackbar-basic" />
+
+## With Action
+
+Snackbars can include a single action. `showSnackbar` returns a Promise that resolves with either `'action-performed'` or `'dismissed'`.
+
+<ComponentPreview name="snackbar-action" />
+
+## Dismissible
+
+If a snackbar message is important or has a longer duration, you can include a dismiss ("X") button by setting `withDismissAction: true`.
+
+<ComponentPreview name="snackbar-dismiss" />
+
+## Long Text and New Line Action
+
+When the message is long or the action label is too wide, the action button can be placed on a new line using `actionOnNewLine: true`.
+
+<ComponentPreview name="snackbar-newline" />
+
+## Queueing Sequence
+
+The Snackbar system includes an built-in queue. If you trigger a new snackbar while one is already showing, it will automatically wait until the current one is dismissed before appearing.
+
+<ComponentPreview name="snackbar-queue" />
+
+## API Reference
+
+### useSnackbar
+
+Returns an object with the following properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `showSnackbar` | `(visuals: SnackbarVisuals) => Promise<SnackbarResult>` | Function to push a new snackbar to the queue. |
+
+### SnackbarVisuals
+
+The object passed to `showSnackbar`:
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `message` | `string` | — | **Required**. The text message to display. |
+| `actionLabel` | `string` | — | Text for the action button. |
+| `withDismissAction` | `boolean` | `false` | Shows a close ("X") button when true. |
+| `actionOnNewLine` | `boolean` | `false` | Places the action button on a new line below the message. |
+| `duration` | `"short" \| "long" \| number` | `"short"` | Duration before auto-dismissal. `short` = 4000ms, `long` = 7000ms. |
+| `className` | `string` | — | Custom className applied to the root container. |
+
+### Returns: SnackbarResult
+
+A union type `'action-performed' | 'dismissed'` indicating how the snackbar was closed.
+
+## Accessibility
+
+- The Snackbar wrapper uses the `status` ARIA role.
+- It includes `aria-live="polite"` and `aria-atomic="true"` ensuring screen readers announce the message.
+- Keyboard focus is not trapped, and the snackbar will not steal focus when it appears, preserving the user's flow.

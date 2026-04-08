@@ -1,0 +1,129 @@
+---
+title: Tabs
+description: Tabs tổ chức nội dung thành các danh mục riêng biệt, giúp người dùng điều hướng giữa các nhóm thông tin trong cùng một màn hình.
+---
+
+Tabs giúp chia nội dung thành các phần rõ ràng mà không cần điều hướng sang trang mới. MD3 Expressive Tabs hỗ trợ hai biến thể: **primary** (indicator theo content) và **secondary** (indicator toàn chiều rộng + divider). Cả hai đều hỗ trợ icon, cuộn ngang, điều hướng bàn phím đầy đủ, và tích hợp **Badge**.
+
+<ComponentPreview name="tabs-primary" />
+
+## Secondary Tabs
+
+Secondary Tabs có đường kẻ divider ở cuối tab bar và indicator mở rộng toàn chiều rộng của tab. Phù hợp cho nội dung cùng cấp hoặc các bộ lọc liên quan. Theo chuẩn MD3, Secondary Tabs thường sử dụng text-only hoặc **inline icons**.
+
+<ComponentPreview name="tabs-secondary" />
+
+## Tabs with Badges
+
+Bạn có thể thêm **Badge** vào bất kỳ Tab nào để hiển thị trạng thái hoặc số lượng thông báo. 
+- Đối với **Primary Tabs** (stacked icon): Badge sẽ tự động hiển thị đè lên góc phải trên của icon.
+- Đối với **Inline Icon** hoặc **Text-only**: Badge sẽ hiển thị ngay sau nhãn văn bản với khoảng cách chuẩn 4dp.
+
+<ComponentPreview name="tabs-badges" />
+
+## Inline Icons
+
+Mặc định, nếu có icon, Tab sẽ hiển thị icon phía trên label (Stacked) và tăng chiều cao lên 64dp. Sử dụng prop `inlineIcon={true}` để ép icon nằm ngang với label, giữ nguyên chiều cao 48dp cho các layout nhỏ gọn.
+
+<ComponentPreview name="tabs-inline-icon" />
+
+## Scrollable Tabs
+
+Khi số lượng tab vượt quá chiều rộng màn hình, bật `scrollable={true}` để cho phép cuộn ngang. MD3 spec yêu cầu padding 52px ở hai đầu container. Hệ thống sẽ tự động cuộn tab được chọn vào vùng nhìn thấy.
+
+<ComponentPreview name="tabs-scrollable-primary" />
+<ComponentPreview name="tabs-scrollable-secondary" />
+
+## Disabled Tabs
+
+Các tab bị vô hiệu hóa không thể được click hay focus bằng bàn phím. Hệ thống roving tabindex sẽ tự động nhảy qua các tab này khi điều hướng bằng mũi tên.
+
+<ComponentPreview name="tabs-disabled-primary" />
+<ComponentPreview name="tabs-disabled-secondary" />
+
+## Cách sử dụng
+
+```tsx
+import { Tabs, TabsList, Tab, TabsContent, Badge, Icon } from "@bug-on/md3-react";
+
+// Primary với Badge và Stacked Icon
+<Tabs defaultValue="mail">
+  <TabsList variant="primary">
+    <Tab value="mail" icon={<Icon name="mail" />} badge={<Badge>12</Badge>}>
+      Mail
+    </Tab>
+    <Tab value="chat" icon={<Icon name="chat" />}>
+      Chat
+    </Tab>
+  </TabsList>
+  <TabsContent value="mail">Mail content...</TabsContent>
+</Tabs>
+
+// Secondary với Inline Icon
+<Tabs autoActivate defaultValue="all">
+  <TabsList variant="secondary">
+    <Tab value="all">All</Tab>
+    <Tab value="starred" icon={<Icon name="star" />} inlineIcon badge={<Badge />}>
+      Starred
+    </Tab>
+  </TabsList>
+  <TabsContent value="all">Messages content...</TabsContent>
+</Tabs>
+```
+
+## Khi nào dùng Primary vs Secondary
+
+| | Primary | Secondary |
+|---|---|---|
+| **Indicator** | Rộng bằng content (min 24dp) | Rộng toàn bộ tab |
+| **Indicator Shape** | Bo góc trên `3px 3px 0 0` | Bo góc trên `3px 3px 0 0` |
+| **Indicator Height** | `3dp` | `2dp` |
+| **Divider** | Không có | Có đường kẻ ở dưới |
+| **Màu text active** | `primary` | `on-surface` |
+| **Phù hợp với** | Điều hướng cấp cao, lựa chọn danh mục | Bộ lọc, sub-sections |
+
+## Accessibility
+
+- `<TabsList>` sử dụng `role="tablist"` – bắt buộc theo WAI-ARIA.
+- Hệ thống **Roving tabindex**: Tự động quản lý focus, nhảy qua các tab bị vô hiệu hóa.
+- Hỗ trợ **RTL**: Tự động đảo ngược hướng phím mũi tên khi phát hiện `dir="rtl"`.
+- **Auto-activate**: Hỗ trợ chế độ chọn ngay khi focus (dùng prop `autoActivate`).
+
+## API Reference
+
+### Tabs
+
+| Prop | Type | Default | Mô tả |
+|------|------|---------|-------|
+| `value` | `string` | — | Giá trị tab đang chọn (controlled). |
+| `defaultValue` | `string` | — | Giá trị mặc định (uncontrolled). Nếu không có, tab đầu tiên không bị disable sẽ được chọn. |
+| `onValueChange` | `(value: string) => void` | — | Callback khi tab thay đổi. |
+| `autoActivate` | `boolean` | `false` | Nếu bật, tab sẽ được chọn ngay khi nhận focus từ bàn phím. |
+| `className` | `string` | — | CSS class tùy chỉnh. |
+
+### TabsList
+
+| Prop | Type | Default | Mô tả |
+|------|------|---------|-------|
+| `variant` | `"primary" \| "secondary"` | — | **Bắt buộc**. Kiểu hiển thị của tab bar. |
+| `scrollable` | `boolean` | `false` | Cho phép cuộn ngang (52px edge padding). |
+| `backgroundColor` | `string` | — | Màu nền của tab bar. |
+| `className` | `string` | — | CSS class tùy chỉnh. |
+
+### Tab
+
+| Prop | Type | Default | Mô tả |
+|------|------|---------|-------|
+| `value` | `string` | — | **Bắt buộc**. Khóa định danh duy nhất. |
+| `icon` | `ReactNode` | — | Icon hiển thị cùng nhãn văn bản. |
+| `inlineIcon` | `boolean` | `false` | Nếu bật, icon sẽ nằm ngang hàng với text (giữ cao 48dp). |
+| `badge` | `ReactNode` | — | Badge hiển thị trạng thái/thông báo trên tab. |
+| `disabled` | `boolean` | `false` | Vô hiệu hoá tương tác và điều hướng. |
+| `className` | `string` | — | CSS class tùy chỉnh. |
+
+### TabsContent
+
+| Prop | Type | Default | Mô tả |
+|------|------|---------|-------|
+| `value` | `string` | — | **Bắt buộc**. Phải khớp với `value` của `<Tab>`. |
+| `className` | `string` | — | CSS class cho panel content. |

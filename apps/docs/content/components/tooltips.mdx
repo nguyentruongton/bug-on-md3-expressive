@@ -1,0 +1,116 @@
+---
+title: Tooltips
+description: Tooltips hiển thị các nhãn hoặc thông điệp ngắn gọn khi người dùng di chuột, focus hoặc nhấn giữ một phần tử.
+---
+
+Tooltips cung cấp thông tin bổ sung về chức năng hoặc trạng thái của một phần tử UI. Material Design 3 Expressive tooltips hỗ trợ hai biến thể: **Plain** cho các nhãn đơn giản và **Rich** cho nội dung chi tiết hơn có kèm hành động.
+
+<ComponentPreview name="tooltip-basic" />
+
+## Plain Tooltips
+
+Plain tooltips cung cấp mô tả ngắn gọn cho một phần tử giao diện. Chúng tốt nhất được sử dụng để dán nhãn các icon hoặc cung cấp thông tin bổ sung ngắn gọn không cần hành động.
+
+- **Vị trí**: Tự động chuyển đổi giữa trên, dưới, trái và phải dựa trên không gian khung nhìn có sẵn.
+- **Kích hoạt**: Phản hồi với `hover`, `focus`, và `long-press` (cho thiết bị di động/cảm ứng).
+- **Độc quyền toàn cầu**: Chỉ có một tooltip có thể hoạt động tại một thời điểm trên toàn bộ ứng dụng.
+
+## Rich Tooltips
+
+Rich tooltips cung cấp thông tin chi tiết hơn và có thể bao gồm tiêu đề, văn bản nội dung và tối đa hai nút tương tác.
+
+<ComponentPreview name="tooltip-rich" />
+
+- **Hành động**: Hỗ trợ các phần tử tương tác như nút để điều hướng thêm hoặc xác nhận.
+- **Cố định**: Rich tooltips có thể được cấu hình để duy trì hiển thị cho đến khi được đóng hoặc sau một khoảng thời gian tùy chỉnh.
+- **Caret**: Một mũi tên tùy chọn (caret) có thể được bật để chỉ cụ thể vào phần tử neo.
+
+## Tương tác (Triggers)
+
+Tooltips hỗ trợ nhiều loại kích hoạt khác nhau để phù hợp với các ngữ cảnh sử dụng:
+
+| Trigger | Hành vi |
+|---------|---------|
+| `hover` | Hiển thị sau một khoảng trễ (mặc định 400ms) khi di chuột vào. Giữ hiển thị khi di chuyển chuột từ anchor vào nội dung tooltip. |
+| `focus` | Hiển thị ngay lập tức khi phần tử nhận được focus từ bàn phím. |
+| `long-press` | Hiển thị sau khi nhấn và giữ (500ms) trên màn hình cảm ứng. |
+| `click` | Hiển thị khi nhấn vào (thường dùng cho Rich Tooltips cần tương tác). |
+
+> [!TIP]
+> **Hover Intent**: Khi sử dụng trigger `hover`, tooltip sẽ không ẩn ngay lập tức khi chuột rời khỏi phần tử neo. Nó chờ một khoảng thời gian (`hideDelay`) để bạn có thể di chuyển chuột vào bên trong các Rich Tooltip có chứa nút bấm hành động.
+
+<ComponentPreview name="tooltip-interaction" />
+
+## Cách sử dụng
+
+```tsx
+import { 
+  Button, 
+  TooltipBox, 
+  PlainTooltip, 
+  RichTooltip 
+} from "@bug-on/md3-react";
+
+// Plain Tooltip cơ bản
+<TooltipBox tooltip={<PlainTooltip>Lưu vào đám mây</PlainTooltip>}>
+  <Button icon={<Icon name="cloud_upload" />} />
+</TooltipBox>
+
+// Rich Tooltip có hành động
+<TooltipBox
+  tooltip={
+    <RichTooltip
+      title="Yêu cầu quyền truy cập"
+      action={<Button colorStyle="text">Cài đặt</Button>}
+    >
+      Hành động này yêu cầu quyền truy cập vị trí để hoạt động chính xác.
+    </RichTooltip>
+  }
+>
+  <Button>Bật vị trí</Button>
+</TooltipBox>
+```
+
+## Accessibility (Tính tiếp cận)
+
+- **ARIA Role**: Các tooltip sử dụng `role="tooltip"` và được liên kết với phần tử neo thông qua `aria-describedby` một cách tự động.
+- **Điều hướng bàn phím**: Tooltips xuất hiện khi `focus` và có thể được đóng bằng phím `Escape`. Nếu sử dụng trigger `click`, người dùng có thể kích hoạt bằng phím `Enter` hoặc `Space`.
+- **Hỗ trợ cảm ứng**: Trên thiết bị di động, tooltips phản hồi với tương tác `long-press` để tránh xung đột với các cử chỉ cuộn trang.
+- **Giảm chuyển động (Reduced Motion)**: Tuân thủ cài đặt `prefers-reduced-motion` của hệ thống để chuyển từ hiệu ứng phóng to (spring-based scaling) sang hiệu ứng mờ dần đơn giản.
+
+## API Reference
+
+### TooltipBox
+
+Thành phần bao bọc quản lý vị trí, cổng render (portal), và các trigger tương tác.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `tooltip` | `ReactNode` | — | Nội dung tooltip (thường là `PlainTooltip` hoặc `RichTooltip`). |
+| `placement` | `TooltipPlacement` | `"top"` | Vị trí ưu tiên: `"top" | "bottom" | "left" | "right" | "auto"`. |
+| `trigger` | `TooltipTrigger[]` | `["hover", "focus"]` | Mảng các trigger: `"hover" | "focus" | "long-press" | "click"`. |
+| `spacingFromAnchor` | `number` | `4` | Khoảng cách (pixel) giữa anchor và tooltip. |
+| `disabled` | `boolean` | `false` | Nếu true, tooltip sẽ không được hiển thị. |
+| `showDelay` | `number` | `400` | Thời gian chờ (ms) trước khi hiển thị tooltip khi hover. |
+| `hideDelay` | `number` | `200` | Thời gian chờ (ms) trước khi ẩn tooltip sau khi chuột rời khỏi vùng tương tác. |
+
+### PlainTooltip
+
+Biến thể nhãn đơn giản.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `caret` | `CaretConfig` | `{ enabled: false }` | Cấu hình cho mũi tên chỉ hướng tùy chọn. |
+| `containerColor` | `string` | — | Ghi đè màu nền của container. |
+| `textColor` | `string` | — | Ghi đè màu chữ. |
+
+### RichTooltip
+
+Biến thể giàu nội dung với tiêu đề và hành động.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `ReactNode` | — | Tiêu đề tùy chọn. |
+| `action` | `ReactNode` | — | Các nút tương tác tùy chọn. |
+| `caret` | `CaretConfig` | — | Cấu hình cho mũi tên chỉ hướng tùy chọn. |
+| `colors` | `RichTooltipColors` | — | Ghi đè màu sắc cho các thành phần (container, title, body, action). |

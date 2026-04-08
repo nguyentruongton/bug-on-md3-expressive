@@ -1,39 +1,83 @@
-/* MD3 System Color Tokens — Light Theme */
+/* MD3 System Color Tokens — Light Theme (Baseline Scheme)
+ *
+ * Mapping: PaletteTokens → ColorLightTokens → CSS variable
+ * Reference: ColorLightTokens.kt, ColorDarkTokens.kt, PaletteTokens.kt
+ */
 :root {
-	--md-sys-color-primary: #6750a4;
-	--md-sys-color-on-primary: #ffffff;
-	--md-sys-color-primary-container: #eaddff;
-	--md-sys-color-on-primary-container: #21005d;
+	/* ── Primary ─────────────────────────────────────────────────────────── */
+	--md-sys-color-primary: #6750a4; /* Primary40  */
+	--md-sys-color-on-primary: #ffffff; /* Primary100 */
+	--md-sys-color-primary-container: #eaddff; /* Primary90  */
+	--md-sys-color-on-primary-container: #21005d; /* Primary10  */
+	--md-sys-color-inverse-primary: #d0bcff; /* Primary80  */
 
-	--md-sys-color-secondary: #625b71;
-	--md-sys-color-on-secondary: #ffffff;
-	--md-sys-color-secondary-container: #e8def8;
-	--md-sys-color-on-secondary-container: #1d192b;
+	/* ── Primary Fixed (stable across light/dark) ────────────────────────── */
+	--md-sys-color-primary-fixed: #eaddff; /* Primary90 */
+	--md-sys-color-primary-fixed-dim: #d0bcff; /* Primary80 */
+	--md-sys-color-on-primary-fixed: #21005d; /* Primary10 */
+	--md-sys-color-on-primary-fixed-variant: #4f378b; /* Primary30 */
 
-	--md-sys-color-tertiary: #7d5260;
-	--md-sys-color-on-tertiary: #ffffff;
-	--md-sys-color-tertiary-container: #ffd8e4;
-	--md-sys-color-on-tertiary-container: #31111d;
+	/* ── Secondary ───────────────────────────────────────────────────────── */
+	--md-sys-color-secondary: #625b71; /* Secondary40  */
+	--md-sys-color-on-secondary: #ffffff; /* Secondary100 */
+	--md-sys-color-secondary-container: #e8def8; /* Secondary90  */
+	--md-sys-color-on-secondary-container: #1d192b; /* Secondary10  */
 
-	--md-sys-color-error: #b3261e;
-	--md-sys-color-on-error: #ffffff;
-	--md-sys-color-error-container: #f9dedc;
-	--md-sys-color-on-error-container: #410e0b;
+	/* ── Secondary Fixed (stable across light/dark) ──────────────────────── */
+	--md-sys-color-secondary-fixed: #e8def8; /* Secondary90 */
+	--md-sys-color-secondary-fixed-dim: #ccc2dc; /* Secondary80 */
+	--md-sys-color-on-secondary-fixed: #1d192b; /* Secondary10 */
+	--md-sys-color-on-secondary-fixed-variant: #4a4458; /* Secondary30 */
 
-	--md-sys-color-surface: #fef7ff;
-	--md-sys-color-on-surface: #1c1b1f;
-	--md-sys-color-surface-variant: #e7e0eb;
-	--md-sys-color-on-surface-variant: #49454f;
-	--md-sys-color-surface-container-lowest: #ffffff;
-	--md-sys-color-surface-container-low: #f7f2fa;
-	--md-sys-color-surface-container: #f3edf7;
-	--md-sys-color-surface-container-high: #ece6f0;
-	--md-sys-color-surface-container-highest: #e6e0e9;
+	/* ── Tertiary ────────────────────────────────────────────────────────── */
+	--md-sys-color-tertiary: #7d5260; /* Tertiary40  */
+	--md-sys-color-on-tertiary: #ffffff; /* Tertiary100 */
+	--md-sys-color-tertiary-container: #ffd8e4; /* Tertiary90  */
+	--md-sys-color-on-tertiary-container: #31111d; /* Tertiary10  */
 
-	--md-sys-color-outline: #79747e;
-	--md-sys-color-outline-variant: #cac4d0;
+	/* ── Tertiary Fixed (stable across light/dark) ───────────────────────── */
+	--md-sys-color-tertiary-fixed: #ffd8e4; /* Tertiary90 */
+	--md-sys-color-tertiary-fixed-dim: #efb8c8; /* Tertiary80 */
+	--md-sys-color-on-tertiary-fixed: #31111d; /* Tertiary10 */
+	--md-sys-color-on-tertiary-fixed-variant: #633b48; /* Tertiary30 */
 
-	/* Indicator tokens — Loading & Progress */
+	/* ── Error ───────────────────────────────────────────────────────────── */
+	--md-sys-color-error: #b3261e; /* Error40  */
+	--md-sys-color-on-error: #ffffff; /* Error100 */
+	--md-sys-color-error-container: #f9dedc; /* Error90  */
+	--md-sys-color-on-error-container: #410e0b; /* Error10  */
+
+	/* ── Surface ─────────────────────────────────────────────────────────── */
+	--md-sys-color-surface: #fef7ff; /* Neutral98 */
+	--md-sys-color-on-surface: #1c1b1f; /* Neutral10 */
+	--md-sys-color-surface-variant: #e7e0eb; /* NeutralVariant90 */
+	--md-sys-color-on-surface-variant: #49454f; /* NeutralVariant30 */
+	--md-sys-color-surface-dim: #ded8e1; /* Neutral87 */
+	--md-sys-color-surface-bright: #fef7ff; /* Neutral98 */
+	--md-sys-color-surface-tint: #6750a4; /* = primary */
+	--md-sys-color-surface-container-lowest: #ffffff; /* Neutral100 */
+	--md-sys-color-surface-container-low: #f7f2fa; /* Neutral96  */
+	--md-sys-color-surface-container: #f3edf7; /* Neutral94  */
+	--md-sys-color-surface-container-high: #ece6f0; /* Neutral92  */
+	--md-sys-color-surface-container-highest: #e6e0e9; /* Neutral90  */
+
+	/* ── Inverse Surface ─────────────────────────────────────────────────── */
+	--md-sys-color-inverse-surface: #313033; /* Neutral20 */
+	--md-sys-color-inverse-on-surface: #f4eff4; /* Neutral95 */
+
+	/* ── Background ──────────────────────────────────────────────────────── */
+	--md-sys-color-background: #fef7ff; /* Neutral98 — same as surface */
+	--md-sys-color-on-background: #1c1b1f; /* Neutral10  */
+
+	/* ── Outline ─────────────────────────────────────────────────────────── */
+	--md-sys-color-outline: #79747e; /* NeutralVariant50 */
+	--md-sys-color-outline-variant: #cac4d0; /* NeutralVariant80 */
+
+	/* ── Utility ─────────────────────────────────────────────────────────── */
+	--md-sys-color-scrim: #000000; /* Neutral0 */
+	--md-sys-color-shadow: #000000; /* Neutral0 */
+
+	/* ── Indicator tokens — Loading & Progress ───────────────────────────── */
 	--md-sys-color-indicator-active: var(--md-sys-color-primary);
 	--md-sys-color-indicator-container: var(--md-sys-color-secondary-container);
 	--md-sys-color-indicator-contained-active: var(
@@ -46,44 +90,67 @@
 	--md-sys-color-indicator-stop: var(--md-sys-color-primary);
 }
 
-/* Dark Theme overrides */
+/* Dark Theme overrides
+ * Mapping: PaletteTokens → ColorDarkTokens → CSS variable
+ */
 [data-theme="dark"],
 .dark {
-	--md-sys-color-primary: #d0bcff;
-	--md-sys-color-on-primary: #381e72;
-	--md-sys-color-primary-container: #4f378b;
-	--md-sys-color-on-primary-container: #eaddff;
+	/* ── Primary ─────────────────────────────────────────────────────────── */
+	--md-sys-color-primary: #d0bcff; /* Primary80  */
+	--md-sys-color-on-primary: #381e72; /* Primary20  */
+	--md-sys-color-primary-container: #4f378b; /* Primary30  */
+	--md-sys-color-on-primary-container: #eaddff; /* Primary90  */
+	--md-sys-color-inverse-primary: #6750a4; /* Primary40  */
 
-	--md-sys-color-secondary: #ccc2dc;
-	--md-sys-color-on-secondary: #332d41;
-	--md-sys-color-secondary-container: #4a4458;
-	--md-sys-color-on-secondary-container: #e8def8;
+	/* ── Secondary ───────────────────────────────────────────────────────── */
+	--md-sys-color-secondary: #ccc2dc; /* Secondary80  */
+	--md-sys-color-on-secondary: #332d41; /* Secondary20  */
+	--md-sys-color-secondary-container: #4a4458; /* Secondary30  */
+	--md-sys-color-on-secondary-container: #e8def8; /* Secondary90  */
 
-	--md-sys-color-tertiary: #efb8c8;
-	--md-sys-color-on-tertiary: #492532;
-	--md-sys-color-tertiary-container: #633b48;
-	--md-sys-color-on-tertiary-container: #ffd8e4;
+	/* ── Tertiary ────────────────────────────────────────────────────────── */
+	--md-sys-color-tertiary: #efb8c8; /* Tertiary80  */
+	--md-sys-color-on-tertiary: #492532; /* Tertiary20  */
+	--md-sys-color-tertiary-container: #633b48; /* Tertiary30  */
+	--md-sys-color-on-tertiary-container: #ffd8e4; /* Tertiary90  */
 
-	--md-sys-color-error: #f2b8b5;
-	--md-sys-color-on-error: #601410;
-	--md-sys-color-error-container: #8c1d18;
-	--md-sys-color-on-error-container: #f9dedc;
+	/* ── Error ───────────────────────────────────────────────────────────── */
+	--md-sys-color-error: #f2b8b5; /* Error80  */
+	--md-sys-color-on-error: #601410; /* Error20  */
+	--md-sys-color-error-container: #8c1d18; /* Error30  */
+	--md-sys-color-on-error-container: #f9dedc; /* Error90  */
 
-	--md-sys-color-surface: #141218;
-	--md-sys-color-on-surface: #e6e1e5;
-	--md-sys-color-surface-variant: #49454f;
-	--md-sys-color-on-surface-variant: #cac4d0;
+	/* ── Surface ─────────────────────────────────────────────────────────── */
+	--md-sys-color-surface: #141218; /* Neutral6   */
+	--md-sys-color-on-surface: #e6e1e5; /* Neutral90  */
+	--md-sys-color-surface-variant: #49454f; /* NeutralVariant30 */
+	--md-sys-color-on-surface-variant: #cac4d0; /* NeutralVariant80 */
+	--md-sys-color-surface-dim: #141218; /* Neutral6  */
+	--md-sys-color-surface-bright: #3b383e; /* Neutral24 */
+	--md-sys-color-surface-tint: #d0bcff; /* = primary (dark) */
+	--md-sys-color-surface-container-lowest: #0f0d13; /* Neutral4   */
+	--md-sys-color-surface-container-low: #1d1b20; /* Neutral10  */
+	--md-sys-color-surface-container: #211f26; /* Neutral12  */
+	--md-sys-color-surface-container-high: #2b2930; /* Neutral17  */
+	--md-sys-color-surface-container-highest: #36343b; /* Neutral22  */
 
-	--md-sys-color-surface-container-lowest: #0f0d13;
-	--md-sys-color-surface-container-low: #1d1b20;
-	--md-sys-color-surface-container: #211f26;
-	--md-sys-color-surface-container-high: #2b2930;
-	--md-sys-color-surface-container-highest: #36343b;
+	/* ── Inverse Surface ─────────────────────────────────────────────────── */
+	--md-sys-color-inverse-surface: #e6e1e5; /* Neutral90 */
+	--md-sys-color-inverse-on-surface: #313033; /* Neutral20 */
 
-	--md-sys-color-outline: #938f99;
-	--md-sys-color-outline-variant: #49454f;
+	/* ── Background ──────────────────────────────────────────────────────── */
+	--md-sys-color-background: #141218; /* Neutral6 — same as dark surface */
+	--md-sys-color-on-background: #e6e1e5; /* Neutral90 */
 
-	/* Indicator tokens — Dark */
+	/* ── Outline ─────────────────────────────────────────────────────────── */
+	--md-sys-color-outline: #938f99; /* NeutralVariant60 */
+	--md-sys-color-outline-variant: #49454f; /* NeutralVariant30 */
+
+	/* ── Utility ─────────────────────────────────────────────────────────── */
+	--md-sys-color-scrim: #000000;
+	--md-sys-color-shadow: #000000;
+
+	/* ── Indicator tokens — Dark ─────────────────────────────────────────── */
 	--md-sys-color-indicator-active: var(--md-sys-color-primary);
 	--md-sys-color-indicator-container: var(--md-sys-color-secondary-container);
 	--md-sys-color-indicator-contained-active: var(

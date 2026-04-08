@@ -260,13 +260,15 @@ describe("Button Component", () => {
 			render(
 				<Button asChild>
 					<a href="/test">Link Button</a>
-				</Button>
+				</Button>,
 			);
 			const link = screen.getByRole("link");
 			expect(link).toBeInTheDocument();
 			expect(link.tagName.toLowerCase()).toBe("a");
 			expect(link).toHaveAttribute("href", "/test");
-			expect(link.className).toContain("transition-[background-color,color,border-color,box-shadow,opacity,filter]");
+			expect(link.className).toContain(
+				"transition-[background-color,color,border-color,box-shadow,opacity,filter]",
+			);
 		});
 	});
 
@@ -275,10 +277,14 @@ describe("Button Component", () => {
 	describe("loading prop", () => {
 		it("disables interaction and sets aria-busy", () => {
 			const handleClick = vi.fn();
-			render(<Button loading onClick={handleClick}>Submit</Button>);
+			render(
+				<Button loading onClick={handleClick}>
+					Submit
+				</Button>,
+			);
 			const button = screen.getByRole("button");
 			expect(button).toHaveAttribute("aria-busy", "true");
-			
+
 			fireEvent.click(button);
 			expect(handleClick).not.toHaveBeenCalled();
 		});

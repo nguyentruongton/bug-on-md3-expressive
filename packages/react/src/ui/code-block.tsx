@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { createElement, useCallback, useEffect, useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 import { Icon } from "./icon";
@@ -69,24 +69,70 @@ function CopyButton({
 	);
 }
 
+function parseStyle(styleStr: string): React.CSSProperties {
+	const styleObj: Record<string, string> = {};
+	for (const s of styleStr.split(";")) {
+		const [k, v] = s.split(":");
+		if (k && v) {
+			const key = k.trim().replace(/-./g, (x) => x[1].toUpperCase());
+			styleObj[key] = v.trim();
+		}
+	}
+	return styleObj;
+}
+
+function mapDomToReact(node: Node, key: string | number): React.ReactNode {
+	if (node.nodeType === Node.TEXT_NODE) {
+		return node.textContent;
+	}
+	if (node.nodeType === Node.ELEMENT_NODE) {
+		const el = node as Element;
+		const tagName = el.tagName.toLowerCase();
+		const props: Record<string, unknown> = { key };
+
+		for (const attr of Array.from(el.attributes)) {
+			if (attr.name === "class") {
+				props.className = attr.value;
+			} else if (attr.name === "style") {
+				props.style = parseStyle(attr.value);
+			} else {
+				props[attr.name] = attr.value;
+			}
+		}
+
+		return createElement(
+			tagName,
+			props,
+			Array.from(el.childNodes).map((child, i) => mapDomToReact(child, i)),
+		);
+	}
+	return null;
+}
+
 function CodeContent({ html, code }: { html?: string; code: string }) {
-	const containerRef = useRef<HTMLDivElement>(null);
+	const [parsedContent, setParsedContent] = useState<React.ReactNode>(null);
 
 	useEffect(() => {
-		if (containerRef.current && html) {
-			containerRef.current.innerHTML = html;
+		if (html) {
+			const parser = new DOMParser();
+			const doc = parser.parseFromString(html, "text/html");
+			const content = Array.from(doc.body.childNodes).map((node, i) =>
+				mapDomToReact(node, i),
+			);
+			setParsedContent(content);
 		}
 	}, [html]);
 
 	if (html) {
 		return (
 			<div
-				ref={containerRef}
 				className={cn(
 					"text-sm font-mono",
 					"[&>pre]:bg-transparent! [&>pre]:p-0! [&>pre]:m-0!",
 				)}
-			/>
+			>
+				{parsedContent}
+			</div>
 		);
 	}
 

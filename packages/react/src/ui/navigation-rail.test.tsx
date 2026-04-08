@@ -348,10 +348,14 @@ describe("NavigationRail & NavigationRailItem", () => {
 				<NavigationRail
 					header={<div data-testid="rail-header">Header</div>}
 					footer={<div data-testid="rail-footer">Footer</div>}
-					fab={<button type="button" data-testid="rail-fab">FAB</button>}
+					fab={
+						<button type="button" data-testid="rail-fab">
+							FAB
+						</button>
+					}
 				>
 					<NavigationRailItem selected icon={<svg />} label="Home" />
-				</NavigationRail>
+				</NavigationRail>,
 			);
 
 			expect(screen.getByTestId("rail-header")).toBeInTheDocument();
@@ -363,7 +367,7 @@ describe("NavigationRail & NavigationRailItem", () => {
 			render(
 				<NavigationRail narrow>
 					<NavigationRailItem selected icon={<svg />} label="Home" />
-				</NavigationRail>
+				</NavigationRail>,
 			);
 			const nav = screen.getByRole("navigation");
 			expect(nav).toHaveClass("w-20"); // narrow width
@@ -373,7 +377,7 @@ describe("NavigationRail & NavigationRailItem", () => {
 			render(
 				<NavigationRail xr>
 					<NavigationRailItem selected icon={<svg />} label="Home" />
-				</NavigationRail>
+				</NavigationRail>,
 			);
 			const nav = screen.getByRole("navigation");
 			expect(nav).toHaveClass("py-5", "rounded-[48px]", "bg-m3-surface");
@@ -381,9 +385,16 @@ describe("NavigationRail & NavigationRailItem", () => {
 
 		it("renders spatial wrapper structurally when xr='spatialized'", () => {
 			render(
-				<NavigationRail xr="spatialized" fab={<button type="button" data-testid="rail-fab">FAB</button>}>
+				<NavigationRail
+					xr="spatialized"
+					fab={
+						<button type="button" data-testid="rail-fab">
+							FAB
+						</button>
+					}
+				>
 					<NavigationRailItem selected icon={<svg />} label="Home" />
-				</NavigationRail>
+				</NavigationRail>,
 			);
 			expect(screen.getByTestId("rail-fab")).toBeInTheDocument();
 			const nav = screen.getByRole("navigation");

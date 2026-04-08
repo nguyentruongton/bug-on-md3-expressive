@@ -1,7 +1,6 @@
 "use client";
 
-import { Button, Card, Icon } from "@bug-on/md3-react";
-import { useTheme } from "@/components/theme-provider";
+import { Button, Card, Icon, useTheme } from "@bug-on/md3-react";
 import { cn } from "@/lib/utils";
 
 const presetColors = [
@@ -222,7 +221,7 @@ export default function SettingsPage() {
 						<div
 							key={item.label}
 							className={cn(
-								"p-4 rounded-m3-lg flex flex-col justify-between min-h-[100px]",
+								"p-4 rounded-m3-lg flex flex-col justify-between min-h-25",
 								item.bg,
 							)}
 						>

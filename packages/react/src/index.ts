@@ -3,6 +3,9 @@ export { useMediaQuery } from "./hooks/useMediaQuery";
 /** @deprecated Use `useRippleState` (Framer Motion) from the main package instead. DOM-only ripple. */
 export { useRipple as useDOMRipple } from "./hooks/useRipple";
 export { MaterialSymbolsPreconnect } from "./lib/material-symbols-preconnect";
+// Theme — MD3 Dynamic Color
+export type { MD3ColorScheme, ThemeMode } from "./lib/theme-utils";
+export { applyTheme, generateM3Theme } from "./lib/theme-utils";
 // Utils
 export { cn } from "./lib/utils";
 // Types
@@ -118,7 +121,13 @@ export type {
 	ProgressIndicatorProps,
 } from "./ui/progress-indicator";
 export { ProgressIndicator } from "./ui/progress-indicator";
-
+// RadioButton — MD3 Expressive radio button
+export type {
+	RadioButtonColors,
+	RadioButtonProps,
+	RadioGroupProps,
+} from "./ui/radio-button";
+export { RadioButton, RadioGroup } from "./ui/radio-button";
 export type {
 	RippleOrigin,
 	RippleProps,
@@ -135,6 +144,42 @@ export {
 	ScrollArea,
 	ScrollAreaScrollbar,
 } from "./ui/scroll-area";
+// Snackbar — MD3 Expressive imperative toast system
+export type {
+	SnackbarData,
+	SnackbarDuration,
+	SnackbarHostProps,
+	SnackbarProps,
+	SnackbarResult,
+	SnackbarVisuals,
+	UseSnackbarStateReturn,
+} from "./ui/snackbar";
+export {
+	Snackbar,
+	SnackbarHost,
+	SnackbarProvider,
+	useSnackbar,
+	useSnackbarState,
+} from "./ui/snackbar";
+// Switch — MD3 Expressive toggle
+export type { SwitchProps } from "./ui/switch";
+export { Switch, SwitchColors, SwitchTokens } from "./ui/switch";
+// Tabs — MD3 Expressive navigation tabs
+export type {
+	TabProps,
+	TabsContentProps,
+	TabsListProps,
+	TabsProps,
+	TabsVariant,
+} from "./ui/tabs";
+export {
+	Tab,
+	Tabs,
+	TabsColors,
+	TabsContent,
+	TabsList,
+	TabsTokens,
+} from "./ui/tabs";
 // TextField — MD3 Expressive
 export type {
 	TextFieldHandle,
@@ -144,14 +189,35 @@ export type {
 	TextFieldVariant,
 } from "./ui/text-field";
 export { TextField } from "./ui/text-field";
+export type { MD3ThemeProviderProps } from "./ui/theme-provider";
+export { MD3ThemeProvider, useTheme, useThemeMode } from "./ui/theme-provider";
 export type { TableOfContentsProps, ToCItem } from "./ui/toc";
 export { TableOfContents } from "./ui/toc";
+// Tooltip — MD3 Expressive
+export type {
+	CaretConfig,
+	PlainTooltipProps,
+	RichTooltipProps,
+	TooltipBoxProps,
+	TooltipPlacement,
+	TooltipState,
+	TooltipStateConfig,
+	TooltipTrigger,
+} from "./ui/tooltip";
+export {
+	PlainTooltip,
+	RichTooltip,
+	TooltipBox,
+	TooltipCaretShape,
+	TooltipTokens,
+	useTooltipPosition,
+	useTooltipState,
+} from "./ui/tooltip";
 export type {
 	TextStyle,
 	TypeScaleTokensType,
 	TypographyProviderProps,
 } from "./ui/typography";
-
 // Typography - MD3 Expressive
 export {
 	MD3_EXPRESSIVE_FONT_VARIATION,

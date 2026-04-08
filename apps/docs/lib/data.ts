@@ -1,5 +1,22 @@
 export const componentCategories = [
 	{
+		title: "Get Started",
+		items: [
+			{
+				name: "Installation",
+				description: "Cài đặt và thiết lập dự án",
+				icon: "downloading",
+				href: "/get-started/installation",
+			},
+			{
+				name: "Theme",
+				description: "Tùy chỉnh màu sắc và giao diện",
+				icon: "palette",
+				href: "/get-started/theme",
+			},
+		],
+	},
+	{
 		title: "Buttons",
 		items: [
 			{
@@ -195,6 +212,7 @@ export const componentCategories = [
 				description:
 					"Radio buttons let people select one option from a set of options",
 				icon: "radio",
+				href: "/components/radio-button",
 			},
 			{
 				name: "Search",
@@ -213,16 +231,19 @@ export const componentCategories = [
 				description:
 					"Snackbars show short updates about app processes at the bottom of the screen",
 				icon: "error",
+				href: "/components/snackbar",
 			},
 			{
 				name: "Switch",
 				description: "Switches toggle the selection of an item on and off",
 				icon: "toggle_on",
+				href: "/components/switch",
 			},
 			{
 				name: "Tabs",
 				description: "Tabs organize content across different screens and views",
 				icon: "folder_open",
+				href: "/components/tabs",
 			},
 			{
 				name: "Text fields",
@@ -247,6 +268,7 @@ export const componentCategories = [
 				name: "Tooltips",
 				description: "Tooltips display brief labels or messages",
 				icon: "chat",
+				href: "/components/tooltips",
 			},
 		],
 	},

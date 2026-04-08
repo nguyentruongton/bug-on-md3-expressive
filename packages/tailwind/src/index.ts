@@ -21,10 +21,18 @@ const md3Plugin = plugin(({ addBase, addComponents, addUtilities }) => {
 				"var(--md-sys-color-on-tertiary-container)",
 			"--color-m3-error": "var(--md-sys-color-error)",
 			"--color-m3-on-error": "var(--md-sys-color-on-error)",
+			"--color-m3-error-container": "var(--md-sys-color-error-container)",
+			"--color-m3-on-error-container": "var(--md-sys-color-on-error-container)",
+
 			"--color-m3-surface": "var(--md-sys-color-surface)",
+			"--color-m3-surface-dim": "var(--md-sys-color-surface-dim)",
+			"--color-m3-surface-bright": "var(--md-sys-color-surface-bright)",
 			"--color-m3-on-surface": "var(--md-sys-color-on-surface)",
 			"--color-m3-surface-variant": "var(--md-sys-color-surface-variant)",
 			"--color-m3-on-surface-variant": "var(--md-sys-color-on-surface-variant)",
+
+			"--color-m3-surface-container-lowest":
+				"var(--md-sys-color-surface-container-lowest)",
 			"--color-m3-surface-container-low":
 				"var(--md-sys-color-surface-container-low)",
 			"--color-m3-surface-container": "var(--md-sys-color-surface-container)",
@@ -32,8 +40,16 @@ const md3Plugin = plugin(({ addBase, addComponents, addUtilities }) => {
 				"var(--md-sys-color-surface-container-high)",
 			"--color-m3-surface-container-highest":
 				"var(--md-sys-color-surface-container-highest)",
+
+			"--color-m3-inverse-surface": "var(--md-sys-color-inverse-surface)",
+			"--color-m3-inverse-on-surface": "var(--md-sys-color-inverse-on-surface)",
+			"--color-m3-inverse-primary": "var(--md-sys-color-inverse-primary)",
+
 			"--color-m3-outline": "var(--md-sys-color-outline)",
 			"--color-m3-outline-variant": "var(--md-sys-color-outline-variant)",
+			"--color-m3-shadow": "var(--md-sys-color-shadow)",
+			"--color-m3-scrim": "var(--md-sys-color-scrim)",
+			"--color-m3-surface-tint": "var(--md-sys-color-surface-tint)",
 
 			"--color-m3-indicator-active": "var(--md-sys-color-indicator-active)",
 			"--color-m3-indicator-container":

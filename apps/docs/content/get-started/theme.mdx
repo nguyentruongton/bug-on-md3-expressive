@@ -1,0 +1,88 @@
+---
+title: Theme
+description: Tìm hiểu về hệ thống màu động (Dynamic Color) và cách thiết lập MD3ThemeProvider cho ứng dụng của bạn.
+---
+
+Bug Ổn MD3 Expressive hỗ trợ mặc định hệ thống màu động của Material Design 3 (Material You). Hệ thống này cho phép tạo ra bảng màu hài hòa dựa trên một màu nguồn (Source Color).
+
+## MD3ThemeProvider
+
+`MD3ThemeProvider` là thành phần cốt lõi quản lý trạng thái giao diện (Light/Dark mode) và màu sắc toàn cục. Nó tự động chuyển đổi màu nguồn thành các CSS variables tương thích với Material Design 3.
+
+### Thiết lập cơ bản
+
+Gói ứng dụng của bạn trong `MD3ThemeProvider` tại file root (ví dụ `layout.tsx` hoặc `App.tsx`):
+
+```tsx
+import { MD3ThemeProvider } from "@bug-on/md3-react";
+
+export default function RootLayout({ children }) {
+  return (
+    <MD3ThemeProvider 
+      sourceColor="#6750A4" 
+      defaultMode="light" 
+      persistToLocalStorage
+    >
+      {children}
+    </MD3ThemeProvider>
+  );
+}
+```
+
+## Demo tương tác
+
+Dưới đây là công cụ để bạn thử nghiệm thuật toán tạo màu động. Khi bạn thay đổi màu hoặc theme, các thành phần trên trang tài liệu này sẽ tự động cập nhật theo.
+
+<ThemeDemo />
+
+## Các Props của Provider
+
+| Prop | Loại | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- |
+| `sourceColor` | `string` | `#6750A4` | Màu chủ đạo (Hex) dùng để tạo toàn bộ bảng màu. |
+| `defaultMode` | `ThemeMode` | `"light"` | Chế độ giao diện ban đầu (`light` hoặc `dark`). |
+| `persistToLocalStorage` | `boolean` | `false` | Nếu bật, sẽ tự động lưu và khôi phục theme từ `localStorage`. |
+
+## Hooks
+
+Thư viện cung cấp các hooks để bạn có thể truy cập và điều khiển giao diện từ bất kỳ component con nào.
+
+### useTheme
+
+Trả về toàn bộ context của theme bao gồm màu nguồn và chế độ hiện tại.
+
+```tsx
+import { useTheme } from "@bug-on/md3-react";
+
+function MyComponent() {
+  const { sourceColor, setSourceColor, mode, setMode } = useTheme();
+  
+  return (
+    <button onClick={() => setMode(mode === "light" ? "dark" : "light")}>
+      Chế độ hiện tại: {mode}
+    </button>
+  );
+}
+```
+
+### useThemeMode
+
+Một hook tiện ích nếu bạn chỉ quan tâm đến việc chuyển đổi Light/Dark mode.
+
+```tsx
+import { useThemeMode } from "@bug-on/md3-react";
+
+function ThemeToggle() {
+  const { mode, setMode } = useThemeMode();
+  // ...
+}
+```
+
+## CSS Variables
+
+`MD3ThemeProvider` sẽ inject các CSS variables vào `document.documentElement` dưới hai định dạng:
+
+1. **Hệ thống (`--md-sys-color-*`)**: Dùng cho các component của thư viện.
+2. **Tailwind (`--color-m3-*`)**: Dùng cho các class Tailwind tùy chỉnh trong ứng dụng của bạn.
+
+Ví dụ: `--md-sys-color-primary`, `--md-sys-color-on-surface`, v.v.

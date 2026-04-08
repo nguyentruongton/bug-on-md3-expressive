@@ -38,11 +38,36 @@ import { TouchTarget } from "./shared/touch-target";
  * Heights and paddings are taken directly from the MD3 Expressive spec (May 2025).
  */
 const SIZE_STYLES: Record<string, React.CSSProperties> = {
-	xs: { height: "2rem",   minWidth: "4rem",  paddingInline: "0.75rem", gap: "0.5rem"  },
-	sm: { height: "2.5rem", minWidth: "5rem",  paddingInline: "1rem",    gap: "0.5rem"  },
-	md: { height: "3.5rem", minWidth: "7rem",  paddingInline: "1.5rem",  gap: "0.5rem"  },
-	lg: { height: "6rem",   minWidth: "11rem", paddingInline: "3rem",    gap: "0.75rem" },
-	xl: { height: "8.5rem", minWidth: "14rem", paddingInline: "3rem",    gap: "0.75rem" },
+	xs: {
+		height: "2rem",
+		minWidth: "4rem",
+		paddingInline: "0.75rem",
+		gap: "0.5rem",
+	},
+	sm: {
+		height: "2.5rem",
+		minWidth: "5rem",
+		paddingInline: "1rem",
+		gap: "0.5rem",
+	},
+	md: {
+		height: "3.5rem",
+		minWidth: "7rem",
+		paddingInline: "1.5rem",
+		gap: "0.5rem",
+	},
+	lg: {
+		height: "6rem",
+		minWidth: "11rem",
+		paddingInline: "3rem",
+		gap: "0.75rem",
+	},
+	xl: {
+		height: "8.5rem",
+		minWidth: "14rem",
+		paddingInline: "3rem",
+		gap: "0.75rem",
+	},
 };
 
 /** Per-size label typography classes. */
@@ -97,7 +122,7 @@ type MorphRadius = { default: number; pressed: number };
  * smooth during spring animation (no dead zone artefact).
  */
 const ROUND_RADIUS: Record<string, MorphRadius> = {
-	xs: { default: 16, pressed: 8  },
+	xs: { default: 16, pressed: 8 },
 	sm: { default: 20, pressed: 10 },
 	md: { default: 28, pressed: 16 },
 	lg: { default: 48, pressed: 28 },
@@ -109,8 +134,8 @@ const ROUND_RADIUS: Record<string, MorphRadius> = {
  * Pressed values compress inward following MD3 Expressive morphing spec.
  */
 const SQUARE_RADIUS: Record<string, MorphRadius> = {
-	xs: { default: 4,  pressed: 2  },
-	sm: { default: 8,  pressed: 4  },
+	xs: { default: 4, pressed: 2 },
+	sm: { default: 8, pressed: 4 },
 	md: { default: 16, pressed: 10 },
 	lg: { default: 28, pressed: 20 },
 	xl: { default: 40, pressed: 28 },
@@ -273,7 +298,10 @@ function toSentenceCase(text: string): string {
 	return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
 
-function resolveLabel(children: React.ReactNode, asChild: boolean): React.ReactNode {
+function resolveLabel(
+	children: React.ReactNode,
+	asChild: boolean,
+): React.ReactNode {
 	if (asChild) {
 		const child = React.Children.only(children) as React.ReactElement<{
 			children?: React.ReactNode;
@@ -285,20 +313,41 @@ function resolveLabel(children: React.ReactNode, asChild: boolean): React.ReactN
 
 /** Framer Motion-specific props to strip before forwarding to a plain DOM element. */
 const MOTION_PROP_KEYS = [
-	"animate", "exit", "initial", "transition", "variants",
-	"whileHover", "whileTap", "whileFocus", "whileDrag", "whileInView",
-	"onAnimationStart", "onAnimationComplete", "onUpdate",
-	"onDragStart", "onDragEnd", "onDrag", "onDirectionLock", "onDragTransitionEnd",
-	"layout", "layoutId", "onLayoutAnimationComplete",
+	"animate",
+	"exit",
+	"initial",
+	"transition",
+	"variants",
+	"whileHover",
+	"whileTap",
+	"whileFocus",
+	"whileDrag",
+	"whileInView",
+	"onAnimationStart",
+	"onAnimationComplete",
+	"onUpdate",
+	"onDragStart",
+	"onDragEnd",
+	"onDrag",
+	"onDirectionLock",
+	"onDragTransitionEnd",
+	"layout",
+	"layoutId",
+	"onLayoutAnimationComplete",
 ] as const;
 
-function stripMotionProps(props: Record<string, unknown>): Record<string, unknown> {
+function stripMotionProps(
+	props: Record<string, unknown>,
+): Record<string, unknown> {
 	const result = { ...props };
 	for (const key of MOTION_PROP_KEYS) delete result[key];
 	return result;
 }
 
-function springAnimate(value: ReturnType<typeof useMotionValue<number>>, to: number) {
+function springAnimate(
+	value: ReturnType<typeof useMotionValue<number>>,
+	to: number,
+) {
 	animate(value, to, { ...SPRING_TRANSITION_FAST, type: "spring" });
 }
 
@@ -311,7 +360,9 @@ interface LoadingSpinnerProps {
 
 function LoadingSpinner({ size, variant }: LoadingSpinnerProps) {
 	if (variant === "loading-indicator") {
-		return <LoadingIndicator size={size} color="currentColor" aria-label="Loading" />;
+		return (
+			<LoadingIndicator size={size} color="currentColor" aria-label="Loading" />
+		);
 	}
 	return (
 		<ProgressIndicator
@@ -330,7 +381,11 @@ interface AnimatedIconSlotProps {
 	ariaHidden?: boolean;
 }
 
-function AnimatedIconSlot({ iconClass, children, ariaHidden }: AnimatedIconSlotProps) {
+function AnimatedIconSlot({
+	iconClass,
+	children,
+	ariaHidden,
+}: AnimatedIconSlotProps) {
 	return (
 		<m.span
 			initial={{ width: 0, opacity: 0, scale: 0.5 }}
@@ -379,13 +434,15 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 		// When toggle is selected, shape flips (round ↔ square).
 		const effectiveShape = isSelected
-			? shape === "round" ? "square" : "round"
+			? shape === "round"
+				? "square"
+				: "round"
 			: shape;
 
 		// effectiveColorStyle is the single source of truth for color.
 		// Avoids CSS specificity battles between two bg-* classes.
 		const effectiveColorStyle =
-			isToggle && isSelected ? selectedColorStyle ?? "filled" : colorStyle;
+			isToggle && isSelected ? (selectedColorStyle ?? "filled") : colorStyle;
 
 		const radiusMap = effectiveShape === "round" ? ROUND_RADIUS : SQUARE_RADIUS;
 		const { default: animateRadius } = radiusMap[size] ?? radiusMap.sm;
@@ -393,8 +450,12 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 		const iconClass = SIZE_ICON_CLASS[size] ?? "size-5";
 		const mergedStyle = { ...SIZE_STYLES[size], ...style };
-		const labelText = React.useMemo(() => resolveLabel(children, asChild), [children, asChild]);
-		const computedAriaLabel = ariaLabelProp || (typeof children === "string" ? children : undefined);
+		const labelText = React.useMemo(
+			() => resolveLabel(children, asChild),
+			[children, asChild],
+		);
+		const computedAriaLabel =
+			ariaLabelProp || (typeof children === "string" ? children : undefined);
 		const needsTouchTarget = size === "xs" || size === "sm";
 
 		// Shape morphing motion value for asChild mode.
@@ -408,16 +469,20 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			(node: HTMLElement | null) => {
 				asChildRef.current = node;
 				if (typeof ref === "function") ref(node as HTMLButtonElement);
-				else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement;
+				else if (ref)
+					(ref as React.MutableRefObject<HTMLButtonElement | null>).current =
+						node as HTMLButtonElement;
 			},
 			[ref],
 		);
 
 		// Keep DOM borderRadius synced with motionRadius.
 		React.useEffect(
-			() => motionRadius.on("change", (v) => {
-				if (asChildRef.current) asChildRef.current.style.borderRadius = `${v}px`;
-			}),
+			() =>
+				motionRadius.on("change", (v) => {
+					if (asChildRef.current)
+						asChildRef.current.style.borderRadius = `${v}px`;
+				}),
 			[motionRadius],
 		);
 
@@ -426,7 +491,9 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			springAnimate(motionRadius, animateRadius);
 		}, [animateRadius, motionRadius]);
 
-		const { ripples, onPointerDown, removeRipple } = useRippleState({ disabled: loading });
+		const { ripples, onPointerDown, removeRipple } = useRippleState({
+			disabled: loading,
+		});
 
 		const handleClick = React.useCallback(
 			(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -469,9 +536,14 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				<AnimatePresence initial={false}>
 					{(loading || (icon && iconPosition === "leading")) && (
 						<AnimatedIconSlot iconClass={iconClass} ariaHidden={!loading}>
-							{loading
-								? <LoadingSpinner size={SIZE_ICON_PX[size] ?? 20} variant={loadingVariant} />
-								: icon}
+							{loading ? (
+								<LoadingSpinner
+									size={SIZE_ICON_PX[size] ?? 20}
+									variant={loadingVariant}
+								/>
+							) : (
+								icon
+							)}
 						</AnimatedIconSlot>
 					)}
 				</AnimatePresence>
@@ -523,7 +595,10 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 						onPointerLeave={handleAsChildPointerUp}
 						onPointerCancel={handleAsChildPointerUp}
 						onKeyDown={handleKeyDown as React.KeyboardEventHandler<HTMLElement>}
-						style={{ ...(mergedStyle as React.CSSProperties), borderRadius: `${animateRadius}px` }}
+						style={{
+							...(mergedStyle as React.CSSProperties),
+							borderRadius: `${animateRadius}px`,
+						}}
 						className={buttonClassName}
 						{...htmlProps}
 					>
