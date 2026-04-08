@@ -191,10 +191,11 @@ export const componentCategories = [
 				href: "/components/dialogs",
 			},
 			{
-				name: "Divider",
+				name: "Dividers",
 				description:
 					"Dividers are thin lines that group content in lists or other containers",
 				icon: "remove",
+				href: "/components/dividers",
 			},
 			{
 				name: "Lists",

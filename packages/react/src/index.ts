@@ -57,6 +57,9 @@ export {
 	DialogTitle,
 	DialogTrigger,
 } from "./ui/dialog";
+// Divider — MD3 Expressive divider line
+export type { DividerProps } from "./ui/divider";
+export { buildWavePath, Divider } from "./ui/divider";
 export type { DrawerContentProps, DrawerProps } from "./ui/drawer";
 // Drawer (Bottom Sheet)
 export {

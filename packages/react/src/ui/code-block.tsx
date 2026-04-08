@@ -69,16 +69,39 @@ function CopyButton({
 	);
 }
 
+/** Mappings for HTML attributes to React props */
+const ATTR_MAP: Record<string, string> = {
+	class: "className",
+	tabindex: "tabIndex",
+	readonly: "readOnly",
+	maxlength: "maxLength",
+	autocomplete: "autoComplete",
+	autofocus: "autoFocus",
+	contenteditable: "contentEditable",
+	spellcheck: "spellCheck",
+};
+
 function parseStyle(styleStr: string): React.CSSProperties {
 	const styleObj: Record<string, string> = {};
 	for (const s of styleStr.split(";")) {
-		const [k, v] = s.split(":");
-		if (k && v) {
-			const key = k.trim().replace(/-./g, (x) => x[1].toUpperCase());
-			styleObj[key] = v.trim();
+		const part = s.trim();
+		if (!part) continue;
+		const colonIndex = part.indexOf(":");
+		if (colonIndex === -1) continue;
+
+		const k = part.slice(0, colonIndex).trim();
+		const v = part.slice(colonIndex + 1).trim();
+
+		if (k.startsWith("--")) {
+			// CSS variables must be passed as-is
+			styleObj[k] = v;
+		} else {
+			// Standard properties should be camelCased for React
+			const key = k.replace(/-./g, (x) => x[1].toUpperCase());
+			styleObj[key] = v;
 		}
 	}
-	return styleObj;
+	return styleObj as React.CSSProperties;
 }
 
 function mapDomToReact(node: Node, key: string | number): React.ReactNode {
@@ -91,12 +114,11 @@ function mapDomToReact(node: Node, key: string | number): React.ReactNode {
 		const props: Record<string, unknown> = { key };
 
 		for (const attr of Array.from(el.attributes)) {
-			if (attr.name === "class") {
-				props.className = attr.value;
-			} else if (attr.name === "style") {
+			const propName = ATTR_MAP[attr.name] || attr.name;
+			if (propName === "style") {
 				props.style = parseStyle(attr.value);
 			} else {
-				props[attr.name] = attr.value;
+				props[propName] = attr.value;
 			}
 		}
 
@@ -108,6 +130,7 @@ function mapDomToReact(node: Node, key: string | number): React.ReactNode {
 	}
 	return null;
 }
+
 
 function CodeContent({ html, code }: { html?: string; code: string }) {
 	const [parsedContent, setParsedContent] = useState<React.ReactNode>(null);

@@ -2,15 +2,33 @@ import * as React from "react";
 
 export function useContainerWidth() {
 	const [width, setWidth] = React.useState(0);
-	const ref = React.useRef<HTMLDivElement>(null);
-	React.useEffect(() => {
-		if (!ref.current) return;
-		const obs = new ResizeObserver((entries) => {
-			setWidth(entries[0].contentRect.width);
-		});
-		obs.observe(ref.current);
-		return () => obs.disconnect();
+	const observerRef = React.useRef<ResizeObserver | null>(null);
+
+	const ref = React.useCallback((node: HTMLDivElement | null) => {
+		if (observerRef.current) {
+			observerRef.current.disconnect();
+			observerRef.current = null;
+		}
+
+		if (node) {
+			const obs = new ResizeObserver((entries) => {
+				const contentRect = entries[0].contentRect;
+				setWidth(contentRect.width);
+			});
+			obs.observe(node);
+			observerRef.current = obs;
+		}
 	}, []);
+
+	// Cleanup on unmount
+	React.useEffect(() => {
+		return () => {
+			if (observerRef.current) {
+				observerRef.current.disconnect();
+			}
+		};
+	}, []);
+
 	return [ref, width] as const;
 }
 

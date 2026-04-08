@@ -1,0 +1,92 @@
+---
+title: Dividers
+description: A thin line that groups content in lists and layouts. Dividers help to establish hierarchy and separate different types of content visually.
+---
+
+Dividers are visual rules that separate content. They can be used in lists, navigation drawers, and page layouts to group related information or clarify the organization of a page. MD3 Expressive introduces shape-morphing capabilities, such as a **wavy** variant, for added brand expression.
+
+<ComponentPreview name="divider-interactive" />
+
+## Forms & Variants
+
+Dividers come in several layout variants to suit different contexts:
+
+- **Full-bleed (Default):** Spans the full width of its container.
+- **Inset:** Leaves a leading margin, typically used in item lists with leading avatars or icons.
+- **Middle-inset:** Leaves margins on both sides, used for center-weighted layouts.
+- **Subheader:** Used immediately before a subheader label, visually identical to full-bleed.
+
+## Orientations
+
+Dividers can be used horizontally to separate rows, or vertically to separate columns in spatial layouts.
+
+<ComponentPreview name="divider-orientations" />
+
+### Vertical Insets
+While dividers are most commonly used horizontally, they can also be used vertically with insets. Using `variant="inset"` on a vertical divider adds padding to the top (leading edge). See the examples in the **Orientations** section above.
+
+## Expressive Shapes
+
+MD3 Expressive components utilize fluid, organic forms. The standard line is `flat`, but you can use `wavy` for a more distinct, branded appearance. The wavy shape renders an inline SVG sinusoid that scales smoothly and supports dynamic spring animations upon rendering.
+
+<ComponentPreview name="divider-shapes" />
+
+## Inset Padding
+
+When using the `variant="inset"` type, you can specify whether the inset is `standard` (16px from the edge) or `icon` (72px from the edge). 
+
+Use `icon` when the divider is placed within a list containing avatars, images, or prominent icons on the leading edge so the divider aligns with the text, not the icon.
+
+<ComponentPreview name="divider-insets" />
+
+## Usage
+
+```tsx
+import { Divider } from "@bug-on/md3-react";
+
+// Standard full-bleed
+<Divider />
+
+// Subheader group
+<div className="flex flex-col">
+  <Divider variant="subheader" />
+  <span className="text-sm font-medium p-4">Settings</span>
+</div>
+
+// Vertical separator
+<div className="flex h-12 items-center gap-4">
+  <span>Option 1</span>
+  <Divider orientation="vertical" />
+  <span>Option 2</span>
+</div>
+
+// Expressive wavy separator
+<Divider shape="wavy" animate={true} />
+
+// Wavy with custom thickness and cycle
+<Divider shape="wavy" waveConfig={{ amplitude: 5, wavelength: 20 }} />
+
+// Purely decorative (ignored by screen readers)
+<Divider decorative />
+```
+
+## Accessibility
+
+- By default, Dividers receive semantic `<div role="separator">` and an appropriate `aria-orientation` attribute.
+- If the divider is purely visual and does not separate functional regions of a page, pass the `decorative` prop to set `aria-hidden="true"`.
+- When using `shape="wavy"`, the inner SVG element uses `aria-hidden="true"` by default to ensure it remains a decorative artifact wrapped by the accessible `div` wrapper.
+- Entrance animations automatically disable themselves if the user specifies `prefers-reduced-motion` at the OS level.
+
+## API Reference
+
+### Divider
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"full-bleed" \| "inset" \| "middle-inset" \| "subheader"` | `"full-bleed"` | Layout variant controlling horizontal indentation. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the divider. Note: Wavy shape only supports horizontal. |
+| `shape` | `"flat" \| "wavy"` | `"flat"` | Visual form of the line. |
+| `insetStart` | `"standard" \| "icon"` | `"standard"` | Controls amount of leading inset space for the `inset` variant. |
+| `waveConfig` | `{ amplitude?: number, wavelength?: number, strokeWidth?: number }` | `{ amplitude: 2, wavelength: 32, strokeWidth: 1 }` | Customizes the wavy SVG shape dimensions in pixels. |
+| `decorative` | `boolean` | `false` | Marks the divider as decorative, removing it from accessibility trees. |
+| `animate` | `boolean` | `true` | Enables Framer Motion spring entrance animations. |
