@@ -1,5 +1,11 @@
 # @bug-on/md3-tailwind
 
+## 2.0.0
+
+### Major Changes
+
+- 039d035: Update docs, readme, optimize lints
+
 ## 1.0.0
 
 ### Major Changes
