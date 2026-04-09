@@ -1,0 +1,11 @@
+# @bug-on/md3-tailwind
+
+## 1.0.0
+
+### Major Changes
+
+- 0845e7b: update READMEs with English instructions for3 packages
+
+### Patch Changes
+
+- 4901a01: update READMEs with English instructions.
