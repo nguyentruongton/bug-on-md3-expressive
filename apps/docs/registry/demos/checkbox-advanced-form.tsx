@@ -15,7 +15,11 @@ export default function CheckboxAdvancedFormDemo() {
 
 	return (
 		<div className="flex flex-col gap-6 w-full max-w-sm">
-			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
+			<form
+				onSubmit={handleSubmit}
+				className="flex flex-col gap-4"
+				aria-label="Demo form"
+			>
 				<Checkbox
 					name="newsletter"
 					value="subscribed"

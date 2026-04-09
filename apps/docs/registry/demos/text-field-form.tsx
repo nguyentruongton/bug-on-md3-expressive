@@ -56,6 +56,7 @@ export default function TextFieldFormDemo() {
 		<form
 			onSubmit={handleSubmit}
 			className="flex flex-col gap-5 w-full max-w-sm"
+			aria-label="Sign up form"
 			noValidate
 		>
 			<TextField

@@ -30,11 +30,11 @@ export default function CheckboxAdvancedColorsDemo() {
 			<div className="flex flex-col gap-2 items-center">
 				<Checkbox
 					defaultChecked
-					className="[--color-m3-primary:#9333ea]"
-					aria-label="Purple checkbox"
+					className="[--color-m3-primary:#0d9488]"
+					aria-label="Teal checkbox"
 				/>
 				<span className="text-xs text-m3-on-surface-variant font-medium">
-					Purple
+					Teal
 				</span>
 			</div>
 		</div>

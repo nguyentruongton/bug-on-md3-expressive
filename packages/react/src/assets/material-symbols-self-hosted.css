@@ -53,28 +53,9 @@
 }
 
 /*
- * Rounded variant — uncomment nếu dùng
- *
-@font-face {
-  font-family: 'Material Symbols Rounded';
-  font-style: normal;
-  font-weight: 100 700;
-  font-display: block;
-  src: url('/fonts/MaterialSymbolsRounded[FILL,GRAD,opsz,wght].woff2') format('woff2');
-}
-*/
-
-/*
- * Sharp variant — uncomment nếu dùng
- *
-@font-face {
-  font-family: 'Material Symbols Sharp';
-  font-style: normal;
-  font-weight: 100 700;
-  font-display: block;
-  src: url('/fonts/MaterialSymbolsSharp[FILL,GRAD,opsz,wght].woff2') format('woff2');
-}
-*/
+ * Rounded variants and Sharp variants are not included by default to save space.
+ * You can declare them similarly if you download the respective woff2 files.
+ */
 
 /* ─────────────────────────────────────────────────────────────────────────────
  * BASE ICON STYLES

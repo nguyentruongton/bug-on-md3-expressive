@@ -51,18 +51,11 @@ export function ThemeDemo() {
 				</div>
 
 				{/* Theme Mode Toggle */}
-				<div className="flex flex-col">
-					<span
-						id="theme-mode-label"
-						className="block text-sm font-medium text-m3-on-surface mb-3"
-					>
+				<fieldset className="flex flex-col border-none p-0 m-0">
+					<legend className="block text-sm font-medium text-m3-on-surface mb-3">
 						Theme Mode
-					</span>
-					<div
-						role="group"
-						aria-labelledby="theme-mode-label"
-						className="flex bg-m3-surface-container-highest rounded-m3-full p-1 border border-m3-outline-variant"
-					>
+					</legend>
+					<div className="flex bg-m3-surface-container-highest rounded-m3-full p-1 border border-m3-outline-variant">
 						<button
 							type="button"
 							onClick={() => setMode("light")}
@@ -88,22 +81,15 @@ export function ThemeDemo() {
 							<span className="text-sm font-medium">Dark</span>
 						</button>
 					</div>
-				</div>
+				</fieldset>
 			</div>
 
 			{/* Preset Colors */}
-			<div className="mt-8">
-				<span
-					id="presets-label"
-					className="block text-sm font-medium text-m3-on-surface-variant mb-3"
-				>
+			<fieldset className="mt-8 border-none p-0 m-0">
+				<legend className="block text-sm font-medium text-m3-on-surface-variant mb-3">
 					Quick Presets
-				</span>
-				<div
-					role="group"
-					aria-labelledby="presets-label"
-					className="flex flex-wrap gap-3"
-				>
+				</legend>
+				<div className="flex flex-wrap gap-3">
 					{presets.map((p) => (
 						<button
 							key={p.color}
@@ -123,7 +109,7 @@ export function ThemeDemo() {
 						</button>
 					))}
 				</div>
-			</div>
+			</fieldset>
 
 			<p className="mt-6 text-xs text-m3-on-surface-variant bg-m3-surface-variant/30 p-3 rounded-m3-md border border-m3-outline-variant/30 leading-normal italic">
 				Thử đổi màu hoặc theme để thấy toàn bộ trang tài liệu này cập nhật

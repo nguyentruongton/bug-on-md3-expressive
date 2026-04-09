@@ -14,7 +14,8 @@
 			"!!**/node_modules",
 			"!!**/coverage",
 			"!!**/.agent",
-			"!!**/.vscode"
+			"!!**/.vscode",
+			"!!docs"
 		]
 	},
 	"formatter": {

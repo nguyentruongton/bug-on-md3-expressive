@@ -3,14 +3,19 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "bundler",
-		"lib": ["ESNext", "dom"],
+		"lib": ["ESNext", "dom", "dom.iterable"],
 		"strict": true,
 		"skipLibCheck": true,
 		"noEmit": true,
+		"jsx": "react-jsx",
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
 		"baseUrl": ".",
 		"paths": {
 			"@bug-on/md3-react": ["./packages/react/src"],
-			"@bug-on/md3-tokens": ["./packages/tokens/src"]
+			"@bug-on/md3-tokens": ["./packages/tokens/src"],
+			"@/*": ["./apps/docs/*"]
 		}
 	},
 	"include": [

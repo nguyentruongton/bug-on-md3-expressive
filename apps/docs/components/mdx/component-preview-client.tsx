@@ -16,8 +16,6 @@ interface ComponentPreviewClientProps {
 	highlightedCode: string;
 }
 
-type TabType = "preview" | "code";
-
 /** Lazy-load registry demo components on the client side */
 const demoRegistry: Record<
 	string,
