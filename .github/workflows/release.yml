@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
           version: 10.0.0
 
@@ -33,7 +33,7 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v3
+        uses: changesets/action@v1
         with:
           publish: pnpm run release
           commit: "chore(release): version packages"
