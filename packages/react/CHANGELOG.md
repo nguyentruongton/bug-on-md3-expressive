@@ -1,5 +1,16 @@
 # @bug-on/md3-react
 
+## 2.0.0
+
+### Major Changes
+
+- 039d035: Update docs, readme, optimize lints
+
+### Patch Changes
+
+- Updated dependencies [039d035]
+  - @bug-on/md3-tokens@2.0.0
+
 ## 1.0.0
 
 ### Major Changes
