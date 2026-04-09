@@ -213,8 +213,9 @@ export interface TabsListContextValue {
 	scrollable: boolean;
 }
 
-export const TabsListContext =
-	React.createContext<TabsListContextValue | null>(null);
+export const TabsListContext = React.createContext<TabsListContextValue | null>(
+	null,
+);
 
 /**
  * Hook to consume TabsList-level context (variant, scrollable).

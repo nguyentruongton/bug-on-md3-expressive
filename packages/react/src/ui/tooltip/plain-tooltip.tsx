@@ -17,8 +17,15 @@ export const PlainTooltip = forwardRef<HTMLDivElement, PlainTooltipProps>(
 		},
 		ref,
 	) => {
-		const { containerColor: tokenContainer, textColor: tokenText, font, padding, shape, height, maxWidth: tokenMaxWidth } =
-			TooltipTokens.PlainTooltip;
+		const {
+			containerColor: tokenContainer,
+			textColor: tokenText,
+			font,
+			padding,
+			shape,
+			height,
+			maxWidth: tokenMaxWidth,
+		} = TooltipTokens.PlainTooltip;
 
 		const style: CSSProperties = {
 			...props.style,
@@ -45,7 +52,9 @@ export const PlainTooltip = forwardRef<HTMLDivElement, PlainTooltipProps>(
 						customPath={caret.customPath}
 					/>
 				)}
-				<span className="whitespace-normal text-start wrap-break-word">{children}</span>
+				<span className="whitespace-normal text-start wrap-break-word">
+					{children}
+				</span>
 			</div>
 		);
 	},

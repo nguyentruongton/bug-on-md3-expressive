@@ -2,6 +2,22 @@
 	"name": "@bug-on/md3-tokens",
 	"version": "0.1.0",
 	"description": "Material Design 3 Expressive design tokens",
+	"author": "Bug Ổn",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nguyentruongton/bug-on-md3-expressive.git",
+		"directory": "packages/tokens"
+	},
+	"keywords": [
+		"react",
+		"tailwind",
+		"material-design-3",
+		"md3",
+		"ui-library",
+		"components",
+		"bug-on"
+	],
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",

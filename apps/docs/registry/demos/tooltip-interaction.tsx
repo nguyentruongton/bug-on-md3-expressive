@@ -47,9 +47,7 @@ export default function TooltipInteraction() {
 						Long Press (Mobile)
 					</span>
 					<TooltipBox
-						tooltip={
-							<PlainTooltip>Nhấn giữ 500ms để xem</PlainTooltip>
-						}
+						tooltip={<PlainTooltip>Nhấn giữ 500ms để xem</PlainTooltip>}
 						trigger={["long-press"]}
 					>
 						<Button colorStyle="filled">Long press</Button>

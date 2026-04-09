@@ -142,7 +142,9 @@ export default function DividerInteractive() {
 						</h4>
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<span className="font-medium text-m3-on-surface-variant">Amplitude</span>
+								<span className="font-medium text-m3-on-surface-variant">
+									Amplitude
+								</span>
 								<span className="text-m3-primary font-mono">{amplitude}px</span>
 							</div>
 							<input
@@ -157,8 +159,12 @@ export default function DividerInteractive() {
 						</div>
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<span className="font-medium text-m3-on-surface-variant">Wavelength</span>
-								<span className="text-m3-primary font-mono">{wavelength}px</span>
+								<span className="font-medium text-m3-on-surface-variant">
+									Wavelength
+								</span>
+								<span className="text-m3-primary font-mono">
+									{wavelength}px
+								</span>
 							</div>
 							<input
 								type="range"
@@ -172,8 +178,12 @@ export default function DividerInteractive() {
 						</div>
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<span className="font-medium text-m3-on-surface-variant">Stroke Width</span>
-								<span className="text-m3-primary font-mono">{strokeWidth}px</span>
+								<span className="font-medium text-m3-on-surface-variant">
+									Stroke Width
+								</span>
+								<span className="text-m3-primary font-mono">
+									{strokeWidth}px
+								</span>
 							</div>
 							<input
 								type="range"
@@ -197,10 +207,16 @@ export default function DividerInteractive() {
 								checked={animate}
 								onChange={(e) => setAnimate(e.target.checked)}
 							/>
-							<div className={`w-10 h-6 rounded-full transition-colors ${animate ? "bg-m3-primary" : "bg-m3-surface-container-highest"}`} />
-							<div className={`absolute left-1 w-4 h-4 rounded-full bg-white transition-transform ${animate ? "translate-x-4" : ""}`} />
+							<div
+								className={`w-10 h-6 rounded-full transition-colors ${animate ? "bg-m3-primary" : "bg-m3-surface-container-highest"}`}
+							/>
+							<div
+								className={`absolute left-1 w-4 h-4 rounded-full bg-white transition-transform ${animate ? "translate-x-4" : ""}`}
+							/>
 						</div>
-						<span className="text-sm font-medium text-m3-on-surface">Animate</span>
+						<span className="text-sm font-medium text-m3-on-surface">
+							Animate
+						</span>
 					</label>
 
 					<label className="flex items-center gap-3 cursor-pointer group">
@@ -211,10 +227,16 @@ export default function DividerInteractive() {
 								checked={decorative}
 								onChange={(e) => setDecorative(e.target.checked)}
 							/>
-							<div className={`w-10 h-6 rounded-full transition-colors ${decorative ? "bg-m3-primary" : "bg-m3-surface-container-highest"}`} />
-							<div className={`absolute left-1 w-4 h-4 rounded-full bg-white transition-transform ${decorative ? "translate-x-4" : ""}`} />
+							<div
+								className={`w-10 h-6 rounded-full transition-colors ${decorative ? "bg-m3-primary" : "bg-m3-surface-container-highest"}`}
+							/>
+							<div
+								className={`absolute left-1 w-4 h-4 rounded-full bg-white transition-transform ${decorative ? "translate-x-4" : ""}`}
+							/>
 						</div>
-						<span className="text-sm font-medium text-m3-on-surface">Decorative</span>
+						<span className="text-sm font-medium text-m3-on-surface">
+							Decorative
+						</span>
 					</label>
 				</div>
 
@@ -230,11 +252,15 @@ export default function DividerInteractive() {
 			{/* Preview Panel */}
 			<div className="flex-2 flex flex-col items-center justify-center p-8 min-h-[300px] border-t xl:border-t-0 xl:border-l border-m3-outline-variant/30">
 				<div className="flex-1 flex w-full items-center justify-center relative">
-					<div className={`flex items-center justify-center ${orientation === "horizontal" ? "w-full flex-col gap-4" : "h-full flex-row gap-4"}`}>
+					<div
+						className={`flex items-center justify-center ${orientation === "horizontal" ? "w-full flex-col gap-4" : "h-full flex-row gap-4"}`}
+					>
 						<div className="text-xs text-m3-on-surface-variant font-medium opacity-60">
 							{orientation === "horizontal" ? "Content Above" : "Content Left"}
 						</div>
-						<div className={`${orientation === "horizontal" ? "w-full" : "h-32"}`}>
+						<div
+							className={`${orientation === "horizontal" ? "w-full" : "h-32"}`}
+						>
 							<Divider
 								key={key}
 								variant={variant}
@@ -260,25 +286,62 @@ export default function DividerInteractive() {
 					<div className="bg-m3-surface-container-low border border-m3-outline-variant/50 p-4 rounded-xl font-mono text-xs text-m3-on-surface-variant overflow-x-auto whitespace-pre">
 						<span className="text-m3-primary">{"<Divider"}</span>
 						{variant !== "full-bleed" && (
-							<><br />{"  "}variant=<span className="text-green-600 dark:text-green-400">"{variant}"</span></>
+							<>
+								<br />
+								{"  "}variant=
+								<span className="text-green-600 dark:text-green-400">
+									"{variant}"
+								</span>
+							</>
 						)}
 						{orientation !== "horizontal" && (
-							<><br />{"  "}orientation=<span className="text-green-600 dark:text-green-400">"{orientation}"</span></>
+							<>
+								<br />
+								{"  "}orientation=
+								<span className="text-green-600 dark:text-green-400">
+									"{orientation}"
+								</span>
+							</>
 						)}
 						{shape !== "flat" && (
-							<><br />{"  "}shape=<span className="text-green-600 dark:text-green-400">"{shape}"</span></>
+							<>
+								<br />
+								{"  "}shape=
+								<span className="text-green-600 dark:text-green-400">
+									"{shape}"
+								</span>
+							</>
 						)}
 						{variant === "inset" && insetStart !== "standard" && (
-							<><br />{"  "}insetStart=<span className="text-green-600 dark:text-green-400">"{insetStart}"</span></>
+							<>
+								<br />
+								{"  "}insetStart=
+								<span className="text-green-600 dark:text-green-400">
+									"{insetStart}"
+								</span>
+							</>
 						)}
-						{shape === "wavy" && (amplitude !== 2 || wavelength !== 32 || strokeWidth !== 1) && (
-							<><br />{"  "}waveConfig={"{{"} amplitude: {amplitude}, wavelength: {wavelength}, strokeWidth: {strokeWidth} {"}}"} </>
-						)}
+						{shape === "wavy" &&
+							(amplitude !== 2 || wavelength !== 32 || strokeWidth !== 1) && (
+								<>
+									<br />
+									{"  "}waveConfig={"{{"} amplitude: {amplitude}, wavelength:{" "}
+									{wavelength}, strokeWidth: {strokeWidth} {"}}"}{" "}
+								</>
+							)}
 						{!animate && (
-							<><br />{"  "}animate={"{"}<span className="text-blue-600 dark:text-blue-400">false</span>{"}"}</>
+							<>
+								<br />
+								{"  "}animate={"{"}
+								<span className="text-blue-600 dark:text-blue-400">false</span>
+								{"}"}
+							</>
 						)}
 						{decorative && (
-							<><br />{"  "}decorative</>
+							<>
+								<br />
+								{"  "}decorative
+							</>
 						)}
 						<br />
 						<span className="text-m3-primary">{" />"}</span>

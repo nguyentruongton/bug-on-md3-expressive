@@ -1,8 +1,14 @@
 "use client";
 
-import { CodeBlock, LoadingIndicator, Tab, Tabs, TabsContent, TabsList } from "@bug-on/md3-react";
+import {
+	CodeBlock,
+	LoadingIndicator,
+	Tab,
+	Tabs,
+	TabsContent,
+	TabsList,
+} from "@bug-on/md3-react";
 import * as React from "react";
-import { cn } from "@/lib/utils";
 
 interface ComponentPreviewClientProps {
 	name: string;
@@ -92,4 +98,3 @@ export function ComponentPreviewClient({
 		</Tabs>
 	);
 }
-

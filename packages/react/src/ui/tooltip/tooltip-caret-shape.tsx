@@ -35,7 +35,8 @@ export function TooltipCaretShape({
 	className = "",
 }: TooltipCaretProps) {
 	const isHorizontal = side === "left" || side === "right";
-	const path = customPath ?? `M 0,${height} L ${width / 2},0 L ${width},${height} Z`;
+	const path =
+		customPath ?? `M 0,${height} L ${width / 2},0 L ${width},${height} Z`;
 
 	return (
 		<div

@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Tab} from './tab.js';
+import { Tab } from "./tab.js";
 
 /**
  * A secondary tab component.
  */
 export class SecondaryTab extends Tab {
-  protected override fullWidthIndicator = true;
+	protected override fullWidthIndicator = true;
 }

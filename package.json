@@ -1,6 +1,21 @@
 {
 	"name": "bug-on-md3-expressive",
 	"private": true,
+	"author": "Bug Ổn",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nguyentruongton/bug-on-md3-expressive.git"
+	},
+	"keywords": [
+		"react",
+		"tailwind",
+		"material-design-3",
+		"md3",
+		"ui-library",
+		"components",
+		"bug-on"
+	],
 	"scripts": {
 		"dev": "turbo run dev",
 		"build": "turbo run build",

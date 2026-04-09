@@ -131,7 +131,6 @@ function mapDomToReact(node: Node, key: string | number): React.ReactNode {
 	return null;
 }
 
-
 function CodeContent({ html, code }: { html?: string; code: string }) {
 	const [parsedContent, setParsedContent] = useState<React.ReactNode>(null);
 

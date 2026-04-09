@@ -84,7 +84,8 @@ const TabsListComponent = React.forwardRef<HTMLDivElement, TabsListProps>(
 							onBlur={handleBlur}
 							className={cn(
 								"flex flex-row items-stretch",
-								scrollable && "overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+								scrollable &&
+									"overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
 							)}
 							style={
 								scrollable

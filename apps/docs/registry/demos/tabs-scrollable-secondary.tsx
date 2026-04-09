@@ -30,11 +30,7 @@ export default function TabsScrollableSecondaryDemo() {
 			</p>
 
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList
-					variant="secondary"
-					scrollable={true}
-					aria-label="Countries"
-				>
+				<TabsList variant="secondary" scrollable={true} aria-label="Countries">
 					{COUNTRY_TABS.map(({ value, label }) => (
 						<Tab key={value} value={value}>
 							{label}

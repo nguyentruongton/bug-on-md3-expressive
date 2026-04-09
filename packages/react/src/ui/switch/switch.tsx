@@ -206,11 +206,17 @@ const SwitchVisual = React.memo(function SwitchVisual({
 	const stateLayerColor = checked
 		? SwitchColors.checkedStateLayer
 		: SwitchColors.uncheckedStateLayer;
-	const stateLayerOpacity = isPressed || isFocused ? 0.12 : isHovered ? 0.08 : 0;
+	const stateLayerOpacity =
+		isPressed || isFocused ? 0.12 : isHovered ? 0.08 : 0;
 	const stateLayerX = thumbX + thumbSize / 2 - SwitchTokens.stateLayerSize / 2;
 
 	// ── Icon visibility ───────────────────────────────────────────────────────
-	const showIcon = isIconVisible(thumbContent, icons, showOnlySelectedIcon, checked);
+	const showIcon = isIconVisible(
+		thumbContent,
+		icons,
+		showOnlySelectedIcon,
+		checked,
+	);
 
 	// ── Motion: no animation when reduced ─────────────────────────────────────
 	const colorTransition = prefersReduced ? { duration: 0 } : COLOR_TRANSITION;

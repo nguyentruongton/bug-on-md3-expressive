@@ -194,17 +194,22 @@ const TabComponent = React.forwardRef<HTMLButtonElement, TabProps>(
 			const overflowRight = btnRect.right - containerRect.right;
 
 			if (overflowLeft > 0) {
-				container.scrollTo({ left: container.scrollLeft - overflowLeft, behavior: "smooth" });
+				container.scrollTo({
+					left: container.scrollLeft - overflowLeft,
+					behavior: "smooth",
+				});
 			} else if (overflowRight > 0) {
-				container.scrollTo({ left: container.scrollLeft + overflowRight, behavior: "smooth" });
+				container.scrollTo({
+					left: container.scrollLeft + overflowRight,
+					behavior: "smooth",
+				});
 			}
 		}, [isActive, scrollable]);
 
 		// ── Derived tokens ─────────────────────────────────────────────────────
-		const containerHeight =
-			isStackedIcon
-				? TabsTokens.containerHeightWithIcon
-				: TabsTokens.containerHeight;
+		const containerHeight = isStackedIcon
+			? TabsTokens.containerHeightWithIcon
+			: TabsTokens.containerHeight;
 
 		const activeColor =
 			variant === "primary"
@@ -223,8 +228,12 @@ const TabComponent = React.forwardRef<HTMLButtonElement, TabProps>(
 
 		const indicatorLayoutId = `${layoutGroupId}-indicator`;
 
-		const colorTransition = prefersReduced ? { duration: 0 } : TABS_COLOR_TRANSITION;
-		const springTransition = prefersReduced ? { duration: 0 } : TABS_INDICATOR_SPRING;
+		const colorTransition = prefersReduced
+			? { duration: 0 }
+			: TABS_COLOR_TRANSITION;
+		const springTransition = prefersReduced
+			? { duration: 0 }
+			: TABS_INDICATOR_SPRING;
 
 		// ── IDs for ARIA wiring ────────────────────────────────────────────────
 		const tabId = `${layoutGroupId}-tab-${value}`;

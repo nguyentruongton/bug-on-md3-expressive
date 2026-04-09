@@ -5,7 +5,14 @@
 
 "use client";
 
-import { Badge, Icon, Tab, Tabs, TabsContent, TabsList } from "@bug-on/md3-react";
+import {
+	Badge,
+	Icon,
+	Tab,
+	Tabs,
+	TabsContent,
+	TabsList,
+} from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function TabsSecondaryDemo() {
@@ -14,7 +21,11 @@ export default function TabsSecondaryDemo() {
 	return (
 		<div className="relative w-full rounded-md border border-m3-outline-variant overflow-hidden bg-m3-surface">
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList variant="secondary" scrollable={false} aria-label="Inbox filter">
+				<TabsList
+					variant="secondary"
+					scrollable={false}
+					aria-label="Inbox filter"
+				>
 					<Tab value="all">All</Tab>
 					<Tab value="unread" badge={<Badge>12</Badge>}>
 						Unread

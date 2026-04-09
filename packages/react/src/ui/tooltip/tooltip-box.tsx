@@ -90,12 +90,19 @@ export function TooltipBox({
 	useEffect(() => {
 		const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 		setPrefersReducedMotion(mediaQuery.matches);
-		const onChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+		const onChange = (e: MediaQueryListEvent) =>
+			setPrefersReducedMotion(e.matches);
 		mediaQuery.addEventListener("change", onChange);
 		return () => mediaQuery.removeEventListener("change", onChange);
 	}, []);
 
-	const position = useTooltipPosition(anchorRef, tooltipRef, placement, spacingFromAnchor, state.isVisible);
+	const position = useTooltipPosition(
+		anchorRef,
+		tooltipRef,
+		placement,
+		spacingFromAnchor,
+		state.isVisible,
+	);
 
 	const canHover = !disabled && hasHoverSupport && triggers.includes("hover");
 	const canClick = !disabled && triggers.includes("click");
@@ -110,7 +117,10 @@ export function TooltipBox({
 	const handlePointerLeave = () => {
 		if (!canHover) return;
 		clearTimeout(hoverTimeoutRef);
-		hideTimeoutRef.current = window.setTimeout(() => state.dismiss(), hideDelay);
+		hideTimeoutRef.current = window.setTimeout(
+			() => state.dismiss(),
+			hideDelay,
+		);
 	};
 
 	const handleFocus = () => {
@@ -122,13 +132,19 @@ export function TooltipBox({
 		if (disabled) return;
 		const focusMovedInside =
 			tooltipRef.current &&
-			(e.relatedTarget === tooltipRef.current || tooltipRef.current.contains(e.relatedTarget as Node));
+			(e.relatedTarget === tooltipRef.current ||
+				tooltipRef.current.contains(e.relatedTarget as Node));
 		if (focusMovedInside) return;
 		state.dismiss();
 	};
 
 	const handlePointerDown = (e: React.PointerEvent) => {
-		if (disabled || !triggers.includes("long-press") || e.pointerType === "mouse") return;
+		if (
+			disabled ||
+			!triggers.includes("long-press") ||
+			e.pointerType === "mouse"
+		)
+			return;
 		clearTimeout(pressTimeoutRef);
 		pressTimeoutRef.current = window.setTimeout(() => state.show(), 500);
 	};
@@ -158,7 +174,10 @@ export function TooltipBox({
 
 	const handleTooltipPointerLeave = () => {
 		if (!canHover) return;
-		hideTimeoutRef.current = window.setTimeout(() => state.dismiss(), hideDelay);
+		hideTimeoutRef.current = window.setTimeout(
+			() => state.dismiss(),
+			hideDelay,
+		);
 	};
 
 	useEffect(() => {
@@ -190,7 +209,9 @@ export function TooltipBox({
 		},
 	);
 
-	const variants = prefersReducedMotion ? MOTION_VARIANTS.reduced : MOTION_VARIANTS.full;
+	const variants = prefersReducedMotion
+		? MOTION_VARIANTS.reduced
+		: MOTION_VARIANTS.full;
 
 	return (
 		<>

@@ -5,7 +5,14 @@
 
 "use client";
 
-import { Badge, Icon, Tab, Tabs, TabsContent, TabsList } from "@bug-on/md3-react";
+import {
+	Badge,
+	Icon,
+	Tab,
+	Tabs,
+	TabsContent,
+	TabsList,
+} from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function TabsBadgesDemo() {
@@ -14,7 +21,11 @@ export default function TabsBadgesDemo() {
 	return (
 		<div className="relative w-full rounded-md border border-m3-outline-variant overflow-hidden bg-m3-surface">
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList variant="primary" scrollable={false} aria-label="Notifications">
+				<TabsList
+					variant="primary"
+					scrollable={false}
+					aria-label="Notifications"
+				>
 					{/* Stacked Icon + Count Badge */}
 					<Tab
 						value="mail"
@@ -34,10 +45,7 @@ export default function TabsBadgesDemo() {
 					</Tab>
 
 					{/* Text only + Large count badge */}
-					<Tab
-						value="updates"
-						badge={<Badge max={99}>150</Badge>}
-					>
+					<Tab value="updates" badge={<Badge max={99}>150</Badge>}>
 						Updates
 					</Tab>
 
@@ -54,16 +62,24 @@ export default function TabsBadgesDemo() {
 
 				<div className="p-6">
 					<TabsContent value="mail">
-						<p className="text-body-md text-m3-on-surface-variant">Check your recent emails. You have 12 unread.</p>
+						<p className="text-body-md text-m3-on-surface-variant">
+							Check your recent emails. You have 12 unread.
+						</p>
 					</TabsContent>
 					<TabsContent value="chat">
-						<p className="text-body-md text-m3-on-surface-variant">Unread messages in your active chats.</p>
+						<p className="text-body-md text-m3-on-surface-variant">
+							Unread messages in your active chats.
+						</p>
 					</TabsContent>
 					<TabsContent value="updates">
-						<p className="text-body-md text-m3-on-surface-variant">System updates and notifications (over 99+).</p>
+						<p className="text-body-md text-m3-on-surface-variant">
+							System updates and notifications (over 99+).
+						</p>
 					</TabsContent>
 					<TabsContent value="events">
-						<p className="text-body-md text-m3-on-surface-variant">New upcoming events in your calendar.</p>
+						<p className="text-body-md text-m3-on-surface-variant">
+							New upcoming events in your calendar.
+						</p>
 					</TabsContent>
 				</div>
 			</Tabs>

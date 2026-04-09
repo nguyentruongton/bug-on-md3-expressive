@@ -29,11 +29,7 @@ export default function TabsScrollablePrimaryDemo() {
 			</p>
 
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList
-					variant="primary"
-					scrollable={true}
-					aria-label="Music genres"
-				>
+				<TabsList variant="primary" scrollable={true} aria-label="Music genres">
 					{MUSIC_TABS.map(({ value, label, icon }) => (
 						<Tab
 							key={value}

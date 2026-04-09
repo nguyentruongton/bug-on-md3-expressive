@@ -18,7 +18,11 @@ export default function TabsDisabledPrimaryDemo() {
 			</p>
 
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList variant="primary" scrollable={false} aria-label="Product sections">
+				<TabsList
+					variant="primary"
+					scrollable={false}
+					aria-label="Product sections"
+				>
 					<Tab value="overview">Overview</Tab>
 					<Tab value="specs">Specifications</Tab>
 					<Tab value="reviews" disabled>
@@ -32,7 +36,8 @@ export default function TabsDisabledPrimaryDemo() {
 							Product Overview
 						</h3>
 						<p className="text-body-md text-m3-on-surface-variant">
-							A high-level summary of the product features, benefits, and use cases.
+							A high-level summary of the product features, benefits, and use
+							cases.
 						</p>
 					</div>
 				</TabsContent>

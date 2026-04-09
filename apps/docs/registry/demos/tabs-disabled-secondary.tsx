@@ -18,7 +18,11 @@ export default function TabsDisabledSecondaryDemo() {
 			</p>
 
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList variant="secondary" scrollable={false} aria-label="Account settings">
+				<TabsList
+					variant="secondary"
+					scrollable={false}
+					aria-label="Account settings"
+				>
 					<Tab value="details" icon={<Icon name="person" className="size-6" />}>
 						Details
 					</Tab>

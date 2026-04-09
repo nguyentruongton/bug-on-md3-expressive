@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from "lit";
+import { customElement } from "lit/decorators.js";
 
-import {Divider} from './internal/divider.js';
-import {styles} from './internal/divider-styles.js';
+import { Divider } from "./internal/divider.js";
+import { styles } from "./internal/divider-styles.js";
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'md-divider': MdDivider;
-  }
+	interface HTMLElementTagNameMap {
+		"md-divider": MdDivider;
+	}
 }
 
 /**
@@ -26,7 +26,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('md-divider')
+@customElement("md-divider")
 export class MdDivider extends Divider {
-  static override styles: CSSResultOrNative[] = [styles];
+	static override styles: CSSResultOrNative[] = [styles];
 }

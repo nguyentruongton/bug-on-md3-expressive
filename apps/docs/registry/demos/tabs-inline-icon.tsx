@@ -40,16 +40,28 @@ export default function TabsInlineIconDemo() {
 
 				<div className="p-6">
 					<TabsContent value="home">
-						<h3 className="text-title-md font-semibold text-m3-on-surface">Home</h3>
-						<p className="text-body-md text-m3-on-surface-variant">Welcome back to the dashboard.</p>
+						<h3 className="text-title-md font-semibold text-m3-on-surface">
+							Home
+						</h3>
+						<p className="text-body-md text-m3-on-surface-variant">
+							Welcome back to the dashboard.
+						</p>
 					</TabsContent>
 					<TabsContent value="search">
-						<h3 className="text-title-md font-semibold text-m3-on-surface">Search</h3>
-						<p className="text-body-md text-m3-on-surface-variant">Quickly find help or documents.</p>
+						<h3 className="text-title-md font-semibold text-m3-on-surface">
+							Search
+						</h3>
+						<p className="text-body-md text-m3-on-surface-variant">
+							Quickly find help or documents.
+						</p>
 					</TabsContent>
 					<TabsContent value="settings">
-						<h3 className="text-title-md font-semibold text-m3-on-surface">Settings</h3>
-						<p className="text-body-md text-m3-on-surface-variant">Manage your account preferences.</p>
+						<h3 className="text-title-md font-semibold text-m3-on-surface">
+							Settings
+						</h3>
+						<p className="text-body-md text-m3-on-surface-variant">
+							Manage your account preferences.
+						</p>
 					</TabsContent>
 				</div>
 			</Tabs>

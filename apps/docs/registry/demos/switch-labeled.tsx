@@ -12,10 +12,6 @@ export default function SwitchLabeled() {
 	const [checked, setChecked] = React.useState(true);
 
 	return (
-		<Switch
-			checked={checked}
-			onCheckedChange={setChecked}
-			label="Bật Wi-Fi"
-		/>
+		<Switch checked={checked} onCheckedChange={setChecked} label="Bật Wi-Fi" />
 	);
 }

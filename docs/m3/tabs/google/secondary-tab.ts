@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from "lit";
+import { customElement } from "lit/decorators.js";
 
-import {SecondaryTab} from './internal/secondary-tab.js';
-import {styles as secondaryStyles} from './internal/secondary-tab-styles.js';
-import {styles as sharedStyles} from './internal/tab-styles.js';
+import { SecondaryTab } from "./internal/secondary-tab.js";
+import { styles as secondaryStyles } from "./internal/secondary-tab-styles.js";
+import { styles as sharedStyles } from "./internal/tab-styles.js";
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'md-secondary-tab': MdSecondaryTab;
-  }
+	interface HTMLElementTagNameMap {
+		"md-secondary-tab": MdSecondaryTab;
+	}
 }
 
 // TODO(b/267336507): add docs
@@ -24,7 +24,7 @@ declare global {
  * @final
  * @suppress {visibility}
  */
-@customElement('md-secondary-tab')
+@customElement("md-secondary-tab")
 export class MdSecondaryTab extends SecondaryTab {
-  static override styles: CSSResultOrNative[] = [sharedStyles, secondaryStyles];
+	static override styles: CSSResultOrNative[] = [sharedStyles, secondaryStyles];
 }

@@ -29,7 +29,9 @@ const TabsContentComponent = React.forwardRef<HTMLDivElement, TabsContentProps>(
 		const tabId = `${layoutGroupId}-tab-${value}`;
 		const panelId = `${layoutGroupId}-panel-${value}`;
 
-		const contentTransition = prefersReduced ? { duration: 0 } : TABS_CONTENT_TRANSITION;
+		const contentTransition = prefersReduced
+			? { duration: 0 }
+			: TABS_CONTENT_TRANSITION;
 
 		return (
 			<AnimatePresence mode="popLayout" initial={false}>

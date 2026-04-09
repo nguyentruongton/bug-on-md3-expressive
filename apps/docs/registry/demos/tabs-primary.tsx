@@ -5,7 +5,14 @@
 
 "use client";
 
-import { Badge, Icon, Tab, Tabs, TabsContent, TabsList } from "@bug-on/md3-react";
+import {
+	Badge,
+	Icon,
+	Tab,
+	Tabs,
+	TabsContent,
+	TabsList,
+} from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function TabsPrimaryDemo() {
@@ -14,7 +21,11 @@ export default function TabsPrimaryDemo() {
 	return (
 		<div className="relative w-full rounded-md border border-m3-outline-variant overflow-hidden bg-m3-surface">
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList variant="primary" scrollable={false} aria-label="Travel sections">
+				<TabsList
+					variant="primary"
+					scrollable={false}
+					aria-label="Travel sections"
+				>
 					<Tab
 						value="flights"
 						icon={<Icon name="flight" className="size-6" />}
@@ -25,7 +36,10 @@ export default function TabsPrimaryDemo() {
 					<Tab value="trips" icon={<Icon name="luggage" className="size-6" />}>
 						Trips
 					</Tab>
-					<Tab value="explore" icon={<Icon name="travel_explore" className="size-6" />}>
+					<Tab
+						value="explore"
+						icon={<Icon name="travel_explore" className="size-6" />}
+					>
 						Explore
 					</Tab>
 				</TabsList>
@@ -36,7 +50,8 @@ export default function TabsPrimaryDemo() {
 							Available Flights
 						</h3>
 						<p className="text-body-md text-m3-on-surface-variant">
-							Browse and book flights to your destination. Search by date, price, and airline.
+							Browse and book flights to your destination. Search by date,
+							price, and airline.
 						</p>
 					</div>
 				</TabsContent>
@@ -47,7 +62,8 @@ export default function TabsPrimaryDemo() {
 							Your Trips
 						</h3>
 						<p className="text-body-md text-m3-on-surface-variant">
-							View and manage your upcoming and past trips. Access boarding passes and itineraries.
+							View and manage your upcoming and past trips. Access boarding
+							passes and itineraries.
 						</p>
 					</div>
 				</TabsContent>
@@ -58,7 +74,8 @@ export default function TabsPrimaryDemo() {
 							Explore Destinations
 						</h3>
 						<p className="text-body-md text-m3-on-surface-variant">
-							Discover popular destinations and travel inspiration curated for you.
+							Discover popular destinations and travel inspiration curated for
+							you.
 						</p>
 					</div>
 				</TabsContent>
