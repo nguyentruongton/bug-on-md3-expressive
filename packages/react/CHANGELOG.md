@@ -1,5 +1,11 @@
 # @bug-on/md3-react
 
+## 2.0.1
+
+### Patch Changes
+
+- 1b6bb5c: Implement Material Design 3 Expressive Sliders and update all documentation to English.
+
 ## 2.0.0
 
 ### Major Changes
