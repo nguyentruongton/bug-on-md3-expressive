@@ -19,7 +19,7 @@ export default function SwitchBasic() {
 				ariaLabel="Toggle switch"
 			/>
 			<p className="text-sm font-medium text-m3-on-surface-variant">
-				Trạng thái: {checked ? "Bật" : "Tắt"}
+				Status: {checked ? "On" : "Off"}
 			</p>
 		</div>
 	);

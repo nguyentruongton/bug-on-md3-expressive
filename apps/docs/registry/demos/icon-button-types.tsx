@@ -18,16 +18,16 @@ export default function IconButtonTypesDemo() {
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
-					<IconButton aria-label="Thêm">
+					<IconButton aria-label="Add">
 						<Icon name="add" />
 					</IconButton>
-					<IconButton aria-label="Cài đặt">
+					<IconButton aria-label="Settings">
 						<Icon name="settings" />
 					</IconButton>
-					<IconButton aria-label="Chỉnh sửa">
+					<IconButton aria-label="Edit">
 						<Icon name="edit" />
 					</IconButton>
-					<IconButton aria-label="Chia sẻ" disabled>
+					<IconButton aria-label="Share" disabled>
 						<Icon name="share" />
 					</IconButton>
 				</div>
@@ -46,16 +46,16 @@ export default function IconButtonTypesDemo() {
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
-					<IconButton aria-label="Thêm" colorStyle="filled">
+					<IconButton aria-label="Add" colorStyle="filled">
 						<Icon name="add" />
 					</IconButton>
-					<IconButton aria-label="Tìm kiếm" colorStyle="filled">
+					<IconButton aria-label="Search" colorStyle="filled">
 						<Icon name="search" />
 					</IconButton>
-					<IconButton aria-label="Xóa" colorStyle="filled">
+					<IconButton aria-label="Delete" colorStyle="filled">
 						<Icon name="delete" />
 					</IconButton>
-					<IconButton aria-label="Thêm (disabled)" colorStyle="filled" disabled>
+					<IconButton aria-label="Add (disabled)" colorStyle="filled" disabled>
 						<Icon name="add" />
 					</IconButton>
 				</div>
@@ -74,17 +74,17 @@ export default function IconButtonTypesDemo() {
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
-					<IconButton aria-label="Yêu thích" colorStyle="tonal">
+					<IconButton aria-label="Favorite" colorStyle="tonal">
 						<Icon name="favorite" />
 					</IconButton>
-					<IconButton aria-label="Đánh dấu sao" colorStyle="tonal">
+					<IconButton aria-label="Star" colorStyle="tonal">
 						<Icon name="star" />
 					</IconButton>
-					<IconButton aria-label="Chia sẻ" colorStyle="tonal">
+					<IconButton aria-label="Share" colorStyle="tonal">
 						<Icon name="share" />
 					</IconButton>
 					<IconButton
-						aria-label="Chia sẻ (disabled)"
+						aria-label="Share (disabled)"
 						colorStyle="tonal"
 						disabled
 					>
@@ -106,17 +106,17 @@ export default function IconButtonTypesDemo() {
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
-					<IconButton aria-label="Lưu" colorStyle="outlined">
+					<IconButton aria-label="Save" colorStyle="outlined">
 						<Icon name="bookmark" />
 					</IconButton>
-					<IconButton aria-label="Chỉnh sửa" colorStyle="outlined">
+					<IconButton aria-label="Edit" colorStyle="outlined">
 						<Icon name="edit" />
 					</IconButton>
-					<IconButton aria-label="Cài đặt" colorStyle="outlined">
+					<IconButton aria-label="Settings" colorStyle="outlined">
 						<Icon name="settings" />
 					</IconButton>
 					<IconButton
-						aria-label="Lưu (disabled)"
+						aria-label="Save (disabled)"
 						colorStyle="outlined"
 						disabled
 					>

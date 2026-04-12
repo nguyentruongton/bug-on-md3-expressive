@@ -1,6 +1,11 @@
 "use client";
 
-import { Card, TypographyProvider, useTypography } from "@bug-on/md3-react";
+import {
+	Card,
+	Slider,
+	TypographyProvider,
+	useTypography,
+} from "@bug-on/md3-react";
 import { useMemo, useState } from "react";
 
 interface TypeScaleRowProps {
@@ -274,14 +279,13 @@ export default function TypographyShowcaseDemo() {
 						styles.
 					</p>
 				</div>
-				<input
-					type="range"
+				<Slider
 					min={0}
 					max={100}
 					step={1}
 					value={rond}
-					onChange={(e) => setRond(Number(e.target.value))}
-					className="w-full sm:w-48 accent-m3-primary"
+					onValueChange={setRond}
+					className="w-full sm:w-48"
 					aria-label="ROND axis value"
 				/>
 			</Card>

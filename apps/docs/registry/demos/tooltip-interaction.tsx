@@ -6,10 +6,10 @@ export default function TooltipInteraction() {
 			<div className="flex flex-wrap items-center justify-center gap-8">
 				<div className="flex flex-col items-center gap-2">
 					<span className="text-sm font-medium text-secondary">
-						Hover (Mặc định)
+						Hover (Default)
 					</span>
 					<TooltipBox
-						tooltip={<PlainTooltip>Kích hoạt bằng Hover</PlainTooltip>}
+						tooltip={<PlainTooltip>Triggered by Hover</PlainTooltip>}
 						trigger={["hover"]}
 					>
 						<Button colorStyle="outlined">Hover me</Button>
@@ -19,7 +19,7 @@ export default function TooltipInteraction() {
 				<div className="flex flex-col items-center gap-2">
 					<span className="text-sm font-medium text-secondary">Focus</span>
 					<TooltipBox
-						tooltip={<PlainTooltip>Kích hoạt khi Tab vào</PlainTooltip>}
+						tooltip={<PlainTooltip>Triggered on Focus (Tab)</PlainTooltip>}
 						trigger={["focus"]}
 					>
 						<Button colorStyle="outlined">Focus me</Button>
@@ -33,7 +33,7 @@ export default function TooltipInteraction() {
 					<TooltipBox
 						tooltip={
 							<PlainTooltip caret={{ enabled: true }}>
-								Kích hoạt khi Click
+								Triggered by Click
 							</PlainTooltip>
 						}
 						trigger={["click"]}
@@ -47,7 +47,7 @@ export default function TooltipInteraction() {
 						Long Press (Mobile)
 					</span>
 					<TooltipBox
-						tooltip={<PlainTooltip>Nhấn giữ 500ms để xem</PlainTooltip>}
+						tooltip={<PlainTooltip>Long press 500ms to view</PlainTooltip>}
 						trigger={["long-press"]}
 					>
 						<Button colorStyle="filled">Long press</Button>

@@ -39,27 +39,27 @@ export default function IconButtonLoadingDemo() {
 						Morphing Shape (Default)
 					</h3>
 					<p className="text-sm text-m3-on-surface-variant">
-						<code>loadingVariant=&quot;loading-indicator&quot;</code> — hiển thị
-						loading indicator morphing 7 hình MD3 Expressive đặc trưng.
+						<code>loadingVariant=&quot;loading-indicator&quot;</code> — displays
+						the morphing loading indicator across 7 distinct MD3 Expressive shapes.
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
 					<LoadingIconButtonDemo
-						aria-label="Tải lên"
+						aria-label="Upload"
 						colorStyle="filled"
 						loadingVariant="loading-indicator"
 						icon={<Icon name="add" />}
 						size="md"
 					/>
 					<LoadingIconButtonDemo
-						aria-label="Tìm kiếm"
+						aria-label="Search"
 						colorStyle="tonal"
 						loadingVariant="loading-indicator"
 						icon={<Icon name="search" />}
 						size="md"
 					/>
 					<LoadingIconButtonDemo
-						aria-label="Cài đặt"
+						aria-label="Settings"
 						colorStyle="outlined"
 						loadingVariant="loading-indicator"
 						icon={<Icon name="settings" />}
@@ -74,20 +74,20 @@ export default function IconButtonLoadingDemo() {
 						Circular Spinner
 					</h3>
 					<p className="text-sm text-m3-on-surface-variant">
-						<code>loadingVariant=&quot;circular&quot;</code> — dùng circular
-						progress indicator. Phù hợp sync data, submit form.
+						<code>loadingVariant=&quot;circular&quot;</code> — utilizes the standard
+						circular progress indicator. Best for data synchronization or form submissions.
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
 					<LoadingIconButtonDemo
-						aria-label="Tải lên"
+						aria-label="Upload"
 						colorStyle="filled"
 						loadingVariant="circular"
 						icon={<Icon name="progress_activity" />}
 						size="md"
 					/>
 					<LoadingIconButtonDemo
-						aria-label="Tìm kiếm"
+						aria-label="Search"
 						colorStyle="tonal"
 						loadingVariant="circular"
 						icon={<Icon name="search" />}

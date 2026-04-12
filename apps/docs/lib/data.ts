@@ -226,6 +226,7 @@ export const componentCategories = [
 				description:
 					"Sliders allow users to make selections from a range of values",
 				icon: "tune",
+				href: "/components/sliders",
 			},
 			{
 				name: "Snackbar",

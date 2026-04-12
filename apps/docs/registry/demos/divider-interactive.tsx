@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Divider } from "@bug-on/md3-react";
+import { Card, Divider, Slider } from "@bug-on/md3-react";
 import { useState } from "react";
 
 export default function DividerInteractive() {
@@ -142,57 +142,63 @@ export default function DividerInteractive() {
 						</h4>
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<span className="font-medium text-m3-on-surface-variant">
+								<span
+									id="amplitude-label"
+									className="font-medium text-m3-on-surface-variant"
+								>
 									Amplitude
 								</span>
 								<span className="text-m3-primary font-mono">{amplitude}px</span>
 							</div>
-							<input
-								type="range"
-								min="1"
-								max="10"
-								step="0.5"
+							<Slider
+								aria-labelledby="amplitude-label"
+								min={1}
+								max={10}
+								step={0.5}
 								value={amplitude}
-								onChange={(e) => setAmplitude(Number(e.target.value))}
-								className="w-full accent-m3-primary cursor-pointer"
+								onValueChange={setAmplitude}
 							/>
 						</div>
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<span className="font-medium text-m3-on-surface-variant">
+								<span
+									id="wavelength-label"
+									className="font-medium text-m3-on-surface-variant"
+								>
 									Wavelength
 								</span>
 								<span className="text-m3-primary font-mono">
 									{wavelength}px
 								</span>
 							</div>
-							<input
-								type="range"
-								min="8"
-								max="64"
-								step="1"
+							<Slider
+								aria-labelledby="wavelength-label"
+								min={8}
+								max={64}
+								step={1}
 								value={wavelength}
-								onChange={(e) => setWavelength(Number(e.target.value))}
-								className="w-full accent-m3-primary cursor-pointer"
+								onValueChange={setWavelength}
 							/>
 						</div>
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<span className="font-medium text-m3-on-surface-variant">
+								<span
+									id="stroke-width-label"
+									className="font-medium text-m3-on-surface-variant"
+								>
 									Stroke Width
 								</span>
 								<span className="text-m3-primary font-mono">
 									{strokeWidth}px
 								</span>
 							</div>
-							<input
-								type="range"
-								min="1"
-								max="6"
-								step="0.5"
+							<Slider
+								aria-labelledby="stroke-width-label"
+								min={1}
+								max={6}
+								step={0.5}
 								value={strokeWidth}
-								onChange={(e) => setStrokeWidth(Number(e.target.value))}
-								className="w-full accent-m3-primary cursor-pointer"
+								onValueChange={setStrokeWidth}
 							/>
 						</div>
 					</div>
@@ -250,7 +256,7 @@ export default function DividerInteractive() {
 			</div>
 
 			{/* Preview Panel */}
-			<div className="flex-2 flex flex-col items-center justify-center p-8 min-h-[300px] border-t xl:border-t-0 xl:border-l border-m3-outline-variant/30">
+			<div className="flex-2 flex flex-col items-center justify-center p-8 min-h-75 border-t xl:border-t-0 xl:border-l border-m3-outline-variant/30">
 				<div className="flex-1 flex w-full items-center justify-center relative">
 					<div
 						className={`flex items-center justify-center ${orientation === "horizontal" ? "w-full flex-col gap-4" : "h-full flex-row gap-4"}`}

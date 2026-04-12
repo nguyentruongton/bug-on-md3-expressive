@@ -30,7 +30,7 @@ export default function IconButtonToggleDemo() {
 					</p>
 					<div className="flex items-center gap-6">
 						<IconButton
-							aria-label={likedFilled ? "Bỏ thích" : "Thích"}
+							aria-label={likedFilled ? "Unlike" : "Like"}
 							colorStyle="filled"
 							variant="toggle"
 							selected={likedFilled}
@@ -57,7 +57,7 @@ export default function IconButtonToggleDemo() {
 					</p>
 					<div className="flex items-center gap-6">
 						<IconButton
-							aria-label={likedTonal ? "Bỏ đánh dấu" : "Đánh dấu"}
+							aria-label={likedTonal ? "Remove star" : "Star"}
 							colorStyle="tonal"
 							variant="toggle"
 							selected={likedTonal}
@@ -81,7 +81,7 @@ export default function IconButtonToggleDemo() {
 					</p>
 					<div className="flex items-center gap-6">
 						<IconButton
-							aria-label={bookmarkedOutlined ? "Bỏ lưu" : "Lưu"}
+							aria-label={bookmarkedOutlined ? "Unsave" : "Save"}
 							colorStyle="outlined"
 							variant="toggle"
 							selected={bookmarkedOutlined}
@@ -108,7 +108,7 @@ export default function IconButtonToggleDemo() {
 					</p>
 					<div className="flex items-center gap-6">
 						<IconButton
-							aria-label={starredStandard ? "Bỏ gắn sao" : "Gắn sao"}
+							aria-label={starredStandard ? "Unstar" : "Star"}
 							colorStyle="standard"
 							variant="toggle"
 							selected={starredStandard}
@@ -137,7 +137,7 @@ export default function IconButtonToggleDemo() {
 				<div className="flex flex-wrap items-end gap-6">
 					<div className="flex flex-col items-center gap-2">
 						<IconButton
-							aria-label={shapeFilled ? "Bỏ thích" : "Thích"}
+							aria-label={shapeFilled ? "Unlike" : "Like"}
 							colorStyle="filled"
 							variant="toggle"
 							selected={shapeFilled}
@@ -156,7 +156,7 @@ export default function IconButtonToggleDemo() {
 					</div>
 					<div className="flex flex-col items-center gap-2">
 						<IconButton
-							aria-label={shapeTonal ? "Bỏ thích" : "Thích"}
+							aria-label={shapeTonal ? "Unlike" : "Like"}
 							colorStyle="tonal"
 							variant="toggle"
 							selected={shapeTonal}

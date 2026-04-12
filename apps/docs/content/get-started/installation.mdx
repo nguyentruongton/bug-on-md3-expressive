@@ -1,27 +1,27 @@
 ---
 title: Installation
-description: Hướng dẫn cài đặt và tích hợp Bug Ổn MD3 Expressive vào dự án của bạn.
+description: Step-by-step guide to installing and integrating Bug On MD3 Expressive into your project.
 ---
 
-Để bắt đầu sử dụng bộ component Material Design 3 Expressive, bạn cần cài đặt các gói thư viện cần thiết và thiết lập môi trường React.
+To begin using the Material Design 3 Expressive component suite, you need to install the core packages and configure your React environment.
 
-## Cài đặt các gói (Packages)
+## Installing Packages
 
-Thư viện được chia nhỏ thành các gói chuyên biệt. Bạn nên cài đặt ít nhất gói `@bug-on/md3-react` cho các thành phần UI.
+The library is modularized into specialized packages. We recommend installing at least `@bug-on/md3-react` for core UI components.
 
-### Sử dụng pnpm (Khuyên dùng)
+### Using pnpm (Recommended)
 
 ```bash
 pnpm add @bug-on/md3-react framer-motion clsx tailwind-merge
 ```
 
-### Sử dụng npm
+### Using npm
 
 ```bash
 npm install @bug-on/md3-react framer-motion clsx tailwind-merge
 ```
 
-### Sử dụng yarn
+### Using yarn
 
 ```bash
 yarn add @bug-on/md3-react framer-motion clsx tailwind-merge
@@ -29,23 +29,23 @@ yarn add @bug-on/md3-react framer-motion clsx tailwind-merge
 
 ## Peer Dependencies
 
-Đảm bảo dự án của bạn đã cài đặt các phiên bản tương thích của các thư viện sau:
+Ensure your project has compatible versions of the following libraries:
 
-- **React**: ^18.0.0 hoặc ^19.0.0
-- **Framer Motion**: ^11.0.0 (dành cho animations)
-- **Tailwind CSS**: ^3.4.0 hoặc ^4.0.0
+- **React**: ^18.0.0 or ^19.0.0
+- **Framer Motion**: ^11.0.0 (required for animations)
+- **Tailwind CSS**: ^3.4.0 or ^4.0.0
 
-## Thiết lập Typography & Icons
+## Typography & Icons Configuration
 
-Thư viện sử dụng font **Google Sans (hoặc tương đương)** và **Material Symbols**. Hãy thêm các import sau vào file CSS chính của bạn (ví dụ `globals.css` hoặc `App.css`):
+The library utilizes **Google Sans (or equivalent)** and **Material Symbols**. Add the following imports to your main CSS file (e.g., `globals.css` or `App.css`):
 
 ```css
-/* Import styles từ thư viện */
+/* Import library styles */
 @import "@bug-on/md3-react/typography.css";
 @import "@bug-on/md3-react/material-symbols-cdn.css";
 ```
 
-Hoặc sử dụng component preconnect để tối ưu tốc độ tải:
+Alternatively, use the preconnect component to optimize loading performance:
 
 ```tsx
 import { MaterialSymbolsPreconnect } from "@bug-on/md3-react";
@@ -62,6 +62,6 @@ export default function RootLayout({ children }) {
 }
 ```
 
-## Bước tiếp theo
+## Next Steps
 
-Sau khi cài đặt thành công, hãy chuyển sang phần **Theme** để thiết lập hệ thống màu động Material You cho ứng dụng của bạn.
+Once installation is complete, proceed to the **Theme** section to configure the Material You dynamic color system for your application.
