@@ -5,14 +5,14 @@ export default function TooltipBasic() {
 		<div className="flex flex-col items-center justify-center gap-12 py-12">
 			<div className="flex flex-wrap items-center justify-center gap-8">
 				<TooltipBox
-					tooltip={<PlainTooltip>Lưu thay đổi</PlainTooltip>}
+					tooltip={<PlainTooltip>Save changes</PlainTooltip>}
 					placement="top"
 				>
 					<Button colorStyle="filled">Hover Top</Button>
 				</TooltipBox>
 
 				<TooltipBox
-					tooltip={<PlainTooltip>Xóa mục này</PlainTooltip>}
+					tooltip={<PlainTooltip>Delete item</PlainTooltip>}
 					placement="bottom"
 				>
 					<Button colorStyle="tonal">Hover Bottom</Button>
@@ -23,7 +23,7 @@ export default function TooltipBasic() {
 				<TooltipBox
 					tooltip={
 						<PlainTooltip caret={{ enabled: true }}>
-							Cài đặt tài khoản
+							Account settings
 						</PlainTooltip>
 					}
 					placement="left"
@@ -34,7 +34,7 @@ export default function TooltipBasic() {
 				<TooltipBox
 					tooltip={
 						<PlainTooltip caret={{ enabled: true }}>
-							Trung tâm trợ giúp
+							Help center
 						</PlainTooltip>
 					}
 					placement="right"

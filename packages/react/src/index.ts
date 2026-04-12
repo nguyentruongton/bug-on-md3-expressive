@@ -147,6 +147,15 @@ export {
 	ScrollArea,
 	ScrollAreaScrollbar,
 } from "./ui/scroll-area";
+// Slider — MD3 Expressive
+export type {
+	RangeSliderProps,
+	SliderOrientation,
+	SliderProps,
+	SliderTrackSize,
+	SliderVariant,
+} from "./ui/slider";
+export { RangeSlider, Slider, SliderColors, SliderTokens } from "./ui/slider";
 // Snackbar — MD3 Expressive imperative toast system
 export type {
 	SnackbarData,

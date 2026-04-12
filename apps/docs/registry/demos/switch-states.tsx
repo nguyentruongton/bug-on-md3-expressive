@@ -14,13 +14,13 @@ export default function SwitchStates() {
 				checked={false}
 				onCheckedChange={() => {}}
 				disabled
-				label="Vô hiệu hóa (Tắt)"
+				label="Disabled (Off)"
 			/>
 			<Switch
 				checked={true}
 				onCheckedChange={() => {}}
 				disabled
-				label="Vô hiệu hóa (Bật)"
+				label="Disabled (On)"
 			/>
 		</div>
 	);

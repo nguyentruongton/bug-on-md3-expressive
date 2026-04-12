@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, ProgressIndicator } from "@bug-on/md3-react";
+import { Card, ProgressIndicator, Slider } from "@bug-on/md3-react";
 import { useState } from "react";
 
 export default function ProgressPlaygroundDemo() {
@@ -84,14 +84,13 @@ export default function ProgressPlaygroundDemo() {
 							<span className="font-medium text-m3-on-surface">Value</span>
 							<span className="text-m3-primary font-mono">{value}%</span>
 						</div>
-						<input
+						<Slider
 							aria-label="Value"
-							type="range"
-							min="0"
-							max="100"
+							min={0}
+							max={100}
 							value={value}
-							onChange={(e) => setValue(Number(e.target.value))}
-							className="w-full accent-m3-primary cursor-pointer"
+							onValueChange={setValue}
+							formatValue={(v) => `${v}%`}
 						/>
 					</div>
 				)}
@@ -154,70 +153,65 @@ export default function ProgressPlaygroundDemo() {
 							{variant === "linear" && (
 								<div>
 									<div className="flex justify-between text-sm mb-1">
-										<label
-											htmlFor="wave-speed"
+										<span
+											id="wave-speed-label"
 											className="font-medium text-m3-on-surface-variant"
 										>
 											Wave Speed
-										</label>
+										</span>
 										<span className="text-m3-primary font-mono">
 											{waveSpeed}x
 										</span>
 									</div>
-									<input
-										id="wave-speed"
-										type="range"
-										min="0.1"
-										max="3"
-										step="0.1"
+									<Slider
+										aria-labelledby="wave-speed-label"
+										min={0.1}
+										max={3}
+										step={0.1}
 										value={waveSpeed}
-										onChange={(e) => setWaveSpeed(Number(e.target.value))}
-										className="w-full accent-m3-primary"
+										onValueChange={setWaveSpeed}
+										formatValue={(v) => `${v}x`}
 									/>
 								</div>
 							)}
 							<div>
 								<div className="flex justify-between text-sm mb-1">
-									<label
-										htmlFor="amplitude"
+									<span
+										id="amplitude-label"
 										className="font-medium text-m3-on-surface-variant"
 									>
 										Amplitude
-									</label>
+									</span>
 									<span className="text-m3-primary font-mono">{amplitude}</span>
 								</div>
-								<input
-									id="amplitude"
-									type="range"
-									min="1"
-									max="10"
-									step="1"
+								<Slider
+									aria-labelledby="amplitude-label"
+									min={1}
+									max={10}
+									step={1}
 									value={amplitude}
-									onChange={(e) => setAmplitude(Number(e.target.value))}
-									className="w-full accent-m3-primary"
+									onValueChange={setAmplitude}
 								/>
 							</div>
 							<div>
 								<div className="flex justify-between text-sm mb-1">
-									<label
-										htmlFor="wavelength"
+									<span
+										id="wavelength-label"
 										className="font-medium text-m3-on-surface-variant"
 									>
 										Wavelength
-									</label>
+									</span>
 									<span className="text-m3-primary font-mono">
 										{wavelength}
 									</span>
 								</div>
-								<input
-									id="wavelength"
-									type="range"
-									min="10"
-									max="100"
-									step="1"
+								<Slider
+									aria-labelledby="wavelength-label"
+									min={10}
+									max={100}
+									step={1}
 									value={wavelength}
-									onChange={(e) => setWavelength(Number(e.target.value))}
-									className="w-full accent-m3-primary"
+									onValueChange={setWavelength}
 								/>
 							</div>
 						</div>
@@ -232,94 +226,90 @@ export default function ProgressPlaygroundDemo() {
 						{variant === "circular" && (
 							<div>
 								<div className="flex justify-between text-sm mb-1">
-									<label
-										htmlFor="size"
+									<span
+										id="size-label"
 										className="font-medium text-m3-on-surface-variant"
 									>
 										Size
-									</label>
+									</span>
 									<span className="text-m3-primary font-mono">{size}px</span>
 								</div>
-								<input
-									id="size"
-									type="range"
-									min="24"
-									max="120"
-									step="4"
+								<Slider
+									aria-labelledby="size-label"
+									min={24}
+									max={120}
+									step={4}
 									value={size}
-									onChange={(e) => setSize(Number(e.target.value))}
-									className="w-full accent-m3-primary"
+									onValueChange={setSize}
+									formatValue={(v) => `${v}px`}
 								/>
 							</div>
 						)}
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<label
-									htmlFor="gap-size"
+								<span
+									id="gap-size-label"
 									className="font-medium text-m3-on-surface-variant"
 								>
 									Gap Size
-								</label>
+								</span>
 								<span className="text-m3-primary font-mono">{gapSize}px</span>
 							</div>
-							<input
-								id="gap-size"
-								type="range"
-								min="0"
-								max="12"
-								step="1"
+							<Slider
+								aria-labelledby="gap-size-label"
+								min={0}
+								max={12}
+								step={1}
 								value={gapSize}
-								onChange={(e) => setGapSize(Number(e.target.value))}
-								className="w-full accent-m3-primary"
+								onValueChange={setGapSize}
+								formatValue={(v) => `${v}px`}
 							/>
 						</div>
 
 						<div>
 							<div className="flex justify-between text-sm mb-1">
-								<label
-									htmlFor="track-height"
+								<span
+									id="track-height-label"
 									className="font-medium text-m3-on-surface-variant"
 								>
 									Track Height
-								</label>
+								</span>
 								<span className="text-m3-primary font-mono">
 									{trackHeight}px
 								</span>
 							</div>
-							<input
-								id="track-height"
-								type="range"
-								min="2"
-								max="16"
-								step="1"
+							<Slider
+								aria-labelledby="track-height-label"
+								min={2}
+								max={16}
+								step={1}
 								value={trackHeight}
-								onChange={(e) => setTrackHeight(Number(e.target.value))}
-								className="w-full accent-m3-primary"
+								onValueChange={setTrackHeight}
+								formatValue={(v) => `${v}px`}
 							/>
 						</div>
 
 						{!isDeterminate && (
 							<div>
 								<div className="flex justify-between text-sm mb-1">
-									<label
-										htmlFor="crawler-speed"
+									<span
+										id="crawler-speed-label"
 										className="font-medium text-m3-on-surface-variant"
 									>
 										Crawler Speed
-									</label>
+									</span>
 									<span className="text-m3-primary font-mono">
 										{crawlerSpeed}x
 									</span>
 								</div>
-								<input
-									id="crawler-speed"
-									type="range"
-									min="0.1"
-									max="3"
-									step="0.1"
+								<Slider
+									aria-labelledby="crawler-speed-label"
+									min={0.1}
+									max={3}
+									step={0.1}
 									value={crawlerSpeed}
-									onChange={(e) => setCrawlerSpeed(Number(e.target.value))}
-									className="w-full accent-m3-primary"
+									onValueChange={setCrawlerSpeed}
+									formatValue={(v) => `${v}x`}
 								/>
 							</div>
 						)}

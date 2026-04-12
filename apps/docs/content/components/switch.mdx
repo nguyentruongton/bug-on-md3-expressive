@@ -1,42 +1,42 @@
 ---
 title: Switch
-description: Công tắc (Switch) dùng để chuyển đổi trạng thái bật hoặc tắt của một mục duy nhất.
+description: Switches toggle the state of a single setting on or off.
 ---
 
-Switches là cách hiệu quả nhất để cho phép người dùng thay đổi các thiết lập riêng lẻ. MD3 Expressive Switch nhấn mạnh tính tương tác thông qua các hiệu ứng chuyển động mượt mà của thumb và state layer.
+Switches are the most efficient way to allow users to toggle individual settings. The Bug On MD3 Expressive Switch emphasizes interactivity through fluid thumb motion and responsive state layers.
 
 <ComponentPreview name="switch-basic" />
 
 ## Labeled Switches
 
-Sử dụng prop `label` để tự động liên kết văn bản mô tả với switch. Điều này giúp cải thiện khả năng truy cập (accessibility) bằng cách cho phép người dùng click vào nhãn để chuyển đổi trạng thái.
+Use the `label` prop to automatically associate descriptive text with the switch. This improves accessibility by allowing users to click the label to toggle the state.
 
 <ComponentPreview name="switch-labeled" />
 
 ## Icons
 
-MD3 Switch cho phép hiển thị các biểu tượng (icons) bên trong thumb để tăng tính trực quan. Bạn có thể chọn hiển thị icon ở cả hai trạng thái hoặc chỉ khi được chọn.
+The MD3 Switch supports displaying icons inside the thumb to provide additional visual context. You can choose to display icons in both states or only when selected.
 
 <ComponentPreview name="switch-icons" />
 
 ## States
 
-Switches hỗ trợ trạng thái `disabled`. Khi bị vô hiệu hóa, switch sẽ không thể tương tác và được hiển thị với độ mờ (opacity) thấp theo đặc tả của Material Design.
+Switches support a `disabled` state. When disabled, the switch blocks interaction and is rendered with reduced opacity according to Material Design 3 specifications.
 
 <ComponentPreview name="switch-states" />
 
-## Cách sử dụng
+## Usage
 
 ```tsx
 import { Switch } from "@bug-on/md3-react";
 
-// Cơ bản
+// Basic
 <Switch checked={isOn} onCheckedChange={setIsOn} />
 
-// Có nhãn
+// With Label
 <Switch checked={isOn} onCheckedChange={setIsOn} label="Wi-Fi" />
 
-// Có biểu tượng
+// With Icons
 <Switch 
   checked={isOn} 
   onCheckedChange={setIsOn} 
@@ -47,11 +47,11 @@ import { Switch } from "@bug-on/md3-react";
 
 ## Accessibility
 
-- Sử dụng mẫu ARIA Switch tiêu chuẩn (`role="switch"`).
-- Trạng thái được phản hồi qua thuộc tính `aria-checked` ("true" hoặc "false").
-- Hỗ trợ đầy đủ điều khiển bằng bàn phím: **Space** hoặc **Enter** để chuyển đổi.
-- Khi sử dụng `label`, switch sẽ được bọc trong thẻ `<label>` và kết nối qua `id`.
-- Đường viền focus (focus ring) chỉ hiển thị khi điều hướng bằng bàn phím (`focus-visible`).
+- Utilizes the standard ARIA Switch pattern (`role="switch"`).
+- State is communicated via the `aria-checked` attribute ("true" or "false").
+- Full keyboard support: **Space** or **Enter** to toggle.
+- When using `label`, the switch is wrapped in a `<label>` tag and linked via `id`.
+- Focus rings are only visible during keyboard navigation (`focus-visible`).
 
 ## API Reference
 
@@ -59,12 +59,12 @@ import { Switch } from "@bug-on/md3-react";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `checked` | `boolean` | — | **Bắt buộc**. Trạng thái bật/tắt (controlled). |
-| `onCheckedChange` | `(checked: boolean) => void` | — | **Bắt buộc**. Callback khi trạng thái thay đổi. |
-| `disabled` | `boolean` | `false` | Vô hiệu hóa tương tác. |
-| `label` | `string` | — | Văn bản hiển thị cạnh công tắc. |
-| `ariaLabel` | `string` | — | Nhãn ẩn cho trình đọc màn hình (dùng khi không có `label`). |
-| `icons` | `boolean` | `false` | Hiển thị biểu tượng trong thumb ở cả 2 trạng thái. |
-| `showOnlySelectedIcon` | `boolean` | `false` | Chỉ hiển thị biểu tượng khi switch ở trạng thái bật. |
-| `thumbContent` | `ReactNode` | — | Biểu tượng (SVG) hiển thị bên trong thumb. |
-| `className` | `string` | — | CSS class tùy chỉnh cho wrapper. |
+| `checked` | `boolean` | — | **Required**. Controlled checked state. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | **Required**. Callback fired when the state changes. |
+| `disabled` | `boolean` | `false` | Disables interaction. |
+| `label` | `string` | — | Text label displayed next to the switch. |
+| `ariaLabel` | `string` | — | Accessible label for screen readers (use when `label` is omitted). |
+| `icons` | `boolean` | `false` | Displays icons inside the thumb in both states. |
+| `showOnlySelectedIcon` | `boolean` | `false` | Only displays the icon when the switch is in the 'on' state. |
+| `thumbContent` | `ReactNode` | — | Icon (SVG) to be displayed inside the thumb. |
+| `className` | `string` | — | Custom CSS class for the wrapper. |

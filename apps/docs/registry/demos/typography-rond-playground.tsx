@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "@bug-on/md3-react";
+import { Card, Slider } from "@bug-on/md3-react";
 import { useState } from "react";
 
 export default function TypographyRondPlaygroundDemo() {
@@ -32,25 +32,23 @@ export default function TypographyRondPlaygroundDemo() {
 
 			<div className="flex flex-col gap-3 max-w-sm">
 				<div className="flex items-center justify-between">
-					<label
-						htmlFor="rond-slider"
+					<span
+						id="rond-label"
 						className="text-sm font-medium text-m3-on-surface"
 					>
 						ROND axis
-					</label>
+					</span>
 					<span className="font-mono text-sm font-semibold text-m3-primary">
 						{rond}
 					</span>
 				</div>
-				<input
-					id="rond-slider"
-					type="range"
+				<Slider
+					aria-labelledby="rond-label"
 					min={0}
 					max={100}
 					step={1}
 					value={rond}
-					onChange={(e) => setRond(Number(e.target.value))}
-					className="w-full accent-m3-primary"
+					onValueChange={setRond}
 				/>
 				<div className="flex justify-between text-xs text-m3-on-surface-variant">
 					<span>0 — Sharp</span>

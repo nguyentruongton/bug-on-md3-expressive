@@ -8,7 +8,7 @@
 > [!IMPORTANT]
 > **Vibe Coding Project**: This library is crafted through the lens of "Vibe Coding"—leveraging advanced AI orchestration to translate design intent and "vibes" into high-performance, accessible code. It's about high-level architecture, aesthetic precision, and rapid iteration.
 
-A modern, high-performance UI library system based on **Material Design 3 (Expressive Pattern)** principles. This project focuses on motion, shape, and visual hierarchy, providing a seamless bridge between design tokens and React components.
+A modern, high-performance UI library system based on **Material Design 3 Expressive** principles. This project focuses on motion, shape, and visual hierarchy, providing a seamless bridge between design tokens and React components.
 
 ## 🚀 Project Structure (Monorepo)
 
