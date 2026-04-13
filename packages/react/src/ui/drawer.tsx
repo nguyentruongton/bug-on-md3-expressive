@@ -1,5 +1,5 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
 import { Icon } from "./icon";
@@ -89,7 +89,7 @@ const DrawerOverlay = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof RadixDialog.Overlay>
 >(({ className, ...props }, ref) => (
 	<RadixDialog.Overlay ref={ref} asChild {...props}>
-		<motion.div
+		<m.div
 			aria-hidden="true"
 			className={cn("fixed inset-0 z-50 bg-black/40", className)}
 			{...MD3_SCRIM_ANIM}
@@ -116,7 +116,7 @@ const DrawerContent = React.forwardRef<
 		ref,
 	) => (
 		<RadixDialog.Content ref={ref} asChild {...props}>
-			<motion.div
+			<m.div
 				className={cn(
 					// MD3 Bottom Sheet shape: chỉ bo góc trên
 					"fixed bottom-0 left-0 right-0 z-50",
@@ -158,7 +158,7 @@ const DrawerContent = React.forwardRef<
 				<div className="flex-1 overflow-y-auto overscroll-contain p-6">
 					{children}
 				</div>
-			</motion.div>
+			</m.div>
 		</RadixDialog.Content>
 	),
 );

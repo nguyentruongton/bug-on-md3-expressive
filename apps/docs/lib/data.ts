@@ -150,6 +150,7 @@ export const componentCategories = [
 				description:
 					"App bars are placed at the top of the screen to help people navigate through a product",
 				icon: "web_asset",
+				href: "/components/app-bars",
 			},
 			{
 				name: "Badges",

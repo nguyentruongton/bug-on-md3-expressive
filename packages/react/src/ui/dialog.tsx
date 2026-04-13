@@ -11,7 +11,7 @@
  */
 
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
 import { Icon } from "./icon";
@@ -161,7 +161,7 @@ const DialogOverlay = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof RadixDialog.Overlay>
 >(({ className, ...props }, ref) => (
 	<RadixDialog.Overlay ref={ref} asChild {...props}>
-		<motion.div
+		<m.div
 			className={cn("fixed inset-0 z-50 bg-black/32", className)}
 			aria-hidden="true"
 			{...MD3_OVERLAY_ANIM}
@@ -180,7 +180,7 @@ const DialogContent = React.forwardRef<
 		aria-describedby={undefined}
 		{...props}
 	>
-		<motion.div
+		<m.div
 			className={cn(
 				"fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
 				"w-[calc(100%-2rem)] max-w-140",
@@ -204,7 +204,7 @@ const DialogContent = React.forwardRef<
 					</IconButton>
 				</RadixDialog.Close>
 			)}
-		</motion.div>
+		</m.div>
 	</RadixDialog.Content>
 ));
 DialogContent.displayName = "DialogContent";
@@ -317,7 +317,7 @@ const DialogFullScreenContent = React.forwardRef<
 			aria-describedby={undefined}
 			{...props}
 		>
-			<motion.div
+			<m.div
 				className={cn(
 					"fixed inset-0 z-50 w-full h-full bg-m3-surface flex flex-col",
 					"outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-m3-primary",
@@ -361,7 +361,7 @@ const DialogFullScreenContent = React.forwardRef<
 				>
 					{children}
 				</ScrollArea>
-			</motion.div>
+			</m.div>
 		</RadixDialog.Content>
 	),
 );

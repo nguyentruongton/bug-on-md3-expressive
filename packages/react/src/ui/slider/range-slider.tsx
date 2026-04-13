@@ -22,7 +22,12 @@ import * as React from "react";
 import { cn } from "../../lib/utils";
 import { useSliderMath } from "./hooks/useSliderMath";
 import { SliderColors, SliderTokens } from "./slider.tokens";
-import type { RangeSliderProps, SliderTrackShape, SliderTrackSize, SliderVariant } from "./slider.types";
+import type {
+	RangeSliderProps,
+	SliderTrackShape,
+	SliderTrackSize,
+	SliderVariant,
+} from "./slider.types";
 import { SliderThumb } from "./slider-thumb";
 
 // ─── Range Track ─────────────────────────────────────────────────────────────
@@ -407,18 +412,18 @@ const RangeSliderComponent = React.forwardRef<HTMLDivElement, RangeSliderProps>(
 				const rect = trackEl.getBoundingClientRect();
 				let clickPercent: number;
 
-				const insetLimit = SliderTokens.thumbGap + SliderTokens.thumbWidthDefault / 2;
-				const trackInset = Math.min(SliderTokens.trackSizes[trackSize] / 2, insetLimit);
+				const insetLimit =
+					SliderTokens.thumbGap + SliderTokens.thumbWidthDefault / 2;
+				const trackInset = Math.min(
+					SliderTokens.trackSizes[trackSize] / 2,
+					insetLimit,
+				);
 				if (isHorizontal) {
 					const x = e.clientX - rect.left;
-					clickPercent =
-						(x - trackInset) /
-						(rect.width - trackInset * 2);
+					clickPercent = (x - trackInset) / (rect.width - trackInset * 2);
 				} else {
 					const y = rect.bottom - e.clientY;
-					clickPercent =
-						(y - trackInset) /
-						(rect.height - trackInset * 2);
+					clickPercent = (y - trackInset) / (rect.height - trackInset * 2);
 				}
 
 				const clamped = Math.max(0, Math.min(1, clickPercent));
@@ -465,7 +470,7 @@ const RangeSliderComponent = React.forwardRef<HTMLDivElement, RangeSliderProps>(
 					)}
 					style={isHorizontal ? { minWidth: 0 } : { minHeight: 0 }}
 				>
-				<RangeTrack
+					<RangeTrack
 						startPercent={startPercent}
 						endPercent={endPercent}
 						trackSize={trackSize}

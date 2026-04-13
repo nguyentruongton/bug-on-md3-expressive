@@ -16,6 +16,49 @@ export type {
 	PolymorphicProps,
 	PolymorphicRef,
 } from "./types/md3";
+// App Bar — MD3 Expressive App Bar system
+export type {
+	AppBarColors,
+	AppBarColumnProps,
+	AppBarItem,
+	AppBarItemType,
+	AppBarMenuState,
+	AppBarOverflowIndicatorProps,
+	AppBarRowProps,
+	AppBarScrollBehavior,
+	BaseAppBarProps,
+	BottomAppBarProps,
+	DockedToolbarProps,
+	FlexibleAppBarProps,
+	SearchAppBarProps,
+	SearchBarVariant,
+	SearchViewProps,
+	SmallAppBarProps,
+	TitleAlignment,
+	UseAppBarScrollReturn,
+} from "./ui/app-bar";
+export {
+	APP_BAR_BOTTOM_SPRING,
+	APP_BAR_COLOR_TRANSITION,
+	APP_BAR_COLORS,
+	APP_BAR_ENTER_ALWAYS_SPRING,
+	APP_BAR_TITLE_FADE,
+	AppBarColumn,
+	AppBarOverflowIndicator,
+	AppBarRow,
+	AppBarTokens,
+	appBarTypography,
+	BottomAppBar,
+	DockedToolbar,
+	LargeFlexibleAppBar,
+	MediumFlexibleAppBar,
+	SEARCH_VIEW_SPRING,
+	SearchAppBar,
+	SearchView,
+	SearchViewContainer,
+	SmallAppBar,
+	useAppBarScroll,
+} from "./ui/app-bar";
 export type { BadgedBoxProps, BadgeProps } from "./ui/badge";
 // Badge — MD3 Expressive status indicator
 export { Badge, BadgedBox } from "./ui/badge";

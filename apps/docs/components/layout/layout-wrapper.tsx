@@ -27,7 +27,7 @@ function TocDesktopSidebar() {
 	return (
 		<aside
 			aria-label="Table of Contents"
-			className="hidden xl:flex flex-col w-56 shrink-0 pt-8 pb-8 pr-4 overflow-y-auto rounded-[2.5rem] bg-m3-surface"
+			className="hidden xl:flex flex-col w-56 shrink-0 pt-8 pb-8 pr-4 rounded-[2.5rem] bg-m3-surface"
 		>
 			<TableOfContents items={items} className="w-full" />
 		</aside>
@@ -82,16 +82,14 @@ function TocMobileDrawer() {
 						</div>
 
 						{/* TOC content */}
-						<ScrollArea
-							className="flex-1 min-h-0"
-							viewportClassName="px-6 pb-6"
-							type="hover"
-						>
-							<TableOfContents
-								items={items}
-								className="w-full border-l-0 pl-0"
-							/>
-						</ScrollArea>
+						<TableOfContents
+							items={items}
+							className="flex-1 min-h-0 w-full border-l-0 pl-0"
+							scrollAreaProps={{
+								viewportClassName: "px-6 pb-6",
+								type: "hover",
+							}}
+						/>
 					</motion.aside>
 				</>
 			)}
