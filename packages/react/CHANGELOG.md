@@ -1,5 +1,11 @@
 # @bug-on/md3-react
 
+## 2.0.2
+
+### Patch Changes
+
+- c5ad43d: Added App Bars.
+
 ## 2.0.1
 
 ### Patch Changes
