@@ -7,26 +7,60 @@ Bug On MD3 Expressive provides native support for the Material Design 3 (Materia
 
 ## MD3ThemeProvider
 
-`MD3ThemeProvider` is the core component that manages theme state (Light/Dark mode) and global color configuration. It automatically transforms a source color into Material Design 3-compatible CSS variables.
+`MD3ThemeProvider` is the **single entry point** for the library. It manages:
+
+- 🎨 **Theme** — Light/Dark mode and dynamic color generation
+- 🔤 **Typography** — Font family and variable font axes (Google Sans Flex default)
+- ⚡ **Animations** — Provides the Framer Motion context required by all animated components
+- 🔔 **Snackbar** *(opt-in)* — Global notification queue via `enableSnackbar`
 
 ### Basic Configuration
 
-Wrap your application with `MD3ThemeProvider` at the root level (e.g., `layout.tsx` or `App.tsx`):
+Wrap your application at the root level (e.g., `layout.tsx` or `App.tsx`):
 
 ```tsx
 import { MD3ThemeProvider } from "@bug-on/md3-react";
 
 export default function RootLayout({ children }) {
   return (
-    <MD3ThemeProvider 
-      sourceColor="#6750A4" 
-      defaultMode="light" 
+    <MD3ThemeProvider
+      sourceColor="#6750A4"
+      defaultMode="light"
       persistToLocalStorage
     >
       {children}
     </MD3ThemeProvider>
   );
 }
+```
+
+### With Snackbar Queue
+
+Pass `enableSnackbar` to activate the global snackbar queue. This allows `useSnackbar()` to work anywhere in your app without an additional provider:
+
+```tsx
+<MD3ThemeProvider
+  sourceColor="#6750A4"
+  defaultMode="light"
+  persistToLocalStorage
+  enableSnackbar
+>
+  {children}
+</MD3ThemeProvider>
+```
+
+### With Custom Typography
+
+Override the font family or variable font axes directly on the provider:
+
+```tsx
+<MD3ThemeProvider
+  sourceColor="#6750A4"
+  fontFamily="'Inter', sans-serif"
+  fontVariationAxes={{ ROND: 50 }}
+>
+  {children}
+</MD3ThemeProvider>
 ```
 
 ## Interactive Demo
@@ -37,15 +71,29 @@ The following tool allows you to experiment with the dynamic color generation al
 
 ## Provider Props
 
+### Theme Props
+
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `sourceColor` | `string` | `#6750A4` | Principal hex color used to generate the entire palette. |
 | `defaultMode` | `ThemeMode` | `"light"` | Initial theme mode (`light` or `dark`). |
-| `persistToLocalStorage` | `boolean` | `false` | If enabled, automatically saves and restores the theme from `localStorage`. |
+| `persistToLocalStorage` | `boolean` | `false` | Saves and restores the theme from `localStorage`. |
+
+### Typography Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `typography` | `Typography` | — | A fully custom `Typography` instance. When provided, `fontFamily` and `fontVariationAxes` are ignored. |
+| `fontFamily` | `string` | Google Sans Flex | Override the CSS `font-family` for all type styles. |
+| `fontVariationAxes` | `FontVariationAxes` | `{ ROND: 100 }` | Override variable font axes (e.g., `{ ROND: 50 }` for half-rounded). |
+
+### Feature Flags
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `enableSnackbar` | `boolean` | `false` | Mounts a global `SnackbarHost` and exposes `useSnackbar()` to all descendants. For scoped or custom-positioned snackbars, keep `false` and use `<SnackbarProvider>` directly. |
 
 ## Hooks
-
-The library provides specialized hooks to access and control the theme from any child component.
 
 ### useTheme
 
@@ -56,7 +104,7 @@ import { useTheme } from "@bug-on/md3-react";
 
 function MyComponent() {
   const { sourceColor, setSourceColor, mode, setMode } = useTheme();
-  
+
   return (
     <button onClick={() => setMode(mode === "light" ? "dark" : "light")}>
       Current Mode: {mode}
@@ -82,7 +130,33 @@ function ThemeToggle() {
 
 `MD3ThemeProvider` injects CSS variables into `document.documentElement` in two formats:
 
-1. **System Variables (`--md-sys-color-*`)**: Utilized by core library components.
+1. **System Variables (`--md-sys-color-*`)**: Used internally by library components.
 2. **Tailwind Variables (`--color-m3-*`)**: For use with custom Tailwind classes in your application.
 
 Example: `--md-sys-color-primary`, `--md-sys-color-on-surface`, etc.
+
+## Migration from Previous Versions
+
+If you were previously using separate providers, they are now built into `MD3ThemeProvider`:
+
+```tsx
+// Before
+<MD3ThemeProvider sourceColor="...">
+  <SnackbarProvider>
+    <TypographyProvider fontFamily="...">
+      <App />
+    </TypographyProvider>
+  </SnackbarProvider>
+</MD3ThemeProvider>
+
+// After (single provider)
+<MD3ThemeProvider
+  sourceColor="..."
+  fontFamily="..."
+  enableSnackbar
+>
+  <App />
+</MD3ThemeProvider>
+```
+
+> **Note:** `SnackbarProvider` and `TypographyProvider` are still exported and fully supported for advanced use cases such as scoped notifications or per-subtree typography overrides.

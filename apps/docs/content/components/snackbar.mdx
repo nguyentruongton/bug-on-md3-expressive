@@ -5,14 +5,48 @@ description: Snackbars provide brief messages about app processes at the bottom 
 
 Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn't interrupt the user experience, and they don't require user input to disappear.
 
-## Installation and Setup
+## Setup
 
-Snackbar requires a Context Provider to manage its queue and state across the application. You must wrap your application (or the part of the app where you want to show snackbars) with `<SnackbarProvider>`.
+### Recommended: Via `MD3ThemeProvider`
+
+The simplest way to enable snackbars is the `enableSnackbar` prop on `MD3ThemeProvider`. No additional provider is required.
+
+```tsx
+import { MD3ThemeProvider } from "@bug-on/md3-react";
+
+export default function RootLayout({ children }) {
+  return (
+    <MD3ThemeProvider sourceColor="#6750A4" enableSnackbar>
+      {children}
+    </MD3ThemeProvider>
+  );
+}
+```
+
+Then use `useSnackbar()` in any child component:
+
+```tsx
+import { useSnackbar } from "@bug-on/md3-react";
+
+function SaveButton() {
+  const { showSnackbar } = useSnackbar();
+
+  return (
+    <button onClick={() => showSnackbar({ message: "Changes saved!" })}>
+      Save
+    </button>
+  );
+}
+```
+
+### Advanced: Scoped `SnackbarProvider`
+
+For scoped notifications (e.g., only inside a specific section), or when you need to control the host position, use `SnackbarProvider` directly. The host renders at the bottom of its provider scope.
 
 ```tsx
 import { SnackbarProvider } from "@bug-on/md3-react";
 
-export default function RootLayout({ children }) {
+function DashboardSection({ children }) {
   return (
     <SnackbarProvider>
       {children}
@@ -20,8 +54,6 @@ export default function RootLayout({ children }) {
   );
 }
 ```
-
-Once the provider is set up, you can use the `useSnackbar` hook in any child component to trigger a snackbar.
 
 ## Basic Usage
 
@@ -49,7 +81,7 @@ When the message is long or the action label is too wide, the action button can 
 
 ## Queueing Sequence
 
-The Snackbar system includes an built-in queue. If you trigger a new snackbar while one is already showing, it will automatically wait until the current one is dismissed before appearing.
+The Snackbar system includes a built-in queue. If you trigger a new snackbar while one is already showing, it will automatically wait until the current one is dismissed before appearing.
 
 <ComponentPreview name="snackbar-queue" />
 

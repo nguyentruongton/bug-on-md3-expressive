@@ -139,9 +139,9 @@ const InsetIcon = React.memo(function InsetIcon({
 		<m.div
 			aria-hidden="true"
 			className="[&_svg]:w-full [&_svg]:h-full"
-			initial={{ 
+			initial={{
 				opacity: 0,
-				...(isHorizontal ? { left: position } : { bottom: position })
+				...(isHorizontal ? { left: position } : { bottom: position }),
 			}}
 			animate={{
 				[isHorizontal ? "left" : "bottom"]: position,
@@ -603,7 +603,13 @@ export const SliderTrack = React.memo(function SliderTrack({
 				<AnimatePresence mode="wait">
 					{resolvedLeadingIcon && (
 						<InsetIcon
-							key={isAtMin ? "lead-min" : leadingOnActive ? "lead-active" : "lead-inactive"}
+							key={
+								isAtMin
+									? "lead-min"
+									: leadingOnActive
+										? "lead-active"
+										: "lead-inactive"
+							}
 							icon={resolvedLeadingIcon}
 							isOnActiveSegment={leadingOnActive}
 							position={
@@ -623,7 +629,13 @@ export const SliderTrack = React.memo(function SliderTrack({
 				<AnimatePresence mode="wait">
 					{resolvedTrailingIcon && (
 						<InsetIcon
-							key={isAtMax ? "trail-max" : trailingOnActive ? "trail-active" : "trail-inactive"}
+							key={
+								isAtMax
+									? "trail-max"
+									: trailingOnActive
+										? "trail-active"
+										: "trail-inactive"
+							}
 							icon={resolvedTrailingIcon}
 							isOnActiveSegment={trailingOnActive}
 							position={
@@ -850,7 +862,13 @@ export const SliderTrack = React.memo(function SliderTrack({
 			<AnimatePresence mode="wait">
 				{resolvedLeadingIcon && (
 					<InsetIcon
-						key={isAtMin ? "lead-min" : leadingOnActive ? "lead-active" : "lead-inactive"}
+						key={
+							isAtMin
+								? "lead-min"
+								: leadingOnActive
+									? "lead-active"
+									: "lead-inactive"
+						}
 						icon={resolvedLeadingIcon}
 						isOnActiveSegment={leadingOnActive}
 						position={leadingOnActive ? leadingActiveLeft : leadingInactiveLeft}
@@ -868,7 +886,13 @@ export const SliderTrack = React.memo(function SliderTrack({
 			<AnimatePresence mode="wait">
 				{resolvedTrailingIcon && (
 					<InsetIcon
-						key={isAtMax ? "trail-max" : trailingOnActive ? "trail-active" : "trail-inactive"}
+						key={
+							isAtMax
+								? "trail-max"
+								: trailingOnActive
+									? "trail-active"
+									: "trail-inactive"
+						}
 						icon={resolvedTrailingIcon}
 						isOnActiveSegment={trailingOnActive}
 						position={

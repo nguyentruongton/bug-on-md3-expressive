@@ -101,13 +101,9 @@ export function getKeyboardDelta(
 		case "ArrowDown":
 			return -discreteStep;
 		case "PageUp":
-			return step > 0
-				? snapToStep(range * 0.1, 0, step)
-				: range * 0.1;
+			return step > 0 ? snapToStep(range * 0.1, 0, step) : range * 0.1;
 		case "PageDown":
-			return step > 0
-				? -snapToStep(range * 0.1, 0, step)
-				: -(range * 0.1);
+			return step > 0 ? -snapToStep(range * 0.1, 0, step) : -(range * 0.1);
 		default:
 			return null;
 	}

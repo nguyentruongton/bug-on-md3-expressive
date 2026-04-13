@@ -1,5 +1,5 @@
 import { Slot } from "@radix-ui/react-slot";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import * as React from "react";
 import {
 	cloneElement,
@@ -238,7 +238,7 @@ export function TooltipBox({
 				createPortal(
 					<AnimatePresence mode="wait">
 						{state.isVisible && !disabled && (
-							<motion.div
+							<m.div
 								ref={tooltipRef}
 								initial="hidden"
 								animate="visible"
@@ -256,7 +256,7 @@ export function TooltipBox({
 								}}
 							>
 								{tooltipWithProps}
-							</motion.div>
+							</m.div>
 						)}
 					</AnimatePresence>,
 					document.body,

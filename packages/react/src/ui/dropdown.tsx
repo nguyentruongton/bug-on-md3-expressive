@@ -1,5 +1,5 @@
 import * as RadixDropdown from "@radix-ui/react-dropdown-menu";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/utils";
 import { Icon } from "./icon";
@@ -54,7 +54,7 @@ const DropdownMenuContent = React.forwardRef<
 				asChild
 				{...props}
 			>
-				<motion.div
+				<m.div
 					className={cn(
 						"z-50 min-w-32 overflow-hidden",
 						"rounded-xl bg-m3-surface-container p-1",
@@ -65,7 +65,7 @@ const DropdownMenuContent = React.forwardRef<
 					{...MD3_MENU_ANIM}
 				>
 					{children}
-				</motion.div>
+				</m.div>
 			</RadixDropdown.Content>
 		</AnimatePresence>
 	</RadixDropdown.Portal>

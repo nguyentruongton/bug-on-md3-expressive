@@ -18,6 +18,7 @@
 import type React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { cn } from "../lib/utils";
+import { ScrollArea, type ScrollAreaProps } from "./scroll-area";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -55,6 +56,11 @@ export interface TableOfContentsProps {
 	 * Use this to control positioning (e.g. sticky, fixed) from the consumer.
 	 */
 	className?: string;
+	/**
+	 * Configuration for the internal ScrollArea.
+	 * @default { type: "hover" }
+	 */
+	scrollAreaProps?: Omit<ScrollAreaProps, "children">;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -86,7 +92,11 @@ export interface TableOfContentsProps {
  *
  * @see https://m3.material.io/foundations/content-design/navigation
  */
-export function TableOfContents({ items, className }: TableOfContentsProps) {
+export function TableOfContents({
+	items,
+	className,
+	scrollAreaProps,
+}: TableOfContentsProps) {
 	const [activeId, setActiveId] = useState("");
 
 	// Stabilize dependency — re-subscribe only when the item IDs actually change.
@@ -125,29 +135,38 @@ export function TableOfContents({ items, className }: TableOfContentsProps) {
 	);
 
 	return (
-		<nav aria-label="On this page" className={cn("pl-6", className)}>
+		<nav
+			aria-label="On this page"
+			className={cn("pl-6 flex flex-col h-full", className)}
+		>
 			<h4 className="text-xs font-bold text-m3-on-surface-variant uppercase tracking-widest mb-4 sm:hidden lg:block">
 				On this page
 			</h4>
-			<ul className="space-y-4">
-				{items.map((item) => (
-					<li key={item.id}>
-						<a
-							href={`#${item.id}`}
-							onClick={(e) => handleClick(e, item.id)}
-							aria-current={activeId === item.id ? "true" : undefined}
-							className={cn(
-								"text-sm transition-colors hover:text-m3-primary block",
-								activeId === item.id
-									? "text-m3-primary font-bold"
-									: "text-m3-on-surface-variant font-medium",
-							)}
-						>
-							{item.label}
-						</a>
-					</li>
-				))}
-			</ul>
+			<ScrollArea
+				type="hover"
+				{...scrollAreaProps}
+				className={cn("flex-1 min-h-0", scrollAreaProps?.className)}
+			>
+				<ul className="space-y-4 pr-4">
+					{items.map((item) => (
+						<li key={item.id}>
+							<a
+								href={`#${item.id}`}
+								onClick={(e) => handleClick(e, item.id)}
+								aria-current={activeId === item.id ? "true" : undefined}
+								className={cn(
+									"text-sm transition-colors hover:text-m3-primary block",
+									activeId === item.id
+										? "text-m3-primary font-bold"
+										: "text-m3-on-surface-variant font-medium",
+								)}
+							>
+								{item.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</ScrollArea>
 		</nav>
 	);
 }

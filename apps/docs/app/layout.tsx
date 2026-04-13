@@ -1,8 +1,6 @@
 import {
 	MaterialSymbolsPreconnect,
 	MD3ThemeProvider,
-	SnackbarProvider,
-	TypographyProvider,
 } from "@bug-on/md3-react";
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import { LayoutProvider } from "@/lib/layout-context";
@@ -37,14 +35,11 @@ export default function RootLayout({
 					sourceColor="#6750A4"
 					defaultMode="light"
 					persistToLocalStorage
+					enableSnackbar
 				>
 					<LayoutProvider>
 						<TocProvider>
-							<SnackbarProvider>
-								<TypographyProvider>
-									<LayoutWrapper>{children}</LayoutWrapper>
-								</TypographyProvider>
-							</SnackbarProvider>
+							<LayoutWrapper>{children}</LayoutWrapper>
 						</TocProvider>
 					</LayoutProvider>
 				</MD3ThemeProvider>

@@ -3,44 +3,43 @@ title: Installation
 description: Step-by-step guide to installing and integrating Bug On MD3 Expressive into your project.
 ---
 
-To begin using the Material Design 3 Expressive component suite, you need to install the core packages and configure your React environment.
+To begin using the Material Design 3 Expressive component suite, install the core packages and configure your React environment.
 
 ## Installing Packages
-
-The library is modularized into specialized packages. We recommend installing at least `@bug-on/md3-react` for core UI components.
 
 ### Using pnpm (Recommended)
 
 ```bash
-pnpm add @bug-on/md3-react framer-motion clsx tailwind-merge
+pnpm add @bug-on/md3-react motion
 ```
 
 ### Using npm
 
 ```bash
-npm install @bug-on/md3-react framer-motion clsx tailwind-merge
+npm install @bug-on/md3-react motion
 ```
 
 ### Using yarn
 
 ```bash
-yarn add @bug-on/md3-react framer-motion clsx tailwind-merge
+yarn add @bug-on/md3-react motion
 ```
 
 ## Peer Dependencies
 
-Ensure your project has compatible versions of the following libraries:
+Ensure your project has compatible versions of the following:
 
-- **React**: ^18.0.0 or ^19.0.0
-- **Framer Motion**: ^11.0.0 (required for animations)
-- **Tailwind CSS**: ^3.4.0 or ^4.0.0
+| Package | Version |
+|---------|---------|
+| `react` | `^18.0.0` or `^19.0.0` |
+| `motion` | `>=12.0.0` |
+| `tailwindcss` | `^4.0.0` |
 
-## Typography & Icons Configuration
+## Typography & Icons
 
-The library utilizes **Google Sans (or equivalent)** and **Material Symbols**. Add the following imports to your main CSS file (e.g., `globals.css` or `App.css`):
+The library uses **Google Sans Flex** and **Material Symbols**. Add the following to your main CSS file (`globals.css` or `App.css`):
 
 ```css
-/* Import library styles */
 @import "@bug-on/md3-react/typography.css";
 @import "@bug-on/md3-react/material-symbols-cdn.css";
 ```
@@ -62,6 +61,39 @@ export default function RootLayout({ children }) {
 }
 ```
 
+## Provider Setup
+
+Wrap your application with `MD3ThemeProvider` — **a single provider** that handles theming, typography, animations, and optionally snackbar notifications:
+
+```tsx
+import { MD3ThemeProvider } from "@bug-on/md3-react";
+
+export default function RootLayout({ children }) {
+  return (
+    <MD3ThemeProvider
+      sourceColor="#6750A4"
+      defaultMode="light"
+      persistToLocalStorage
+    >
+      {children}
+    </MD3ThemeProvider>
+  );
+}
+```
+
+To enable the built-in Snackbar queue, add `enableSnackbar`:
+
+```tsx
+<MD3ThemeProvider
+  sourceColor="#6750A4"
+  defaultMode="light"
+  persistToLocalStorage
+  enableSnackbar
+>
+  {children}
+</MD3ThemeProvider>
+```
+
 ## Next Steps
 
-Once installation is complete, proceed to the **Theme** section to configure the Material You dynamic color system for your application.
+Once installation is complete, proceed to the **Theme** section to learn about the Material You dynamic color system and all available provider options.

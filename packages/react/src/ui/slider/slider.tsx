@@ -108,8 +108,12 @@ const SliderComponent = React.forwardRef<HTMLDivElement, SliderProps>(
 				const rect = trackEl.getBoundingClientRect();
 				let clickPercent: number;
 
-				const insetLimit = SliderTokens.thumbGap + SliderTokens.thumbWidthDefault / 2;
-				const trackInset = Math.min(SliderTokens.trackSizes[trackSize] / 2, insetLimit);
+				const insetLimit =
+					SliderTokens.thumbGap + SliderTokens.thumbWidthDefault / 2;
+				const trackInset = Math.min(
+					SliderTokens.trackSizes[trackSize] / 2,
+					insetLimit,
+				);
 
 				if (isHorizontal) {
 					const x = e.clientX - rect.left;
@@ -134,7 +138,7 @@ const SliderComponent = React.forwardRef<HTMLDivElement, SliderProps>(
 				snap,
 				trackSize,
 			],
-			);
+		);
 
 		// ── Generate unique IDs for ARIA ───────────────────────────────────────
 		const id = React.useId();
@@ -179,7 +183,9 @@ const SliderComponent = React.forwardRef<HTMLDivElement, SliderProps>(
 						ticks={showTicks ? ticks : []}
 						insetIcon={supportsInsetIcon ? insetIcon : undefined}
 						insetIconAtMin={supportsInsetIcon ? insetIconAtMin : undefined}
-						insetIconTrailing={supportsInsetIcon ? insetIconTrailing : undefined}
+						insetIconTrailing={
+							supportsInsetIcon ? insetIconTrailing : undefined
+						}
 						insetIconAtMax={supportsInsetIcon ? insetIconAtMax : undefined}
 						value={safeValue}
 					/>

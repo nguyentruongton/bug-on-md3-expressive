@@ -199,7 +199,11 @@ export interface SliderProps {
 export interface RangeSliderProps
 	extends Omit<
 		SliderProps,
-		"value" | "defaultValue" | "onValueChange" | "onValueChangeEnd" | "isCentered"
+		| "value"
+		| "defaultValue"
+		| "onValueChange"
+		| "onValueChangeEnd"
+		| "isCentered"
 	> {
 	/** Controlled [start, end] tuple. Use with `onValueChange`. */
 	value?: [number, number];
