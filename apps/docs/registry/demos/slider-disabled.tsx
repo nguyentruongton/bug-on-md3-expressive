@@ -8,11 +8,7 @@ export default function SliderDisabledDemo() {
 				<span className="text-sm text-(--md-sys-color-on-surface-variant)">
 					Disabled (continuous)
 				</span>
-				<Slider
-					defaultValue={60}
-					disabled
-					aria-label="Disabled slider"
-				/>
+				<Slider defaultValue={60} disabled aria-label="Disabled slider" />
 			</div>
 
 			<div className="flex flex-col gap-2">

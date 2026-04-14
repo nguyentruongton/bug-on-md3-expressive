@@ -7,13 +7,15 @@ describe("DockedToolbar", () => {
 		render(
 			<DockedToolbar aria-label="Test Toolbar">
 				<div data-testid="toolbar-content">Toolbar Item</div>
-			</DockedToolbar>
+			</DockedToolbar>,
 		);
 
 		const toolbar = screen.getByRole("toolbar", { name: "Test Toolbar" });
 		expect(toolbar).toBeInTheDocument();
-		expect(toolbar).toHaveClass("flex items-center w-full overflow-x-auto bg-m3-surface-container");
-		
+		expect(toolbar).toHaveClass(
+			"flex items-center w-full overflow-x-auto bg-m3-surface-container",
+		);
+
 		const content = screen.getByTestId("toolbar-content");
 		expect(content).toBeInTheDocument();
 		expect(content).toHaveTextContent("Toolbar Item");
@@ -23,7 +25,7 @@ describe("DockedToolbar", () => {
 		render(
 			<DockedToolbar aria-label="Toolbar" className="custom-test-class">
 				<span />
-			</DockedToolbar>
+			</DockedToolbar>,
 		);
 
 		const toolbar = screen.getByRole("toolbar");

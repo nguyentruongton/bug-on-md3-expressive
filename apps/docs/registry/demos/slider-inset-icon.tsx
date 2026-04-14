@@ -13,7 +13,9 @@ export default function SliderInsetIconDemo() {
 			<div className="flex flex-col gap-3">
 				<div className="flex justify-between text-xs font-medium text-(--md-sys-color-on-surface-variant)">
 					<span>Leading Inset with swap at min</span>
-					<span className="font-bold tabular-nums text-(--md-sys-color-primary)">{Math.round(v1)}</span>
+					<span className="font-bold tabular-nums text-(--md-sys-color-primary)">
+						{Math.round(v1)}
+					</span>
 				</div>
 				<Slider
 					value={v1}
@@ -29,7 +31,9 @@ export default function SliderInsetIconDemo() {
 			<div className="flex flex-col gap-3">
 				<div className="flex justify-between text-xs font-medium text-(--md-sys-color-on-surface-variant)">
 					<span>Trailing Inset with swap at max</span>
-					<span className="font-bold tabular-nums text-(--md-sys-color-secondary)">{Math.round(v2)}</span>
+					<span className="font-bold tabular-nums text-(--md-sys-color-secondary)">
+						{Math.round(v2)}
+					</span>
 				</div>
 				<Slider
 					value={v2}
@@ -46,7 +50,9 @@ export default function SliderInsetIconDemo() {
 			<div className="flex flex-col gap-3">
 				<div className="flex justify-between text-xs font-medium text-(--md-sys-color-on-surface-variant)">
 					<span>Dual Insets (Size XL)</span>
-					<span className="font-bold tabular-nums text-(--md-sys-color-tertiary)">{Math.round(v3)}</span>
+					<span className="font-bold tabular-nums text-(--md-sys-color-tertiary)">
+						{Math.round(v3)}
+					</span>
 				</div>
 				<Slider
 					value={v3}

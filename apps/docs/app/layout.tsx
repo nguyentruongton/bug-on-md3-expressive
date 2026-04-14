@@ -1,7 +1,4 @@
-import {
-	MaterialSymbolsPreconnect,
-	MD3ThemeProvider,
-} from "@bug-on/md3-react";
+import { MaterialSymbolsPreconnect, MD3ThemeProvider } from "@bug-on/md3-react";
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import { LayoutProvider } from "@/lib/layout-context";
 import { TocProvider } from "@/lib/toc-context";

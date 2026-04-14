@@ -1,9 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { AppBarRow } from "./app-bar-row";
+import type { AppBarItem } from "./app-bar.types";
 import { AppBarColumn } from "./app-bar-column";
 import { AppBarItemButton } from "./app-bar-item-button";
-import type { AppBarItem } from "./app-bar.types";
+import { AppBarRow } from "./app-bar-row";
 
 const mockItems: AppBarItem[] = [
 	{
@@ -64,7 +64,9 @@ describe("AppBar Items", () => {
 			expect(screen.getByLabelText("Action 1")).toBeInTheDocument();
 			// Action 2 vs Action 3 depending on how maxItemCount slices. Usually shows first N-1 and the indicator.
 			// Let's just check for the More actions indicator
-			expect(screen.getByRole("button", { name: "More actions" })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: "More actions" }),
+			).toBeInTheDocument();
 		});
 	});
 
@@ -79,7 +81,9 @@ describe("AppBar Items", () => {
 		it("shows overflow indicator when items exceed maxItemCount", () => {
 			render(<AppBarColumn items={mockItems} maxItemCount={1} />);
 			expect(screen.getByLabelText("Action 1")).toBeInTheDocument(); // maybe Action 1 is replaced or first item is passed depending on n-1 rule
-			expect(screen.getByRole("button", { name: "More actions" })).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: "More actions" }),
+			).toBeInTheDocument();
 		});
 	});
 });

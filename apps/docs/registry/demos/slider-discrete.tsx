@@ -11,8 +11,12 @@ export default function SliderDiscreteDemo() {
 			{/* 1. Discrete with Tick Marks */}
 			<div className="flex flex-col gap-3">
 				<div className="flex justify-between text-sm font-medium">
-					<span className="text-(--md-sys-color-on-surface-variant)">Discrete steps (step: 10)</span>
-					<span className="text-(--md-sys-color-primary)">{Math.round(v1)}%</span>
+					<span className="text-(--md-sys-color-on-surface-variant)">
+						Discrete steps (step: 10)
+					</span>
+					<span className="text-(--md-sys-color-primary)">
+						{Math.round(v1)}%
+					</span>
 				</div>
 				<Slider
 					value={v1}
@@ -30,8 +34,12 @@ export default function SliderDiscreteDemo() {
 			{/* 2. Discrete without Ticks (Clean UI) */}
 			<div className="flex flex-col gap-3">
 				<div className="flex justify-between text-sm font-medium">
-					<span className="text-(--md-sys-color-on-surface-variant)">Hidden ticks (Cleaner UI)</span>
-					<span className="text-(--md-sys-color-secondary)">{Math.round(v2)}%</span>
+					<span className="text-(--md-sys-color-on-surface-variant)">
+						Hidden ticks (Cleaner UI)
+					</span>
+					<span className="text-(--md-sys-color-secondary)">
+						{Math.round(v2)}%
+					</span>
 				</div>
 				<Slider
 					value={v2}

@@ -83,11 +83,7 @@ export default function IconButtonTypesDemo() {
 					<IconButton aria-label="Share" colorStyle="tonal">
 						<Icon name="share" />
 					</IconButton>
-					<IconButton
-						aria-label="Share (disabled)"
-						colorStyle="tonal"
-						disabled
-					>
+					<IconButton aria-label="Share (disabled)" colorStyle="tonal" disabled>
 						<Icon name="share" />
 					</IconButton>
 				</div>

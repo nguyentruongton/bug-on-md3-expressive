@@ -73,7 +73,11 @@ export default function Demo() {
 					</>
 				}
 				floatingActionButton={
-					<FAB aria-label="Compose" lowered icon={<span className="material-symbols-rounded">add</span>} />
+					<FAB
+						aria-label="Compose"
+						lowered
+						icon={<span className="material-symbols-rounded">add</span>}
+					/>
 				}
 			/>
 		</div>

@@ -8,11 +8,14 @@ export default function TooltipAccessibility() {
 					Accessibility Audit (A11y)
 				</h3>
 				<p className="text-sm text-secondary">
-					Use the <strong>Tab</strong> key to navigate focus to the button below.
-					The tooltip will automatically appear. Press <strong>Escape</strong> to close.
+					Use the <strong>Tab</strong> key to navigate focus to the button
+					below. The tooltip will automatically appear. Press{" "}
+					<strong>Escape</strong> to close.
 				</p>
 				<div className="flex justify-center gap-4 py-4">
-					<TooltipBox tooltip={<PlainTooltip>Confirm subscription</PlainTooltip>}>
+					<TooltipBox
+						tooltip={<PlainTooltip>Confirm subscription</PlainTooltip>}
+					>
 						<Button colorStyle="filled">Subscribe Now</Button>
 					</TooltipBox>
 

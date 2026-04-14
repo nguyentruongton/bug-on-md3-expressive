@@ -9,7 +9,9 @@ export default function SliderRangeDiscreteDemo() {
 		<div className="flex w-full max-w-sm flex-col gap-8 p-4">
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
-					<span className="text-sm font-bold text-(--md-sys-color-on-surface)">Age Range (Discrete)</span>
+					<span className="text-sm font-bold text-(--md-sys-color-on-surface)">
+						Age Range (Discrete)
+					</span>
 					<span className="text-sm font-bold text-(--md-sys-color-primary)">
 						{Math.round(range[0])} - {Math.round(range[1])} years old
 					</span>
@@ -25,11 +27,15 @@ export default function SliderRangeDiscreteDemo() {
 					aria-label="Age range filter"
 				/>
 			</div>
-			
+
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
-					<span className="text-sm font-bold text-(--md-sys-color-on-surface)">Working Hours (Secondary)</span>
-					<span className="text-xs font-medium text-(--md-sys-color-secondary)">8:00 - 18:00</span>
+					<span className="text-sm font-bold text-(--md-sys-color-on-surface)">
+						Working Hours (Secondary)
+					</span>
+					<span className="text-xs font-medium text-(--md-sys-color-secondary)">
+						8:00 - 18:00
+					</span>
 				</div>
 				<RangeSlider
 					defaultValue={[8, 18]}

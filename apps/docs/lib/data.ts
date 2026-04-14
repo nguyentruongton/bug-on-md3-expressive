@@ -221,6 +221,7 @@ export const componentCategories = [
 				description:
 					"Search lets people enter a keyword or phrase to get relevant information",
 				icon: "search",
+				href: "/components/search",
 			},
 			{
 				name: "Sliders",

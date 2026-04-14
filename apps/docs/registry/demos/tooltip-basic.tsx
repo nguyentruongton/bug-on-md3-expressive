@@ -33,9 +33,7 @@ export default function TooltipBasic() {
 
 				<TooltipBox
 					tooltip={
-						<PlainTooltip caret={{ enabled: true }}>
-							Help center
-						</PlainTooltip>
+						<PlainTooltip caret={{ enabled: true }}>Help center</PlainTooltip>
 					}
 					placement="right"
 				>

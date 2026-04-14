@@ -190,6 +190,25 @@ export {
 	ScrollArea,
 	ScrollAreaScrollbar,
 } from "./ui/scroll-area";
+// Search — MD3 Expressive Search component
+export type {
+	SearchProps,
+	SearchStyleType,
+	SearchVariant,
+} from "./ui/search";
+export {
+	SEARCH_BAR_EXPAND_SPRING,
+	SEARCH_COLORS,
+	SEARCH_DOCKED_REVEAL_SPRING,
+	SEARCH_FULLSCREEN_SPRING,
+	SEARCH_TYPOGRAPHY,
+	Search,
+	SearchBar,
+	SearchTokens,
+	SearchViewDocked,
+	SearchViewFullScreen,
+	useSearchKeyboard,
+} from "./ui/search";
 // Slider — MD3 Expressive
 export type {
 	RangeSliderProps,

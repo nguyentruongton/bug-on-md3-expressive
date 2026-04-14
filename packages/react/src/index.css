@@ -1,0 +1,23 @@
+/* @bug-on/md3-react - Base Reset Styles */
+
+/**
+ * Hide default browser UI elements that conflict with MD3 custom UI.
+ * - Hide search clear/decoration buttons in WebKit/Blink (Chrome, Safari, Edge).
+ * - Hide IE/Edge specific clear and reveal (password) buttons.
+ */
+
+/* Hide default search clear button and related decorations */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+	-webkit-appearance: none;
+}
+
+/* Hide IE/Edge clear and reveal (password toggle) buttons */
+input::-ms-clear,
+input::-ms-reveal {
+	display: none;
+	width: 0;
+	height: 0;
+}

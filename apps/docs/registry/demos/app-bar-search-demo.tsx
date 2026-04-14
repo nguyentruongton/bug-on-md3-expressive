@@ -1,6 +1,10 @@
 "use client";
 
-import { IconButton, SearchAppBar, SearchViewContainer } from "@bug-on/md3-react";
+import {
+	IconButton,
+	SearchAppBar,
+	SearchViewContainer,
+} from "@bug-on/md3-react";
 import * as React from "react";
 
 export default function Demo() {
