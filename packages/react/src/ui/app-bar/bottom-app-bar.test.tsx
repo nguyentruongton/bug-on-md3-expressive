@@ -17,12 +17,14 @@ describe("BottomAppBar", () => {
 			<BottomAppBar
 				actions={<div data-testid="actions">Actions Content</div>}
 				floatingActionButton={<div data-testid="fab">FAB Content</div>}
-			/>
+			/>,
 		);
 
 		const nav = screen.getByRole("navigation", { name: /bottom app bar/i });
 		expect(nav).toBeInTheDocument();
-		expect(nav).toHaveClass("fixed bottom-0 inset-x-0 z-50 flex items-center bg-m3-surface-container");
+		expect(nav).toHaveClass(
+			"fixed bottom-0 inset-x-0 z-50 flex items-center bg-m3-surface-container",
+		);
 
 		expect(screen.getByTestId("actions")).toBeInTheDocument();
 		expect(screen.getByTestId("actions")).toHaveTextContent("Actions Content");

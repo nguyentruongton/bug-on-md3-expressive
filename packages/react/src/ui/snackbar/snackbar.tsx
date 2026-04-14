@@ -401,7 +401,9 @@ interface SnackbarContextValue {
 	showSnackbar: (visuals: SnackbarVisuals) => Promise<SnackbarResult>;
 }
 
-export const SnackbarContext = React.createContext<SnackbarContextValue | null>(null);
+export const SnackbarContext = React.createContext<SnackbarContextValue | null>(
+	null,
+);
 
 // ─── SnackbarProvider ─────────────────────────────────────────────────────────
 

@@ -14,7 +14,11 @@ export default function SliderCenteredDemo() {
 						<span className="text-sm font-medium">Audio Balance</span>
 					</div>
 					<span className="text-sm font-bold text-(--md-sys-color-primary)">
-						{Math.round(value) === 0 ? "Center" : Math.round(value) > 0 ? `R +${Math.round(value)}` : `L +${Math.abs(Math.round(value))}`}
+						{Math.round(value) === 0
+							? "Center"
+							: Math.round(value) > 0
+								? `R +${Math.round(value)}`
+								: `L +${Math.abs(Math.round(value))}`}
 					</span>
 				</div>
 				<Slider
@@ -25,12 +29,15 @@ export default function SliderCenteredDemo() {
 					step={1}
 					isCentered
 					showValueIndicator
-					formatValue={(v) => (v === 0 ? "0" : v > 0 ? `R${v}` : `L${Math.abs(v)}`)}
+					formatValue={(v) =>
+						v === 0 ? "0" : v > 0 ? `R${v}` : `L${Math.abs(v)}`
+					}
 					aria-label="Audio balance selection"
 				/>
 			</div>
 			<p className="text-xs text-(--md-sys-color-on-surface-variant)">
-				Centered mode: the active track grows from the center outward. Ideal for panning and exposure controls. 
+				Centered mode: the active track grows from the center outward. Ideal for
+				panning and exposure controls.
 			</p>
 		</div>
 	);

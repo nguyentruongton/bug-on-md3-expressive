@@ -28,7 +28,8 @@ export default function SliderBasicDemo() {
 			</div>
 
 			<p className="text-xs text-(--md-sys-color-on-surface-variant)">
-				Drag to adjust the volume. The value indicator tooltip will appear when you interact with the slider.
+				Drag to adjust the volume. The value indicator tooltip will appear when
+				you interact with the slider.
 			</p>
 		</div>
 	);

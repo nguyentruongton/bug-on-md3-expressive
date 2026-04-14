@@ -4,11 +4,7 @@ import { SmallAppBar } from "./small-app-bar";
 
 describe("SmallAppBar", () => {
 	it("renders correctly with basic props", () => {
-		render(
-			<SmallAppBar
-				title="Inbox"
-			/>
-		);
+		render(<SmallAppBar title="Inbox" />);
 
 		const header = screen.getByRole("banner");
 		expect(header).toBeInTheDocument();
@@ -24,7 +20,7 @@ describe("SmallAppBar", () => {
 				subtitle="@username"
 				navigationIcon={<button data-testid="nav-icon">Back</button>}
 				actions={<button data-testid="actions-btn">Search</button>}
-			/>
+			/>,
 		);
 
 		expect(screen.getByText("Profile")).toBeInTheDocument();
@@ -34,12 +30,10 @@ describe("SmallAppBar", () => {
 	});
 
 	it("applies custom classNames", () => {
-		render(
-			<SmallAppBar title="Custom" className="test-small-bar" />
-		);
+		render(<SmallAppBar title="Custom" className="test-small-bar" />);
 
 		// Container has the class
-		const container = screen.getByText("Custom").closest("div");
+		const _container = screen.getByText("Custom").closest("div");
 		// Actually banner is inside or might be the returned container
 		expect(document.querySelector(".test-small-bar")).toBeInTheDocument();
 	});

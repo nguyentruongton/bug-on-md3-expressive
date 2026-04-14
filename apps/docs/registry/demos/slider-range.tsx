@@ -13,8 +13,12 @@ export default function SliderRangeDemo() {
 			{/* 1. Basic Range Slider */}
 			<div className="flex flex-col gap-3">
 				<div className="flex items-center justify-between text-sm font-medium">
-					<span className="text-(--md-sys-color-on-surface-variant)">Price Range</span>
-					<span className="text-(--md-sys-color-primary)">{formatPrice(r1[0])} - {formatPrice(r1[1])}</span>
+					<span className="text-(--md-sys-color-on-surface-variant)">
+						Price Range
+					</span>
+					<span className="text-(--md-sys-color-primary)">
+						{formatPrice(r1[0])} - {formatPrice(r1[1])}
+					</span>
 				</div>
 				<RangeSlider
 					value={r1}
@@ -30,9 +34,13 @@ export default function SliderRangeDemo() {
 				<div className="flex items-center justify-between text-sm font-medium">
 					<div className="flex items-center gap-2">
 						<Icon name="tune" size={18} />
-						<span className="text-(--md-sys-color-on-surface-variant)">Discrete Interval</span>
+						<span className="text-(--md-sys-color-on-surface-variant)">
+							Discrete Interval
+						</span>
 					</div>
-					<span className="text-(--md-sys-color-secondary)">{r2[0]}ms - {r2[1]}ms</span>
+					<span className="text-(--md-sys-color-secondary)">
+						{r2[0]}ms - {r2[1]}ms
+					</span>
 				</div>
 				<RangeSlider
 					value={r2}

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SearchAppBar } from "./search-app-bar";
 import { SearchView } from "./search-view";
@@ -6,21 +6,20 @@ import { SearchView } from "./search-view";
 describe("SearchAppBar and SearchView", () => {
 	describe("SearchAppBar", () => {
 		it("renders correctly with search bar", () => {
-			render(
-				<SearchAppBar searchPlaceholder="Search here..." />
-			);
+			render(<SearchAppBar searchPlaceholder="Search here..." />);
 
-			expect(screen.getByPlaceholderText("Search here...")).toBeInTheDocument();
+			expect(screen.getByText("Search here...")).toBeInTheDocument();
 		});
 
-		it("triggers onSearchFocus when clicked", () => {
+		it("triggers onSearchFocus when clicked and via Enter key", () => {
 			const onSearchFocus = vi.fn();
 			render(<SearchAppBar onSearchFocus={onSearchFocus} />);
 
-			const input = screen.getByRole("textbox");
-			fireEvent.focus(input);
+			const searchBar = screen.getByRole("search");
+			fireEvent.click(searchBar);
 			expect(onSearchFocus).toHaveBeenCalledTimes(1);
-			fireEvent.click(input);
+
+			fireEvent.keyDown(searchBar, { key: "Enter" });
 			expect(onSearchFocus).toHaveBeenCalledTimes(2);
 		});
 	});
@@ -31,7 +30,7 @@ describe("SearchAppBar and SearchView", () => {
 			render(
 				<SearchView onClose={onClose} placeholder="Type to search">
 					<div data-testid="search-results">Results</div>
-				</SearchView>
+				</SearchView>,
 			);
 
 			expect(screen.getByPlaceholderText("Type to search")).toBeInTheDocument();
@@ -40,11 +39,9 @@ describe("SearchAppBar and SearchView", () => {
 
 		it("calls onClose when back button is pressed", () => {
 			const onClose = vi.fn();
-			render(
-				<SearchView onClose={onClose} leadingIcon={<button data-testid="back-btn" onClick={onClose} />} />
-			);
+			render(<SearchView onClose={onClose} />);
 
-			const btn = screen.getByTestId("back-btn");
+			const btn = screen.getByRole("button", { name: "Close search" });
 			fireEvent.click(btn);
 			expect(onClose).toHaveBeenCalledTimes(1);
 		});

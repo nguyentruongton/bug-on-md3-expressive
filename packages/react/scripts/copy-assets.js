@@ -5,6 +5,8 @@ const srcAssets = path.join(__dirname, "../src/assets");
 const distAssets = path.join(__dirname, "../dist/assets");
 const srcCss = path.join(__dirname, "../src/ui/typography/typography.css");
 const distCss = path.join(__dirname, "../dist/typography.css");
+const srcIndexCss = path.join(__dirname, "../src/index.css");
+const distIndexCss = path.join(__dirname, "../dist/index.css");
 
 console.log("Copying assets to dist...");
 
@@ -22,6 +24,11 @@ if (fs.existsSync(srcCss)) {
 	);
 	fs.writeFileSync(distCss, cssContent);
 	console.log("✅ Copied typography.css to dist/typography.css");
+}
+
+if (fs.existsSync(srcIndexCss)) {
+	fs.copyFileSync(srcIndexCss, distIndexCss);
+	console.log("✅ Copied index.css to dist/index.css");
 }
 
 // Copy Material Symbols CSS variants

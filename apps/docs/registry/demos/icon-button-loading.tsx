@@ -40,7 +40,8 @@ export default function IconButtonLoadingDemo() {
 					</h3>
 					<p className="text-sm text-m3-on-surface-variant">
 						<code>loadingVariant=&quot;loading-indicator&quot;</code> — displays
-						the morphing loading indicator across 7 distinct MD3 Expressive shapes.
+						the morphing loading indicator across 7 distinct MD3 Expressive
+						shapes.
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">
@@ -74,8 +75,9 @@ export default function IconButtonLoadingDemo() {
 						Circular Spinner
 					</h3>
 					<p className="text-sm text-m3-on-surface-variant">
-						<code>loadingVariant=&quot;circular&quot;</code> — utilizes the standard
-						circular progress indicator. Best for data synchronization or form submissions.
+						<code>loadingVariant=&quot;circular&quot;</code> — utilizes the
+						standard circular progress indicator. Best for data synchronization
+						or form submissions.
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-4">

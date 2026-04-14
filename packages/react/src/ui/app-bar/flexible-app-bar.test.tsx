@@ -11,7 +11,7 @@ describe("FlexibleAppBars", () => {
 					title="Medium Title"
 					navigationIcon={<button data-testid="medium-nav">Menu</button>}
 					actions={<button data-testid="medium-actions">Edit</button>}
-				/>
+				/>,
 			);
 
 			// Should render title inside the expanded area and pinned area (sometimes twice, or just once if transitioning)
@@ -21,7 +21,12 @@ describe("FlexibleAppBars", () => {
 		});
 
 		it("renders subtitle if provided", () => {
-			render(<MediumFlexibleAppBar title="Has Subtitle" subtitle="Medium Subtitle" />);
+			render(
+				<MediumFlexibleAppBar
+					title="Has Subtitle"
+					subtitle="Medium Subtitle"
+				/>,
+			);
 			expect(screen.getAllByText("Medium Subtitle").length).toBeGreaterThan(0);
 		});
 	});
@@ -33,7 +38,7 @@ describe("FlexibleAppBars", () => {
 					title="Large Title"
 					navigationIcon={<button data-testid="large-nav">Close</button>}
 					actions={<button data-testid="large-actions">Save</button>}
-				/>
+				/>,
 			);
 
 			expect(screen.getAllByText("Large Title").length).toBeGreaterThan(0);
@@ -46,7 +51,7 @@ describe("FlexibleAppBars", () => {
 				<LargeFlexibleAppBar
 					title="With Header Content"
 					headerContent={<div data-testid="header-content">Custom Content</div>}
-				/>
+				/>,
 			);
 			expect(screen.getByTestId("header-content")).toBeInTheDocument();
 		});
