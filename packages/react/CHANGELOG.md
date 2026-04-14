@@ -1,5 +1,11 @@
 # @bug-on/md3-react
 
+## 2.0.3
+
+### Patch Changes
+
+- 86381df: Add Search UI, demo
+
 ## 2.0.2
 
 ### Patch Changes
