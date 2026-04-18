@@ -11,12 +11,11 @@
 
 import { cn } from "../../lib/utils";
 import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "../dropdown";
+	Menu,
+	MenuContent,
+	MenuItem,
+	MenuTrigger,
+} from "../menu";
 import { APP_BAR_COLORS, AppBarTokens } from "./app-bar.tokens";
 import type { AppBarItem, AppBarOverflowIndicatorProps } from "./app-bar.types";
 
@@ -38,13 +37,14 @@ function MoreVertIcon() {
 function OverflowItem({ item }: { item: AppBarItem }) {
 	if (item.type === "toggleable") {
 		return (
-			<DropdownMenuCheckboxItem
-				checked={item.checked ?? false}
-				onCheckedChange={item.onCheckedChange}
+			<MenuItem
+				role="menuitemcheckbox"
+				selected={item.checked ?? false}
+				onClick={() => item.onCheckedChange?.(!item.checked)}
 				disabled={item.enabled === false}
 			>
 				{item.label}
-			</DropdownMenuCheckboxItem>
+			</MenuItem>
 		);
 	}
 
@@ -62,9 +62,9 @@ function OverflowItem({ item }: { item: AppBarItem }) {
 
 	// Default: clickable
 	return (
-		<DropdownMenuItem onClick={item.onClick} disabled={item.enabled === false}>
+		<MenuItem onClick={item.onClick} disabled={item.enabled === false}>
 			{item.label}
-		</DropdownMenuItem>
+		</MenuItem>
 	);
 }
 
@@ -81,8 +81,8 @@ export function AppBarOverflowIndicator({
 	if (items.length === 0) return null;
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
+		<Menu>
+			<MenuTrigger asChild>
 				<button
 					type="button"
 					className={cn(
@@ -100,14 +100,14 @@ export function AppBarOverflowIndicator({
 				>
 					<MoreVertIcon />
 				</button>
-			</DropdownMenuTrigger>
+			</MenuTrigger>
 
-			<DropdownMenuContent align="end" sideOffset={4}>
+			<MenuContent align="end" sideOffset={4}>
 				{items.map((item, index) => (
 					// biome-ignore lint/suspicious/noArrayIndexKey: static list from props
 					<OverflowItem key={index} item={item} />
 				))}
-			</DropdownMenuContent>
-		</DropdownMenu>
+			</MenuContent>
+		</Menu>
 	);
 }

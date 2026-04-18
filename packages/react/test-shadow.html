@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .outer {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.5);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .inner {
+    background: white;
+    height: 100px;
+  }
+</style>
+</head>
+<body style="background: #ccc; padding: 50px;">
+  <div class="outer">
+    <div class="inner" style="border-radius: 16px 16px 8px 8px;"></div>
+    <div class="inner" style="border-radius: 4px 4px 12px 12px;"></div>
+  </div>
+</body>
+</html>
