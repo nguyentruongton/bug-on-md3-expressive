@@ -21,6 +21,12 @@ import type { MenuItemProps, SubMenuProps } from "./menu-types";
  * Keyboard: ArrowRight opens, ArrowLeft/Escape closes (handled by Radix).
  * The parent MenuContent should set `hasOverflow={true}` when SubMenus are used.
  *
+ * ### Hover delays
+ * `hoverOpenDelay` (default: 200ms) — time before the submenu opens on hover.
+ * `hoverCloseDelay` (default: 300ms) — time before the submenu closes after pointer-leave.
+ * These delays allow the user to safely move diagonally from trigger to submenu content
+ * without accidental close (safe polygon behavior from Radix still applies).
+ *
  * @example
  * <MenuContent hasOverflow>
  *   <SubMenu
@@ -40,83 +46,146 @@ export function SubMenu({
 	trigger,
 	side = "right",
 	colorVariant: propColorVariant,
+	hoverOpenDelay = 200,
+	hoverCloseDelay = 300,
 }: SubMenuProps) {
 	const { colorVariant: contextColorVariant } = useMenuContext();
 	const colorVariant = propColorVariant ?? contextColorVariant;
 
-	// Note: We MUST NOT use a controlled `open` state here.
-	// If we do, we break Radix's automatic "safe polygon" logic that keeps the
-	// submenu open while the mouse travels diagonally from the trigger to the content.
-	// To animate exit, we let Radix handle the state and use a custom Presence wrapper.
+	// Controlled open state for hover delay support.
+	// Note: We use Radix's controlled mode carefully — Radix still handles keyboard
+	// and the safe polygon logic internally when we pass open/onOpenChange.
+	const [open, setOpen] = React.useState(false);
+	const openTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+	const closeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	const clearTimers = React.useCallback(() => {
+		if (openTimerRef.current) clearTimeout(openTimerRef.current);
+		if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+	}, []);
+
+	const handleTriggerPointerEnter = React.useCallback(() => {
+		clearTimers();
+		openTimerRef.current = setTimeout(() => setOpen(true), hoverOpenDelay);
+	}, [hoverOpenDelay, clearTimers]);
+
+	const handleTriggerPointerLeave = React.useCallback(() => {
+		clearTimers();
+		closeTimerRef.current = setTimeout(() => setOpen(false), hoverCloseDelay);
+	}, [hoverCloseDelay, clearTimers]);
+
+	const handleContentPointerEnter = React.useCallback(() => {
+		// Keep open when pointer moves into the submenu content
+		clearTimers();
+	}, [clearTimers]);
+
+	const handleContentPointerLeave = React.useCallback(() => {
+		clearTimers();
+		closeTimerRef.current = setTimeout(() => setOpen(false), hoverCloseDelay);
+	}, [hoverCloseDelay, clearTimers]);
+
+	// Cleanup timers on unmount
+	React.useEffect(() => () => clearTimers(), [clearTimers]);
 
 	return (
-		<DropdownMenu.Sub>
-			{/* Trigger: the parent MenuItem */}
-			{React.isValidElement(trigger) 
-				? React.cloneElement(trigger as React.ReactElement<MenuItemProps>, { isSubTrigger: true })
-				: <DropdownMenu.SubTrigger asChild><div>{trigger}</div></DropdownMenu.SubTrigger>}
+		<DropdownMenu.Sub open={open} onOpenChange={setOpen}>
+			{/* Trigger: Radix SubTrigger renders its own element (no asChild)
+				 * so it can correctly compute the bounding box for SubContent positioning.
+				 * Previously, using asChild with a display:contents wrapper caused
+				 * getBoundingClientRect() to return (0,0,0,0), mispositing the submenu. */}
+			<DropdownMenu.SubTrigger
+				className="w-full outline-none"
+				onPointerEnter={handleTriggerPointerEnter}
+				onPointerLeave={handleTriggerPointerLeave}
+			>
+				{React.isValidElement(trigger)
+					? React.cloneElement(trigger as React.ReactElement<MenuItemProps>, {
+							isSubTrigger: true,
+						})
+					: trigger}
+			</DropdownMenu.SubTrigger>
 
 			{/* SubMenu popup */}
-			<DropdownMenu.Portal>
-				<DropdownMenu.SubContent sideOffset={4} alignOffset={-4} asChild forceMount>
-					<SubMenuPresence side={side} colorVariant={colorVariant}>
-						{children}
-					</SubMenuPresence>
-				</DropdownMenu.SubContent>
-			</DropdownMenu.Portal>
+			<AnimatePresence>
+				{open && (
+					<DropdownMenu.Portal forceMount>
+						<DropdownMenu.SubContent
+							sideOffset={4}
+							alignOffset={-4}
+							forceMount
+							className="outline-none"
+						>
+							<SubMenuContent
+								side={side}
+								colorVariant={colorVariant}
+								onPointerEnter={handleContentPointerEnter}
+								onPointerLeave={handleContentPointerLeave}
+							>
+								{children}
+							</SubMenuContent>
+						</DropdownMenu.SubContent>
+					</DropdownMenu.Portal>
+				)}
+			</AnimatePresence>
 		</DropdownMenu.Sub>
 	);
 }
 SubMenu.displayName = "SubMenu";
 
 /**
- * Inner wrapper to handle animations. By rendering this *inside* the SubContent,
- * we can read Radix's `data-state` to drive Framer Motion.
+ * Inner wrapper to handle animations. 
  */
-const SubMenuPresence = React.forwardRef<
-	HTMLDivElement,
-	{ children: React.ReactNode; side: "left" | "right"; colorVariant: string; "data-state"?: string }
->(({ children, side, colorVariant, "data-state": dataState, ...props }, ref) => {
+function SubMenuContent({
+	children,
+	side,
+	colorVariant,
+	onPointerEnter,
+	onPointerLeave,
+}: {
+	children: React.ReactNode;
+	side: "left" | "right";
+	colorVariant: string;
+	onPointerEnter?: React.PointerEventHandler<HTMLDivElement>;
+	onPointerLeave?: React.PointerEventHandler<HTMLDivElement>;
+}) {
 	const colors = colorVariant === "vibrant" ? VIBRANT_COLORS : STANDARD_COLORS;
-	const open = dataState === "open";
 
 	return (
-		<AnimatePresence>
-			{open && (
-				<m.div
-					ref={ref}
-					{...props}
-					className={cn(
-						"z-50 flex flex-col",
-						// Width constraints
-						MENU_MIN_WIDTH,
-						MENU_MAX_WIDTH,
-						// Vertical padding: 8dp
-						MENU_POPUP_PADDING_Y,
-						// Gap between groups: 2dp
-						"gap-0.5",
-						// Container background
-						colors.containerBg,
-						// Container shape: CornerExtraSmall (4px)
-						"rounded-sm",
-						// Elevation-2 shadow
-						"elevation-2",
-						// No overflow clip so items can morph
-						"overflow-hidden",
-						"outline-none",
-					)}
-					variants={SUBMENU_CONTAINER_VARIANTS}
-					initial="hidden"
-					animate="visible"
-					exit="exit"
-					style={{
-						transformOrigin: side === "right" ? "top left" : "top right",
-					}}
-				>
-					{children}
-				</m.div>
+		<m.div
+			role="menu"
+			aria-orientation="vertical"
+			onPointerEnter={onPointerEnter}
+			onPointerLeave={onPointerLeave}
+			className={cn(
+				"z-50 flex flex-col",
+				// Width constraints
+				MENU_MIN_WIDTH,
+				MENU_MAX_WIDTH,
+				// Vertical padding: 8dp
+				MENU_POPUP_PADDING_Y,
+				// Gap between groups: 2dp
+				"gap-0.5",
+				// Container background
+				colors.containerBg,
+				// Container shape: CornerExtraSmall (4px)
+				"rounded-sm",
+				// Elevation-2 shadow
+				"elevation-2",
+				// Overflow clip
+				"overflow-hidden",
+				"outline-none",
 			)}
-		</AnimatePresence>
+			variants={SUBMENU_CONTAINER_VARIANTS}
+			initial="hidden"
+			animate="visible"
+			exit="exit"
+			style={{
+				transformOrigin: side === "right" ? "top left" : "top right",
+			}}
+		>
+			{children}
+		</m.div>
 	);
-});
-SubMenuPresence.displayName = "SubMenuPresence";
+}
+SubMenuContent.displayName = "SubMenuContent";
+

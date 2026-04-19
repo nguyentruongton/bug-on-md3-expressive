@@ -84,20 +84,20 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
 			(selected !== undefined && !role && !isSubTrigger);
 		const isRadio = role === "menuitemradio";
 
-		const ItemPrimitive = isStatic
+		// When isSubTrigger, use Slot (pass-through) instead of DropdownMenu.SubTrigger.
+		// The outer SubTrigger in SubMenu component already handles Radix's primitive role.
+		const ItemPrimitive = isStatic || isSubTrigger
 			? Slot
-			: ((isSubTrigger
-					? DropdownMenu.SubTrigger
-					: isCheckbox
-						? DropdownMenu.CheckboxItem
-						: isRadio
-							? DropdownMenu.RadioItem
-							: DropdownMenu.Item) as React.ElementType);
+			: ((isCheckbox
+					? DropdownMenu.CheckboxItem
+					: isRadio
+						? DropdownMenu.RadioItem
+						: DropdownMenu.Item) as React.ElementType);
 
 		return (
 			<ItemPrimitive
 				ref={ref}
-				{...(isStatic
+				{...(isStatic || isSubTrigger
 					? {
 							role:
 								role ||
@@ -146,6 +146,9 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
 						// State layers (only on unselected items)
 						!selected && colors.hoverLayer,
 						!selected && colors.focusLayer,
+						// Focus visible ring (WCAG 2.4.11 — visible focus indicator)
+						// Uses ring-inset so the ring doesn't overflow the item bounds.
+						"focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-m3-primary",
 						// Disabled
 						disabled && "pointer-events-none opacity-[0.38]",
 						className,
@@ -227,7 +230,8 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
 					{(trailingText || trailingIcon) && (
 						<span
 							className={cn(
-								"ml-2 flex shrink-0 items-center",
+								// Minimum 12dp gap from label column (ListTokens)
+								"ml-3 flex shrink-0 items-center",
 								// Source: StandardMenuTokens.ItemTrailingIconColor / VibrantMenuTokens
 								selected ? colors.selectedText : colors.trailingIconColor,
 							)}

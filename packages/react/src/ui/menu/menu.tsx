@@ -139,20 +139,21 @@ export const MenuContent = React.forwardRef<
 		const colors = colorVariant === "vibrant" ? VIBRANT_COLORS : STANDARD_COLORS;
 
 		return (
-			<DropdownMenu.Portal>
-				{/* forceMount keeps the portal in the DOM so the exit animation can play */}
-				<DropdownMenu.Content
-					ref={ref}
-					sideOffset={sideOffset}
-					side={side}
-					align={align}
-					asChild
-					forceMount
-					{...props}
-				>
-					<AnimatePresence>
-						{open && (
+			<AnimatePresence>
+				{open && (
+					<DropdownMenu.Portal forceMount>
+						<DropdownMenu.Content
+							ref={ref}
+							sideOffset={sideOffset}
+							side={side}
+							align={align}
+							asChild
+							forceMount
+							{...props}
+						>
 							<m.div
+								role="menu"
+								aria-orientation="vertical"
 								className={cn(
 									"z-50 flex flex-col",
 									// Width constraints (112dp min, 280dp max)
@@ -179,6 +180,7 @@ export const MenuContent = React.forwardRef<
 								animate="visible"
 								exit="exit"
 								style={{
+									...(props.style as React.CSSProperties),
 									// Radix sets this CSS variable to the correct anchor-relative origin
 									transformOrigin:
 										"var(--radix-dropdown-menu-content-transform-origin)",
@@ -186,10 +188,10 @@ export const MenuContent = React.forwardRef<
 							>
 								{children}
 							</m.div>
-						)}
-					</AnimatePresence>
-				</DropdownMenu.Content>
-			</DropdownMenu.Portal>
+						</DropdownMenu.Content>
+					</DropdownMenu.Portal>
+				)}
+			</AnimatePresence>
 		);
 	},
 );

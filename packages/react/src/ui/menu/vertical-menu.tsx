@@ -8,6 +8,16 @@
 //   • Always rendered (static)
 //   • Shape morphing on hover works identically (reuses MenuGroup)
 //   • Still provides MenuContext with isStatic=true so MenuItems know to use Slot
+//
+// Vertical Menu Gap architecture:
+//   • Outer container: NO overflow-hidden (would clip group shape morphing!)
+//     Instead, elevation shadow is applied here, bg is transparent.
+//   • Each MenuGroup manages its own background + border-radius via Framer Motion.
+//   • The 2dp gap between groups is transparent — page background shows through.
+//
+// Vertical Menu Divider architecture:
+//   • Outer container applies containerBg + overflow-hidden + rounded-2xl
+//     (groups inside all stay flush, no shape morph needed for divider variant).
 import * as React from "react";
 import { cn } from "../../lib/utils";
 import { MenuProvider, useMenuContext } from "./menu-context";
@@ -24,6 +34,7 @@ import type {
 	VerticalMenuContentProps,
 	VerticalMenuDividerProps,
 	VerticalMenuProps,
+	VerticalMenuSeparatorStyle,
 } from "./menu-types";
 
 // ─── VerticalMenuDivider ──────────────────────────────────────────────────────
@@ -156,10 +167,12 @@ export const VerticalMenuContent = React.forwardRef<
 			<div
 				ref={ref}
 				className={cn(
-					"flex flex-col w-full h-full",
-					// Gap variant: 2dp gap + transparent background
-					// Divider variant: solid background behind all groups
-					separatorStyle === "gap" ? MENU_GROUP_GAP : colors.containerBg,
+					"flex flex-col w-full",
+					// Gap variant: transparent background + 2dp gap — page bg shows through gaps.
+					// Divider variant: solid container background behind all groups.
+					separatorStyle === "gap"
+						? cn("bg-transparent", MENU_GROUP_GAP)
+						: colors.containerBg,
 					className,
 				)}
 				{...props}
@@ -182,11 +195,17 @@ VerticalMenuContent.displayName = "VerticalMenuContent";
  * Unlike the popup `Menu` component, there is no Radix DropdownMenu, no portal,
  * and no enter/exit animation — the list is statically rendered at all times.
  *
- * Shape morphing on hover works identically to the popup menu via `VerticalMenuGroup`
- * (which re-exports `MenuGroup`).
+ * ### Shape morphing
+ * For the **gap variant**, the outer container has NO `overflow-hidden` — this is
+ * intentional! Each `VerticalMenuGroup` manages its own shape via Framer Motion's
+ * `animate.borderRadius`. `overflow-hidden` on the parent would clip these
+ * morphing corners. The 2dp transparent gap lets page background show through.
+ *
+ * For the **divider variant**, the outer container applies `overflow-hidden` +
+ * `rounded-2xl` + background — groups sit flush inside without morphing.
  *
  * @example
- * // Vertical Menu with Gap
+ * // Vertical Menu with Gap (floating segments)
  * <VerticalMenu colorVariant="standard">
  *   <VerticalMenuContent separatorStyle="gap">
  *     <VerticalMenuGroup>
@@ -219,6 +238,48 @@ export const VerticalMenu = React.forwardRef<
 
 	const colors = colorVariant === "vibrant" ? VIBRANT_COLORS : STANDARD_COLORS;
 
+	// Internal ref for keyboard navigation — merged with forwarded ref.
+	const containerRef = React.useRef<HTMLDivElement>(null);
+	const mergedRef = React.useCallback(
+		(node: HTMLDivElement | null) => {
+			(containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+			if (typeof ref === "function") ref(node);
+			else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+		},
+		[ref],
+	);
+
+	// Arrow key navigation: WAI-ARIA composite widget pattern.
+	// Moves focus among menuitem elements, skipping disabled ones.
+	const handleKeyDown = React.useCallback(
+		(e: React.KeyboardEvent<HTMLDivElement>) => {
+			if (!containerRef.current) return;
+			const items = Array.from(
+				containerRef.current.querySelectorAll<HTMLElement>(
+					'[role="menuitem"]:not([aria-disabled="true"]):not([tabindex="-1"]),' +
+					'[role="menuitemcheckbox"]:not([aria-disabled="true"]):not([tabindex="-1"]),' +
+					'[role="menuitemradio"]:not([aria-disabled="true"]):not([tabindex="-1"])',
+				),
+			);
+			if (!items.length) return;
+			const idx = items.findIndex((el) => el === document.activeElement);
+			let next: number | null = null;
+			switch (e.key) {
+				case "ArrowDown": e.preventDefault(); next = idx < items.length - 1 ? idx + 1 : 0; break;
+				case "ArrowUp":   e.preventDefault(); next = idx > 0 ? idx - 1 : items.length - 1; break;
+				case "Home":      e.preventDefault(); next = 0; break;
+				case "End":       e.preventDefault(); next = items.length - 1; break;
+				default: return;
+			}
+			if (next !== null) items[next]?.focus();
+		},
+		[],
+	);
+
+	// Detect separator style from VerticalMenuContent child to decide container styling.
+	const separatorStyle = detectSeparatorStyle(children);
+	const isGapVariant = separatorStyle !== "divider";
+
 	return (
 		<MenuProvider
 			colorVariant={colorVariant}
@@ -227,23 +288,32 @@ export const VerticalMenu = React.forwardRef<
 			isStatic={true}
 		>
 			<div
-				ref={ref}
+				ref={mergedRef}
+				role="menu"
+				aria-orientation="vertical"
+				onKeyDown={handleKeyDown}
 				className={cn(
 					// Width constraints: 112dp min, 280dp max (MenuTokens)
 					MENU_MIN_WIDTH,
 					MENU_MAX_WIDTH,
 					"flex flex-col",
-					// Outer card shape: CornerLarge (16px) — matches the leading group's top corners.
-					// overflow-hidden is REQUIRED to carve the 16px curve across any inner children.
-					"rounded-2xl",
-					"overflow-hidden",
-					// NO containerBg here!
-					// The gap variant must be transparent so the page background shows through the gaps.
-					// The divider variant will apply the background inside VerticalMenuContent.
-					// MD3 Elevation-2 shadow (cast by this outer boundary)
-					"elevation-2",
-					// Remove outline
-					"outline-none",
+					isGapVariant
+						? [
+								// GAP VARIANT: NO overflow-hidden — groups must morph freely.
+								// Shadow + outline for the outer boundary.
+								"elevation-2",
+								"outline-none",
+								// NO background — transparent between segments.
+								// NO rounded corners — each group manages its own shape.
+							]
+						: [
+								// DIVIDER VARIANT: Container clips the content.
+								"rounded-2xl",
+								"overflow-hidden",
+								colors.containerBg,
+								"elevation-2",
+								"outline-none",
+							],
 					className,
 				)}
 				{...props}
@@ -254,3 +324,21 @@ export const VerticalMenu = React.forwardRef<
 	);
 });
 VerticalMenu.displayName = "VerticalMenu";
+
+// ─── Helper ───────────────────────────────────────────────────────────────────
+
+/**
+ * Inspects the `separatorStyle` prop from the first VerticalMenuContent child.
+ * Used by VerticalMenu root to decide container styling.
+ */
+function detectSeparatorStyle(
+	children: React.ReactNode,
+): VerticalMenuSeparatorStyle {
+	const child = React.Children.toArray(children).find(React.isValidElement);
+	if (child && React.isValidElement(child)) {
+		const style = (child.props as { separatorStyle?: VerticalMenuSeparatorStyle })
+			.separatorStyle;
+		if (style) return style;
+	}
+	return "gap";
+}

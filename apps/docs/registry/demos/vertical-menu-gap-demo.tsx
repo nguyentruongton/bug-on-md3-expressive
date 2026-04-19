@@ -13,7 +13,7 @@ export default function VerticalMenuGapDemo() {
 		<div className="flex items-center justify-center p-8">
 			<VerticalMenu colorVariant="standard">
 				<VerticalMenuContent separatorStyle="gap">
-					<VerticalMenuGroup>
+					<VerticalMenuGroup label="Actions">
 						<MenuItem leadingIcon={<Icon name="visibility" size={20} />}>
 							Item 1
 						</MenuItem>
@@ -29,13 +29,19 @@ export default function VerticalMenuGapDemo() {
 						>
 							Item 3
 						</MenuItem>
+						<MenuItem
+							disabled
+							leadingIcon={<Icon name="delete" size={20} />}
+						>
+							Item 4 (disabled)
+						</MenuItem>
 					</VerticalMenuGroup>
-					<VerticalMenuGroup>
+					<VerticalMenuGroup label="Navigate">
 						<MenuItem
 							leadingIcon={<Icon name="cloud" size={20} />}
 							trailingIcon={<Icon name="chevron_right" size={20} />}
 						>
-							Item 4
+							Item 5
 						</MenuItem>
 					</VerticalMenuGroup>
 				</VerticalMenuContent>

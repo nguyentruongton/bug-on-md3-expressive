@@ -58,18 +58,19 @@ export const GROUP_SHAPES = {
 	/** Active standalone group shape: CornerLarge all corners (16px) */
 	standaloneActive: "16px",
 	/**
-	 * Active leading group shape: top=CornerLarge(16px), bottom=CornerExtraSmall(4px)
-	 * Source: SegmentedMenuTokens — bottom corners use CornerExtraSmall to create
-	 * a sharp boundary toward the 2dp gap, reinforcing the segmented structure.
+	 * Active leading group shape: top=CornerLarge(16px), bottom=CornerSmall(8px)
+	 * Source: SegmentedMenuTokens — LeadingContainerShape:
+	 * topStart=CornerLarge, topEnd=CornerLarge, bottomStart=CornerSmall, bottomEnd=CornerSmall
 	 */
-	leadingActive: "16px 16px 4px 4px",
+	leadingActive: "16px 16px 8px 8px",
 	/** Active middle group shape: CornerExtraSmall all corners (4px) */
 	middleActive: "4px",
 	/**
-	 * Active trailing group shape: top=CornerSmall(8px), bottom=CornerMedium(12px)
-	 * Source: SegmentedMenuTokens — bottom corners use CornerMedium(12px) not CornerLarge(16px).
+	 * Active trailing group shape: top=CornerSmall(8px), bottom=CornerLarge(16px)
+	 * Source: SegmentedMenuTokens — TrailingContainerShape:
+	 * topStart=CornerSmall, topEnd=CornerSmall, bottomStart=CornerLarge, bottomEnd=CornerLarge
 	 */
-	trailingActive: "8px 8px 12px 12px",
+	trailingActive: "8px 8px 16px 16px",
 	/** Inactive (default, pre-hover) shape for all groups: CornerExtraSmall (4px) */
 	inactive: "4px",
 } as const;

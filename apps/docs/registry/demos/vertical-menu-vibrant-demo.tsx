@@ -8,40 +8,34 @@ import {
 	VerticalMenuGroup,
 } from "@bug-on/md3-react";
 
-export default function VerticalMenuDividerDemo() {
+export default function VerticalMenuVibrantDemo() {
 	return (
 		<div className="flex items-center justify-center p-8">
-			<VerticalMenu colorVariant="standard">
-				<VerticalMenuContent separatorStyle="divider">
+			<VerticalMenu colorVariant="vibrant">
+				<VerticalMenuContent separatorStyle="gap">
 					<VerticalMenuGroup label="Actions">
-						<MenuItem leadingIcon={<Icon name="visibility" size={20} />}>
+						<MenuItem leadingIcon={<Icon name="star" size={20} />}>
 							Item 1
 						</MenuItem>
 						<MenuItem
-							leadingIcon={<Icon name="content_copy" size={20} />}
-							trailingText="⌘C"
+							leadingIcon={<Icon name="favorite" size={20} />}
+							trailingText="⌘F"
 						>
 							Item 2
 						</MenuItem>
 						<MenuItem
 							selected
-							leadingIcon={<Icon name="edit" size={20} />}
+							leadingIcon={<Icon name="bookmark" size={20} />}
 						>
 							Item 3
 						</MenuItem>
 					</VerticalMenuGroup>
-					<VerticalMenuGroup label="Navigate">
+					<VerticalMenuGroup label="More">
 						<MenuItem
-							leadingIcon={<Icon name="cloud" size={20} />}
+							leadingIcon={<Icon name="share" size={20} />}
 							trailingIcon={<Icon name="chevron_right" size={20} />}
 						>
 							Item 4
-						</MenuItem>
-						<MenuItem
-							disabled
-							leadingIcon={<Icon name="delete" size={20} />}
-						>
-							Item 5 (disabled)
 						</MenuItem>
 					</VerticalMenuGroup>
 				</VerticalMenuContent>

@@ -151,12 +151,13 @@ export const MenuGroup = React.forwardRef<HTMLDivElement, MenuGroupDivProps>(
 				onPointerLeave={handlePointerLeave}
 				{...rest}
 			>
-				{/* Optional group label: labelLarge, 12dp horizontal padding */}
+				{/* Optional group label: labelSmall typography, 12dp horizontal padding */}
 				{label && (
 					<span
 						className={cn(
-							"block px-3 py-1.5",
-							"text-label-large font-medium",
+							// Padding: 12dp top, 12dp horizontal, 8dp bottom (MD3 spec)
+							"block pt-3 px-3 pb-2",
+							"text-label-small",
 							colorVariant === "vibrant"
 								? "text-m3-on-tertiary-container"
 								: "text-m3-on-surface-variant",
