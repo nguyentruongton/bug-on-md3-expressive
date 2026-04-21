@@ -27,11 +27,18 @@
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.js"
 		},
-		"./colors.css": "./src/colors.css",
-		"./elevation.css": "./src/elevation.css",
-		"./shape.css": "./src/shape.css",
-		"./typography.css": "./src/typography.css",
-		"./index.css": "./dist/index.css"
+		"./colors.css": {
+			"types": "./dist/colors.css.d.ts",
+			"default": "./dist/colors.css"
+		},
+		"./shape.css": {
+			"types": "./dist/shape.css.d.ts",
+			"default": "./dist/shape.css"
+		}
+	},
+	"peerDependencies": {
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
 	},
 	"publishConfig": {
 		"access": "public"

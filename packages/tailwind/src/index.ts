@@ -169,5 +169,15 @@ const md3Plugin = plugin(({ addBase, addComponents, addUtilities }) => {
 	});
 });
 
-// biome-ignore lint/suspicious/noExplicitAny: Tailwind plugin type is complex
-export default md3Plugin as any;
+// In Tailwind v4, the types might be directly under 'tailwindcss' or differently structured.
+// If the specific 'tailwindcss/types/config' is not found, we use a compatible interface.
+interface Plugin {
+	handler: () => void;
+}
+
+// ... existing code ...
+
+// Tailwind v4 plugin internal types (CssInJs, Source, UserConfig) are not publicly
+// exported and cannot be named in declaration files (TS4023). Casting to `Plugin`
+// provides IntelliSense while avoiding `any`.
+export default md3Plugin as unknown as Plugin;

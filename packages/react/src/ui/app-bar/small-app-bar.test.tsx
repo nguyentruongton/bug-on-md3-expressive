@@ -18,8 +18,16 @@ describe("SmallAppBar", () => {
 			<SmallAppBar
 				title="Profile"
 				subtitle="@username"
-				navigationIcon={<button data-testid="nav-icon">Back</button>}
-				actions={<button data-testid="actions-btn">Search</button>}
+				navigationIcon={
+					<button type="button" data-testid="nav-icon">
+						Back
+					</button>
+				}
+				actions={
+					<button type="button" data-testid="actions-btn">
+						Search
+					</button>
+				}
 			/>,
 		);
 

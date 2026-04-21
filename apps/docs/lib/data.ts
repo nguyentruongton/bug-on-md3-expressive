@@ -4,13 +4,13 @@ export const componentCategories = [
 		items: [
 			{
 				name: "Installation",
-				description: "Cài đặt và thiết lập dự án",
+				description: "Installation and setup instructions",
 				icon: "downloading",
 				href: "/get-started/installation",
 			},
 			{
 				name: "Theme",
-				description: "Tùy chỉnh màu sắc và giao diện",
+				description: "Customizing colors and interface",
 				icon: "palette",
 				href: "/get-started/theme",
 			},
@@ -208,6 +208,7 @@ export const componentCategories = [
 				name: "Menus",
 				description: "Menus display a list of choices on a temporary surface",
 				icon: "view_list",
+				href: "/components/menus",
 			},
 			{
 				name: "Radio button",

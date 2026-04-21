@@ -117,24 +117,6 @@ export {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./ui/drawer";
-export {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuPortal,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
-	DropdownMenuSeparator,
-	DropdownMenuShortcut,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "./ui/dropdown";
-// Dropdown Menu
 export type { FABPositionProps, FABProps } from "./ui/fab";
 // Floating Action Button
 export { FAB, FABPosition } from "./ui/fab";
@@ -153,6 +135,67 @@ export type { BaseIconButtonProps, IconButtonProps } from "./ui/icon-button";
 export { IconButton } from "./ui/icon-button";
 export type { LoadingIndicatorProps } from "./ui/loading-indicator";
 export { LoadingIndicator } from "./ui/loading-indicator";
+// MD3 Expressive Menu — Standard + Vibrant + shape morphing
+export type {
+	// ContextMenu
+	ContextMenuContentProps,
+	ContextMenuProps,
+	ContextMenuTriggerProps,
+	MenuColorVariant,
+	MenuContentProps,
+	MenuDividerProps,
+	MenuGroupPosition,
+	MenuGroupProps,
+	MenuItemPosition,
+	MenuItemProps,
+	MenuPrimitive,
+	MenuProps,
+	MenuTriggerProps,
+	MenuVariant,
+	SubMenuProps,
+	// Vertical Menu
+	VerticalMenuContentProps,
+	VerticalMenuDividerProps,
+	VerticalMenuGroupProps,
+	VerticalMenuProps,
+	VerticalMenuSeparatorStyle,
+} from "./ui/menu";
+export {
+	CHECK_ICON_VARIANTS,
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuTrigger,
+	DIVIDER_COLOR,
+	DIVIDER_PADDING,
+	FAST_EFFECTS_TRANSITION,
+	FAST_SPATIAL_SPRING,
+	GROUP_SHAPES,
+	ITEM_SHAPE_CLASSES,
+	MENU_CHECK_ICON_SIZE,
+	MENU_CONTAINER_VARIANTS,
+	MENU_GROUP_GAP,
+	MENU_ICON_SIZE,
+	MENU_ITEM_MIN_HEIGHT,
+	MENU_MAX_WIDTH,
+	MENU_MIN_WIDTH,
+	Menu,
+	MenuContent,
+	MenuDivider,
+	MenuGroup,
+	MenuItem,
+	MenuProvider,
+	MenuTrigger,
+	STANDARD_COLORS,
+	SUBMENU_CONTAINER_VARIANTS,
+	SubMenu,
+	useMenuContext,
+	// Vertical Menu (static, always-visible)
+	VerticalMenu,
+	VerticalMenuContent,
+	VerticalMenuDivider,
+	VerticalMenuGroup,
+	VIBRANT_COLORS,
+} from "./ui/menu";
 // Navigation Rail
 export type {
 	NavigationRailItemProps,
@@ -238,6 +281,7 @@ export {
 // Switch — MD3 Expressive toggle
 export type { SwitchProps } from "./ui/switch";
 export { Switch, SwitchColors, SwitchTokens } from "./ui/switch";
+export { Text, type TextProps } from "./ui/Text";
 // Tabs — MD3 Expressive navigation tabs
 export type {
 	TabProps,

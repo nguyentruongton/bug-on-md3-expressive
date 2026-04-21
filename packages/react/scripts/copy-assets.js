@@ -19,7 +19,7 @@ if (fs.existsSync(srcCss)) {
 	let cssContent = fs.readFileSync(srcCss, "utf-8");
 	// Update font URL to be relative to the dist root
 	cssContent = cssContent.replace(
-		/url\(['"]?\.\.\/\.\.\/assets\/fonts\/GoogleSansFlex-VariableFont\.woff2['"]?\)/g,
+		/url\(['"']?\.\.\/\.\.\/assets\/fonts\/GoogleSansFlex-VariableFont\.woff2['"']?\)/g,
 		"url('./assets/fonts/GoogleSansFlex-VariableFont.woff2')",
 	);
 	fs.writeFileSync(distCss, cssContent);
@@ -44,6 +44,22 @@ for (const file of cssVariants) {
 		fs.copyFileSync(srcPath, distPath);
 		console.log(`✅ Copied ${file} to dist/${file}`);
 	}
+}
+
+// Generate .d.ts stubs for each CSS sub-path export
+// Satisfies the `types` field in exports — prevents "Cannot find module"
+// errors in TypeScript strict mode projects.
+const cssStubs = [
+	"index.css.d.ts",
+	"typography.css.d.ts",
+	"material-symbols-cdn.css.d.ts",
+	"material-symbols-self-hosted.css.d.ts",
+];
+
+for (const stub of cssStubs) {
+	const distPath = path.join(__dirname, `../dist/${stub}`);
+	fs.writeFileSync(distPath, "// CSS module — no runtime types\nexport {};\n");
+	console.log(`✅ Generated ${stub}`);
 }
 
 // Prepend "use client" to JS/MJS output files to support React Server Components

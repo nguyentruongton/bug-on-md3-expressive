@@ -36,10 +36,11 @@ function getMDXContent(
 
 /** Extract headings (## and ###) for the TableOfContents component */
 function extractHeadings(content: string): { id: string; label: string }[] {
-	const lines = content.split("\n");
+	const lines = content.split(/\r?\n/);
 	const headings: { id: string; label: string }[] = [];
 
-	for (const line of lines) {
+	for (let line of lines) {
+		line = line.trim();
 		const h2Match = /^##\s+(.+)$/.exec(line);
 		const h3Match = /^###\s+(.+)$/.exec(line);
 		const match = h2Match ?? h3Match;

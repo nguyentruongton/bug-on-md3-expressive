@@ -1,0 +1,124 @@
+---
+title: Menus
+description: Menus display a list of choices on a temporary surface. The MD3 Expressive Menu supports shape morphing, selection states, nested submenus, and vibrant color variants.
+---
+
+Menus appear upon interaction with a button, action, or other control. They display a list of choices, one per line. The MD3 Expressive system introduces sophisticated motion, shape morphing, and high-fidelity color tokens to traditional M3 menus.
+
+## Variants
+
+Material Design 3 Expressive defines two primary visual variants for menus.
+
+### Baseline vs Expressive
+
+- **Baseline**: Adheres to the standard M3 specifications with consistent 4dp corner radius and standard transition timings.
+- **Expressive**: Features dynamic shape morphing (rounded-m3-md) and scaling animations that respond to the user's focus and selection.
+
+<ComponentPreview name="menu-basic-demo" />
+
+## Usage
+
+### Selection States
+
+Both Baseline and Vertical menus support selection states. In the Expressive Vertical variant, selected items automatically morph into a rounded shape with a checkmark animation.
+
+<ComponentPreview name="menu-selection-demo" />
+
+### Grouping & Dividers
+
+Baseline menus typically use `MenuDivider` for logical separation. Vertical menus support both `divider` and `gap` separation styles, with the `gap` style being the standard for the Expressive look.
+
+<ComponentPreview name="menu-grouped-demo" />
+
+### Icons & Shortcuts
+
+Menu items can include a `leadingIcon` and `trailingText` (shortcuts).
+
+<ComponentPreview name="menu-icons-demo" />
+
+### Submenus (Nested Menus)
+
+For complex navigation, use the `SubMenu` component. **Important:** Add the `hasOverflow` prop to the parent `MenuContent` to ensure submenus can render outside container bounds.
+
+<ComponentPreview name="menu-submenu-demo" />
+
+## Vibrant Variant
+
+The `vibrant` color variant uses the `tertiary-container` design token. **This variant is exclusive to Vertical menus** and is intended for high-emphasis actions.
+
+<ComponentPreview name="vertical-menu-vibrant-demo" />
+
+## Full Example
+
+A comprehensive comparison showcasing icons, shortcuts, grouping, and submenus.
+
+<ComponentPreview name="menu-full-demo" />
+
+---
+
+## API Reference
+
+### Menu
+The root component that coordinates the menu state.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `menuVariant` | `"baseline"` \| `"expressive"` | `"baseline"` | The design variant to apply. |
+| `colorVariant` | `"standard"` \| `"vibrant"` | `"standard"` | The color theme (surface vs tertiary). |
+| `open` | `boolean` | - | Controlled open state. |
+| `onOpenChange` | `(open: boolean) => void` | - | Callback for state changes. |
+| `defaultOpen` | `boolean` | `false` | Initial open state. |
+
+### MenuTrigger
+The element that opens the menu.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `asChild` | `boolean` | `false` | Merges props with the child instead of wrapping. |
+
+### MenuContent
+The floating panel containing items.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `side` | `"top"` \| `"bottom"` \| `"left"` \| `"right"` | `"bottom"` | Preferred opening side. |
+| `align` | `"start"` \| `"center"` \| `"end"` | `"start"` | Alignment relative to trigger. |
+| `sideOffset` | `number` | `6` | Distance from trigger in pixels. |
+| `hasOverflow` | `boolean` | `false` | Required if containing submenus. |
+
+### MenuItem
+The individual action items.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `leadingIcon` | `ReactNode` | - | Icon component (e.g., `<Icon name="..." />`). |
+| `trailingIcon` | `ReactNode` | - | Icon component (e.g., `<Icon name="..." />`). |
+| `supportingText`| `ReactNode` | - | Contextual text below the label. |
+| `trailingText` | `string` | - | Shortcut text (e.g., "⌘C"). |
+| `selected` | `boolean` | `false` | Whether the item is checked. |
+| `disabled` | `boolean` | `false` | Whether the item is interactive. |
+| `onClick` | `function` | - | Click handler. |
+| `keepOpen` | `boolean` | `false` | Prevents closing after selection. |
+
+### MenuGroup
+Groups related items together.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `label` | `string` | - | Optional header text for the group. |
+| `index` | `number` | - | Group index (auto-injected if possible). |
+| `count` | `number` | - | Total groups (auto-injected if possible). |
+
+### VerticalMenu
+Root for static vertical menus.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `colorVariant` | `"standard"` \| `"vibrant"` | `"standard"` | The color theme. |
+
+### VerticalMenuContent
+Container for vertical menu groups.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `separatorStyle`| `"gap"` \| `"divider"` | `"gap"` | How groups are separated visually. |

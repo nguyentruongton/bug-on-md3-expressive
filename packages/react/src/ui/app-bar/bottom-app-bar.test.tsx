@@ -9,7 +9,8 @@ mockIntersectionObserver.mockReturnValue({
 	unobserve: () => null,
 	disconnect: () => null,
 });
-window.IntersectionObserver = mockIntersectionObserver as any;
+window.IntersectionObserver =
+	mockIntersectionObserver as unknown as typeof IntersectionObserver;
 
 describe("BottomAppBar", () => {
 	it("renders correctly with actions and FAB", () => {

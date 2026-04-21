@@ -9,8 +9,16 @@ describe("FlexibleAppBars", () => {
 			render(
 				<MediumFlexibleAppBar
 					title="Medium Title"
-					navigationIcon={<button data-testid="medium-nav">Menu</button>}
-					actions={<button data-testid="medium-actions">Edit</button>}
+					navigationIcon={
+						<button type="button" data-testid="medium-nav">
+							Menu
+						</button>
+					}
+					actions={
+						<button type="button" data-testid="medium-actions">
+							Edit
+						</button>
+					}
 				/>,
 			);
 
@@ -36,8 +44,16 @@ describe("FlexibleAppBars", () => {
 			render(
 				<LargeFlexibleAppBar
 					title="Large Title"
-					navigationIcon={<button data-testid="large-nav">Close</button>}
-					actions={<button data-testid="large-actions">Save</button>}
+					navigationIcon={
+						<button type="button" data-testid="large-nav">
+							Close
+						</button>
+					}
+					actions={
+						<button type="button" data-testid="large-actions">
+							Save
+						</button>
+					}
 				/>,
 			);
 
