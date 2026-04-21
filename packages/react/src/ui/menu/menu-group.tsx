@@ -3,9 +3,11 @@
 import { m } from "motion/react";
 import * as React from "react";
 import { cn } from "../../lib/utils";
-import { GROUP_SHAPE_SPRING } from "./menu-animations";
+import { FAST_SPATIAL_SPRING } from "./menu-animations";
+
 import { useMenuContext } from "./menu-context";
 import {
+	BASELINE_COLORS,
 	GROUP_SHAPES,
 	MENU_GROUP_PADDING_Y,
 	STANDARD_COLORS,
@@ -75,45 +77,60 @@ export const MenuGroup = React.forwardRef<HTMLDivElement, MenuGroupDivProps>(
 			count = 1,
 			colorVariant: propColorVariant,
 			isGapVariant,
+			itemPosition,
 			className,
 			...rest
 		},
 		ref,
 	) => {
-		const { colorVariant: contextColorVariant, isStatic } = useMenuContext();
+		const {
+			menuVariant,
+			colorVariant: contextColorVariant,
+			isStatic,
+		} = useMenuContext();
 		const colorVariant = propColorVariant ?? contextColorVariant;
 		const colors =
-			colorVariant === "vibrant" ? VIBRANT_COLORS : STANDARD_COLORS;
+			menuVariant === "baseline"
+				? BASELINE_COLORS
+				: colorVariant === "vibrant"
+					? VIBRANT_COLORS
+					: STANDARD_COLORS;
 
 		const position = getGroupPosition(index, count);
 		const activeShape = getGroupActiveShape(position);
 
-		// Track hover state for shape morphing
 		const [isHovered, setIsHovered] = React.useState(false);
-		// Once the group has been hovered, it stays at the "active" shape until pointer leaves
-		const hasBeenHoveredRef = React.useRef(false);
-
 		const currentShape =
-			// Static (VerticalMenu): always show position-specific active shape.
-			// Popup (Menu): inactive until hovered, then morph to active shape.
-			isStatic || isHovered || hasBeenHoveredRef.current
-				? activeShape
-				: GROUP_SHAPES.inactive;
+			isStatic || isHovered ? activeShape : GROUP_SHAPES.inactive;
 
-		function handlePointerEnter() {
-			hasBeenHoveredRef.current = true;
-			setIsHovered(true);
-		}
+		const handlePointerEnter = React.useCallback(() => setIsHovered(true), []);
+		const handlePointerLeave = React.useCallback(() => setIsHovered(false), []);
 
-		function handlePointerLeave() {
-			setIsHovered(false);
-			hasBeenHoveredRef.current = false;
-		}
+		// Helper to recursively flatten fragments and collect valid elements.
+		// This is necessary because cloneElement cannot be used on React.Fragment.
+		const flattenChildren = (
+			children: React.ReactNode,
+		): React.ReactElement[] => {
+			return React.Children.toArray(children).reduce(
+				(acc: React.ReactElement[], child) => {
+					if (React.isValidElement(child)) {
+						if (child.type === React.Fragment) {
+							return acc.concat(
+								flattenChildren(
+									(child as React.ReactElement<{ children?: React.ReactNode }>)
+										.props.children,
+								),
+							);
+						}
+						acc.push(child as React.ReactElement);
+					}
+					return acc;
+				},
+				[],
+			);
+		};
 
-		// Auto-inject itemPosition and colorVariant into MenuItem children
-		const validChildren = React.Children.toArray(children).filter(
-			React.isValidElement,
-		);
+		const validChildren = flattenChildren(children);
 		const itemCount = validChildren.length;
 
 		const enhancedChildren = validChildren.map((child, i) => {
@@ -138,15 +155,22 @@ export const MenuGroup = React.forwardRef<HTMLDivElement, MenuGroupDivProps>(
 				role="group"
 				aria-label={label}
 				className={cn(
-					"relative overflow-hidden",
+					"relative",
+					// In baseline variant, MenuGroup is transparent so it shouldn't clip.
+					// In expressive variant, it needs overflow-hidden to clip hover states to its morphing shape.
+					menuVariant === "baseline" ? "" : "overflow-hidden",
 					// Vertical padding: 2dp for gap variant (to match Figma), 4dp for baseline
 					isGapVariant ? "py-0.5" : MENU_GROUP_PADDING_Y,
-					// Background based on color variant
-					colors.containerBg,
+					// Horizontal padding: 4dp for expressive menus (both static and popup), 0 for baseline
+					menuVariant === "expressive" ? "px-1" : "",
+					// Gap variant has floating segments, so each group manages its own shadow
+					isGapVariant ? "elevation-2" : "",
+					// Background based on color variant (transparent for baseline to avoid double-layering)
+					menuVariant === "baseline" ? "bg-transparent" : colors.containerBg,
 					className,
 				)}
 				animate={{ borderRadius: currentShape }}
-				transition={GROUP_SHAPE_SPRING}
+				transition={FAST_SPATIAL_SPRING}
 				onPointerEnter={handlePointerEnter}
 				onPointerLeave={handlePointerLeave}
 				{...rest}
@@ -158,9 +182,11 @@ export const MenuGroup = React.forwardRef<HTMLDivElement, MenuGroupDivProps>(
 							// Padding: 12dp top, 12dp horizontal, 8dp bottom (MD3 spec)
 							"block pt-3 px-3 pb-2",
 							"text-label-small",
-							colorVariant === "vibrant"
-								? "text-m3-on-tertiary-container"
-								: "text-m3-on-surface-variant",
+							menuVariant === "baseline"
+								? "text-m3-on-surface-variant"
+								: colorVariant === "vibrant"
+									? "text-m3-on-tertiary-container"
+									: "text-m3-on-surface-variant",
 						)}
 					>
 						{label}

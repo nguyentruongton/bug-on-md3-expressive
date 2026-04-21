@@ -1,6 +1,7 @@
 // ─── MD3 Expressive Menu — MenuItem ─────────────────────────────────────────
 // Shape morphing + Standard/Vibrant color variants + selection state
 // Animation: only selectable items animate the leading icon slot
+import * as ContextMenu from "@radix-ui/react-context-menu";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Slot } from "@radix-ui/react-slot";
 import { AnimatePresence, m } from "motion/react";
@@ -10,19 +11,31 @@ import { Icon } from "../icon";
 import { CHECK_ICON_VARIANTS, MENU_CHECK_ICON_SIZE } from "./menu-animations";
 import { useMenuContext } from "./menu-context";
 import {
+	BASELINE_COLORS,
+	BASELINE_ITEM_SHAPE,
 	ITEM_SHAPE_CLASSES,
+	MENU_BASELINE_ITEM_HORIZONTAL_PADDING,
 	STANDARD_COLORS,
 	VIBRANT_COLORS,
 } from "./menu-tokens";
-import type { MenuItemPosition, MenuItemProps } from "./menu-types";
+import type {
+	MenuItemPosition,
+	MenuItemProps,
+	MenuVariant,
+} from "./menu-types";
 
 // ─── Shape helper ─────────────────────────────────────────────────────────────
 
 function getItemShapeClass(
 	position: MenuItemPosition,
 	selected: boolean,
+	isStatic: boolean = false,
+	menuVariant: MenuVariant = "expressive",
 ): string {
+	if (menuVariant === "baseline") return BASELINE_ITEM_SHAPE;
 	if (selected) return ITEM_SHAPE_CLASSES.selected;
+	// Vertical Menu standalone items have 12px border radius
+	if (isStatic && position === "standalone") return "rounded-[12px]";
 	return ITEM_SHAPE_CLASSES[position];
 }
 
@@ -67,12 +80,26 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
 		},
 		ref,
 	) => {
-		const { colorVariant: contextColorVariant, isStatic } = useMenuContext();
+		const {
+			menuVariant,
+			colorVariant: contextColorVariant,
+			menuPrimitive,
+		} = useMenuContext();
 		const colorVariant = propColorVariant ?? contextColorVariant;
 		const colors =
-			colorVariant === "vibrant" ? VIBRANT_COLORS : STANDARD_COLORS;
+			menuVariant === "baseline"
+				? BASELINE_COLORS
+				: colorVariant === "vibrant"
+					? VIBRANT_COLORS
+					: STANDARD_COLORS;
 
-		const shapeClass = getItemShapeClass(itemPosition, !!selected);
+		const isStaticMenu = menuPrimitive === "static";
+		const shapeClass = getItemShapeClass(
+			itemPosition,
+			!!selected,
+			isStaticMenu,
+			menuVariant,
+		);
 
 		// A selectable item is one where `selected` prop is explicitly passed
 		// (even if false). Non-selectable items do not animate the leading slot.
@@ -84,20 +111,29 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
 			(selected !== undefined && !role && !isSubTrigger);
 		const isRadio = role === "menuitemradio";
 
-		// When isSubTrigger, use Slot (pass-through) instead of DropdownMenu.SubTrigger.
-		// The outer SubTrigger in SubMenu component already handles Radix's primitive role.
-		const ItemPrimitive = isStatic || isSubTrigger
-			? Slot
-			: ((isCheckbox
-					? DropdownMenu.CheckboxItem
-					: isRadio
-						? DropdownMenu.RadioItem
-						: DropdownMenu.Item) as React.ElementType);
+		// Select the correct Radix primitive based on which menu family is active.
+		// static  → Slot (plain HTML, manages own ARIA)
+		// context → @radix-ui/react-context-menu primitives
+		// dropdown (default) → @radix-ui/react-dropdown-menu primitives
+		const ItemPrimitive =
+			isStaticMenu || isSubTrigger
+				? Slot
+				: menuPrimitive === "context"
+					? ((isCheckbox
+							? ContextMenu.CheckboxItem
+							: isRadio
+								? ContextMenu.RadioItem
+								: ContextMenu.Item) as React.ElementType)
+					: ((isCheckbox
+							? DropdownMenu.CheckboxItem
+							: isRadio
+								? DropdownMenu.RadioItem
+								: DropdownMenu.Item) as React.ElementType);
 
 		return (
 			<ItemPrimitive
 				ref={ref}
-				{...(isStatic || isSubTrigger
+				{...(isStaticMenu || isSubTrigger
 					? {
 							role:
 								role ||
@@ -127,14 +163,18 @@ export const MenuItem = React.forwardRef<HTMLDivElement, MenuItemProps>(
 						})}
 			>
 				<div
-					// Role is provided by Radix primitives via asChild, or manually above if static
+					// Role provided by Radix primitives via asChild, or manually set when static
 					className={cn(
 						// Layout
 						"relative flex w-full cursor-pointer select-none items-center outline-none",
 						// Sizing: min-h 48dp, min-w 112dp, max-w 280dp
 						"min-h-12 min-w-28 max-w-70",
-						// Horizontal padding: 16dp (ItemLeadingSpace / ItemTrailingSpace)
-						"px-4",
+						// Horizontal padding
+						menuVariant === "baseline"
+							? MENU_BASELINE_ITEM_HORIZONTAL_PADDING
+							: "px-4",
+						// Spacing between items
+						isStaticMenu ? "my-0.5" : "",
 						// Shape morphing (position-based + selected override)
 						shapeClass,
 						// Animate border-radius AND background-color together (FastEffects: 150ms)

@@ -6,6 +6,17 @@ import type * as React from "react";
 /** Color variant of the menu — standard (surface-based) or vibrant (tertiary-based). */
 export type MenuColorVariant = "standard" | "vibrant";
 
+/** Visual variant of the menu. */
+export type MenuVariant = "baseline" | "expressive";
+
+/**
+ * Which Radix primitive family drives this menu:
+ * - `dropdown` → @radix-ui/react-dropdown-menu (button, text field, icon trigger)
+ * - `context`  → @radix-ui/react-context-menu (right-click / long-press trigger)
+ * - `static`   → plain HTML via Slot (VerticalMenu — always-visible)
+ */
+export type MenuPrimitive = "dropdown" | "context" | "static";
+
 /**
  * Position of a MenuItem within its group or menu.
  * Controls the shape morphing (border-radius) applied to each item.
@@ -21,7 +32,11 @@ export type MenuItemPosition = "standalone" | "leading" | "middle" | "trailing";
  * Position of a MenuGroup within the popup container.
  * Controls the container's border-radius shape morphing.
  */
-export type MenuGroupPosition = "standalone" | "leading" | "middle" | "trailing";
+export type MenuGroupPosition =
+	| "standalone"
+	| "leading"
+	| "middle"
+	| "trailing";
 
 // ─── Menu Root ────────────────────────────────────────────────────────────────
 
@@ -30,10 +45,22 @@ export interface MenuProps {
 	children: React.ReactNode;
 	/**
 	 * Color variant of the menu.
-	 * - `standard`: surface-container-low background (default)
+	 * Only applies when `variant="expressive"`. Baseline menus always use baseline colors.
+	 * - `standard`: surface-container-low background
 	 * - `vibrant`: tertiary-container background (use sparingly, high emphasis)
 	 */
 	colorVariant?: MenuColorVariant;
+	/**
+	 * Visual variant of the menu.
+	 * - `baseline`: original M3 specs (4dp corners, no shape morphing)
+	 * - `expressive`: M3 Expressive specs (shape morphing, rounded groups)
+	 * @default "baseline"
+	 */
+	variant?: MenuVariant;
+	/**
+	 * @deprecated Use `variant` instead. Will be removed in next major version.
+	 */
+	menuVariant?: MenuVariant;
 	/**
 	 * Controlled open state. When provided, the menu acts as a controlled component.
 	 * Pair with `onOpenChange` to manage state externally.
@@ -44,7 +71,7 @@ export interface MenuProps {
 	 * Required when using `open` for controlled mode.
 	 */
 	onOpenChange?: (open: boolean) => void;
-	/** Additional className for the root RadixDropdown.Root */
+	/** Additional className for the root element */
 	className?: string;
 }
 
@@ -72,8 +99,15 @@ export interface MenuContentProps {
 	 * can escape the bounds. Required when using SubMenu.
 	 */
 	hasOverflow?: boolean;
-	/** Override colorVariant from MenuContext */
+	/** Override colorVariant from MenuContext (only for expressive variant) */
 	colorVariant?: MenuColorVariant;
+	/**
+	 * Separation style between groups (only applies when variant="expressive").
+	 * - `gap`     → 2dp visual gap, transparent container
+	 * - `divider` → solid container, no gap
+	 * Default: "gap"
+	 */
+	separatorStyle?: VerticalMenuSeparatorStyle;
 	className?: string;
 }
 
@@ -146,6 +180,8 @@ export interface MenuGroupProps {
 	colorVariant?: MenuColorVariant;
 	/** Internal flag: true if rendered inside a gap-variant vertical menu (to adjust padding) */
 	isGapVariant?: boolean;
+	/** Optionally injected when nested inside another MenuGroup */
+	itemPosition?: MenuItemPosition;
 	className?: string;
 }
 
@@ -218,5 +254,60 @@ export interface VerticalMenuGroupProps extends MenuGroupProps {}
 
 /** A plain horizontal divider for use between groups in a VerticalMenuContent with `separatorStyle="divider"`. */
 export interface VerticalMenuDividerProps {
+	className?: string;
+	/** Optionally injected by VerticalMenuContent */
+	index?: number;
+	/** Optionally injected by VerticalMenuContent */
+	count?: number;
+	/** Optionally injected by VerticalMenuContent */
+	isGapVariant?: boolean;
+}
+
+// ─── ContextMenu ───────────────────────────────────────────────────────────────
+
+/**
+ * Root of a context menu (right-click / long-press triggered popup).
+ *
+ * Wraps @radix-ui/react-context-menu Root and provides MenuContext with
+ * `menuPrimitive="context"` so MenuItem automatically uses ContextMenu primitives.
+ */
+export interface ContextMenuProps {
+	children: React.ReactNode;
+	/**
+	 * Visual variant of the context menu.
+	 * - `baseline`: original M3 specs (4dp corners, no shape morphing)
+	 * - `expressive`: M3 Expressive specs (shape morphing, rounded groups)
+	 * @default "baseline"
+	 */
+	variant?: MenuVariant;
+	/** Color variant. Only applies when `variant="expressive"`. */
+	colorVariant?: MenuColorVariant;
+	/** Additional className */
+	className?: string;
+}
+
+export interface ContextMenuTriggerProps {
+	children: React.ReactNode;
+	/** If true, merges props with the child element instead of wrapping */
+	asChild?: boolean;
+	className?: string;
+}
+
+export interface ContextMenuContentProps {
+	children: React.ReactNode;
+	/** Override colorVariant from ContextMenuContext */
+	colorVariant?: MenuColorVariant;
+	/**
+	 * When true, disables overflow-hidden so nested SubMenus can escape bounds.
+	 * Required when using SubMenu inside ContextMenu.
+	 */
+	hasOverflow?: boolean;
+	/**
+	 * Separation style between groups (only applies when variant="expressive").
+	 * - `gap`     → 2dp visual gap, transparent container
+	 * - `divider` → solid container, no gap
+	 * Default: "gap"
+	 */
+	separatorStyle?: VerticalMenuSeparatorStyle;
 	className?: string;
 }

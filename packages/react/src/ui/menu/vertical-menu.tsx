@@ -57,7 +57,7 @@ import type {
 export const VerticalMenuDivider = React.forwardRef<
 	HTMLHRElement,
 	VerticalMenuDividerProps & React.HTMLAttributes<HTMLHRElement>
->(({ className, ...props }, ref) => (
+>(({ className, index, count, isGapVariant, ...props }, ref) => (
 	<hr
 		ref={ref}
 		className={cn(
@@ -132,10 +132,32 @@ export const VerticalMenuContent = React.forwardRef<
 		const colors =
 			colorVariant === "vibrant" ? VIBRANT_COLORS : STANDARD_COLORS;
 
+		// Helper to recursively flatten fragments and collect valid elements.
+		// This is necessary because cloneElement cannot be used on React.Fragment.
+		const flattenChildren = (
+			children: React.ReactNode,
+		): React.ReactElement[] => {
+			return React.Children.toArray(children).reduce(
+				(acc: React.ReactElement[], child) => {
+					if (React.isValidElement(child)) {
+						if (child.type === React.Fragment) {
+							return acc.concat(
+								flattenChildren(
+									(child as React.ReactElement<{ children?: React.ReactNode }>)
+										.props.children,
+								),
+							);
+						}
+						acc.push(child as React.ReactElement);
+					}
+					return acc;
+				},
+				[],
+			);
+		};
+
 		// Collect only valid VerticalMenuGroup-like elements for index/count injection
-		const validChildren = React.Children.toArray(children).filter(
-			React.isValidElement,
-		);
+		const validChildren = flattenChildren(children);
 		const groupCount = validChildren.length;
 
 		// Auto-inject `index` and `count` into each child (enables leading/middle/trailing shape)
@@ -242,9 +264,11 @@ export const VerticalMenu = React.forwardRef<
 	const containerRef = React.useRef<HTMLDivElement>(null);
 	const mergedRef = React.useCallback(
 		(node: HTMLDivElement | null) => {
-			(containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+			(containerRef as React.MutableRefObject<HTMLDivElement | null>).current =
+				node;
 			if (typeof ref === "function") ref(node);
-			else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+			else if (ref)
+				(ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
 		},
 		[ref],
 	);
@@ -257,19 +281,32 @@ export const VerticalMenu = React.forwardRef<
 			const items = Array.from(
 				containerRef.current.querySelectorAll<HTMLElement>(
 					'[role="menuitem"]:not([aria-disabled="true"]):not([tabindex="-1"]),' +
-					'[role="menuitemcheckbox"]:not([aria-disabled="true"]):not([tabindex="-1"]),' +
-					'[role="menuitemradio"]:not([aria-disabled="true"]):not([tabindex="-1"])',
+						'[role="menuitemcheckbox"]:not([aria-disabled="true"]):not([tabindex="-1"]),' +
+						'[role="menuitemradio"]:not([aria-disabled="true"]):not([tabindex="-1"])',
 				),
 			);
 			if (!items.length) return;
-			const idx = items.findIndex((el) => el === document.activeElement);
+			const idx = items.indexOf(document.activeElement as HTMLElement);
 			let next: number | null = null;
 			switch (e.key) {
-				case "ArrowDown": e.preventDefault(); next = idx < items.length - 1 ? idx + 1 : 0; break;
-				case "ArrowUp":   e.preventDefault(); next = idx > 0 ? idx - 1 : items.length - 1; break;
-				case "Home":      e.preventDefault(); next = 0; break;
-				case "End":       e.preventDefault(); next = items.length - 1; break;
-				default: return;
+				case "ArrowDown":
+					e.preventDefault();
+					next = idx < items.length - 1 ? idx + 1 : 0;
+					break;
+				case "ArrowUp":
+					e.preventDefault();
+					next = idx > 0 ? idx - 1 : items.length - 1;
+					break;
+				case "Home":
+					e.preventDefault();
+					next = 0;
+					break;
+				case "End":
+					e.preventDefault();
+					next = items.length - 1;
+					break;
+				default:
+					return;
 			}
 			if (next !== null) items[next]?.focus();
 		},
@@ -282,10 +319,11 @@ export const VerticalMenu = React.forwardRef<
 
 	return (
 		<MenuProvider
+			variant="expressive"
 			colorVariant={colorVariant}
+			menuPrimitive="static"
 			open={true}
 			onOpenChange={noop}
-			isStatic={true}
 		>
 			<div
 				ref={mergedRef}
@@ -300,11 +338,10 @@ export const VerticalMenu = React.forwardRef<
 					isGapVariant
 						? [
 								// GAP VARIANT: NO overflow-hidden — groups must morph freely.
-								// Shadow + outline for the outer boundary.
-								"elevation-2",
 								"outline-none",
 								// NO background — transparent between segments.
 								// NO rounded corners — each group manages its own shape.
+								// Elevation is managed by each individual group.
 							]
 						: [
 								// DIVIDER VARIANT: Container clips the content.
@@ -335,9 +372,10 @@ function detectSeparatorStyle(
 	children: React.ReactNode,
 ): VerticalMenuSeparatorStyle {
 	const child = React.Children.toArray(children).find(React.isValidElement);
-	if (child && React.isValidElement(child)) {
-		const style = (child.props as { separatorStyle?: VerticalMenuSeparatorStyle })
-			.separatorStyle;
+	if (child) {
+		const style = (
+			child.props as { separatorStyle?: VerticalMenuSeparatorStyle }
+		).separatorStyle;
 		if (style) return style;
 	}
 	return "gap";

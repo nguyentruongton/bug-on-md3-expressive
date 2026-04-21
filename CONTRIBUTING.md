@@ -90,6 +90,27 @@ pnpm format       # Auto-format code with Biome
 pnpm check        # Run Biome linting + formatting check
 ```
 
+### Local Development (Linking)
+
+When testing the library in a host project via local linking (e.g., using `workspace:*` or `pnpm link`), you may encounter duplicate React errors ("invalid hook call"). This happens because the host and the library each resolve their own copy of React.
+
+**Fix:** Add `pnpm.overrides` to your **host project's** `package.json` to force a single React instance:
+
+```json
+{
+  "pnpm": {
+    "overrides": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
+  }
+}
+```
+
+Then run `pnpm install` in your host project to apply the override.
+
+> `$react` is a shorthand that resolves to the version declared in your host's `dependencies` — it tells pnpm to deduplicate React across all nested packages.
+
 ---
 
 ## Pull Request Process

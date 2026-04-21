@@ -23,10 +23,7 @@ export default function VerticalMenuVibrantDemo() {
 						>
 							Item 2
 						</MenuItem>
-						<MenuItem
-							selected
-							leadingIcon={<Icon name="bookmark" size={20} />}
-						>
+						<MenuItem selected leadingIcon={<Icon name="bookmark" size={20} />}>
 							Item 3
 						</MenuItem>
 					</VerticalMenuGroup>

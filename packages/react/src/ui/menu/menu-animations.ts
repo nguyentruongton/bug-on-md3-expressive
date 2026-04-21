@@ -78,18 +78,6 @@ export const CHECK_ICON_VARIANTS: Variants = {
 	},
 };
 
-// ─── Group shape morphing spring ──────────────────────────────────────────────
-
-/**
- * FastSpatial spring used for MenuGroup container `borderRadius` morphing.
- * Applied as the `transition` prop in motion's `animate` prop.
- *
- * Shape changes:
- *   - on hover: inactive shape (CornerSmall 8px) → position-based active shape
- *   - on pointer-leave: active shape → inactive shape (CornerSmall 8px)
- */
-export const GROUP_SHAPE_SPRING: Transition = FAST_SPATIAL_SPRING;
-
 // ─── SubMenu content ──────────────────────────────────────────────────────────
 
 /** SubMenu popup uses the same FastSpatial/FastEffects pattern as root menu */

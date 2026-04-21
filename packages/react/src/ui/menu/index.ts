@@ -1,20 +1,30 @@
 // ─── MD3 Expressive Menu — Barrel Export ─────────────────────────────────────
 
-// Components
+// Components — ContextMenu (right-click / long-press popup)
+export {
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuTrigger,
+} from "./context-menu";
+// Components — Menu (dropdown popup)
 export { Menu, MenuContent, MenuTrigger } from "./menu";
+
 // Animation variants (for consumers extending animations)
 export {
 	CHECK_ICON_VARIANTS,
-	GROUP_SHAPE_SPRING,
+	FAST_EFFECTS_TRANSITION,
+	FAST_SPATIAL_SPRING,
 	MENU_CHECK_ICON_SIZE,
 	MENU_CONTAINER_VARIANTS,
 	SUBMENU_CONTAINER_VARIANTS,
 } from "./menu-animations";
+
 // Context (for advanced usage / extending)
 export { MenuProvider, useMenuContext } from "./menu-context";
 export { MenuDivider } from "./menu-divider";
 export { MenuGroup } from "./menu-group";
 export { MenuItem } from "./menu-item";
+
 // Tokens (for consumers who need raw values)
 export {
 	DIVIDER_COLOR,
@@ -29,8 +39,13 @@ export {
 	STANDARD_COLORS,
 	VIBRANT_COLORS,
 } from "./menu-tokens";
+
 // Types
 export type {
+	// ContextMenu
+	ContextMenuContentProps,
+	ContextMenuProps,
+	ContextMenuTriggerProps,
 	MenuColorVariant,
 	MenuContentProps,
 	MenuDividerProps,
@@ -38,8 +53,10 @@ export type {
 	MenuGroupProps,
 	MenuItemPosition,
 	MenuItemProps,
+	MenuPrimitive,
 	MenuProps,
 	MenuTriggerProps,
+	MenuVariant,
 	SubMenuProps,
 	// Vertical Menu
 	VerticalMenuContentProps,
@@ -48,8 +65,10 @@ export type {
 	VerticalMenuProps,
 	VerticalMenuSeparatorStyle,
 } from "./menu-types";
+
 export { SubMenu } from "./sub-menu";
-// Vertical Menu components
+
+// Vertical Menu components (static, always-visible — unchanged)
 export {
 	VerticalMenu,
 	VerticalMenuContent,

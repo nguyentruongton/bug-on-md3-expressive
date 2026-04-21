@@ -10,12 +10,7 @@
  */
 
 import { cn } from "../../lib/utils";
-import {
-	Menu,
-	MenuContent,
-	MenuItem,
-	MenuTrigger,
-} from "../menu";
+import { Menu, MenuContent, MenuItem, MenuTrigger } from "../menu";
 import { APP_BAR_COLORS, AppBarTokens } from "./app-bar.tokens";
 import type { AppBarItem, AppBarOverflowIndicatorProps } from "./app-bar.types";
 

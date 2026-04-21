@@ -4,6 +4,7 @@ import { defineConfig } from "tsup";
 const config: Options = {
 	entry: ["src/index.ts"],
 	format: ["cjs", "esm"],
+	dts: true,
 	clean: false, // Tắt clean để tránh nuke mất typography.css khi Next.js đang khởi động
 	// externalize peer dependencies — user project sẽ cung cấp
 	external: ["react", "react-dom", "motion"],

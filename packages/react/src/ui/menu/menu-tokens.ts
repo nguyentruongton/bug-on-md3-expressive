@@ -7,6 +7,9 @@
 /** Horizontal padding for menu items: 16dp (ItemLeadingSpace / ItemTrailingSpace) */
 export const MENU_ITEM_HORIZONTAL_PADDING = "px-4"; // 16dp
 
+/** Horizontal padding for baseline menu items: 12dp */
+export const MENU_BASELINE_ITEM_HORIZONTAL_PADDING = "px-3"; // 12dp
+
 /** Min height for selectable items: 44dp (SegmentedMenuTokens.Item) */
 export const MENU_ITEM_MIN_HEIGHT = "min-h-11"; // 44dp = 11 * 4px
 
@@ -17,7 +20,7 @@ export const MENU_LIST_ITEM_MIN_HEIGHT = "min-h-12"; // 48dp
 export const MENU_MIN_WIDTH = "min-w-28"; // 112dp
 
 /** Max width of menu container: 280dp (DropdownMenuItemDefaultMaxWidth) */
-export const MENU_MAX_WIDTH = "max-w-[280px]";
+export const MENU_MAX_WIDTH = "max-w-70"; // 280dp
 
 /** Gap between MenuGroup segments: 2dp (SegmentedMenuTokens.SegmentedGap) */
 export const MENU_GROUP_GAP = "gap-0.5"; // 2dp
@@ -38,6 +41,11 @@ export const MENU_ICON_SIZE = 20;
  * Source: MenuTokens.ContainerShape = ShapeKeyTokens.CornerExtraSmall
  */
 export const MENU_CONTAINER_SHAPE = "rounded-[4px]"; // CornerExtraSmall
+
+/**
+ * Shape for Baseline menu item (no shape morphing, edge-to-edge state layer).
+ */
+export const BASELINE_ITEM_SHAPE = "rounded-none";
 
 // ─── Shape: CSS border-radius values (used with motion/react `animate`) ────────
 // These are used for animated shape morphing via Framer Motion's `borderRadius`
@@ -131,6 +139,25 @@ export const STANDARD_COLORS = {
 	/** Selected item icon (StandardMenuTokens.ItemSelectedLeadingIconColor) */
 	selectedIcon: "text-m3-on-tertiary-container",
 	/** Disabled opacity: 38% (StandardMenuTokens.ItemDisabledLabelTextOpacity) */
+	disabledOpacity: "data-disabled:opacity-[0.38]",
+} as const;
+
+/**
+ * Baseline color variant tokens.
+ * Container uses SurfaceContainer, Selected uses SecondaryContainer.
+ */
+export const BASELINE_COLORS = {
+	containerBg: "bg-m3-surface-container",
+	labelText: "text-m3-on-surface",
+	iconColor: "text-m3-on-surface-variant",
+	supportingTextColor: "text-m3-on-surface-variant",
+	trailingSupportingTextColor: "text-m3-on-surface-variant",
+	trailingIconColor: "text-m3-on-surface-variant",
+	hoverLayer: "hover:bg-m3-on-surface/8",
+	focusLayer: "focus:bg-m3-on-surface/12",
+	selectedBg: "bg-m3-secondary-container",
+	selectedText: "text-m3-on-secondary-container",
+	selectedIcon: "text-m3-on-secondary-container",
 	disabledOpacity: "data-disabled:opacity-[0.38]",
 } as const;
 

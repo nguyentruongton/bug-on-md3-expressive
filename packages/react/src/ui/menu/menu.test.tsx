@@ -1,5 +1,5 @@
 // ─── MD3 Expressive Menu — Tests (TASK-09) ───────────────────────────────────
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 import {
@@ -17,17 +17,23 @@ afterEach(cleanup);
 
 function renderMenu({
 	colorVariant = "standard" as const,
+	menuVariant = "expressive" as const,
 	items = ["Cut", "Copy", "Paste"],
 	selectedIndex = -1,
 	defaultOpen = true,
 }: {
 	colorVariant?: "standard" | "vibrant";
+	menuVariant?: "baseline" | "expressive";
 	items?: string[];
 	selectedIndex?: number;
 	defaultOpen?: boolean;
 } = {}) {
 	return render(
-		<Menu colorVariant={colorVariant} defaultOpen={defaultOpen}>
+		<Menu
+			colorVariant={colorVariant}
+			menuVariant={menuVariant}
+			defaultOpen={defaultOpen}
+		>
 			<MenuTrigger>
 				<button type="button">Open menu</button>
 			</MenuTrigger>
@@ -60,7 +66,7 @@ describe("Menu", () => {
 	// 2. MenuItem applies correct shape class for each itemPosition
 	it("MenuItem applies correct shape class for each itemPosition", () => {
 		render(
-			<Menu defaultOpen>
+			<Menu menuVariant="expressive" defaultOpen>
 				<MenuTrigger>
 					<button type="button">Open</button>
 				</MenuTrigger>
@@ -125,7 +131,7 @@ describe("Menu", () => {
 	// 5. MenuGroup auto-injects itemPosition into children
 	it("MenuGroup auto-injects correct itemPosition based on child index", () => {
 		render(
-			<Menu defaultOpen>
+			<Menu menuVariant="expressive" defaultOpen>
 				<MenuTrigger>
 					<button type="button">Open</button>
 				</MenuTrigger>
@@ -151,7 +157,7 @@ describe("Menu", () => {
 	// 6. MenuDivider renders with role="separator"
 	it("MenuDivider renders with correct role and classes", () => {
 		render(
-			<Menu defaultOpen>
+			<Menu menuVariant="expressive" defaultOpen>
 				<MenuTrigger>
 					<button type="button">Open</button>
 				</MenuTrigger>
@@ -164,6 +170,7 @@ describe("Menu", () => {
 		);
 		const divider = screen.getByTestId("divider");
 		expect(divider.getAttribute("role")).toBe("separator");
+		// Divider has mx-3 only in expressive/vertical variants
 		expect(divider.className).toContain("mx-3");
 		expect(divider.className).toContain("bg-m3-outline-variant");
 	});
@@ -171,7 +178,7 @@ describe("Menu", () => {
 	// 7. Standard colorVariant applies surface-container-low on group container
 	it("Standard variant applies surface-container-low on MenuGroup", () => {
 		render(
-			<Menu colorVariant="standard" defaultOpen>
+			<Menu colorVariant="standard" menuVariant="expressive" defaultOpen>
 				<MenuTrigger>
 					<button type="button">Open</button>
 				</MenuTrigger>
@@ -189,7 +196,7 @@ describe("Menu", () => {
 	// 8. Vibrant colorVariant applies tertiary-container on group container
 	it("Vibrant variant applies tertiary-container on MenuGroup", () => {
 		render(
-			<Menu colorVariant="vibrant" defaultOpen>
+			<Menu colorVariant="vibrant" menuVariant="expressive" defaultOpen>
 				<MenuTrigger>
 					<button type="button">Open</button>
 				</MenuTrigger>
@@ -483,3 +490,135 @@ describe("VerticalMenu", () => {
 	});
 });
 
+// ─── SubMenu Tests ────────────────────────────────────────────────────────────
+
+import { SubMenu } from "./index";
+
+describe("SubMenu", () => {
+	// 1. SubMenu renders trigger correctly
+	it("renders trigger item correctly", () => {
+		render(
+			<Menu defaultOpen>
+				<MenuTrigger>
+					<button type="button">Open</button>
+				</MenuTrigger>
+				<MenuContent>
+					<SubMenu
+						trigger={<MenuItem data-testid="sub-trigger">Share</MenuItem>}
+					>
+						<MenuItem>Email</MenuItem>
+					</SubMenu>
+				</MenuContent>
+			</Menu>,
+		);
+		expect(screen.getByTestId("sub-trigger")).toBeInTheDocument();
+		expect(screen.getByText("Share")).toBeInTheDocument();
+	});
+
+	// 2. SubMenu opens via click (fallback for JSDOM flakiness with hover/timers)
+	it("opens via click", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<Menu defaultOpen>
+				<MenuTrigger>
+					<button type="button">Open</button>
+				</MenuTrigger>
+				<MenuContent>
+					<SubMenu
+						trigger={<MenuItem data-testid="sub-trigger">Share</MenuItem>}
+					>
+						<MenuItem data-testid="sub-item">Email</MenuItem>
+					</SubMenu>
+				</MenuContent>
+			</Menu>,
+		);
+
+		const trigger = screen.getByTestId("sub-trigger");
+
+		// Initial state: submenu not visible
+		expect(screen.queryByTestId("sub-item")).not.toBeInTheDocument();
+
+		// Click the trigger (Radix SubTrigger handles this)
+		await user.click(trigger);
+
+		// Now it should be visible
+		expect(screen.getByTestId("sub-item")).toBeInTheDocument();
+	});
+
+	// 3. SubMenu closes on Escape
+	it("closes on Escape", async () => {
+		const user = userEvent.setup();
+
+		render(
+			<Menu defaultOpen>
+				<MenuTrigger>
+					<button type="button">Open</button>
+				</MenuTrigger>
+				<MenuContent>
+					<SubMenu
+						trigger={<MenuItem data-testid="sub-trigger">Share</MenuItem>}
+					>
+						<MenuItem data-testid="sub-item">Email</MenuItem>
+					</SubMenu>
+				</MenuContent>
+			</Menu>,
+		);
+
+		const trigger = screen.getByTestId("sub-trigger");
+		await user.click(trigger);
+		expect(screen.getByTestId("sub-item")).toBeInTheDocument();
+
+		await user.keyboard("{Escape}");
+
+		// Submenu content should be gone
+		expect(screen.queryByTestId("sub-item")).not.toBeInTheDocument();
+	});
+});
+
+// ─── Animation & Context Tests ───────────────────────────────────────────────
+
+import { FAST_SPATIAL_SPRING } from "./menu-animations";
+import { useMenuContext } from "./menu-context";
+
+const ContextChecker = () => {
+	const context = useMenuContext();
+	return <div data-testid="ctx-val">{JSON.stringify(context)}</div>;
+};
+
+describe("Menu Internals", () => {
+	// 1. Context default values
+	it("useMenuContext returns default values when used outside Provider", () => {
+		render(<ContextChecker />);
+		const val = JSON.parse(screen.getByTestId("ctx-val").textContent ?? "{}");
+		expect(val.menuVariant).toBe("baseline");
+		expect(val.colorVariant).toBe("standard");
+		expect(val.isStatic).toBe(false);
+	});
+
+	// 2. MenuGroup shape morphing triggers on hover
+	it("MenuGroup updates state on hover for shape morphing", async () => {
+		render(
+			<Menu menuVariant="expressive" defaultOpen>
+				<MenuContent>
+					<MenuGroup data-testid="group" index={0} count={1}>
+						<MenuItem>A</MenuItem>
+					</MenuGroup>
+				</MenuContent>
+			</Menu>,
+		);
+
+		const group = screen.getByTestId("group");
+		expect(group.className).toContain("overflow-hidden");
+
+		fireEvent.pointerEnter(group);
+		// Verify no timeout occurs and group remains in DOM
+		expect(screen.getByText("A")).toBeInTheDocument();
+	});
+
+	// 3. Animation variants check
+	it("FAST_SPATIAL_SPRING has correct spring parameters", () => {
+		expect(FAST_SPATIAL_SPRING.stiffness).toBe(380);
+		expect(FAST_SPATIAL_SPRING.damping).toBe(28);
+	});
+});

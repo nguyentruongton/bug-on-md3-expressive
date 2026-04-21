@@ -3,6 +3,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { useMenuContext } from "./menu-context";
 import type { MenuDividerProps } from "./menu-types";
 
 /**
@@ -21,22 +22,26 @@ import type { MenuDividerProps } from "./menu-types";
  * </MenuContent>
  */
 export const MenuDivider = React.forwardRef<HTMLHRElement, MenuDividerProps>(
-	({ className, ...props }, ref) => (
-		<DropdownMenu.Separator asChild>
-			<hr
-				ref={ref}
-				className={cn(
-					// HorizontalDividerPadding: horizontal=12dp, vertical=2dp
-					"mx-3 my-0.5",
-					// 1px height line
-					"h-px border-0",
-					// outline-variant color
-					"bg-m3-outline-variant",
-					className,
-				)}
-				{...props}
-			/>
-		</DropdownMenu.Separator>
-	),
+	({ className, ...props }, ref) => {
+		const { menuVariant } = useMenuContext();
+
+		return (
+			<DropdownMenu.Separator asChild>
+				<hr
+					ref={ref}
+					className={cn(
+						// Baseline: 8dp vertical margin, 0 horizontal. Expressive: 12dp horizontal, 2dp vertical
+						menuVariant === "baseline" ? "my-2 mx-0" : "mx-3 my-0.5",
+						// 1px height line
+						"h-px border-0",
+						// outline-variant color
+						"bg-m3-outline-variant",
+						className,
+					)}
+					{...props}
+				/>
+			</DropdownMenu.Separator>
+		);
+	},
 );
 MenuDivider.displayName = "MenuDivider";

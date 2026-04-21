@@ -117,7 +117,6 @@ export {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./ui/drawer";
-
 export type { FABPositionProps, FABProps } from "./ui/fab";
 // Floating Action Button
 export { FAB, FABPosition } from "./ui/fab";
@@ -138,6 +137,10 @@ export type { LoadingIndicatorProps } from "./ui/loading-indicator";
 export { LoadingIndicator } from "./ui/loading-indicator";
 // MD3 Expressive Menu — Standard + Vibrant + shape morphing
 export type {
+	// ContextMenu
+	ContextMenuContentProps,
+	ContextMenuProps,
+	ContextMenuTriggerProps,
 	MenuColorVariant,
 	MenuContentProps,
 	MenuDividerProps,
@@ -145,8 +148,10 @@ export type {
 	MenuGroupProps,
 	MenuItemPosition,
 	MenuItemProps,
+	MenuPrimitive,
 	MenuProps,
 	MenuTriggerProps,
+	MenuVariant,
 	SubMenuProps,
 	// Vertical Menu
 	VerticalMenuContentProps,
@@ -157,9 +162,13 @@ export type {
 } from "./ui/menu";
 export {
 	CHECK_ICON_VARIANTS,
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuTrigger,
 	DIVIDER_COLOR,
 	DIVIDER_PADDING,
-	GROUP_SHAPE_SPRING,
+	FAST_EFFECTS_TRANSITION,
+	FAST_SPATIAL_SPRING,
 	GROUP_SHAPES,
 	ITEM_SHAPE_CLASSES,
 	MENU_CHECK_ICON_SIZE,
@@ -180,7 +189,7 @@ export {
 	SUBMENU_CONTAINER_VARIANTS,
 	SubMenu,
 	useMenuContext,
-	// Vertical Menu
+	// Vertical Menu (static, always-visible)
 	VerticalMenu,
 	VerticalMenuContent,
 	VerticalMenuDivider,
@@ -272,6 +281,7 @@ export {
 // Switch — MD3 Expressive toggle
 export type { SwitchProps } from "./ui/switch";
 export { Switch, SwitchColors, SwitchTokens } from "./ui/switch";
+export { Text, type TextProps } from "./ui/Text";
 // Tabs — MD3 Expressive navigation tabs
 export type {
 	TabProps,

@@ -6,6 +6,7 @@ import { cn } from "../../lib/utils";
 import { MENU_CONTAINER_VARIANTS } from "./menu-animations";
 import { MenuProvider, useMenuContext } from "./menu-context";
 import {
+	BASELINE_COLORS,
 	MENU_CONTAINER_SHAPE,
 	MENU_GROUP_GAP,
 	MENU_MAX_WIDTH,
@@ -16,6 +17,7 @@ import {
 } from "./menu-tokens";
 import type {
 	MenuContentProps,
+	MenuGroupProps,
 	MenuProps,
 	MenuTriggerProps,
 } from "./menu-types";
@@ -46,6 +48,8 @@ import type {
  */
 export function Menu({
 	children,
+	variant,
+	menuVariant,
 	colorVariant = "standard",
 	open: controlledOpen,
 	onOpenChange: controlledOnOpenChange,
@@ -53,6 +57,9 @@ export function Menu({
 	...props
 }: MenuProps &
 	Omit<React.ComponentPropsWithoutRef<typeof DropdownMenu.Root>, "children">) {
+	// Support deprecated menuVariant prop
+	const resolvedVariant = variant ?? menuVariant ?? "baseline";
+
 	// Support both controlled and uncontrolled open state.
 	// Initialize internalOpen from defaultOpen so that `defaultOpen={true}` works.
 	const [internalOpen, setInternalOpen] = React.useState(
@@ -70,7 +77,12 @@ export function Menu({
 	);
 
 	return (
-		<MenuProvider colorVariant={colorVariant} open={open} onOpenChange={handleOpenChange}>
+		<MenuProvider
+			variant={resolvedVariant}
+			colorVariant={colorVariant}
+			open={open}
+			onOpenChange={handleOpenChange}
+		>
 			<DropdownMenu.Root
 				{...props}
 				defaultOpen={defaultOpen}
@@ -128,15 +140,115 @@ export const MenuContent = React.forwardRef<
 			align = "start",
 			hasOverflow = false,
 			colorVariant: propColorVariant,
+			separatorStyle = "gap",
 			className,
 			...props
 		},
 		ref,
 	) => {
-		// Read open state from context to drive AnimatePresence
-		const { open, colorVariant: contextColorVariant } = useMenuContext();
+		const {
+			open,
+			variant,
+			colorVariant: contextColorVariant,
+		} = useMenuContext();
 		const colorVariant = propColorVariant ?? contextColorVariant;
-		const colors = colorVariant === "vibrant" ? VIBRANT_COLORS : STANDARD_COLORS;
+
+		// Baseline always uses baseline colors; expressive uses colorVariant
+		const colors =
+			variant === "baseline"
+				? BASELINE_COLORS
+				: colorVariant === "vibrant"
+					? VIBRANT_COLORS
+					: STANDARD_COLORS;
+
+		const isExpressiveGap =
+			variant === "expressive" && separatorStyle === "gap";
+
+		// Expressive variant: large rounded container with elevation (unless gap variant)
+		// Baseline variant: CornerExtraSmall (4px) container
+		const containerClassName =
+			variant === "expressive"
+				? cn(
+						"z-50 flex flex-col",
+						MENU_MIN_WIDTH,
+						MENU_MAX_WIDTH,
+						isExpressiveGap ? MENU_GROUP_GAP : "",
+						isExpressiveGap ? "bg-transparent" : colors.containerBg,
+						isExpressiveGap ? "" : "rounded-2xl",
+						isExpressiveGap ? "" : "elevation-2",
+						hasOverflow || isExpressiveGap
+							? "overflow-visible"
+							: "overflow-hidden",
+						"outline-none",
+						className,
+					)
+				: cn(
+						"z-50 flex flex-col",
+						MENU_MIN_WIDTH,
+						MENU_MAX_WIDTH,
+						MENU_POPUP_PADDING_Y,
+						MENU_GROUP_GAP,
+						colors.containerBg,
+						MENU_CONTAINER_SHAPE,
+						"elevation-2",
+						hasOverflow ? "overflow-visible" : "overflow-hidden",
+						"outline-none",
+						className,
+					);
+
+		// Helper to recursively flatten fragments
+		const flattenChildren = (nodes: React.ReactNode): React.ReactElement[] => {
+			return React.Children.toArray(nodes).reduce(
+				(acc: React.ReactElement[], child) => {
+					if (React.isValidElement(child)) {
+						if (child.type === React.Fragment) {
+							return acc.concat(
+								flattenChildren(
+									(child as React.ReactElement<{ children?: React.ReactNode }>)
+										.props.children,
+								),
+							);
+						}
+						acc.push(child as React.ReactElement);
+					}
+					return acc;
+				},
+				[],
+			);
+		};
+
+		let renderedChildren: React.ReactNode = children;
+
+		if (variant === "expressive") {
+			const validChildren = flattenChildren(children);
+			const groupCount = validChildren.length;
+
+			const enhancedChildren = validChildren.map((child, i) =>
+				React.cloneElement(child as React.ReactElement<MenuGroupProps>, {
+					index: i,
+					count: groupCount,
+					isGapVariant: isExpressiveGap,
+				}),
+			);
+
+			renderedChildren =
+				separatorStyle === "divider"
+					? enhancedChildren.reduce<React.ReactNode[]>((acc, child, i) => {
+							if (i > 0) {
+								acc.push(
+									<hr
+										key={`divider-${(child as React.ReactElement).key || i}`}
+										className={cn(
+											"mx-3 my-0.5 h-px border-0 bg-m3-outline-variant",
+										)}
+									/>,
+								);
+							}
+							acc.push(child);
+							return acc;
+						}, [])
+					: enhancedChildren;
+		}
 
 		return (
 			<AnimatePresence>
@@ -154,39 +266,18 @@ export const MenuContent = React.forwardRef<
 							<m.div
 								role="menu"
 								aria-orientation="vertical"
-								className={cn(
-									"z-50 flex flex-col",
-									// Width constraints (112dp min, 280dp max)
-									MENU_MIN_WIDTH,
-									MENU_MAX_WIDTH,
-									// Vertical padding: 8dp (MenuTokens.ContainerVerticalPadding)
-									MENU_POPUP_PADDING_Y,
-									// Gap between MenuGroups: 2dp (SegmentedMenuTokens.SegmentedGap)
-									MENU_GROUP_GAP,
-									// Container background
-									colors.containerBg,
-									// Container shape: CornerExtraSmall (4px) — MenuTokens.ContainerShape
-									MENU_CONTAINER_SHAPE,
-									// MD3 Elevation-2 shadow
-									"elevation-2",
-									// Overflow clip (disable when hasOverflow=true for SubMenus)
-									hasOverflow ? "overflow-visible" : "overflow-hidden",
-									// Remove Radix outline
-									"outline-none",
-									className,
-								)}
+								className={containerClassName}
 								variants={MENU_CONTAINER_VARIANTS}
 								initial="hidden"
 								animate="visible"
 								exit="exit"
 								style={{
 									...(props.style as React.CSSProperties),
-									// Radix sets this CSS variable to the correct anchor-relative origin
 									transformOrigin:
 										"var(--radix-dropdown-menu-content-transform-origin)",
 								}}
 							>
-								{children}
+								{renderedChildren}
 							</m.div>
 						</DropdownMenu.Content>
 					</DropdownMenu.Portal>
