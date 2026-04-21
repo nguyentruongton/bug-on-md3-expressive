@@ -1,0 +1,164 @@
+
+> @bug-on/md3-react@2.0.3 test
+> vitest run src/ui/menu/menu.test.tsx
+
+
+ RUN  v4.1.0 /Users/stark/Documents/GitHub/bug-on-md3-expressive/packages/react
+
+ ❯ src/ui/menu/menu.test.tsx (28 tests | 8 failed) 16014ms
+     ✓ renders children when open 277ms
+     × MenuItem applies correct shape class for each itemPosition 82ms
+     ✓ MenuItem shows check icon when selected 83ms
+     ✓ MenuItem applies disabled state — opacity class and aria-disabled 66ms
+     × MenuGroup auto-injects correct itemPosition based on child index 56ms
+     × MenuDivider renders with correct role and classes 51ms
+     × Standard variant applies surface-container-low on MenuGroup 49ms
+     × Vibrant variant applies tertiary-container on MenuGroup 49ms
+     ✓ Keyboard ArrowDown: menu opens via click 91ms
+     ✓ Keyboard Escape closes menu 77ms
+     ✓ renders children directly without a trigger 4ms
+     ✓ gap separatorStyle renders no divider elements between groups 3ms
+     ✓ divider separatorStyle inserts an hr between each pair of groups 5ms
+     ✓ VerticalMenuDivider renders as hr with correct classes 2ms
+     ✓ auto-injects index and count props into group children for shape morphing 3ms
+     ✓ standard colorVariant gap: root is transparent, MenuGroup has surface-container-low 3ms
+     ✓ vibrant colorVariant gap: root is transparent, MenuGroup has tertiary-container 2ms
+     ✓ standard colorVariant divider: VerticalMenuContent has surface-container-low 2ms
+     ✓ VerticalMenu root has role=menu and aria-orientation=vertical 2ms
+     ✓ ArrowDown key moves focus to next menuitem 14ms
+     ✓ ArrowUp from first item wraps to last item 9ms
+     ✓ MenuItem inside VerticalMenu shows check icon when selected=true 4ms
+     ✓ renders trigger item correctly 35ms
+     × opens after hoverOpenDelay (default 200ms) 5009ms
+     × closes after hoverCloseDelay (default 300ms) 5008ms
+     ✓ useMenuContext returns default values when used outside Provider 4ms
+     × MenuGroup updates state on hover for shape morphing 5003ms
+     ✓ FAST_SPATIAL_SPRING has correct spring parameters 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > Menu > MenuItem applies correct shape class for each itemPosition
+AssertionError: expected 'relative flex w-full cursor-pointer s…' to contain 'rounded-t-[12px]'
+
+Expected: "rounded-t-[12px]"
+Received: "relative flex w-full cursor-pointer select-none items-center outline-none min-h-12 min-w-28 max-w-70 px-3 rounded-none transition-[border-radius,background-color] duration-150 ease-in text-m3-on-surface hover:bg-m3-on-surface/8 focus:bg-m3-on-surface/12 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-m3-primary"
+
+ ❯ src/ui/menu/menu.test.tsx:90:29
+     88|
+     89|   // Shape classes based on ITEM_SHAPE_CLASSES token
+     90|   expect(leading.className).toContain("rounded-t-[12px]");
+       |                             ^
+     91|   expect(leading.className).toContain("rounded-b-[4px]");
+     92|   expect(middle.className).toContain("rounded-[4px]");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > Menu > MenuGroup auto-injects correct itemPosition based on child index
+AssertionError: expected 'relative flex w-full cursor-pointer s…' to contain 'rounded-t-[12px]'
+
+Expected: "rounded-t-[12px]"
+Received: "relative flex w-full cursor-pointer select-none items-center outline-none min-h-12 min-w-28 max-w-70 px-3 rounded-none transition-[border-radius,background-color] duration-150 ease-in text-m3-on-surface hover:bg-m3-on-surface/8 focus:bg-m3-on-surface/12 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-m3-primary"
+
+ ❯ src/ui/menu/menu.test.tsx:146:27
+    144|
+    145|   // First item should be "leading" shape: rounded-t-[12px] rounded-b-…
+    146|   expect(first.className).toContain("rounded-t-[12px]");
+       |                           ^
+    147|   // Last item should be "trailing" shape: rounded-t-[4px] rounded-b-[…
+    148|   expect(last.className).toContain("rounded-b-[12px]");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > Menu > MenuDivider renders with correct role and classes
+AssertionError: expected 'my-2 mx-0 h-px border-0 bg-m3-outline…' to contain 'mx-3'
+
+Expected: "mx-3"
+Received: "my-2 mx-0 h-px border-0 bg-m3-outline-variant"
+
+ ❯ src/ui/menu/menu.test.tsx:167:29
+    165|   const divider = screen.getByTestId("divider");
+    166|   expect(divider.getAttribute("role")).toBe("separator");
+    167|   expect(divider.className).toContain("mx-3");
+       |                             ^
+    168|   expect(divider.className).toContain("bg-m3-outline-variant");
+    169|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > Menu > Standard variant applies surface-container-low on MenuGroup
+AssertionError: expected 'relative overflow-hidden py-1 bg-tran…' to contain 'bg-m3-surface-container-low'
+
+Expected: "bg-m3-surface-container-low"
+Received: "relative overflow-hidden py-1 bg-transparent"
+
+ ❯ src/ui/menu/menu.test.tsx:186:27
+    184|   );
+    185|   const group = screen.getByTestId("group-standard");
+    186|   expect(group.className).toContain("bg-m3-surface-container-low");
+       |                           ^
+    187|  });
+    188|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > Menu > Vibrant variant applies tertiary-container on MenuGroup
+AssertionError: expected 'relative overflow-hidden py-1 bg-tran…' to contain 'bg-m3-tertiary-container'
+
+Expected: "bg-m3-tertiary-container"
+Received: "relative overflow-hidden py-1 bg-transparent"
+
+ ❯ src/ui/menu/menu.test.tsx:204:27
+    202|   );
+    203|   const group = screen.getByTestId("group-vibrant");
+    204|   expect(group.className).toContain("bg-m3-tertiary-container");
+       |                           ^
+    205|  });
+    206|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > SubMenu > opens after hoverOpenDelay (default 200ms)
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/ui/menu/menu.test.tsx:513:2
+    511|
+    512|  // 2. SubMenu opens after hover delay
+    513|  it("opens after hoverOpenDelay (default 200ms)", async () => {
+       |  ^
+    514|   vi.useFakeTimers();
+    515|   const user = userEvent.setup({ delay: null });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > SubMenu > closes after hoverCloseDelay (default 300ms)
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/ui/menu/menu.test.tsx:553:2
+    551|
+    552|  // 3. SubMenu closes after hover close delay
+    553|  it("closes after hoverCloseDelay (default 300ms)", async () => {
+       |  ^
+    554|   vi.useFakeTimers();
+    555|   const user = userEvent.setup({ delay: null });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/ui/menu/menu.test.tsx > Menu Internals > MenuGroup updates state on hover for shape morphing
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/ui/menu/menu.test.tsx:616:2
+    614|
+    615|  // 2. MenuGroup shape morphing triggers on hover
+    616|  it("MenuGroup updates state on hover for shape morphing", async () =>…
+       |  ^
+    617|   const user = userEvent.setup();
+    618|   render(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 20 passed (28)
+   Start at  09:33:33
+   Duration  17.69s (transform 152ms, setup 97ms, import 567ms, tests 16.01s, environment 805ms)
+

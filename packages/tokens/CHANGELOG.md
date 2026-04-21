@@ -1,5 +1,11 @@
 # @bug-on/md3-tokens
 
+## 3.0.0
+
+### Major Changes
+
+- e170496: Fix types tokens, tailwind, add menu component ver 1
+
 ## 2.0.0
 
 ### Major Changes

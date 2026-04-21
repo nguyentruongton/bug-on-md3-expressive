@@ -1,5 +1,17 @@
 # @bug-on/md3-react
 
+## 3.0.0
+
+### Major Changes
+
+- e170496: Fix types tokens, tailwind, add menu component ver 1
+
+### Patch Changes
+
+- Fix Menu component to correctly handle and pass the variant and menuVariant props to MenuProvider, ensuring expressive features like shape morphing work as intended.
+- Updated dependencies [e170496]
+  - @bug-on/md3-tokens@3.0.0
+
 ## 2.0.3
 
 ### Patch Changes
