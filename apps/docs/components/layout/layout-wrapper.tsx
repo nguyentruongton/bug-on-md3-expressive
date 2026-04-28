@@ -137,7 +137,7 @@ function AppNavigation() {
 			icon: "explore",
 			label: "Get started",
 			href: "/get-started",
-			active: pathname === "/get-started",
+			active: pathname.startsWith("/get-started"),
 		},
 		{
 			icon: "grid_view",
@@ -149,7 +149,7 @@ function AppNavigation() {
 			icon: "settings",
 			label: "Settings",
 			href: "/settings",
-			active: pathname === "/settings",
+			active: pathname.startsWith("/settings"),
 		},
 	];
 

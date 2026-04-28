@@ -30,7 +30,7 @@ export default function RootLayout({
 			>
 				<MD3ThemeProvider
 					sourceColor="#6750A4"
-					defaultMode="light"
+					defaultMode="system"
 					persistToLocalStorage
 					enableSnackbar
 				>

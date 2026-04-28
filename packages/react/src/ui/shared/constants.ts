@@ -48,6 +48,19 @@ export const SPRING_TRANSITION: Transition = {
 	duration: 0.3,
 } as const;
 
+/**
+ * MD3 Expressive spring — active indicator expand/collapse.
+ * Higher bounce for the "pop" effect per MD3 Expressive spec.
+ *
+ * - Duration: 400ms
+ * - Bounce: 0.35 (spring overshoot → lò xo)
+ */
+export const SPRING_TRANSITION_EXPRESSIVE: Transition = {
+	type: "spring",
+	bounce: 0.35,
+	duration: 0.4,
+} as const;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Icon Span Motion Variants
 // Used for icon/loading indicator swap animation inside FAB and IconButton.

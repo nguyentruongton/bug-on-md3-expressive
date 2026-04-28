@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import { applyTheme, type ThemeMode } from "../../lib/theme-utils";
+import { applyTheme, resolveMode, type ThemeMode } from "../../lib/theme-utils";
 import {
 	SnackbarContext,
 	SnackbarHost,
@@ -28,6 +28,8 @@ interface ThemeContextValue {
 	setSourceColor: (color: string) => void;
 	mode: ThemeMode;
 	setMode: (mode: ThemeMode) => void;
+	/** The resolved color scheme actually applied — always "light" or "dark". */
+	effectiveMode: "light" | "dark";
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
@@ -104,7 +106,12 @@ export function MD3ThemeProvider({
 		) as ThemeMode | null;
 
 		if (savedColor) setSourceColor(savedColor);
-		if (savedMode === "light" || savedMode === "dark") setMode(savedMode);
+		if (
+			savedMode === "light" ||
+			savedMode === "dark" ||
+			savedMode === "system"
+		)
+			setMode(savedMode);
 
 		setIsHydrated(true);
 	}, [persistToLocalStorage]);
@@ -120,9 +127,24 @@ export function MD3ThemeProvider({
 		}
 	}, [sourceColor, mode, persistToLocalStorage, isHydrated]);
 
+	// ── System preference subscription ───────────────────────────────────────
+	// When mode is "system", listen for OS-level dark/light changes in real time
+	useEffect(() => {
+		if (mode !== "system" || typeof window === "undefined") return;
+
+		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+		const handleChange = () => applyTheme(sourceColor, "system");
+
+		mediaQuery.addEventListener("change", handleChange);
+		return () => mediaQuery.removeEventListener("change", handleChange);
+	}, [mode, sourceColor]);
+
+	// ── Derived effective mode (no extra state needed) ────────────────────────
+	const effectiveMode = resolveMode(mode);
+
 	const themeValue = useMemo<ThemeContextValue>(
-		() => ({ sourceColor, setSourceColor, mode, setMode }),
-		[sourceColor, mode],
+		() => ({ sourceColor, setSourceColor, mode, setMode, effectiveMode }),
+		[sourceColor, mode, effectiveMode],
 	);
 
 	// ── Typography value ─────────────────────────────────────────────────────
@@ -184,7 +206,10 @@ export function useTheme(): ThemeContextValue {
 	return context;
 }
 
-export function useThemeMode(): Pick<ThemeContextValue, "mode" | "setMode"> {
-	const { mode, setMode } = useTheme();
-	return { mode, setMode };
+export function useThemeMode(): Pick<
+	ThemeContextValue,
+	"mode" | "setMode" | "effectiveMode"
+> {
+	const { mode, setMode, effectiveMode } = useTheme();
+	return { mode, setMode, effectiveMode };
 }

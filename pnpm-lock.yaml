@@ -114,6 +114,9 @@ importers:
 
   packages/react:
     dependencies:
+      '@bug-on/md3-tailwind':
+        specifier: workspace:*
+        version: link:../tailwind
       '@bug-on/md3-tokens':
         specifier: workspace:*
         version: link:../tokens

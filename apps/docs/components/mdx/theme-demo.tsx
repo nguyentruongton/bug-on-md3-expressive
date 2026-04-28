@@ -1,6 +1,6 @@
 "use client";
 
-import { Icon, useTheme } from "@bug-on/md3-react";
+import { Button, ButtonGroup, Icon, useTheme } from "@bug-on/md3-react";
 
 export function ThemeDemo() {
 	const { sourceColor, setSourceColor, mode, setMode } = useTheme();
@@ -55,32 +55,32 @@ export function ThemeDemo() {
 					<legend className="block text-sm font-medium text-m3-on-surface mb-3">
 						Theme Mode
 					</legend>
-					<div className="flex bg-m3-surface-container-highest rounded-m3-full p-1 border border-m3-outline-variant">
-						<button
-							type="button"
+					<ButtonGroup variant="connected" size="sm">
+						<Button
+							variant="toggle"
+							selected={mode === "light"}
 							onClick={() => setMode("light")}
-							className={`flex items-center gap-2 px-4 py-2 rounded-m3-full transition-all ${
-								mode === "light"
-									? "bg-m3-primary text-m3-on-primary shadow-md"
-									: "text-m3-on-surface-variant hover:bg-m3-surface-variant/50"
-							}`}
+							icon={<Icon name="light_mode" />}
 						>
-							<Icon name="light_mode" size={18} />
-							<span className="text-sm font-medium">Light</span>
-						</button>
-						<button
-							type="button"
+							Light
+						</Button>
+						<Button
+							variant="toggle"
+							selected={mode === "dark"}
 							onClick={() => setMode("dark")}
-							className={`flex items-center gap-2 px-4 py-2 rounded-m3-full transition-all ${
-								mode === "dark"
-									? "bg-m3-primary text-m3-on-primary shadow-md"
-									: "text-m3-on-surface-variant hover:bg-m3-surface-variant/50"
-							}`}
+							icon={<Icon name="dark_mode" />}
 						>
-							<Icon name="dark_mode" size={18} />
-							<span className="text-sm font-medium">Dark</span>
-						</button>
-					</div>
+							Dark
+						</Button>
+						<Button
+							variant="toggle"
+							selected={mode === "system"}
+							onClick={() => setMode("system")}
+							icon={<Icon name="settings_brightness" />}
+						>
+							System
+						</Button>
+					</ButtonGroup>
 				</fieldset>
 			</div>
 
@@ -89,26 +89,24 @@ export function ThemeDemo() {
 				<legend className="block text-sm font-medium text-m3-on-surface-variant mb-3">
 					Quick Presets
 				</legend>
-				<div className="flex flex-wrap gap-3">
+				<ButtonGroup variant="standard" morphingWidth={true} size="xs">
 					{presets.map((p) => (
-						<button
+						<Button
 							key={p.color}
-							type="button"
+							variant="toggle"
+							selected={sourceColor.toLowerCase() === p.color.toLowerCase()}
 							onClick={() => setSourceColor(p.color)}
-							className={`flex items-center gap-2 px-3 py-1.5 rounded-m3-lg border transition-all ${
-								sourceColor.toLowerCase() === p.color.toLowerCase()
-									? "border-m3-primary bg-m3-primary-container text-m3-on-primary-container"
-									: "border-m3-outline-variant bg-m3-surface hover:bg-m3-surface-variant/20 text-m3-on-surface"
-							}`}
+							icon={
+								<div
+									className="w-3 h-3 rounded-m3-full"
+									style={{ backgroundColor: p.color }}
+								/>
+							}
 						>
-							<div
-								className="w-3 h-3 rounded-m3-full"
-								style={{ backgroundColor: p.color }}
-							/>
-							<span className="text-xs font-medium">{p.name}</span>
-						</button>
+							{p.name}
+						</Button>
 					))}
-				</div>
+				</ButtonGroup>
 			</fieldset>
 
 			<p className="mt-6 text-xs text-m3-on-surface-variant bg-m3-surface-variant/30 p-3 rounded-m3-md border border-m3-outline-variant/30 leading-normal italic">

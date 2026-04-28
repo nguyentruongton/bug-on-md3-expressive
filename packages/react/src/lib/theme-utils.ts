@@ -4,7 +4,20 @@ import {
 	themeFromSourceColor,
 } from "@material/material-color-utilities";
 
-export type ThemeMode = "light" | "dark";
+export type ThemeMode = "light" | "dark" | "system";
+
+/**
+ * Resolves the effective color scheme from a ThemeMode.
+ * When mode is "system", reads the OS preference via matchMedia.
+ * Returns "light" as the safe default in SSR environments.
+ */
+export function resolveMode(mode: ThemeMode): "light" | "dark" {
+	if (mode !== "system") return mode;
+	if (typeof window === "undefined") return "light";
+	return window.matchMedia("(prefers-color-scheme: dark)").matches
+		? "dark"
+		: "light";
+}
 
 export interface MD3ColorScheme {
 	primary: string;
@@ -70,7 +83,7 @@ export interface MD3ColorScheme {
  */
 export function generateM3Theme(
 	sourceColorHex: string,
-	mode: ThemeMode = "light",
+	mode: "light" | "dark" = "light",
 ): MD3ColorScheme {
 	const sourceColor = argbFromHex(sourceColorHex);
 	const theme = themeFromSourceColor(sourceColor);
@@ -168,7 +181,8 @@ export function applyTheme(
 	mode: ThemeMode = "light",
 	root: HTMLElement = document.documentElement,
 ): void {
-	const colors = generateM3Theme(sourceColorHex, mode);
+	const resolved = resolveMode(mode);
+	const colors = generateM3Theme(sourceColorHex, resolved);
 
 	for (const [key, value] of Object.entries(colors)) {
 		const kebabKey = key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
@@ -176,5 +190,6 @@ export function applyTheme(
 		root.style.setProperty(`--color-m3-${kebabKey}`, value);
 	}
 
-	root.setAttribute("data-theme", mode);
+	// data-theme is always "light" or "dark" — never "system"
+	root.setAttribute("data-theme", resolved);
 }

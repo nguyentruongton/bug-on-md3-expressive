@@ -26,10 +26,41 @@ if (fs.existsSync(srcCss)) {
 	console.log("✅ Copied typography.css to dist/typography.css");
 }
 
-if (fs.existsSync(srcIndexCss)) {
-	fs.copyFileSync(srcIndexCss, distIndexCss);
-	console.log("✅ Copied index.css to dist/index.css");
+// Bundle index.css = md3-tokens CSS + react component base styles.
+// This ensures users only need to import @bug-on/md3-react/index.css
+// and get all required design tokens automatically.
+const tokensCssDir = path.join(__dirname, "../../tokens/dist");
+const tokensColorsCss = path.join(tokensCssDir, "colors.css");
+const tokensShapeCss = path.join(tokensCssDir, "shape.css");
+
+const bundleParts = [
+	"/* @bug-on/md3-tokens — MD3 System Color Tokens */",
+];
+
+if (fs.existsSync(tokensColorsCss)) {
+	bundleParts.push(fs.readFileSync(tokensColorsCss, "utf-8"));
+	console.log("✅ Bundled colors.css from md3-tokens into index.css");
+} else {
+	console.warn("⚠️  md3-tokens colors.css not found — build tokens first");
 }
+
+if (fs.existsSync(tokensShapeCss)) {
+	bundleParts.push(fs.readFileSync(tokensShapeCss, "utf-8"));
+	console.log("✅ Bundled shape.css from md3-tokens into index.css");
+} else {
+	console.warn("⚠️  md3-tokens shape.css not found — build tokens first");
+}
+
+if (fs.existsSync(srcIndexCss)) {
+	bundleParts.push(
+		"\n/* @bug-on/md3-react — Component Base Reset */",
+		fs.readFileSync(srcIndexCss, "utf-8"),
+	);
+}
+
+fs.writeFileSync(distIndexCss, bundleParts.join("\n"));
+console.log("✅ Built bundled index.css (tokens + component base) to dist/index.css");
+
 
 // Copy Material Symbols CSS variants
 const cssVariants = [
@@ -62,7 +93,9 @@ for (const stub of cssStubs) {
 	console.log(`✅ Generated ${stub}`);
 }
 
-// Prepend "use client" to JS/MJS output files to support React Server Components
+// Prepend "use client" to JS/MJS output files to support React Server Components.
+// NOTE: Using post-build script instead of tsup banner — banner causes esbuild
+// "Module level directives" warnings in library bundling context.
 const distFiles = [
 	path.join(__dirname, "../dist/index.js"),
 	path.join(__dirname, "../dist/index.mjs"),

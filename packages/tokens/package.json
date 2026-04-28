@@ -1,6 +1,6 @@
 {
 	"name": "@bug-on/md3-tokens",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Material Design 3 Expressive design tokens",
 	"author": "Bug Ổn",
 	"license": "MIT",
@@ -36,8 +36,7 @@
 			"default": "./dist/shape.css"
 		}
 	},
-	"peerDependencies": {
-	},
+	"peerDependencies": {},
 	"publishConfig": {
 		"access": "public"
 	},
