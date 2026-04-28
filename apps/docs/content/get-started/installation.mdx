@@ -3,9 +3,11 @@ title: Installation
 description: Step-by-step guide to installing and integrating Bug On MD3 Expressive into your project.
 ---
 
-To begin using the Material Design 3 Expressive component suite, install the core packages and configure your React environment.
+To begin using the Material Design 3 Expressive component suite, follow these steps to install the core package and configure your environment.
 
-## Installing Packages
+## 1. Installing Packages
+
+Install the main library and its required animation peer dependency (`motion`).
 
 ### Using pnpm (Recommended)
 
@@ -19,60 +21,75 @@ pnpm add @bug-on/md3-react motion
 npm install @bug-on/md3-react motion
 ```
 
-### Using yarn
+---
 
-```bash
-yarn add @bug-on/md3-react motion
-```
+## 2. Tailwind CSS Configuration
 
-## Peer Dependencies
+Bug On MD3 Expressive provides a dedicated plugin that injects design tokens, elevation utilities, and Material Symbols support into Tailwind.
 
-Ensure your project has compatible versions of the following:
-
-| Package | Version |
-|---------|---------|
-| `react` | `^18.0.0` or `^19.0.0` |
-| `motion` | `>=12.0.0` |
-| `tailwindcss` | `^4.0.0` |
-
-## Typography & Icons
-
-The library uses **Google Sans Flex** and **Material Symbols**. Add the following to your main CSS file (`globals.css` or `App.css`):
+### For Tailwind CSS v4 (CSS-first)
+Import the base styles and register the plugin directly in your main CSS file (e.g., `globals.css` or `app.css`):
 
 ```css
+@import "tailwindcss";
+
+/* 1. Import MD3 Tokens & Base Styles */
+@import "@bug-on/md3-react/index.css";
+
+/* 2. Register the MD3 Plugin */
+@plugin "@bug-on/md3-react/plugin";
+```
+
+### For Tailwind CSS v3 (JavaScript-first)
+Add the plugin to your `tailwind.config.ts` or `tailwind.config.js`:
+
+```ts
+import md3Plugin from "@bug-on/md3-react/plugin";
+
+export default {
+  content: [
+    "./node_modules/@bug-on/md3-react/dist/**/*.{js,mjs}",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  plugins: [
+    md3Plugin,
+  ],
+};
+```
+
+---
+
+## 3. Typography & Icons
+
+The library uses **Google Sans Flex** for typography and **Material Symbols** for icons. Ensure these assets are loaded in your main entry point:
+
+```css
+/* Add these to your globals.css */
 @import "@bug-on/md3-react/typography.css";
 @import "@bug-on/md3-react/material-symbols-cdn.css";
 ```
 
-Alternatively, use the preconnect component to optimize loading performance:
+> **Tip:** You can also use the `MaterialSymbolsPreconnect` component in your Next.js `RootLayout` to optimize icon font loading performance.
+
+---
+
+## 4. Provider Setup
+
+Wrap your application with `MD3ThemeProvider`. This single provider handles the Material You dynamic color system, theme state, and optional snackbar notifications.
+
+### For Next.js (App Router)
+Since it uses React context, ensure the provider is in a **Client Component**.
 
 ```tsx
-import { MaterialSymbolsPreconnect } from "@bug-on/md3-react";
+"use client";
 
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <head>
-        <MaterialSymbolsPreconnect variants={["outlined", "rounded", "sharp"]} />
-      </head>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-## Provider Setup
-
-Wrap your application with `MD3ThemeProvider` — **a single provider** that handles theming, typography, animations, and optionally snackbar notifications:
-
-```tsx
 import { MD3ThemeProvider } from "@bug-on/md3-react";
 
-export default function RootLayout({ children }) {
+export default function Providers({ children }) {
   return (
     <MD3ThemeProvider
-      sourceColor="#6750A4"
-      defaultMode="light"
+      sourceColor="#6750A4" // Your primary brand color
+      defaultMode="light"   // 'light', 'dark', or 'system'
       persistToLocalStorage
     >
       {children}
@@ -81,19 +98,25 @@ export default function RootLayout({ children }) {
 }
 ```
 
-To enable the built-in Snackbar queue, add `enableSnackbar`:
+---
+
+## 5. Usage
+
+Now you can start using the components with full MD3 Expressive styling and animations!
 
 ```tsx
-<MD3ThemeProvider
-  sourceColor="#6750A4"
-  defaultMode="light"
-  persistToLocalStorage
-  enableSnackbar
->
-  {children}
-</MD3ThemeProvider>
+import { Button, Icon } from "@bug-on/md3-react";
+
+export default function MyComponent() {
+  return (
+    <Button variant="filled">
+      <Icon name="add" />
+      Get Started
+    </Button>
+  );
+}
 ```
 
 ## Next Steps
 
-Once installation is complete, proceed to the **Theme** section to learn about the Material You dynamic color system and all available provider options.
+Once installation is complete, proceed to the **Theme** section to learn about the Material You dynamic color system and how to customize your brand's appearance.

@@ -5,7 +5,10 @@ import { createPortal } from "react-dom";
 import { cn } from "../lib/utils";
 import { Icon } from "./icon";
 import { Ripple, useRippleState } from "./ripple";
-import { SPRING_TRANSITION } from "./shared/constants";
+import {
+	SPRING_TRANSITION,
+	SPRING_TRANSITION_EXPRESSIVE,
+} from "./shared/constants";
 import { TouchTarget } from "./shared/touch-target";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -137,11 +140,11 @@ function ActivePill({ layoutId, disableInitial = false }: ActivePillProps) {
 		<m.div
 			layoutId={layoutId}
 			className="absolute inset-0 bg-m3-secondary-container pointer-events-none"
-			style={{ borderRadius: 9999, zIndex: 0 }}
-			initial={disableInitial ? false : { opacity: 0 }}
-			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}
-			transition={SPRING_TRANSITION}
+			style={{ borderRadius: 9999, zIndex: 0, originX: 0.5, originY: 0.5 }}
+			initial={disableInitial ? false : { opacity: 0, scale: 0.5 }}
+			animate={{ opacity: 1, scale: 1 }}
+			exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.15 } }}
+			transition={SPRING_TRANSITION_EXPRESSIVE}
 		/>
 	);
 }

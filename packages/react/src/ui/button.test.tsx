@@ -161,22 +161,20 @@ describe("Button Component", () => {
 		});
 	});
 
-	// ── New: Sentence-case label ───────────────────────────────────────────────
-
-	describe("sentence-case label", () => {
-		it("converts ALL CAPS to sentence-case", () => {
+	describe("label case", () => {
+		it("preserves ALL CAPS", () => {
 			render(<Button>HELLO WORLD</Button>);
-			expect(screen.getByRole("button")).toHaveTextContent("Hello world");
+			expect(screen.getByRole("button")).toHaveTextContent("HELLO WORLD");
 		});
 
-		it("converts all-lowercase to sentence-case", () => {
+		it("preserves all-lowercase", () => {
 			render(<Button>hello world</Button>);
-			expect(screen.getByRole("button")).toHaveTextContent("Hello world");
+			expect(screen.getByRole("button")).toHaveTextContent("hello world");
 		});
 
-		it("handles mixed case correctly", () => {
+		it("preserves mixed case", () => {
 			render(<Button>hElLo WoRlD</Button>);
-			expect(screen.getByRole("button")).toHaveTextContent("Hello world");
+			expect(screen.getByRole("button")).toHaveTextContent("hElLo WoRlD");
 		});
 	});
 
@@ -215,7 +213,7 @@ describe("Button Component", () => {
 				s.querySelector("[data-testid='test-icon']"),
 			);
 			const labelIndex = spans.findIndex((s) =>
-				s.textContent?.includes("Rtl trailing"),
+				s.textContent?.includes("RTL Trailing"),
 			);
 			// DOM order is still trailing (CSS handles visual flip in RTL via flex)
 			expect(iconIndex).toBeGreaterThan(labelIndex);
@@ -269,6 +267,17 @@ describe("Button Component", () => {
 			expect(link.className).toContain(
 				"transition-[background-color,color,border-color,box-shadow,opacity,filter]",
 			);
+		});
+
+		it("applies h-full to the label wrapper for vertical alignment", () => {
+			render(
+				<Button asChild>
+					<a href="/test">Aligned Link</a>
+				</Button>,
+			);
+			const link = screen.getByRole("link");
+			const labelWrapper = link.querySelector("span.inline-flex.items-center");
+			expect(labelWrapper).toHaveClass("h-full");
 		});
 	});
 

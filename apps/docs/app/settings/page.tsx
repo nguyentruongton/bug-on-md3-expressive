@@ -115,7 +115,13 @@ export default function SettingsPage() {
 				{/* Theme Mode */}
 				<Card variant="outlined" className="p-8 bg-m3-surface-container-lowest">
 					<div className="flex items-center gap-3 mb-6">
-						{mode === "light" ? (
+						{mode === "system" ? (
+							<Icon
+								name="settings_brightness"
+								size={24}
+								className=" text-m3-primary"
+							/>
+						) : mode === "light" ? (
 							<Icon name="light_mode" size={24} className=" text-m3-primary" />
 						) : (
 							<Icon name="dark_mode" size={24} className=" text-m3-primary" />
@@ -126,8 +132,8 @@ export default function SettingsPage() {
 					</div>
 
 					<p className="text-sm text-m3-on-surface-variant mb-8">
-						Switch between light and dark themes. The dynamic color scheme will
-						adapt accordingly.
+						Switch between light, dark, or system themes. The dynamic color
+						scheme will adapt accordingly.
 					</p>
 
 					<div className="flex flex-col gap-4">
@@ -151,6 +157,18 @@ export default function SettingsPage() {
 						>
 							Dark Theme
 							{mode === "dark" && (
+								<Icon name="check" size={20} className="ml-auto " />
+							)}
+						</Button>
+
+						<Button
+							colorStyle={mode === "system" ? "tonal" : "outlined"}
+							className="justify-start gap-4 h-14 px-6"
+							onClick={() => setMode("system")}
+							icon={<Icon name="settings_brightness" size={20} />}
+						>
+							System Default
+							{mode === "system" && (
 								<Icon name="check" size={20} className="ml-auto " />
 							)}
 						</Button>

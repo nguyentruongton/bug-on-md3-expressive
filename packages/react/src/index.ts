@@ -5,7 +5,7 @@ export { useRipple as useDOMRipple } from "./hooks/useRipple";
 export { MaterialSymbolsPreconnect } from "./lib/material-symbols-preconnect";
 // Theme — MD3 Dynamic Color
 export type { MD3ColorScheme, ThemeMode } from "./lib/theme-utils";
-export { applyTheme, generateM3Theme } from "./lib/theme-utils";
+export { applyTheme, generateM3Theme, resolveMode } from "./lib/theme-utils";
 // Utils
 export { cn } from "./lib/utils";
 // Types

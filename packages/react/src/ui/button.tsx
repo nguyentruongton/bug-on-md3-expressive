@@ -294,10 +294,6 @@ export type ButtonProps = BaseButtonProps &
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
-function toSentenceCase(text: string): string {
-	return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-}
-
 function resolveLabel(
 	children: React.ReactNode,
 	asChild: boolean,
@@ -308,7 +304,7 @@ function resolveLabel(
 		}>;
 		return child.props.children;
 	}
-	return typeof children === "string" ? toSentenceCase(children) : children;
+	return children;
 }
 
 /** Framer Motion-specific props to strip before forwarding to a plain DOM element. */
@@ -550,7 +546,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 				<m.span
 					layout="size"
-					className="inline-flex items-center gap-[inherit]"
+					className="inline-flex items-center h-full gap-[inherit]"
 					transition={SPRING_TRANSITION}
 				>
 					{labelText}

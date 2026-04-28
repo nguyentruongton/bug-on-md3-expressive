@@ -12,7 +12,7 @@ if (!fs.existsSync(distDir)) {
 console.log("Copying CSS assets to dist...");
 
 // CSS files to copy from src/ to dist/ (only files that exist in src/)
-const cssFiles = ["colors.css", "shape.css", "index.css"];
+const cssFiles = ["colors.css", "shape.css"];
 
 for (const file of cssFiles) {
 	const srcPath = path.join(srcDir, file);

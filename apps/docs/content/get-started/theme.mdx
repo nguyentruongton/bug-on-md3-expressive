@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <MD3ThemeProvider
       sourceColor="#6750A4"
-      defaultMode="light"
+      defaultMode="system"
       persistToLocalStorage
     >
       {children}
@@ -76,7 +76,7 @@ The following tool allows you to experiment with the dynamic color generation al
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `sourceColor` | `string` | `#6750A4` | Principal hex color used to generate the entire palette. |
-| `defaultMode` | `ThemeMode` | `"light"` | Initial theme mode (`light` or `dark`). |
+| `defaultMode` | `ThemeMode` | `"light"` | Initial theme mode (`light`, `dark`, or `system`). |
 | `persistToLocalStorage` | `boolean` | `false` | Saves and restores the theme from `localStorage`. |
 
 ### Typography Props
@@ -103,11 +103,11 @@ Returns the full theme context, including the source color and current mode.
 import { useTheme } from "@bug-on/md3-react";
 
 function MyComponent() {
-  const { sourceColor, setSourceColor, mode, setMode } = useTheme();
+  const { sourceColor, setSourceColor, mode, setMode, effectiveMode } = useTheme();
 
   return (
     <button onClick={() => setMode(mode === "light" ? "dark" : "light")}>
-      Current Mode: {mode}
+      Selected: {mode} (Actual: {effectiveMode})
     </button>
   );
 }
@@ -121,10 +121,27 @@ A utility hook for managing Light/Dark mode transitions exclusively.
 import { useThemeMode } from "@bug-on/md3-react";
 
 function ThemeToggle() {
-  const { mode, setMode } = useThemeMode();
-  // ...
+  const { mode, setMode, effectiveMode } = useThemeMode();
+  
+  // effectiveMode is always "light" or "dark", 
+  // even when mode is "system"
+  const isDark = effectiveMode === "dark";
+  
+  return (
+    <button onClick={() => setMode(isDark ? "light" : "dark")}>
+      {isDark ? "Switch to Light" : "Switch to Dark"}
+    </button>
+  );
 }
 ```
+
+### System Theme Support
+
+When `mode` is set to `"system"`, the library uses the `window.matchMedia` API to detect the user's OS color scheme preference. 
+
+- **Reactive**: The theme updates instantly when the user toggles their OS dark mode settings without requiring a page reload.
+- **SSR Safe**: During Server-Side Rendering, it defaults to `"light"` to prevent hydration mismatches.
+- **Effective Mode**: Use the `effectiveMode` property from hooks to determine which theme is currently applied (it will always resolve to `"light"` or `"dark"`).
 
 ## CSS Variables
 

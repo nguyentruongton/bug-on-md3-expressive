@@ -1,6 +1,6 @@
 {
 	"name": "@bug-on/md3-react",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Material Design 3 Expressive React components",
 	"author": "Bug Ổn",
 	"license": "MIT",
@@ -47,6 +47,11 @@
 		"./material-symbols-self-hosted.css": {
 			"types": "./dist/material-symbols-self-hosted.css.d.ts",
 			"default": "./dist/material-symbols-self-hosted.css"
+		},
+		"./plugin": {
+			"types": "./dist/plugin.d.ts",
+			"import": "./dist/plugin.mjs",
+			"require": "./dist/plugin.js"
 		}
 	},
 	"peerDependencies": {
@@ -61,6 +66,7 @@
 	},
 	"dependencies": {
 		"@bug-on/md3-tokens": "workspace:*",
+		"@bug-on/md3-tailwind": "workspace:*",
 		"@material/material-color-utilities": "^0.3.0",
 		"@radix-ui/react-context-menu": "^2.2.16",
 		"@radix-ui/react-dialog": "^1.1.15",
