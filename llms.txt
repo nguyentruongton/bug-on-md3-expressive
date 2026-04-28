@@ -1,0 +1,39 @@
+# @bug-on/md3-react
+> MD3 Expressive Design System for React + Tailwind v4 + Framer Motion.
+
+## Core Objective
+To provide a high-fidelity implementation of Material Design 3 (Expressive) with a focus on fluid shape-morphing animations and dynamic color themes.
+
+## Key Concepts
+- **MD3 Expressive**: Uses "Springs" instead of "Durations". Focuses on shape morphing (e.g., Pill -> Rounded Square).
+- **Polymorphism**: Most components support `asChild` via Radix UI `Slot`.
+- **Theme System**: Driven by CSS variables (`--m3-*`). Use `MD3ThemeProvider` to manage light/dark/system modes.
+- **Animations**: Powered by `motion/react` (Framer Motion). Uses critically damped springs for "natural" feel.
+
+## Package Map
+- `packages/react`: Core UI components.
+- `packages/tailwind`: Tailwind v4 plugin for MD3 colors and utilities.
+- `packages/tokens`: raw CSS/JS tokens for colors, shapes, and motion.
+
+## Core Implementation Pattern
+```tsx
+import { Button, Icon } from "@bug-on/md3-react";
+
+export function Example() {
+  return (
+    <Button 
+      variant="toggle" 
+      selected={true} 
+      icon={<Icon name="check" />}
+    >
+      Active State
+    </Button>
+  );
+}
+```
+
+## Documentation
+- [Full AI Context](./llms-full.txt) - **Recommended for AI Agents** (All-in-one)
+- [Components Reference](./docs/ai/components.md)
+- [Styling & Tokens](./docs/ai/styling.md)
+- [Core Architecture](./docs/ai/core.md)
