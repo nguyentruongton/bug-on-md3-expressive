@@ -1,53 +1,95 @@
 ---
-title: "Scroll Area"
-description: "Augments native scroll functionality for custom, cross-browser styling with a minimal, MD3 Expressive pill-shaped scrollbar."
+title: Scroll Area
+description: Custom scrollbar component that provides a consistent, MD3 Expressive look and feel across all browsers.
 ---
 
-Augments native scroll functionality for custom, cross-browser styling with a minimal, MD3 Expressive pill-shaped scrollbar.
-
-## Vertical Scroll
-
-The default orientation. Hover over the container to show the scrollbar.
+The Scroll Area component augments native scroll functionality with a minimal, pill-shaped scrollbar that follows Material Design 3 Expressive guidelines. It ensures that scrollbars look and behave identically across different operating systems and browsers.
 
 <ComponentPreview name="scroll-area-vertical" />
 
-## Horizontal Scroll
+## Introduction
 
-Set `orientation="horizontal"` to scroll wide content.
+Native scrollbars often conflict with modern UI designs, appearing bulky or inconsistent across platforms. The MD3 Expressive Scroll Area solves this by providing a highly customizable, themeable scrollbar that only appears when needed. It is built on top of Radix UI's Scroll Area primitives, ensuring high performance and excellent accessibility.
 
-<ComponentPreview name="scroll-area-horizontal" />
+## Anatomy
 
-## Both Axes
+- **Viewport**: The visible area containing the scrollable content.
+- **Scrollbar**: The track and thumb used to navigate the content.
+- **Thumb**: The pill-shaped indicator that moves as the user scrolls.
+- **Corner**: The intersection where both horizontal and vertical scrollbars meet.
 
-`orientation="both"` renders both scrollbars with a corner filler.
+## Variants
+
+### Orientations
+
+- **Vertical (Default)**: For content that exceeds the height of its container.
+- **Horizontal**: For wide content like data tables or image galleries.
+- **Both**: Enables both vertical and horizontal scrolling with a dedicated corner element.
 
 <ComponentPreview name="scroll-area-both" />
 
-## Behavior Variants
+## Features
 
-Control when the scrollbar is visible via the `type` prop.
+### Visibility Behaviors
+
+Control when the scrollbar is displayed using the `type` prop:
+- **Hover (Default)**: Scrollbar appears only when the mouse is over the container.
+- **Always**: Scrollbar is permanently visible.
+- **Scroll**: Appears only while scrolling and hides after a delay.
+- **Auto**: Appears when the content exceeds the container size.
 
 <ComponentPreview name="scroll-area-behavior" />
 
-## Usage Guidelines
+### Expressive Styling
 
-### When to use
-- Long lists or content that exceeds the container height.
-- Wide data tables that extend beyond the viewport.
-- Chat message feeds, timelines, or logs.
+The scrollbar thumb is a thin, pill-shaped element that subtly expands or highlights when interacted with, maintaining a clean and unobtrusive aesthetic.
 
-### Best practices
-- Always define a fixed height or max-height on the container.
-- Prefer `type="always"` when scrollability isn't obvious from context.
-- Use `type="scroll"` for compact mobile experiences.
-- Never rely on native scrollbars for consistent styling.
+## Usage
+
+### Basic Usage
+
+```tsx
+import { ScrollArea } from "@bug-on/md3-react";
+
+<ScrollArea className="h-72 w-48 rounded-md border">
+  <div className="p-4">
+    <h4>Tags</h4>
+    {tags.map((tag) => (
+      <div key={tag} className="text-sm">
+        {tag}
+      </div>
+    ))}
+  </div>
+</ScrollArea>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use Scroll Area for containers with a fixed height where content may overflow.
+- [ ] Prefer `type="hover"` for clean interfaces where scrollability is obvious.
+- [ ] Use `type="always"` for critical scrollable areas (like sidebars) where the user needs to see the scroll progress at all times.
+- [ ] Set a clear `max-height` or `height` on the Scroll Area container.
+
+### Don'ts
+- [ ] Don't use Scroll Area for the entire page body; let the browser handle top-level scrolling.
+- [ ] Don't use `orientation="both"` if only one axis is likely to overflow.
+- [ ] Avoid nesting multiple Scroll Areas within each other, as it can be confusing for users to navigate.
+
+## Accessibility
+
+- **Roles**: Correctly implements ARIA roles for scroll containers and regions.
+- **Keyboard**: Supports standard keyboard navigation (Arrow keys, Page Up/Down, Home/End).
+- **Touch**: Provides native-feeling momentum scrolling on touch devices.
+- **Visibility**: The scrollbar is a visual aid and doesn't replace native accessibility features.
 
 ## API Reference
 
 ### ScrollArea
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `type` | `'auto' \| 'always' \| 'scroll' \| 'hover' \| 'none'` | `'hover'` | Describes the nature of scrollbar visibility. |
-| `orientation` | `'vertical' \| 'horizontal' \| 'both'` | `'vertical'` | The axis/axes that should allow scrolling. |
-| `scrollHideDelay` | `number` | `600` | If `type="scroll"`, how long after scrolling to hide the bar. |
+|------|------|---------|-------------|
+| `type` | `"auto" \| "always" \| "scroll" \| "hover" \| "none"` | `"hover"` | Visibility behavior. |
+| `orientation` | `"vertical" \| "horizontal" \| "both"` | `"vertical"` | Scroll axis. |
+| `scrollHideDelay` | `number` | `600` | Hide delay (ms) for `type="scroll"`. |
+| `className` | `string` | — | Custom classes. |

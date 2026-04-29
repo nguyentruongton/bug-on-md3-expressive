@@ -7,151 +7,154 @@ Text fields are one of the most common UI elements in forms. The MD3 Expressive 
 
 <ComponentPreview name="text-field-basic" />
 
+## Introduction
+
+The MD3 Expressive Text Field is designed for clarity and ease of use. It supports two primary visual variants (Filled and Outlined) and a range of interactive features like prefix/suffix text, leading/trailing icons, and adaptive multi-line support. The expressive nature comes from the smooth transitions between focus states and the fluid motion of the label and indicator elements.
+
+## Anatomy
+
+- **Container**: The outer wrapper providing the background (Filled) or border (Outlined).
+- **Leading Icon (Optional)**: A visual indicator at the start of the field (e.g., Search, Email icon).
+- **Floating Label**: Moves from the center of the input to the top when the field is focused or has content.
+- **Input Area**: Where the user enters text.
+- **Trailing Icon (Optional)**: For actions like clearing the input, toggling password visibility, or custom actions.
+- **Active Indicator**: A bottom line (Filled) or a highlighted border (Outlined) that animates on focus.
+- **Supporting Text**: Helper or error text displayed below the field.
+- **Character Counter (Optional)**: Tracks the length of the input against a maximum limit.
+
 ## Variants
 
-Two variants are available: `filled` (default) and `outlined`. Both support all the same props.
+### Filled (Default)
+
+The `filled` variant features a background color and a bottom indicator line. It is high emphasis and works well on surfaces where the input needs to stand out.
+
+<ComponentPreview name="text-field-basic" />
+
+### Outlined
+
+The `outlined` variant features a border around the entire input. It is medium emphasis and often used for denser forms or when multiple fields are placed together.
 
 <ComponentPreview name="text-field-variants" />
 
-## States
+## Features
 
-TextFields support `error`, `disabled`, `readOnly`, and `required` states. Error state changes the label, indicator, and supporting text to `m3-error` color.
+### States
+
+TextFields support various functional states:
+- **Focus**: Label floats and indicator animates.
+- **Error**: Turns all elements to the error color roles.
+- **Disabled**: Mutes the UI and prevents interaction.
+- **Read Only**: Allows selection but prevents editing.
 
 <ComponentPreview name="text-field-states" />
 
-## Icons & Clear Button
+### Icons & Actions
 
-Use `leadingIcon` for a decorative icon at the start. The `trailingIconMode` prop supports three built-in behaviors:
-
-- `"clear"` — shows a ✕ button when the field has a value
-- `"password-toggle"` — shows an eye icon to toggle password visibility
-- `"custom"` — renders the `trailingIcon` prop as a static decorator
+The `trailingIconMode` prop provides built-in behaviors for common patterns:
+- **Clear**: Shows a ✕ button when there is text.
+- **Password Toggle**: Toggles visibility for password fields.
+- **Custom**: Allows passing a custom ReactNode to the `trailingIcon` prop.
 
 <ComponentPreview name="text-field-icons" />
 
-## Supporting Text, Counter & Prefix/Suffix
+### Adaptive Multi-line (Auto-resize)
 
-Use `supportingText` for helper text below the field. Set `maxLength` to automatically show a character counter. Use `prefixText` / `suffixText` for inline decorators that appear once the label floats.
-
-<ComponentPreview name="text-field-supporting" />
-
-## Form Integration
-
-TextField integrates with standard HTML forms. It supports `name`, `required`, `minLength`, `maxLength`, `pattern`, and native validation on blur. The `onChange` callback receives the string value as well as the native event.
-
-<ComponentPreview name="text-field-form" />
-
-## Adaptive Multi-line
-
-The MD3 "Adaptive" pattern allows a field to start as a single-line input but expand vertically as text wraps. This is useful for comments or messages where the content length is unknown.
-
-- Use `type="textarea"` with `autoResize={true}` to enable this behavior.
-- Use `maxRows` to limit how much the field can grow before showing a scrollbar.
+Use `type="textarea"` and `autoResize={true}` to allow the field to grow vertically as the user types. Use `maxRows` to limit this growth.
 
 <ComponentPreview name="text-field-autoresize" />
 
-## Imperative Handle
-
-Forward a `ref` to get a `TextFieldHandle` that exposes imperative methods: `focus()`, `blur()`, `clear()`, `select()`, `getValue()`, `getInputElement()`, `checkValidity()`, and `reportValidity()`.
-
-<ComponentPreview name="text-field-imperative" />
-
 ## Usage
+
+### Basic Usage
 
 ```tsx
 import { TextField } from "@bug-on/md3-react";
-import type { TextFieldHandle } from "@bug-on/md3-react";
 
-// Filled (default)
-<TextField label="Email" type="email" />
-
-// Outlined
-<TextField variant="outlined" label="Username" />
-
-// Controlled
-const [value, setValue] = useState("");
-<TextField label="Search" value={value} onChange={setValue} />
-
-// With clear button
-<TextField label="Search" trailingIconMode="clear" />
-
-// Password with toggle
-<TextField label="Password" type="password" trailingIconMode="password-toggle" />
-
-// With character counter
-<TextField label="Bio" maxLength={140} supportingText="Describe yourself" />
-
-// Prefix & suffix
-<TextField label="Amount" prefixText="$" suffixText="USD" />
-
-// Textarea (Fixed)
-<TextField label="Notes" type="textarea" rows={4} />
-
-// Adaptive Multi-line (Auto Resize)
-<TextField label="Adaptive" type="textarea" autoResize={true} maxRows={4} />
-
-// Imperative handle
-const ref = useRef<TextFieldHandle>(null);
-<TextField ref={ref} label="Controlled externally" />
-ref.current?.focus();
-ref.current?.clear();
+<TextField label="Username" />
 ```
+
+### Password with Toggle
+
+```tsx
+<TextField 
+  label="Password" 
+  type="password" 
+  trailingIconMode="password-toggle" 
+/>
+```
+
+### With Supporting Text & Counter
+
+```tsx
+<TextField 
+  label="Biography" 
+  maxLength={140} 
+  supportingText="Tell us about yourself" 
+/>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use **Filled** for primary forms and **Outlined** for secondary or dense layouts.
+- [ ] Provide clear, concise labels that remain visible even after the user starts typing.
+- [ ] Use `supportingText` to explain requirements (e.g., "Must be at least 8 characters").
+- [ ] Group related fields together with consistent spacing.
+
+### Don'ts
+- [ ] Don't use placeholders as a replacement for labels.
+- [ ] Don't use too many icons that might clutter the input area.
+- [ ] Avoid long labels that might be truncated on small screens.
+
+## Design Tokens
+
+| Size | Height (Default) | Height (Dense) | Label Size (Small) |
+|------|------------------|----------------|--------------------|
+| **Height** | 56dp | 48dp | 12dp |
+| **Padding** | 16dp | 12dp | — |
 
 ## Accessibility
 
-- Uses a semantic `<input>` (or `<textarea>`) with a proper `<label>` linked via `id`/`htmlFor`.
-- `aria-invalid` is set when `error={true}` or when native validation fails on blur.
-- `aria-required` is set when `required={true}`.
-- Supporting text is linked via `aria-describedby` so screen readers announce helper/error text automatically.
-- The character counter is in the same `aria-live="polite"` region as the supporting text, so count changes are announced.
-- The clear button has `aria-label="Clear input"`.
-- The password toggle has `aria-label="Show password"` / `"Hide password"`.
-- Custom trailing icons (via `trailingIconMode="custom"`) are rendered without an `aria-hidden="true"` wrapper, allowing for accessible interactive elements like help icons or action buttons.
-- All interactive icons have 48×48px touch targets (MD3 minimum).
-- Respects `prefers-reduced-motion` — all Framer Motion animations are skipped when the system setting is on.
+- **Keyboard**: Full support for standard input keys. `Tab` to focus, `Enter` to submit (if in a form).
+- **ARIA**: Automatically links labels via `htmlFor` and supporting text via `aria-describedby`.
+- **Validation**: Sets `aria-invalid` and `aria-required` based on state.
+- **Interactive Icons**: All icon buttons have a minimum 48x48dp touch target.
+- **Motion**: Respects `prefers-reduced-motion` settings.
 
-## Props
+## API Reference
+
+### TextField
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `variant` | `"filled" \| "outlined"` | `"filled"` | Visual variant |
-| `label` | `string` | — | Floating label text |
-| `value` | `string` | — | Controlled value |
-| `defaultValue` | `string` | `""` | Uncontrolled initial value |
-| `onChange` | `(value, event) => void` | — | Value change callback |
-| `type` | `TextFieldInputType` | `"text"` | Input type (includes `"textarea"`) |
-| `placeholder` | `string` | — | Placeholder text (shown when label is floated) |
-| `error` | `boolean` | `false` | Error state |
-| `errorText` | `string` | — | Error message below the field |
-| `supportingText` | `string` | — | Helper text below the field |
-| `maxLength` | `number` | — | Max characters; shows counter |
-| `minLength` | `number` | — | Min character validation |
-| `pattern` | `string` | — | Regex pattern for validation |
-| `multiple` | `boolean` | — | Support multiple values (e.g. email) |
-| `required` | `boolean` | `false` | Required field |
-| `noAsterisk` | `boolean` | `false` | Hide * even when required |
-| `disabled` | `boolean` | `false` | Disabled state |
-| `readOnly` | `boolean` | `false` | ReadOnly state |
-| `leadingIcon` | `ReactNode` | — | Icon at the start |
-| `trailingIcon` | `ReactNode` | — | Custom icon at the end |
-| `trailingIconMode` | `"none" \| "clear" \| "password-toggle" \| "custom"` | `"none"` | Built-in trailing icon behavior |
-| `prefixText` | `string` | — | Text prefix (visible when floated) |
-| `suffixText` | `string` | — | Text suffix (visible when floated) |
-| `dense` | `boolean` | `false` | Reduce height to 48px |
-| `fullWidth` | `boolean` | `true` | Stretch to fill container |
-| `rows` | `number` | `2` | Textarea rows |
-| `cols` | `number` | `20` | Textarea columns |
-| `autoResize` | `boolean` | `false` | Textarea auto-expands with content |
-| `maxRows` | `number` | — | Limit growth when autoResize is true |
-| `scrollAreaType` | `"hover" \| "scroll" \| "always" \| "none"` | `"hover"` | Scrollbar behavior for textarea |
-| `noSpinner` | `boolean` | `false` | Hide number input spinners |
-| `textDirection` | `"ltr" \| "rtl" \| ""` | — | Input text direction |
-| `form` | `string` | — | Associated form ID |
-| `className` | `string` | — | Extra class for root element |
-| `aria-label` | `string` | — | Accessibility label |
-| `aria-describedby` | `string` | — | Accessible description |
-| `aria-labelledby` | `string` | — | Element ID for label |
-| `onFocus` | `EventHandler` | — | Blur callback |
-| `onBlur` | `EventHandler` | — | Focus callback |
-| `onKeyDown` | `EventHandler` | — | Key down callback |
-| `onKeyUp` | `EventHandler` | — | Key up callback |
+| `variant` | `"filled" \| "outlined"` | `"filled"` | Visual variant. |
+| `label` | `string` | — | Floating label text. |
+| `value` | `string` | — | Controlled value. |
+| `defaultValue` | `string` | `""` | Initial value. |
+| `onChange` | `(value, event) => void` | — | Callback fired on change. |
+| `type` | `string` | `"text"` | Input type (includes `"textarea"`). |
+| `placeholder` | `string` | — | Shown when label is floated. |
+| `error` | `boolean` | `false` | Forces error visual state. |
+| `errorText` | `string` | — | Error message below the field. |
+| `supportingText` | `string` | — | Helper text below the field. |
+| `maxLength` | `number` | — | Max characters; enables counter. |
+| `required` | `boolean` | `false` | Marks field as required. |
+| `leadingIcon` | `ReactNode` | — | Icon at the start. |
+| `trailingIconMode` | `"none" \| "clear" \| "password-toggle" \| "custom"` | `"none"` | Built-in icon behaviors. |
+| `prefixText` | `string` | — | Text prefix (e.g., "$"). |
+| `suffixText` | `string` | — | Text suffix (e.g., ".00"). |
+| `dense` | `boolean` | `false` | Reduces height to 48px. |
+| `autoResize` | `boolean` | `false` | Textarea expands with content. |
+| `maxRows` | `number` | — | Max height for autoResize. |
+| `fullWidth` | `boolean` | `true` | Fills container width. |
+
+### TextFieldHandle (Imperative)
+
+Accessible via `ref`.
+
+| Method | Description |
+|---|---|
+| `focus()` | Focuses the input. |
+| `clear()` | Clears the value. |
+| `getValue()` | Returns current value string. |
+| `reportValidity()` | Shows native validation UI. |

@@ -7,65 +7,93 @@ Floating action buttons (FABs) represent the most important action on a screen. 
 
 <ComponentPreview name="fab-default" />
 
-## Sizes
+## Introduction
 
-MD3 Expressive defines three FAB sizes. The small FAB has been **deprecated** in the Expressive update and is not supported.
+The MD3 Expressive FAB is the pinnacle of the interface hierarchy. It is designed to be easily reachable and visually distinct. Unlike standard buttons, the FAB "floats" above all other content, using elevation and shadow to define its spatial position. In the Expressive spec, the FAB features a unique shape-morphing animation on press, providing tactile confirmation of the action.
+
+## Anatomy
+
+- **Container**: A rounded-square surface that holds the icon.
+- **Icon**: A clear visual representation of the primary action (e.g., Add, Edit, Compose).
+- **State Layer**: Shows hover and pressed states with a ripple effect and shape-morphing.
+- **Shadow / Elevation**: Defines the card's depth relative to the underlying content.
+
+## Variants
+
+### Sizes
+
+MD3 Expressive defines three FAB sizes:
+- **Default (56dp)**: The standard size for most screens.
+- **Medium (80dp)**: Higher emphasis, for larger screens.
+- **Large (96dp)**: Maximum emphasis, often used in hero sections or spatial interfaces.
 
 <ComponentPreview name="fab-sizes" />
 
-| Size | Dimensions | Icon size | Border radius |
-|------|-----------|-----------|---------------|
-| Default | 56 × 56dp | 24dp | 16dp |
-| Medium | 80 × 80dp | 28dp | 20dp |
-| Large | 96 × 96dp | 36dp | 28dp |
+### Color Styles
 
-## Color Variants
-
-FABs support six color styles from the MD3 color scheme. The `surface` variant has been deprecated in M3 Expressive.
+FABs support various color roles from the MD3 scheme, allowing you to match the emphasis of the action to your branding.
 
 <ComponentPreview name="fab-colors" />
 
-## Lowered State
+## Features
 
-A lowered FAB sits at the same elevation as the content below it. Use `lowered` when the FAB is in a container that already provides separation from the background.
+### Shape Morphing
+
+On press, the FAB container morphs its border-radius inward, creating a "squish" effect that communicates interactivity through motion.
+
+### Lowered State
+
+Use the `lowered` prop when the FAB is placed in a container that already provides visual separation from the background, such as a Navigation Rail.
 
 <ComponentPreview name="fab-lowered" />
 
+### Position Wrapper
+
+The `FABPosition` component helps you easily pin the FAB to the screen (typically bottom-right) while respecting system safe areas.
+
 ## Usage
+
+### Basic Usage
 
 ```tsx
 import { FAB, Icon } from "@bug-on/md3-react";
 
-// Default FAB
-<FAB icon={<Icon name="edit" />} aria-label="Edit" />
-
-// Large FAB with tertiary color
-<FAB size="large" colorStyle="tertiary" icon={<Icon name="edit" />} aria-label="Edit" />
-
-// FAB with loading state
-<FAB icon={<Icon name="edit" />} aria-label="Saving" loading />
-
-// Hidden FAB (e.g., while scrolling down)
-<FAB icon={<Icon name="edit" />} aria-label="Compose" visible={!isScrollingDown} />
+<FAB 
+  icon={<Icon name="add" />} 
+  aria-label="Create new item" 
+  onClick={() => handleCreate()} 
+/>
 ```
 
-Use `FABPosition` to pin the FAB to the bottom-right corner:
+### With Fixed Positioning
 
 ```tsx
-import { FAB, FABPosition } from "@bug-on/md3-react";
+import { FAB, FABPosition, Icon } from "@bug-on/md3-react";
 
 <FABPosition bottom="1.5rem" right="1.5rem" safeArea>
-  <FAB icon={<Icon name="edit" />} aria-label="Compose" />
+  <FAB icon={<Icon name="edit" />} aria-label="Edit" />
 </FABPosition>
 ```
 
+## Best Practices
+
+### Dos
+- [ ] Use only one FAB per screen.
+- [ ] Place the FAB in a consistent location (usually the bottom-right corner).
+- [ ] Use a clear, meaningful icon.
+- [ ] Ensure the FAB is used for the most important "positive" action on the screen.
+
+### Don'ts
+- [ ] Don't use a FAB for minor or destructive actions (e.g., "Delete").
+- [ ] Don't use more than one FAB on a single screen.
+- [ ] Don't hide the FAB unless it's necessary for the user flow (e.g., during a specific scrolling event).
+
 ## Accessibility
 
-- The `aria-label` prop is **required**. FABs are icon-only buttons and must have a descriptive label for screen readers.
-- When `loading={true}`, the component sets `aria-busy="true"` automatically and blocks click events.
-- The default FAB (56dp) includes an invisible `48dp` touch target expander to satisfy WCAG 2.5.5 Target Size.
-- Shape morphing and entrance/exit animations respect `prefers-reduced-motion` via Framer Motion.
-- The FAB is keyboard accessible: focus shows a visible ring, and `Enter`/`Space` trigger the action.
+- **Required Label**: The `aria-label` prop is mandatory for FABs as they are icon-only.
+- **Touch Target**: The default FAB includes a 48x48dp touch target expander.
+- **Keyboard**: Fully reachable via `Tab`. `Space` or `Enter` triggers the action.
+- **Motion**: All animations (scaling, morphing) respect `prefers-reduced-motion`.
 
 ## API Reference
 
@@ -73,22 +101,19 @@ import { FAB, FABPosition } from "@bug-on/md3-react";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `icon` | `ReactNode` | — | **Required.** Icon displayed inside the FAB. Size scales automatically with `size`. |
-| `aria-label` | `string` | — | **Required.** Accessible label for screen readers. |
-| `size` | `"fab" \| "medium" \| "large"` | `"fab"` | Controls FAB dimensions and icon size. |
-| `colorStyle` | `"primary" \| "secondary" \| "tertiary" \| "primaryContainer" \| "secondaryContainer" \| "tertiaryContainer"` | `"primaryContainer"` | Color variant from MD3 color scheme. |
-| `visible` | `boolean` | `true` | Toggles the FAB with a spring animation. |
-| `loading` | `boolean` | `false` | Shows a `LoadingIndicator` in place of the icon. |
-| `lowered` | `boolean` | `false` | Reduces elevation (lowered state per MD3 spec). |
+| `icon` | `ReactNode` | — | **Required.** Icon to display. |
+| `aria-label` | `string` | — | **Required.** Accessible name. |
+| `size` | `"fab" \| "medium" \| "large"` | `"fab"` | FAB dimensions. |
+| `colorStyle` | `string` | `"primaryContainer"` | MD3 color roles. |
+| `visible` | `boolean` | `true` | Animate visibility (scale entry/exit). |
+| `loading` | `boolean` | `false` | Shows a loading indicator. |
+| `lowered` | `boolean` | `false` | Reduces resting elevation. |
 
 ### FABPosition
 
-Convenience wrapper that pins the FAB to a fixed position on screen.
-
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `bottom` | `string` | `"1rem"` | CSS value for bottom offset. |
-| `right` | `string` | `"1rem"` | CSS value for right offset. |
-| `zIndex` | `number` | `40` | z-index (below Dialog at 50). |
-| `safeArea` | `boolean` | `false` | Adds `env(safe-area-inset-bottom)` for iOS/Android. |
-| `className` | `string` | — | Extra Tailwind classes. |
+| `bottom` | `string` | `"1rem"` | Bottom offset. |
+| `right` | `string` | `"1rem"` | Right offset. |
+| `safeArea` | `boolean` | `false` | Adds iOS/Android safe area inset. |
+| `zIndex` | `number` | `40` | Stacking order. |

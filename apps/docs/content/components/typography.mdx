@@ -1,85 +1,113 @@
 ---
-title: "Typography"
-description: "MD3 Expressive provides 30 text styles powered by Google Sans Flex."
+title: Typography
+description: MD3 Expressive provides a comprehensive set of text styles powered by Google Sans Flex.
 ---
 
-MD3 Expressive provides 30 text styles — 15 baseline and 15 emphasized — powered by **Google Sans Flex**, a variable font with the `ROND` roundness axis set to maximum by default.
-
-## Baseline & Emphasized Styles
+Typography is a critical part of the MD3 Expressive system, providing a clear hierarchy and consistent voice across your application. It features 30 distinct styles powered by **Google Sans Flex**.
 
 <ComponentPreview name="typography-showcase" />
 
-## Text Component
+## Introduction
 
-The `Text` component is the recommended way to render MD3 Expressive typography. It automatically applies the correct styles and selects an appropriate HTML tag (e.g., `h1` for display variants, `p` for body) if the `as` prop is not provided.
+The MD3 Expressive Typography system is designed for maximum readability and brand expression. It leverages the **Google Sans Flex** variable font, which includes a unique `ROND` (Roundness) axis. By default, this axis is set to its maximum value, giving the typeface a friendly, modern, and organic feel that perfectly matches the MD3 Expressive aesthetic.
 
-<ComponentPreview name="text-basic" />
+## Type Hierarchy
 
-## ROND Playground
+The system is organized into five primary groups, each with three sizes (Small, Medium, Large) and two emphasis variants (Baseline and Emphasized):
+
+- **Display**: For high-impact, expressive text on landing pages or headers.
+- **Headline**: For primary section headings.
+- **Title**: For secondary headings and UI labels.
+- **Body**: For the main content text.
+- **Label**: For small UI annotations, captions, and buttons.
+
+## Features
+
+### Variable Font Axes
+
+Google Sans Flex allows you to fine-tune the character of your typography. The `ROND` axis controls the roundness of the glyphs, allowing you to transition from a sharp, technical look to a friendly, rounded aesthetic.
 
 <ComponentPreview name="typography-rond-playground" />
 
-## Configuration
+### Adaptive HTML Mapping
 
-### Via `MD3ThemeProvider` (Recommended)
+The `Text` component automatically selects the most semantic HTML tag based on the chosen variant (e.g., `DisplayLarge` maps to `h1`, while `BodyMedium` maps to `p`), though this can be overridden using the `as` prop.
 
-Typography is built into `MD3ThemeProvider`. You can customize the font family and variable font axes without any additional wrapper:
+<ComponentPreview name="text-basic" />
+
+## Usage
+
+### Basic Usage
 
 ```tsx
-import { MD3ThemeProvider } from "@bug-on/md3-react";
+import { Text } from "@bug-on/md3-react";
 
-// Default — Google Sans Flex, ROND = 100
-<MD3ThemeProvider sourceColor="#6750A4">
-  <App />
-</MD3ThemeProvider>
+<Text variant="displayLarge">Welcome back</Text>
+<Text variant="bodyMedium">This is your dashboard.</Text>
+```
 
-// Custom font
-<MD3ThemeProvider sourceColor="#6750A4" fontFamily="'Inter', sans-serif">
-  <App />
-</MD3ThemeProvider>
+### Customizing Typography
 
-// Half-rounded corners (ROND = 50)
-<MD3ThemeProvider sourceColor="#6750A4" fontVariationAxes={{ ROND: 50 }}>
+You can customize the global typography settings in the `MD3ThemeProvider`:
+
+```tsx
+<MD3ThemeProvider 
+  fontFamily="'Inter', sans-serif" 
+  fontVariationAxes={{ ROND: 50 }}
+>
   <App />
 </MD3ThemeProvider>
 ```
 
-### Advanced: Standalone `TypographyProvider`
+### Local Overrides
 
-For per-subtree font overrides (e.g., a specific section with a different typeface), use `TypographyProvider` directly:
+Use the `TypographyProvider` to override styles for a specific section of your app:
 
 ```tsx
-import { TypographyProvider, useTypography } from "@bug-on/md3-react";
-
-// Override font only within this subtree
-<TypographyProvider fontFamily="'Playfair Display', serif">
-  <ArticleSection />
+<TypographyProvider fontFamily="'Serif', serif">
+  <article>
+    <Text variant="titleLarge">Article Title</Text>
+    {/* ... */}
+  </article>
 </TypographyProvider>
-
-// Consume in any descendant
-function MyComponent() {
-  const typography = useTypography();
-  return <p style={typography.bodyLarge}>Hello world</p>;
-}
-
-// Override a single style via copy()
-const boldBody = typography.copy({ bodyLarge: { fontWeight: 700 } });
 ```
+
+## Best Practices
+
+### Dos
+- [ ] Use **Display** and **Headline** variants for high-level information and page headers.
+- [ ] Maintain a consistent hierarchy by following the established variant sizes.
+- [ ] Use **Emphasized** variants sparingly for text that needs significant attention.
+- [ ] Ensure that your chosen font family and axes maintain high readability across all devices.
+
+### Don'ts
+- [ ] Don't mix too many different font families; stick to one or two complementary ones.
+- [ ] Avoid using very small **Label** variants for long blocks of text.
+- [ ] Don't override typography styles on a per-element basis if they can be handled by the global theme.
+
+## Accessibility
+
+- **Legibility**: MD3 Expressive styles are pre-configured with optimal line heights and letter spacing.
+- **Semantics**: The `Text` component helps maintain a correct document structure for screen readers.
+- **Scaling**: All styles use relative units (rem/em) to respect user-level font size preferences.
 
 ## API Reference
+
+### Text
+
+The primary component for rendering typography.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `string` | `"bodyMedium"` | The typography style variant. |
+| `as` | `ElementType` | `auto` | Override the HTML tag. |
+| `color` | `string` | — | Text color override. |
+| `weight` | `number \| string` | — | Font weight override. |
+| `className` | `string` | — | Custom classes. |
 
 ### MD3ThemeProvider Typography Props
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `fontFamily` | `string` | `'Google Sans Flex', system-ui, sans-serif` | Override the CSS `font-family` for all type styles. |
-| `fontVariationAxes` | `FontVariationAxes` | `{ ROND: 100 }` | Variable font axis settings (e.g., `{ ROND: 50 }` for half-rounded). |
-| `typography` | `Typography` | MD3 defaults | A fully custom `Typography` instance. When provided, `fontFamily` and `fontVariationAxes` are ignored. |
-
-### TypographyProvider Props (Standalone / Advanced)
-
-| Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `fontFamily` | `string` | `'Google Sans Flex', system-ui, sans-serif` | The font family string. |
-| `fontVariationAxes` | `FontVariationAxes` | `{ ROND: 100 }` | Settings for variable font axes like roundness. |
-| `typography` | `Typography` | MD3 Defaults | A fully custom Typography instance. |
+|------|------|---------|-------------|
+| `fontFamily` | `string` | — | Global font family. |
+| `fontVariationAxes` | `object` | `{ ROND: 100 }` | Global variable font axes. |

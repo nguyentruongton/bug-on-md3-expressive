@@ -109,6 +109,7 @@ export const componentCategories = [
 				description:
 					"Navigation bars let people switch between UI views on smaller devices",
 				icon: "bottom_panel_open",
+				href: "/components/navigation-bar",
 			},
 			{
 				name: "Navigation drawer",

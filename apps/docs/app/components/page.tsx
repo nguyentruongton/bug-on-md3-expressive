@@ -36,7 +36,9 @@ export default function ComponentsOverviewPage() {
 
 			{/* Components Grid */}
 			<div className="px-6 md:px-8 lg:px-20 py-12 md:py-16 max-w-400 mx-auto">
-				{componentCategories.map((category) => (
+				{componentCategories
+					.filter((category) => category.title !== "Get Started")
+					.map((category) => (
 					<section key={category.title} className="mb-16 md:mb-20">
 						<h2 className="text-2xl md:text-[32px] font-normal text-[#1D192B] mb-8 md:mb-10">
 							{category.title}

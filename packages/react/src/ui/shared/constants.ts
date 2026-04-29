@@ -57,7 +57,7 @@ export const SPRING_TRANSITION: Transition = {
  */
 export const SPRING_TRANSITION_EXPRESSIVE: Transition = {
 	type: "spring",
-	bounce: 0.35,
+	bounce: 0.45,
 	duration: 0.4,
 } as const;
 

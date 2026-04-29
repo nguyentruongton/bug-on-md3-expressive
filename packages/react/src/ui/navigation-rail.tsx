@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import { AnimatePresence, domMax, LazyMotion, m } from "motion/react";
+import { AnimatePresence, domMax, LazyMotion, m, type Transition } from "motion/react";
 import * as React from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../lib/utils";
@@ -15,7 +15,7 @@ import { TouchTarget } from "./shared/touch-target";
 // Types & Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type NavigationRailVariant = "collapsed" | "expanded" | "modal";
+export type NavigationRailVariant = "collapsed" | "expanded" | "modal" | "xr";
 export type NavigationRailLabelVisibility = "labeled" | "auto" | "unlabeled";
 
 export interface NavigationRailItemProps {
@@ -34,11 +34,12 @@ export interface NavigationRailProps {
 	labelVisibility?: NavigationRailLabelVisibility;
 	header?: React.ReactNode;
 	fab?: React.ReactNode;
+	fabPlacement?: "contained" | "spatialized";
 	footer?: React.ReactNode;
 	narrow?: boolean;
 	open?: boolean;
-	xr?: boolean | "contained" | "spatialized";
 	onClose?: () => void;
+	activeIndicatorTransition?: Transition;
 	children: React.ReactNode;
 	className?: string;
 	style?: React.CSSProperties;
@@ -47,8 +48,8 @@ export interface NavigationRailProps {
 const NavigationRailContext = React.createContext<{
 	variant: NavigationRailVariant;
 	labelVisibility: NavigationRailLabelVisibility;
-	xr: boolean;
-}>({ variant: "collapsed", labelVisibility: "labeled", xr: false });
+	activeIndicatorTransition?: Transition;
+}>({ variant: "collapsed", labelVisibility: "labeled" });
 
 const MD3_MODAL_TRANSITION = {
 	type: "tween",
@@ -65,18 +66,15 @@ const railContainerVariants = cva(
 	{
 		variants: {
 			variant: {
-				collapsed: "items-center",
-				expanded: "items-start",
+				collapsed: "items-center h-full pt-11 pb-4 shadow-none bg-m3-surface rounded-none",
+				expanded: "items-start h-full pt-11 pb-4 shadow-none bg-m3-surface rounded-none",
 				modal:
-					"bg-m3-surface shadow-lg rounded-r-[var(--m3-shape-corner-large)]",
+					"bg-m3-surface shadow-lg rounded-r-[var(--m3-shape-corner-large)] h-full pt-11 pb-4",
+				xr: "h-fit py-5 rounded-[48px] shadow-xl bg-m3-surface border border-white/5",
 			},
 			narrow: {
 				true: "w-20",
 				false: "w-24",
-			},
-			xr: {
-				true: "h-fit py-5 rounded-[48px] shadow-xl bg-m3-surface border border-white/5",
-				false: "h-full pt-11 pb-4 shadow-none bg-m3-surface rounded-none",
 			},
 		},
 		compoundVariants: [
@@ -86,7 +84,6 @@ const railContainerVariants = cva(
 		defaultVariants: {
 			variant: "collapsed",
 			narrow: false,
-			xr: false,
 		},
 	},
 );
@@ -136,6 +133,8 @@ interface ActivePillProps {
 }
 
 function ActivePill({ layoutId, disableInitial = false }: ActivePillProps) {
+	const { activeIndicatorTransition } = React.useContext(NavigationRailContext);
+
 	return (
 		<m.div
 			layoutId={layoutId}
@@ -144,7 +143,7 @@ function ActivePill({ layoutId, disableInitial = false }: ActivePillProps) {
 			initial={disableInitial ? false : { opacity: 0, scale: 0.5 }}
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.15 } }}
-			transition={SPRING_TRANSITION_EXPRESSIVE}
+			transition={activeIndicatorTransition || SPRING_TRANSITION_EXPRESSIVE}
 		/>
 	);
 }
@@ -431,11 +430,12 @@ const NavigationRailComponent = React.forwardRef<
 			labelVisibility = "labeled",
 			header,
 			fab,
+			fabPlacement = "contained",
 			footer,
 			narrow = false,
 			open = false,
-			xr = false,
 			onClose,
+			activeIndicatorTransition,
 			children,
 			className,
 			style,
@@ -443,9 +443,8 @@ const NavigationRailComponent = React.forwardRef<
 		ref,
 	) => {
 		const isModal = variant === "modal";
-		const isXr = xr === true || xr === "contained" || xr === "spatialized";
-		const xrMode = xr === "spatialized" ? "spatialized" : "contained";
-		const isSpatial = isXr && xrMode === "spatialized";
+		const isXr = variant === "xr";
+		const isSpatial = isXr && fabPlacement === "spatialized";
 		const applyAnimation = !isXr || !isSpatial;
 
 		const navRef = React.useRef<HTMLElement>(null);
@@ -461,13 +460,13 @@ const NavigationRailComponent = React.forwardRef<
 		);
 
 		const navBaseClasses = cn(
-			railContainerVariants({ variant, narrow, xr: isXr }),
+			railContainerVariants({ variant, narrow }),
 		);
 		const modalPositioning = isModal ? "fixed left-0 top-0 z-[100]" : "";
 
 		const navHeaderSpacing = (() => {
 			if (!isXr) return "mb-6 min-h-10";
-			if (xrMode === "contained") return fab ? "mb-10" : "mb-5";
+			if (fabPlacement === "contained") return fab ? "mb-10" : "mb-5";
 			return "mb-5";
 		})();
 
@@ -564,7 +563,7 @@ const NavigationRailComponent = React.forwardRef<
 
 		const finalNavElement = isSpatial ? spatialWrapper : navElement;
 
-		const contextValue = { variant, labelVisibility, xr: isXr };
+		const contextValue = { variant, labelVisibility, activeIndicatorTransition };
 
 		if (isModal) {
 			if (typeof document === "undefined") return null;

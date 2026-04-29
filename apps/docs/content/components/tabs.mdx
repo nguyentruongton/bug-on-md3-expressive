@@ -7,123 +7,128 @@ Tabs facilitate the organization of content into clear sections without requirin
 
 <ComponentPreview name="tabs-primary" />
 
-## Secondary Tabs
+## Introduction
 
-Secondary Tabs feature a divider line at the base of the tab bar and an indicator that spans the full width of the tab. These are ideal for peer-level content or related filters. According to MD3 specifications, Secondary Tabs typically utilize text-only labels or **inline icons**.
+The MD3 Expressive Tab component is designed for high-density navigation. It provides a clear visual hierarchy for switching between views within the same context. It supports both high-emphasis (Primary) and medium-emphasis (Secondary) styles, and is built on top of Radix UI's Tabs primitives for a reliable foundation.
+
+## Anatomy
+
+- **Tab Bar**: The horizontal container for the tab list.
+- **Tab Item**: An individual destination, containing a label and an optional icon.
+- **Active Indicator**: A horizontal line that highlights the currently selected tab.
+- **Badge (Optional)**: A small indicator for counts or status updates attached to a tab.
+- **Content Panel**: The area that displays the content associated with the active tab.
+
+## Variants
+
+### Primary Tabs
+
+Primary tabs use a short indicator line that matches the width of the content (icon or label). They are typically used for the main navigation within a view.
+
+<ComponentPreview name="tabs-primary" />
+
+### Secondary Tabs
+
+Secondary tabs use a full-width indicator line and include a divider at the base. They are used for sub-navigation or filtering content within a primary tab.
 
 <ComponentPreview name="tabs-secondary" />
 
-## Tabs with Badges
+## Features
 
-You can attach a **Badge** to any Tab to communicate status or notification counts. 
-- For **Primary Tabs** (stacked icons): The Badge is automatically positioned at the top-trailing corner of the icon.
-- For **Inline Icons** or **Text-only labels**: The Badge is displayed immediately following the label with a standard 4dp offset.
+### Icons & Layouts
 
-<ComponentPreview name="tabs-badges" />
-
-## Inline Icons
-
-By default, if an icon is provided, the Tab displays it above the label (stacked), increasing the height to 64dp. Set the `inlineIcon={true}` prop to align the icon horizontally with the label, maintaining a compact 48dp height.
+Tabs support two icon layouts:
+- **Stacked**: Icon appears above the label (64dp height).
+- **Inline**: Icon appears next to the label (48dp height). Use the `inlineIcon` prop to enable this.
 
 <ComponentPreview name="tabs-inline-icon" />
 
-## Scrollable Tabs
+### Scrollable Tabs
 
-When the number of tabs exceeds the container width, enable `scrollable={true}` to allow horizontal scrolling. The MD3 specification requires 52px of edge padding. The system automatically scrolls the selected tab into view.
+When the number of tabs exceeds the available horizontal space, set `scrollable={true}`. The system handles the scroll-into-view behavior for active tabs automatically.
 
 <ComponentPreview name="tabs-scrollable-primary" />
-<ComponentPreview name="tabs-scrollable-secondary" />
 
-## Disabled Tabs
+### Integrated Badges
 
-Disabled tabs cannot be clicked or focused via keyboard. The roving tabindex system automatically skips these tabs during arrow key navigation.
+Badges are automatically positioned based on the tab layout (stacked vs inline).
 
-<ComponentPreview name="tabs-disabled-primary" />
-<ComponentPreview name="tabs-disabled-secondary" />
+<ComponentPreview name="tabs-badges" />
 
 ## Usage
 
+### Basic Usage
+
 ```tsx
-import { Tabs, TabsList, Tab, TabsContent, Badge, Icon } from "@bug-on/md3-react";
+import { 
+  Tabs, 
+  TabsList, 
+  Tab, 
+  TabsContent 
+} from "@bug-on/md3-react";
 
-// Primary with Badge and Stacked Icon
-<Tabs defaultValue="mail">
-  <TabsList variant="primary">
-    <Tab value="mail" icon={<Icon name="mail" />} badge={<Badge>12</Badge>}>
-      Mail
-    </Tab>
-    <Tab value="chat" icon={<Icon name="chat" />}>
-      Chat
-    </Tab>
-  </TabsList>
-  <TabsContent value="mail">Mail content...</TabsContent>
-</Tabs>
-
-// Secondary with Inline Icon
-<Tabs autoActivate defaultValue="all">
-  <TabsList variant="secondary">
-    <Tab value="all">All</Tab>
-    <Tab value="starred" icon={<Icon name="star" />} inlineIcon badge={<Badge />}>
-      Starred
-    </Tab>
-  </TabsList>
-  <TabsContent value="all">Messages content...</TabsContent>
-</Tabs>
+export function Example() {
+  return (
+    <Tabs defaultValue="home">
+      <TabsList variant="primary">
+        <Tab value="home">Home</Tab>
+        <Tab value="profile">Profile</Tab>
+        <Tab value="settings">Settings</Tab>
+      </TabsList>
+      <TabsContent value="home">Home view...</TabsContent>
+      <TabsContent value="profile">Profile view...</TabsContent>
+      <TabsContent value="settings">Settings view...</TabsContent>
+    </Tabs>
+  );
+}
 ```
 
-## Primary vs Secondary Usage
+## Best Practices
 
-| | Primary | Secondary |
-|---|---|---|
-| **Indicator** | Matches content width (min 24dp) | Spans full tab width |
-| **Indicator Shape** | Top rounded `3px 3px 0 0` | Top rounded `3px 3px 0 0` |
-| **Indicator Height** | `3dp` | `2dp` |
-| **Divider** | None | Feature a bottom divider line |
-| **Active Text Color** | `primary` | `on-surface` |
-| **Best For** | High-level navigation, categorical selection | Filters, sub-sections |
+### Dos
+- [ ] Use Primary tabs for the main categorical navigation on a page.
+- [ ] Use Secondary tabs for sub-sections or filters.
+- [ ] Keep labels short and descriptive.
+- [ ] Group tabs logically and order them by importance or frequency of use.
+
+### Don'ts
+- [ ] Don't use tabs for navigation that takes the user to a completely different page (use a Navigation Rail or Bar instead).
+- [ ] Don't stack multiple levels of tabs (e.g., Primary tabs inside Primary tabs).
+- [ ] Avoid using more than 6-7 tabs in a non-scrollable list.
 
 ## Accessibility
 
-- `<TabsList>` utilizes `role="tablist"` – mandated by WAI-ARIA.
-- **Roving tabindex**: Automatically manages focus, skipping disabled tabs.
-- **RTL Support**: Inverts arrow key directions automatically when `dir="rtl"` is detected.
-- **Auto-activate**: Supports selection immediately upon focus via the `autoActivate` prop.
+- **Keyboard**: Uses a **roving tabindex**. Navigate with Left/Right Arrow keys.
+- **Roles**: Correctly implements `role="tablist"`, `role="tab"`, and `role="tabpanel"`.
+- **States**: Uses `aria-selected` and `aria-controls` to link tabs to their content.
+- **RTL**: Automatically flips navigation directions in right-to-left layouts.
 
 ## API Reference
 
 ### Tabs
 
+Root container.
+
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | — | Controlled active tab value. |
-| `defaultValue` | `string` | — | Initial value for uncontrolled mode. Defaults to the first non-disabled tab. |
-| `onValueChange` | `(value: string) => void` | — | Callback fired when the active tab changes. |
-| `autoActivate` | `boolean` | `false` | If enabled, the tab is selected immediately upon keyboard focus. |
-| `className` | `string` | — | Custom CSS class. |
+| `value` | `string` | — | Controlled value. |
+| `defaultValue` | `string` | — | Initial value. |
+| `onValueChange` | `(val: string) => void` | — | Value change callback. |
+| `autoActivate` | `boolean` | `false` | Activates tab on focus. |
 
 ### TabsList
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `"primary" \| "secondary"` | — | **Required**. Visual style of the tab bar. |
-| `scrollable` | `boolean` | `false` | Enables horizontal scrolling with 52px edge padding. |
-| `backgroundColor` | `string` | — | Background color of the tab bar. |
-| `className` | `string` | — | Custom CSS class. |
+| `variant` | `"primary" \| "secondary"` | — | **Required.** Visual style. |
+| `scrollable` | `boolean` | `false` | Enables horizontal scrolling. |
 
 ### Tab
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | — | **Required**. Unique identifier for the tab. |
-| `icon` | `ReactNode` | — | Icon displayed alongside the label. |
-| `inlineIcon` | `boolean` | `false` | If enabled, aligns the icon horizontally with the text (maintains 48dp height). |
-| `badge` | `ReactNode` | — | Badge displayed on the tab to communicate status/notifications. |
-| `disabled` | `boolean` | `false` | Disables interaction and navigation. |
-| `className` | `string` | — | Custom CSS class. |
-
-### TabsContent
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | — | **Required**. Must match the `value` of the corresponding `<Tab>`. |
-| `className` | `string` | — | Custom CSS class for the content panel. |
+| `value` | `string` | — | **Required.** Unique tab identifier. |
+| `icon` | `ReactNode` | — | Optional icon. |
+| `inlineIcon` | `boolean` | `false` | Align icon horizontally. |
+| `badge` | `ReactNode` | — | Optional Badge component. |
+| `disabled` | `boolean` | `false` | Disables tab. |

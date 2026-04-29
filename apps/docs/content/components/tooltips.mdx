@@ -7,107 +7,124 @@ Tooltips provide auxiliary information regarding the functionality or state of a
 
 <ComponentPreview name="tooltip-basic" />
 
-## Plain Tooltips
+## Introduction
 
-Plain tooltips provide succinct descriptions for interface elements. They are best utilized for labeling icons or providing brief contextual information that does not require user interaction.
+The MD3 Expressive Tooltip is designed to provide contextual help without cluttering the interface. It supports both brief informative labels and rich content with interactive elements. With spring-based motion and smart positioning, tooltips feel responsive and remain accessible across desktop and mobile devices.
 
-- **Placement**: Automatically toggles between top, bottom, left, and right based on available viewport space.
-- **Activation**: Responds to `hover`, `focus`, and `long-press` (for mobile/touch devices).
-- **Global Exclusivity**: Only one tooltip can be active at a time across the entire application.
+## Anatomy
 
-## Rich Tooltips
+- **Anchor**: The UI element that triggers the tooltip (e.g., a button or icon).
+- **Container**: The surface holding the tooltip content.
+- **Caret (Optional)**: A small arrow pointing from the tooltip to the anchor.
+- **Title (Rich Variant)**: A bold heading for the tooltip.
+- **Body / Content**: The primary text or descriptive message.
+- **Actions (Rich Variant)**: Optional buttons for users to take further action.
 
-Rich tooltips offer more detailed information and can include a title, body text, and up to two interactive buttons.
+## Variants
+
+### Plain Tooltips
+
+The most common variant, used for brief labels or descriptions (e.g., labeling an icon-only button).
+
+<ComponentPreview name="tooltip-basic" />
+
+### Rich Tooltips
+
+Used for more complex information. They can include a title, detailed body text, and interactive buttons.
 
 <ComponentPreview name="tooltip-rich" />
 
-- **Actions**: Supports interactive elements such as buttons for further navigation or confirmation.
-- **Persistence**: Rich tooltips can be configured to remain visible until explicitly dismissed or after a custom duration.
-- **Caret**: An optional directional arrow (caret) can be enabled to point specifically at the anchor element.
+## Features
 
-## Triggers
+### Smart Positioning
 
-Tooltips support various trigger types to accommodate different usage contexts:
+The `TooltipBox` automatically calculates the best position (top, bottom, left, right) based on the anchor's location and available viewport space.
 
-| Trigger | Behavior |
-|---------|---------|
-| `hover` | Displays after a delay (default 400ms) on mouse entry. Remains visible when transitioning from the anchor to the tooltip content. |
-| `focus` | Displays immediately when the element receives keyboard focus. |
-| `long-press` | Displays after a sustained press (500ms) on touch screens. |
-| `click` | Displays upon click (commonly used for Rich Tooltips requiring interaction). |
+### Interaction Triggers
 
-> [!TIP]
-> **Hover Intent**: When utilizing the `hover` trigger, the tooltip does not dismiss immediately upon mouse exit from the anchor. It waits for a specific duration (`hideDelay`) to allow the user to move the cursor into Rich Tooltips containing interactive action buttons.
+Tooltips can be triggered by:
+- **Hover**: Standard desktop behavior.
+- **Focus**: For keyboard accessibility.
+- **Long-press**: For touch devices.
+- **Click**: Typically for Rich tooltips that require user interaction.
 
 <ComponentPreview name="tooltip-interaction" />
 
 ## Usage
 
+### Basic Plain Tooltip
+
 ```tsx
-import { 
-  Button, 
-  TooltipBox, 
-  PlainTooltip, 
-  RichTooltip 
-} from "@bug-on/md3-react";
+import { TooltipBox, PlainTooltip, Button, Icon } from "@bug-on/md3-react";
 
-// Basic Plain Tooltip
-<TooltipBox tooltip={<PlainTooltip>Save to cloud</PlainTooltip>}>
-  <Button icon={<Icon name="cloud_upload" />} />
+<TooltipBox tooltip={<PlainTooltip>Send Message</PlainTooltip>}>
+  <Button icon={<Icon name="send" />} />
 </TooltipBox>
+```
 
-// Rich Tooltip with Action
+### Rich Tooltip with Actions
+
+```tsx
 <TooltipBox
   tooltip={
     <RichTooltip
       title="Permissions Required"
       action={<Button colorStyle="text">Settings</Button>}
     >
-      This action requires location access to function correctly.
+      Please enable camera access in your system settings.
     </RichTooltip>
   }
 >
-  <Button>Enable Location</Button>
+  <Button>Take Photo</Button>
 </TooltipBox>
 ```
 
+## Best Practices
+
+### Dos
+- [ ] Use tooltips for icon-only buttons.
+- [ ] Keep tooltip text brief and helpful.
+- [ ] Use Rich tooltips for information that requires context or further action.
+- [ ] Ensure tooltips don't obscure critical information.
+
+### Don'ts
+- [ ] Don't use tooltips to display essential information that should be always visible.
+- [ ] Don't use tooltips for large amounts of text; use a Dialog or a dedicated help page instead.
+- [ ] Avoid putting too many interactive elements inside a Rich tooltip.
+
 ## Accessibility
 
-- **ARIA Role**: Tooltips utilize `role="tooltip"` and are automatically linked to the anchor element via `aria-describedby`.
-- **Keyboard Navigation**: Tooltips appear on `focus` and can be dismissed using the `Escape` key. If a `click` trigger is used, users can activate it via `Enter` or `Space`.
-- **Touch Support**: On mobile devices, tooltips respond to `long-press` interactions to avoid conflicts with scroll gestures.
-- **Reduced Motion**: Adheres to the system-level `prefers-reduced-motion` setting, transitioning from spring-based scaling to a simple fade effect.
+- **Roles**: Automatically applies `role="tooltip"`.
+- **Linking**: Links the anchor to the tooltip via `aria-describedby`.
+- **Keyboard**: Fully accessible via `focus`. `Esc` key dismisses the tooltip.
+- **Motion**: Respects `prefers-reduced-motion` settings.
 
 ## API Reference
 
 ### TooltipBox
 
-The wrapper component governing positioning, portal rendering, and interaction triggers.
+The wrapper that handles positioning and triggers.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `tooltip` | `ReactNode` | — | Tooltip content (typically `PlainTooltip` or `RichTooltip`). |
-| `placement` | `TooltipPlacement` | `"top"` | Preferred positioning: `"top" | "bottom" | "left" | "right" | "auto"`. |
-| `trigger` | `TooltipTrigger[]` | `["hover", "focus"]` | Array of triggers: `"hover" | "focus" | "long-press" | "click"`. |
-| `spacingFromAnchor` | `number` | `4` | Spacing (in pixels) between the anchor and the tooltip. |
-| `disabled` | `boolean` | `false` | If true, the tooltip will not be displayed. |
-| `showDelay` | `number` | `400` | Delay (ms) before the tooltip appears on hover. |
-| `hideDelay` | `number` | `200` | Delay (ms) before the tooltip hides after the mouse exits the interaction zone. |
+| `tooltip` | `ReactNode` | — | **Required.** Tooltip content. |
+| `placement` | `string` | `"top"` | Preferred position. |
+| `trigger` | `string[]` | `["hover", "focus"]` | Interaction triggers. |
+| `disabled` | `boolean` | `false` | Disables the tooltip. |
+| `showDelay` | `number` | `400` | Delay before showing (ms). |
+| `hideDelay` | `number` | `200` | Delay before hiding (ms). |
 
 ### PlainTooltip
 
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `caret` | `CaretConfig` | `{ enabled: false }` | Configuration for the optional directional caret. |
-| `containerColor` | `string` | — | Background color override. |
-| `textColor` | `string` | — | Text color override. |
+| `caret` | `object` | `{ enabled: false }` | Caret configuration. |
+| `containerColor` | `string` | — | Custom background color. |
 
 ### RichTooltip
 
-Content-rich variant with title and interactive buttons.
-
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `ReactNode` | — | Optional header title. |
-| `action` | `ReactNode` | — | Optional interactive buttons. |
-| `caret` | `CaretConfig` | — | Configuration for the optional directional caret. |
-| `colors` | `RichTooltipColors` | — | Color overrides for individual elements (container, title, body, action). |
+| `title` | `ReactNode` | — | Optional title. |
+| `action` | `ReactNode` | — | Optional buttons. |
+| `caret` | `object` | — | Caret configuration. |
