@@ -1,5 +1,15 @@
 # @bug-on/md3-react
 
+## 3.0.2
+
+### Patch Changes
+
+- **Motion**: Improved `SPRING_TRANSITION_EXPRESSIVE` with a stronger bounce (0.35 → 0.45) to match MD3 Expressive standards.
+- **Navigation**: Added `activeIndicatorTransition` prop to `NavigationBar` and `NavigationRail` for custom spring configuration.
+- **Navigation**: Enhanced active indicator pill with a stronger "pop" scale animation.
+- **Documentation**: Added custom animation examples for Navigation components and updated API references.
+- **AI Context**: Updated `llms.txt` and `llms-full.txt` with the latest motion specs and Navigation Bar reference.
+
 ## 3.0.1
 
 ### Patch Changes
