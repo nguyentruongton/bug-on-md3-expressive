@@ -196,6 +196,14 @@ export {
 	VerticalMenuGroup,
 	VIBRANT_COLORS,
 } from "./ui/menu";
+// Navigation Bar
+export type {
+	NavigationBarItemProps,
+	NavigationBarItemLayout,
+	NavigationBarProps,
+	NavigationBarVariant,
+} from "./ui/navigation-bar";
+export { NavigationBar, NavigationBarItem } from "./ui/navigation-bar";
 // Navigation Rail
 export type {
 	NavigationRailItemProps,

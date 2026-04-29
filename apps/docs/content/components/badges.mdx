@@ -1,44 +1,102 @@
 ---
-title: "Badges"
-description: "Badges display status or notify users of new information, typically at the top-trailing corner of an icon."
+title: Badges
+description: Badges display status or notify users of new information, typically at the top-trailing corner of an icon.
 ---
 
 Badges are used to show a notification, a count, or a status indicator attached to another object (like a navigation rail item, a tab, or an icon button).
 
-## Dot Badge (Decorative)
+<ComponentPreview name="badge-dot" />
 
-When used without children, a badge renders as a small indicator dot of `6x6px`. These dots are decorative by default (`aria-hidden="true"`), so you should provide an `aria-label` to ensure accessibility if the presence of the dot carries meaning.
+## Introduction
+
+The MD3 Expressive Badge is a compact status indicator. It can be used as a simple decorative dot to signal new activity, or as a container for numerical counts (e.g., unread messages). Integrated with Framer Motion, badges appear and disappear with a smooth spring-based scaling animation.
+
+## Anatomy
+
+- **Container**: A rounded surface that holds the content. Uses the theme's error color roles by default for maximum visibility.
+- **Content (Optional)**: A number or brief text string. If omitted, the badge renders as a small dot.
+- **Anchor (via BadgedBox)**: The underlying element the badge is attached to.
+
+## Variants
+
+### Small (Dot) Badge
+
+A small, purely visual indicator (6x6dp) used to signal that something has changed without providing a specific count.
 
 <ComponentPreview name="badge-dot" />
 
-## Count & Text Badges
+### Large (Count) Badge
 
-When a badge is given content, it expands to accommodate the text. A large badge has a minimum height of `16px` and truncated string formatting.
-Numeric values exceeding the `max` prop will be displayed as `{max}+`.
+A larger container (16dp height) that holds numeric or text content. It expands horizontally to fit the content.
 
 <ComponentPreview name="badge-count" />
 
-## Interactive State & Animation
+## Features
 
-Because the `Badge` uses Framer Motion, it natively supports spring animations on mount and unmount when rendered conditionally. Adding or removing a badge from the DOM directly provides a smooth appearance.
+### Max Count Handling
+
+For numeric badges, you can set a `max` value (e.g., 99). If the count exceeds this value, the badge will automatically display as "99+".
+
+### BadgedBox Wrapper
+
+The `BadgedBox` component makes it easy to attach a badge to any element. it handles the absolute positioning and offsets automatically.
 
 <ComponentPreview name="badge-interactive" />
+
+## Usage
+
+### Simple Dot Badge
+
+```tsx
+import { Badge, BadgedBox, IconButton, Icon } from "@bug-on/md3-react";
+
+<BadgedBox badge={<Badge />}>
+  <IconButton icon={<Icon name="notifications" />} />
+</BadgedBox>
+```
+
+### Numeric Badge with Max Count
+
+```tsx
+<BadgedBox badge={<Badge max={99}>{150}</Badge>}>
+  <IconButton icon={<Icon name="mail" />} />
+</BadgedBox>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use badges to provide time-sensitive or important status updates.
+- [ ] Keep badge content very short (typically numbers or 1-2 characters).
+- [ ] Use the `max` prop to prevent badges from becoming too wide.
+- [ ] Place badges in the top-trailing corner of the anchor element.
+
+### Don'ts
+- [ ] Don't use badges for information that isn't urgent or secondary.
+- [ ] Don't put long words or sentences inside a badge.
+- [ ] Avoid using too many badges on a single screen, as it can be visually overwhelming.
+
+## Accessibility
+
+- **Decorative Dots**: If a badge is just a dot, ensure the anchor has an `aria-label` that includes the status (e.g., "Notifications (new)").
+- **Screen Readers**: Badges with content are read alongside the anchor's text.
+- **Motion**: Scaling animations respect `prefers-reduced-motion` settings.
 
 ## API Reference
 
 ### Badge
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `children` | `ReactNode` | | The content inside the badge. If omitted, renders a small dot. |
-| `max` | `number` | | The maximum value to display. If number exceeds max, appears as `{max}+`. |
-| `containerColor` | `string` | MD3 `error` | Optional custom background color override. |
-| `contentColor` | `string` | MD3 `on-error` | Optional custom text color override. |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Badge content. If omitted, renders a dot. |
+| `max` | `number` | — | Maximum value to display before appending "+". |
+| `containerColor` | `string` | — | Custom background color. |
+| `contentColor` | `string` | — | Custom text color. |
 
 ### BadgedBox
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `badge` | `ReactNode` | | The badge to render. |
-| `children` | `ReactNode` | | The anchor element to attach the badge to. |
-| `badgeSize`| `'small' \| 'large'` | auto | Explicitly sets badge offsets. By default, Auto-detected from badge content. |
+|------|------|---------|-------------|
+| `badge` | `ReactNode` | — | **Required.** The badge component. |
+| `children` | `ReactNode` | — | **Required.** The anchor element. |
+| `badgeSize`| `"small" \| "large"` | `auto` | Force offset calculation for a specific size. |

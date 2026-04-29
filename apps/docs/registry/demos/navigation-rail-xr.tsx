@@ -11,7 +11,7 @@ export default function NavigationRailXRDemo() {
 
 			<div className="relative z-10 flex h-full w-full">
 				{/* The XR Rail */}
-				<NavigationRail variant="collapsed" xr="contained">
+				<NavigationRail variant="xr" fabPlacement="contained">
 					<NavigationRailItem
 						icon={<Icon name="home" />}
 						label="Home"

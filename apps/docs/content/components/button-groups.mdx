@@ -1,55 +1,105 @@
 ---
-title: "Button Groups"
-description: "Button groups allow users to group related actions or selections."
+title: Button Groups
+description: Button groups allow users to group related actions or selections.
 ---
 
 Button groups allow users to group related actions or selections. They come in two primary flavors: **Standard** (spaced) and **Connected** (segmented).
 
-## Standard Variant
+<ComponentPreview name="button-group-standard" />
 
-The standard variant maintains a gap between buttons. In horizontal orientation, it features a unique **fluid expansion effect** where the pressed button expands slightly while others contract, creating a highly expressive interaction.
+## Introduction
+
+The MD3 Expressive Button Group is a layout component that unifies related actions. It supports two distinct visual styles: **Standard**, which maintains individual button identities with expressive motion, and **Connected** (Segmented Buttons), which joins buttons into a single, cohesive unit. This component is ideal for toggling between views, filtering content, or grouping primary actions.
+
+## Anatomy
+
+- **Container**: The wrapper that manages the layout and spacing of the buttons.
+- **Buttons**: The individual interactive elements within the group.
+- **Dividers (Connected Variant)**: Thin lines that separate segments within a unified container.
+- **Active Indicator (Segmented)**: A visual highlight (often with a checkmark) for the currently selected option.
+
+## Variants
+
+### Standard Group
+
+Individual buttons placed together with a specific gap. In the expressive version, buttons feature a "fluid expansion" effect where the active button expands slightly while others contract.
 
 <ComponentPreview name="button-group-standard" />
 
-## Connected Variant
+### Connected Group (Segmented Buttons)
 
-Connected groups (also known as Segmented Buttons) join buttons together for a seamless look. Roundness is automatically removed from inner corners to create a unified component.
+Buttons are joined together, sharing boundaries. This variant is typically used for selection (e.g., switching between Day, Week, and Month views).
 
 <ComponentPreview name="button-group-connected" />
 
-## Orientation
+## Features
 
-Both variants support horizontal and vertical orientations.
+### Orientation
+
+Supports both horizontal and vertical layouts. Vertical groups are useful for toolbars or sidebars.
 
 <ComponentPreview name="button-group-orientation" />
 
-## Practical Use Cases
+### Expressive Width Morphing
 
-Explore various ways to combine buttons within a group.
+In standard horizontal groups, the pressed button expands its width using a spring animation, providing a high-fidelity tactile response.
 
-<ComponentPreview name="button-group-use-cases" />
+### Selection with Checkmarks
 
-## Usage Guidelines
+For Segmented Buttons, you can enable a checkmark icon that appears when a segment is selected, further reinforcing the state.
 
-### When to use
-- To switch between different views of the same data (e.g., Map vs. List).
-- To filter content based on mutually exclusive categories.
-- To group related actions that affect a specific object or area.
+## Usage
 
-### Best practices
-- Keep the number of segments between 2 and 5 for optimal usability.
-- Ensure text labels are concise and clearly differentiate the options.
-- Clearly indicate the selected state using visual contrast or the `toggle` variant.
-- Use **Standard** variant for distinctive actions and **Connected** variant for choosing options (Segmented Buttons).
+### Basic Standard Group
+
+```tsx
+import { ButtonGroup, Button } from "@bug-on/md3-react";
+
+<ButtonGroup variant="standard">
+  <Button>Cancel</Button>
+  <Button colorStyle="filled">Save Changes</Button>
+</ButtonGroup>
+```
+
+### Segmented Buttons for Selection
+
+```tsx
+<ButtonGroup variant="connected" showCheck>
+  <Button selected>List View</Button>
+  <Button>Grid View</Button>
+  <Button>Map View</Button>
+</ButtonGroup>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Group related actions that belong together in the user flow.
+- [ ] Use **Connected** (Segmented) buttons for switching between mutually exclusive options.
+- [ ] Keep the number of buttons in a group between 2 and 5.
+- [ ] Use consistent button styles (e.g., all Tonal or all Outlined) within a group.
+
+### Don'ts
+- [ ] Don't group unrelated actions together just to save space.
+- [ ] Don't use a button group if the actions take the user to completely different parts of the application (use a Menu or Navigation instead).
+- [ ] Avoid mixing different button heights within the same group.
+
+## Accessibility
+
+- **Roles**: Automatically applies `role="group"`.
+- **Focus Management**: Buttons are individually focusable via `Tab`.
+- **Keyboard**: Standard button interaction applies. For selection groups, the `aria-pressed` state is managed.
+- **Motion**: Morphing and selection animations respect `prefers-reduced-motion`.
 
 ## API Reference
 
 ### ButtonGroup
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `variant` | `'standard' \| 'connected'` | `'standard'` | The visual style of the group. Connected joins buttons together. |
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | The direction the buttons are laid out. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | The size of the buttons in the group. Passes down to children. |
-| `showCheck` | `boolean` | `false` | For connected variant: whether to show a check icon on selected items. |
-| `morphingWidth` | `boolean` | `true` | For standard horizontal: enables the width morphing effect on press. |
+|------|------|---------|-------------|
+| `variant` | `"standard" \| "connected"` | `"standard"` | Visual style. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout direction. |
+| `size` | `"sm" \| "md" \| "lg"` | `"sm"` | Size of children buttons. |
+| `showCheck` | `boolean` | `false` | (Connected) Show checkmark on selected items. |
+| `morphingWidth`| `boolean` | `true` | Enable expressive width animation on press. |
+| `className` | `string` | — | Custom classes. |

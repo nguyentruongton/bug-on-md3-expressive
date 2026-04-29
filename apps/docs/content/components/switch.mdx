@@ -3,55 +3,98 @@ title: Switch
 description: Switches toggle the state of a single setting on or off.
 ---
 
-Switches are the most efficient way to allow users to toggle individual settings. The Bug On MD3 Expressive Switch emphasizes interactivity through fluid thumb motion and responsive state layers.
+Switches are the most efficient way to allow users to toggle individual settings. The MD3 Expressive Switch emphasizes interactivity through fluid thumb motion and responsive state layers.
 
 <ComponentPreview name="switch-basic" />
 
-## Labeled Switches
+## Introduction
 
-Use the `label` prop to automatically associate descriptive text with the switch. This improves accessibility by allowing users to click the label to toggle the state.
+The MD3 Expressive Switch is a binary toggle component designed for immediate actions. It features a tactile thumb that slides across a track, with smooth transitions between on and off states. The expressive nature is highlighted by the thumb's shape-morphing and the fluid ripple effects that accompany each interaction.
+
+## Anatomy
+
+- **Track**: The background surface the thumb moves along.
+- **Thumb**: The circular element that indicates the current state.
+- **Icons (Optional)**: Small visual indicators placed inside the thumb for extra context.
+- **Label (Optional)**: Descriptive text linked to the switch.
+- **State Layer**: Handles hover and pressed states with a ripple effect.
+
+## Variants
+
+### Basic Switch
+
+The standard toggle for a single setting.
+
+<ComponentPreview name="switch-basic" />
+
+### Labeled Switch
+
+Use the `label` prop to provide a clickable text description, improving usability and accessibility.
 
 <ComponentPreview name="switch-labeled" />
 
-## Icons
+### Switch with Icons
 
-The MD3 Switch supports displaying icons inside the thumb to provide additional visual context. You can choose to display icons in both states or only when selected.
+You can add icons inside the thumb to visually communicate the "on" and "off" states (e.g., a checkmark and a cross).
 
 <ComponentPreview name="switch-icons" />
 
-## States
+## Features
 
-Switches support a `disabled` state. When disabled, the switch blocks interaction and is rendered with reduced opacity according to Material Design 3 specifications.
+### Adaptive Thumb Size
 
-<ComponentPreview name="switch-states" />
+The thumb changes its size and appearance based on whether it's selected, pressed, or contains an icon, providing clear visual feedback.
+
+### Immediate Feedback
+
+Switches are intended for settings that take effect immediately upon being toggled, without requiring a "Save" or "Submit" action.
 
 ## Usage
+
+### Basic Usage
 
 ```tsx
 import { Switch } from "@bug-on/md3-react";
 
-// Basic
-<Switch checked={isOn} onCheckedChange={setIsOn} />
+const [enabled, setEnabled] = useState(false);
 
-// With Label
-<Switch checked={isOn} onCheckedChange={setIsOn} label="Wi-Fi" />
-
-// With Icons
 <Switch 
-  checked={isOn} 
-  onCheckedChange={setIsOn} 
-  icons 
-  thumbContent={isOn ? <CheckIcon /> : <CloseIcon />} 
+  checked={enabled} 
+  onCheckedChange={setEnabled} 
+  label="Enable Notifications" 
 />
 ```
 
+### With Icons
+
+```tsx
+<Switch 
+  checked={enabled} 
+  onCheckedChange={setEnabled} 
+  icons 
+  thumbContent={enabled ? <Icon name="check" /> : <Icon name="close" />} 
+/>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use switches for settings that have an immediate effect.
+- [ ] Provide a clear label that describes what the switch controls.
+- [ ] Use standard "on" and "off" states; avoid using a switch for complex multi-state choices.
+- [ ] Ensure the switch is easily reachable on mobile devices.
+
+### Don'ts
+- [ ] Don't use a switch if the user needs to press a "Submit" button for the change to take effect (use a Checkbox instead).
+- [ ] Don't use icons inside the thumb if they are not universally understood.
+- [ ] Avoid placing too many switches in a single list without grouping them logically.
+
 ## Accessibility
 
-- Utilizes the standard ARIA Switch pattern (`role="switch"`).
-- State is communicated via the `aria-checked` attribute ("true" or "false").
-- Full keyboard support: **Space** or **Enter** to toggle.
-- When using `label`, the switch is wrapped in a `<label>` tag and linked via `id`.
-- Focus rings are only visible during keyboard navigation (`focus-visible`).
+- **Keyboard**: Navigate with `Tab`. Toggle with `Space`.
+- **Roles**: Correctly implements `role="switch"`.
+- **States**: Communicates state via `aria-checked`.
+- **Linking**: Automatically links labels to the switch component.
 
 ## API Reference
 
@@ -59,12 +102,12 @@ import { Switch } from "@bug-on/md3-react";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `checked` | `boolean` | — | **Required**. Controlled checked state. |
-| `onCheckedChange` | `(checked: boolean) => void` | — | **Required**. Callback fired when the state changes. |
+| `checked` | `boolean` | — | **Required.** Current state. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | **Required.** Change callback. |
+| `label` | `string` | — | Text label. |
 | `disabled` | `boolean` | `false` | Disables interaction. |
-| `label` | `string` | — | Text label displayed next to the switch. |
-| `ariaLabel` | `string` | — | Accessible label for screen readers (use when `label` is omitted). |
-| `icons` | `boolean` | `false` | Displays icons inside the thumb in both states. |
-| `showOnlySelectedIcon` | `boolean` | `false` | Only displays the icon when the switch is in the 'on' state. |
-| `thumbContent` | `ReactNode` | — | Icon (SVG) to be displayed inside the thumb. |
-| `className` | `string` | — | Custom CSS class for the wrapper. |
+| `icons` | `boolean` | `false` | Enable icons inside the thumb. |
+| `showOnlySelectedIcon` | `boolean` | `false` | Show icon only in 'on' state. |
+| `thumbContent` | `ReactNode` | — | The icon/content for the thumb. |
+| `ariaLabel` | `string` | — | Accessible label (if no text label). |
+| `className` | `string` | — | Custom classes. |

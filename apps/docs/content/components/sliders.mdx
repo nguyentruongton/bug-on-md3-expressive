@@ -7,88 +7,109 @@ Sliders are ideal controls when users need to select from a continuous or discre
 
 <ComponentPreview name="slider-basic" />
 
-## Configurations
+## Introduction
 
-### Centered Track
+The MD3 Expressive Slider is a high-fidelity input component designed for precision and tactile feedback. It features a unique "pill-shaped" thumb that responds to touch by compressing, mimicking the physical sensation of pressing a button. It supports various configurations, including centered tracks for neutral-point adjustments and range sliders for selecting intervals.
 
-When `isCentered={true}` is enabled, the active track segment grows from the center (50%) in either direction instead of from the `min` value. This is perfect for adjustments with a neutral zero point (e.g., audio balance, exposure, pitch).
+## Anatomy
 
-<ComponentPreview name="slider-centered" />
+- **Track**: The horizontal (or vertical) bar representing the range of values.
+- **Thumb (Handle)**: The interactive element the user slides. Features a 4dp pill shape that compresses to 2dp on press.
+- **Active Track**: The highlighted portion of the track indicating the selected value.
+- **Inactive Track**: The remaining portion of the track.
+- **Value Indicator (Optional)**: A tooltip that displays the current numerical value during interaction.
+- **Ticks (Optional)**: Visual marks indicating discrete steps on the track.
 
-### Discrete Sliders
+## Variants
 
-When a `step > 0` is provided, the slider becomes discrete and snaps to values. You can enable `showTicks={true}` to display visual marks at each step. By default, ticks are hidden to keep the UI clean for wider ranges.
+### Continuous vs Discrete
+
+- **Continuous**: Allows selection of any value within the range.
+- **Discrete**: Snaps to specific intervals defined by the `step` prop. Ticks can be enabled to visualize these steps.
 
 <ComponentPreview name="slider-discrete" />
 
-## Appearance
+### Centered Track
 
-Customize the look of the slider to fit your design system using color variants, various track sizes, and flexible track shapes.
+Ideal for settings that have a neutral starting point (e.g., exposure or balance), where the active track grows from the center outwards.
 
-### Color Variants
+<ComponentPreview name="slider-centered" />
 
-The slider supports four Material Design 3 expressive color palettes via the `variant` prop.
+### Range Slider
 
-<ComponentPreview name="slider-colors" />
-
-### Track Sizes
-
-Five physical track sizes are available, affecting height in horizontal mode and width in vertical mode.
-
-<ComponentPreview name="slider-sizes" />
-
-### Track Shapes
-
-The `trackShape` prop allows you to choose between the size-specific MD3 default, a fully rounded pill shape, or a custom pixel radius.
-
-<ComponentPreview name="slider-shapes" />
-
-## Decorations
-
-Enhance your sliders with icons and labels to provide more context and better usability.
-
-### External Icons & Labels
-
-Place icons or labels outside the track to illustrate boundaries or intensity.
-
-<ComponentPreview name="slider-with-icons" />
-
-<ComponentPreview name="slider-labels" />
-
-### Inset Icons
-
-MD3 Expressive Slider supports **Inset Icons** — icons placed directly inside the track. These icons automatically transition between the active and inactive track segments based on the available space.
-
-> [!IMPORTANT]
-> **Design Constraint**: Inset icons are only available for track sizes **M, L, and XL** (height ≥ 12px). They should not be used with Centered or Range sliders.
-
-<ComponentPreview name="slider-inset-icon" />
-
-## Orientation
-
-Set `orientation="vertical"` to rotate the slider. A vertical slider requires a container with a fixed height. The Y-axis is inverted: sliding up increases the value, mimicking physical volume faders.
-
-<ComponentPreview name="slider-vertical" />
-
-## Range Selection
-
-`RangeSlider` displays two handles, with the active track segment positioned between them. Crossover prevention is built-in, ensuring the handles cannot pass each other.
+Allows users to select a range of values using two independent thumbs.
 
 <ComponentPreview name="slider-range" />
 
-## Usage Examples
+## Features
 
-### Form Integration
+### Inset Icons
 
-Sliders are commonly used within settings menus and dashboards.
+For larger track sizes (M, L, XL), you can place icons directly inside the track. These icons automatically transition between the active and inactive track segments.
 
-<ComponentPreview name="slider-form" />
+<ComponentPreview name="slider-inset-icon" />
 
-### Disabled State
+### Thumb Compression
 
-When `disabled={true}`, all interactions are blocked, and colors fade to 38% opacity per MD3 specifications.
+On press, the thumb width reduces from 4dp to 2dp, providing a subtle but powerful tactile feedback loop.
 
-<ComponentPreview name="slider-disabled" />
+### Orientation
+
+Supports both horizontal and vertical layouts. Vertical sliders are useful for volume or intensity controls in dense interfaces.
+
+<ComponentPreview name="slider-vertical" />
+
+## Usage
+
+### Basic Usage
+
+```tsx
+import { Slider } from "@bug-on/md3-react";
+
+const [value, setValue] = useState(50);
+
+<Slider 
+  value={value} 
+  onValueChange={setValue} 
+  min={0} 
+  max={100} 
+/>
+```
+
+### Range Selection
+
+```tsx
+import { RangeSlider } from "@bug-on/md3-react";
+
+const [range, setRange] = useState([20, 80]);
+
+<RangeSlider 
+  value={range} 
+  onValueChange={setRange} 
+  min={0} 
+  max={100} 
+/>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use sliders for settings where the exact value is less important than the relative change (e.g., volume, brightness).
+- [ ] Provide immediate feedback as the user slides the thumb.
+- [ ] Use `isCentered` for adjustments with a logical zero or middle point.
+- [ ] Ensure the slider has an `aria-label` or is linked to a visible label.
+
+### Don'ts
+- [ ] Don't use a slider for entering precise data where a Text Field would be more efficient.
+- [ ] Don't crowd too many sliders into a single view.
+- [ ] Avoid using Inset Icons for small track sizes (XS, S) as they become illegible.
+
+## Accessibility
+
+- **Keyboard**: Navigate with Arrow keys (fine-tuning) and Page Up/Down (large steps).
+- **Roles**: Correctly implements `role="slider"`.
+- **States**: Communicates current value via `aria-valuenow`.
+- **Touch**: Provides a large 48x48dp touch target for the thumb.
 
 ## API Reference
 
@@ -96,64 +117,20 @@ When `disabled={true}`, all interactions are blocked, and colors fade to 38% opa
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `number` | — | Controlled current value. |
-| `defaultValue` | `number` | `midpoint` | Initial value for uncontrolled usage. |
-| `onValueChange` | `(v: number) => void` | — | Callback when value changes during interaction. |
-| `onValueChangeEnd` | `(v: number) => void` | — | Callback when interaction finishes. |
+| `value` | `number` | — | Controlled value. |
+| `onValueChange` | `(v: number) => void` | — | Value change callback. |
 | `min` | `number` | `0` | Minimum value. |
 | `max` | `number` | `100` | Maximum value. |
-| `step` | `number` | `0` | Snap step size. `0` = continuous. |
+| `step` | `number` | `0` | Snap step (0 = continuous). |
 | `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout direction. |
-| `trackSize` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Physical size of the track. |
-| `variant` | `"primary" \| "secondary" \| "tertiary" \| "error"` | `"primary"` | Color palette. |
-| `trackShape` | `"md3" \| "full" \| number` | `"md3"` | Corner radius configuration. |
-| `isCentered` | `boolean` | `false` | Grows active track from 50%. |
-| `disabled` | `boolean` | `false` | Disables interaction. |
-| `showValueIndicator` | `boolean` | `false` | Shows value tooltip on hover/drag. |
-| `showTicks` | `boolean` | `false` | Shows stop marks (requires `step > 0`). |
-| `insetIcon` | `ReactNode` | — | Icon inside leading track segment. |
-| `insetIconAtMin` | `ReactNode` | — | Swap icon when value equals `min`. |
-| `insetIconTrailing` | `ReactNode` | — | Icon inside trailing track segment. |
-| `insetIconAtMax` | `ReactNode` | — | Swap icon when value equals `max`. |
-| `formatValue` | `(v: number) => string` | `String(v)` | Custom tooltip value formatting. |
-| `aria-label` | `string` | — | Screen reader label. |
-| `aria-labelledby` | `string` | — | ID of a visible label element. |
-| `className` | `string` | — | Custom wrapper CSS class. |
+| `trackSize` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Physical track thickness. |
+| `isCentered` | `boolean` | `false` | Grows track from center. |
+| `showValueIndicator`| `boolean` | `false` | Shows tooltip on interaction. |
+| `insetIcon` | `ReactNode` | — | Icon inside the track. |
 
 ### RangeSlider
 
-Inherits all props from `Slider` (except `isCentered`). The following props are overridden:
-
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `[number, number]` | — | Controlled `[start, end]` tuple. |
-| `defaultValue` | `[number, number]` | `[min, max]` | Initial tuple for uncontrolled usage. |
-| `onValueChange` | `(v: [number, number]) => void` | — | Callback with new tuple. |
-| `onValueChangeEnd` | `(v: [number, number]) => void` | — | Callback when interaction finishes. |
-
-## Accessibility
-
-- Thumbs use `role="slider"` with appropriate `aria-valuenow`, `aria-valuemin`, and `aria-valuemax`.
-- Touch targets are at least **48x48px** to meet MD3 requirements.
-- Full keyboard support: arrows (step), page up/down (10%), home/end (edges).
-- Supports `prefers-reduced-motion` to disable animations.
-- Focus rings use the `secondary` color per MD3 color specs.
-
-## Design Tokens
-
-```ts
-import { SliderTokens, SliderColors } from "@bug-on/md3-react";
-
-// Dimensional tokens
-SliderTokens.trackSizes         // { xs: 4, s: 8, m: 12, l: 16, xl: 32 }
-SliderTokens.thumbHeight        // 44px
-SliderTokens.thumbWidthDefault  // 4px (rest state)
-SliderTokens.thumbWidthPressed  // 2px (squeeze on press)
-SliderTokens.thumbGap           // 6px (gap between track and thumb)
-
-// Color tokens (CSS custom properties)
-SliderColors.activeTrack        // var(--md-sys-color-primary)
-SliderColors.inactiveTrack      // var(--md-sys-color-secondary-container)
-SliderColors.thumb              // var(--md-sys-color-primary)
-SliderColors.valueIndicatorBg   // var(--md-sys-color-inverse-surface)
-```
+| `value` | `[number, number]` | — | Controlled range tuple. |
+| `onValueChange` | `(v: [number, number]) => void` | — | Range change callback. |

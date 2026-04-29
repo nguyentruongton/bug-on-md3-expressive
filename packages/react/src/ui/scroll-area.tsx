@@ -32,6 +32,8 @@ export interface ScrollAreaProps
 	scrollHideDelay?: number;
 	/** Extra classes applied to the inner viewport element. */
 	viewportClassName?: string;
+	/** Ref to the scrolling viewport element. */
+	viewportRef?: React.Ref<HTMLDivElement>;
 }
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
@@ -47,6 +49,7 @@ const ScrollArea = React.forwardRef<
 			type = "hover",
 			orientation = "vertical",
 			scrollHideDelay = 600,
+			viewportRef,
 			...props
 		},
 		ref,
@@ -62,6 +65,7 @@ const ScrollArea = React.forwardRef<
 				{...props}
 			>
 				<RadixScrollArea.Viewport
+					ref={viewportRef}
 					className={cn(
 						"h-full w-full flex-1 min-h-0 min-w-0 rounded-[inherit]",
 						"outline-none focus-visible:ring-2 focus-visible:ring-m3-primary focus-visible:ring-offset-1",

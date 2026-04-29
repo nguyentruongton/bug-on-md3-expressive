@@ -7,25 +7,54 @@ Dialogs focus user attention exclusively on one task or a piece of information v
 
 <ComponentPreview name="dialog-basic" />
 
-## Icon Dialog
+## Introduction
 
-Adding a `DialogIcon` provides visual emphasis on the nature of the prompt — for example, warnings, information, or destructive actions.
+The MD3 Expressive Dialog is a versatile modal component that ranges from simple confirmation alerts to complex full-screen forms. It leverages Radix UI for robust accessibility and Framer Motion for premium, critically-damped spring animations that make the UI feel alive and responsive.
+
+## Anatomy
+
+- **Scrim (Overlay)**: A semi-transparent background that dims the underlying UI.
+- **Container**: The panel holding the content. Uses bo góc (28dp) to match the MD3 expressive language.
+- **Icon (Optional)**: A visual indicator placed at the top for emphasis (e.g., Warning, Success).
+- **Title**: A clear, concise heading describing the purpose.
+- **Description / Body**: The main content area, which can be scrollable.
+- **Footer / Actions**: Buttons for the user to confirm or dismiss the prompt.
+
+## Variants
+
+### Basic Dialog
+
+A standard modal for simple messages or confirmations.
+
+<ComponentPreview name="dialog-basic" />
+
+### Icon Dialog
+
+Adds an icon at the top for additional context and visual weight.
 
 <ComponentPreview name="dialog-icon" />
 
-## Scrollable Content
+### Full-screen Dialog
 
-Use `DialogBody` to create a scrollable region inside the dialog. The title and footer remain sticky while the body scrolls independently.
-
-<ComponentPreview name="dialog-scrollable" />
-
-## Full-screen Dialog
-
-Full-screen dialogs cover the entire viewport. They are ideal for complex tasks like forms or detailed record editing on mobile-first layouts.
+Covers the entire viewport. Best for complex mobile-first tasks like creating a new record or extensive form filling.
 
 <ComponentPreview name="dialog-fullscreen" />
 
+## Features
+
+### Scrollable Body
+
+Use `DialogBody` to create a scrollable region while keeping the title and footer sticky.
+
+<ComponentPreview name="dialog-scrollable" />
+
+### Expressive Motion
+
+Dialogs use a spring animation that feels "emphasized" and tactile, transitioning smoothly from a slightly scaled-down state to full size.
+
 ## Usage
+
+### Basic Usage
 
 ```tsx
 import {
@@ -37,33 +66,25 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogBody,
-  DialogIcon,
-  DialogFullScreenContent,
+  Button
 } from "@bug-on/md3-react";
 
-// Basic alert dialog
-function AlertDialog() {
-  const [open, setOpen] = useState(false);
-
+export function Example() {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
-        <Button colorStyle="filled">Open</Button>
+        <Button>Open Dialog</Button>
       </DialogTrigger>
-      <DialogPortal open={open}>
+      <DialogPortal>
         <DialogOverlay />
         <DialogContent>
-          <DialogIcon>
-            <AlertTriangle className="w-6 h-6" />
-          </DialogIcon>
-          <DialogTitle>Discard draft?</DialogTitle>
+          <DialogTitle>Confirm Action</DialogTitle>
           <DialogDescription>
-            This action cannot be undone.
+            Are you sure you want to proceed with this operation?
           </DialogDescription>
           <DialogFooter>
-            <Button colorStyle="text" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button colorStyle="text" onClick={() => setOpen(false)}>Discard</Button>
+            <Button colorStyle="text">Cancel</Button>
+            <Button>Confirm</Button>
           </DialogFooter>
         </DialogContent>
       </DialogPortal>
@@ -72,56 +93,50 @@ function AlertDialog() {
 }
 ```
 
+## Best Practices
+
+### Dos
+- [ ] Use Dialogs for critical information that requires a decision.
+- [ ] Keep the title concise and the description focused.
+- [ ] Use Full-screen dialogs for complex tasks on mobile devices.
+- [ ] Ensure the primary action is clear (e.g., using a high-emphasis button).
+
+### Don'ts
+- [ ] Don't use a Dialog for information that is already visible on the main screen.
+- [ ] Don't use too many Dialogs in a single user flow; it can be disruptive.
+- [ ] Avoid long-running tasks inside a Dialog unless you provide a clear progress indicator.
+
 ## Accessibility
 
-- `DialogTitle` is required and maps to `aria-labelledby` on the dialog element.
-- `DialogDescription` maps to `aria-describedby`. If the dialog has no description, pass `aria-describedby={undefined}` to `DialogContent`.
-- When open, focus is trapped inside the dialog and restored to the trigger on close.
-- The `DialogOverlay` dismisses the dialog on click (set `onOpenChange` accordingly).
-- Pressing `Escape` closes the dialog — this is handled automatically.
-- Full-screen dialogs set `role="dialog"` and include a close button accessible via keyboard.
+- **Keyboard**: `Tab` cycles focus inside the dialog. `Esc` closes the dialog.
+- **Roles**: Uses `role="dialog"` or `role="alertdialog"` depending on content.
+- **Linking**: Automatically links `DialogTitle` and `DialogDescription` via ARIA attributes.
+- **Restoration**: Focus is restored to the trigger element when the dialog closes.
 
 ## API Reference
 
 ### Dialog
 
-Root context provider. Wraps all dialog sub-components.
+Root component.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `boolean` | — | Controls open state. |
-| `onOpenChange` | `(open: boolean) => void` | — | Callback when open state changes. |
-
-### DialogPortal
-
-Renders dialog into a portal. Must wrap `DialogOverlay` and `DialogContent`.
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `open` | `boolean` | — | Must mirror `Dialog`'s `open` prop to drive animations. |
+| `open` | `boolean` | — | Controlled open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Open state change callback. |
 
 ### DialogContent
 
-The modal container. Includes spring animation.
+The main container.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `aria-describedby` | `string \| undefined` | auto | Set to `undefined` if no `DialogDescription` is used. |
-| `className` | `string` | — | Extra classes for the container. |
+| `asChild` | `boolean` | `false` | Renders as the child element. |
+| `className` | `string` | — | Custom classes. |
 
 ### DialogFullScreenContent
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `string` | — | **Required.** Header title text. |
-| `actionLabel` | `string` | — | Label for the primary action button. |
-| `onAction` | `() => void` | — | Callback for the primary action. |
-| `showDivider` | `boolean` | `false` | Shows a divider below the header. |
-
-### DialogBody
-
-Scrollable region inside `DialogContent`. Use as child of `DialogDescription` with `asChild`.
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `className` | `string` | — | Override `max-h` to control scroll height (e.g. `max-h-75`). |
+| `title` | `string` | — | **Required.** Header title. |
+| `actionLabel` | `string` | — | Label for primary action. |
+| `onAction` | `() => void` | — | Primary action callback. |

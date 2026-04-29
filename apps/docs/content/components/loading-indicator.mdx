@@ -1,40 +1,99 @@
 ---
-title: "Loading Indicator"
-description: "Loading indicators display progress of a process for a short wait time."
+title: Loading Indicator
+description: Loading indicators display the progress of a process through fluid shape morphing.
 ---
 
-Loading indicators display progress of a process for a short wait time (under 5 seconds) inside an element. They morph through 7 unique Material design shapes.
-
-## Variants
+Loading indicators inform users that a process is currently in progress, such as fetching data or submitting a form. The MD3 Expressive Loading Indicator features a unique animation that morphs through seven distinct geometric shapes.
 
 <ComponentPreview name="loading-indicator-variants" />
 
-## Flexible Sizing
+## Introduction
+
+The MD3 Expressive Loading Indicator is more than just a spinner. It uses sophisticated SVG path morphing to transition through a sequence of Material Design shapes, creating a fluid and captivating animation. It supports both uncontained and contained styles, making it suitable for various UI contexts.
+
+## Anatomy
+
+- **Indicator**: The morphing geometric shape.
+- **Container (Contained Variant)**: A circular background surface that provides contrast.
+
+## Variants
+
+### Uncontained (Default)
+
+The indicator is rendered directly without a background. This is ideal for placement inside other components like buttons or list items.
+
+<ComponentPreview name="loading-indicator-variants" />
+
+### Contained
+
+The indicator is placed inside a circular container. This variant is useful for full-screen loading states or when the indicator needs to stand out against a complex background.
+
+<ComponentPreview name="loading-indicator-variants" />
+
+## Features
+
+### Flexible Sizing
+
+The indicator scales perfectly to any size while maintaining the stroke width and animation fidelity.
 
 <ComponentPreview name="loading-indicator-sizes" />
 
-## Use Cases
+### Expressive Motion
 
-<ComponentPreview name="loading-indicator-use-cases" />
+The animation morphs through 7 unique shapes using a continuous loop, providing a sense of constant progress and high-end design.
 
-## Usage Guidelines
+## Usage
 
-### When to use
-- To indicate that a process is ongoing, such as loading data or submitting a form.
-- When the wait time is expected to be short (under 5 seconds).
+### Basic Usage
 
-### Best practices
-- Provide an `aria-label` to communicate the state to screen readers.
-- Ensure appropriate contrast for the uncontained variant against its background.
-- Use the contained variant when the loading indicator is overlaid on complex backgrounds or images for better visibility.
+```tsx
+import { LoadingIndicator } from "@bug-on/md3-react";
+
+<LoadingIndicator size={48} />
+```
+
+### Inside a Button
+
+```tsx
+<Button disabled>
+  <LoadingIndicator size={18} />
+  Saving...
+</Button>
+```
+
+### Contained Variant
+
+```tsx
+<LoadingIndicator variant="contained" size={64} />
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use for processes expected to take between 1 and 5 seconds.
+- [ ] Provide an `aria-label` for screen readers (e.g., "Loading...").
+- [ ] Center the indicator within its parent container.
+- [ ] Use the `contained` variant when placing the indicator over images or busy backgrounds.
+
+### Don'ts
+- [ ] Don't use a loading indicator for processes that take less than 1 second (it may appear as a flash).
+- [ ] Don't use more than one loading indicator on a single view at the same time.
+- [ ] Avoid using very large sizes unless it's for a primary full-screen loading state.
+
+## Accessibility
+
+- **Roles**: Use `role="progressbar"` or `role="status"` on the container.
+- **Labels**: Always include an `aria-label` or `aria-labelledby`.
+- **Motion**: The animation is decorative and doesn't communicate critical information, but it respects system motion preferences.
 
 ## API Reference
 
 ### LoadingIndicator
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `variant` | `'uncontained' \| 'contained'` | `'uncontained'` | The visual style. Contained puts the indicator inside a background surface. |
-| `size` | `number` | `24` | The size of the bounds (in pixels). The indicator will scale perfectly. |
-| `color` | `string` | `'var(--m3-primary)'` | Uses `primary` color normally, but can be overridden (e.g., `currentColor`). |
-| `speedMultiplier` | `number` | `1` | Customize animation speed. |
+|------|------|---------|-------------|
+| `variant` | `"uncontained" \| "contained"` | `"uncontained"` | Visual variant. |
+| `size` | `number` | `24` | Size in pixels. |
+| `color` | `string` | — | Color override (defaults to `primary`). |
+| `speedMultiplier` | `number` | `1` | Adjust animation speed. |
+| `className` | `string` | — | Custom classes. |

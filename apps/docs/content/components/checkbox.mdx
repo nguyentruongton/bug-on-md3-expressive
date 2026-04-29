@@ -7,66 +7,68 @@ Checkboxes are used for multiple selection in a list, or for a single binary cho
 
 <ComponentPreview name="checkbox-basic" />
 
-## Indeterminate State
+## Introduction
 
-The `indeterminate` state is used when a checkbox represents a collection of items that are partially selected. In this state, a "dash" icon is displayed instead of a checkmark.
+The MD3 Expressive Checkbox is designed for high tactile feedback. It uses SVG path morphing to animate the transition from empty to checked or indeterminate. This motion is not just decorative; it provides a clear confirmation of the user's action.
 
-<ComponentPreview name="checkbox-indeterminate" />
+## Anatomy
 
-## Labeled Checkboxes
+- **Container**: The outer box that holds the checkmark.
+- **Checkmark / Dash**: The visual indicator of the state (checked or indeterminate).
+- **Label (Optional)**: Descriptive text linked to the checkbox.
+- **State Layer**: Shows hover and pressed states with a ripple effect.
 
-Use the `label` prop to automatically associate a text description with the checkbox. This wraps both elements in a `<label>` tag, making the text clickable and improving accessibility.
+## Variants
+
+### Basic Checkbox
+
+The standard binary choice.
+
+<ComponentPreview name="checkbox-basic" />
+
+### Labeled Checkbox
+
+Use the `label` prop to automatically create an accessible, clickable label.
 
 <ComponentPreview name="checkbox-labeled" />
 
-## Tri-State Cycling
+### Tri-State Checkbox
 
-The `TriStateCheckbox` component is a convenience wrapper that automatically cycles through three states: `unchecked` → `checked` → `indeterminate` → `unchecked` on each click.
+A specialized component that cycles through three states: `unchecked` → `checked` → `indeterminate`.
 
 <ComponentPreview name="checkbox-tristate" />
 
-## States
+## Features
 
-Checkboxes support `disabled` and `error` states. The error state changes the checkbox color to `m3-error` and sets `aria-invalid="true"`.
+### Indeterminate State
+
+Used when a parent checkbox represents a collection of items where only some are selected.
+
+<ComponentPreview name="checkbox-indeterminate" />
+
+### States
+
+Checkboxes support `error`, `disabled`, and `readOnly` states.
 
 <ComponentPreview name="checkbox-states" />
 
-## Advanced: Parent-Child Selection
-
-A common pattern is having a "Select All" checkbox that controls a group of child checkboxes. The parent checkbox should show an `indeterminate` state if only some children are selected.
-
-<ComponentPreview name="checkbox-advanced-parent" />
-
-## Advanced: Form Integration
-
-Checkbox integrates seamlessly with standard HTML forms. Use the `name` and `value` props to ensure data is correctly captured during form submission.
-
-<ComponentPreview name="checkbox-advanced-form" />
-
-## Advanced: Custom Colors
-
-You can easily customize the primary color of the checkbox using Tailwind CSS variables. This allows the checkbox to match your specific branding while retaining all MD3 animations.
-
-<ComponentPreview name="checkbox-advanced-colors" />
-
 ## Usage
 
+### Basic Usage
+
 ```tsx
-import { Checkbox, TriStateCheckbox } from "@bug-on/md3-react";
+import { Checkbox } from "@bug-on/md3-react";
 
-// Basic
-<Checkbox label="Accept terms" />
+<Checkbox label="Accept Terms & Conditions" />
+```
 
-// Controlled
-const [checked, setChecked] = useState(false);
-<Checkbox 
-  checked={checked} 
-  onCheckedChange={setChecked} 
-  label="Newsletter" 
-/>
+### Controlled Tri-State
 
-// Tri-state
+```tsx
+import { TriStateCheckbox } from "@bug-on/md3-react";
+
 const [state, setState] = useState("unchecked");
+
 <TriStateCheckbox 
   state={state} 
   onStateChange={setState} 
@@ -74,13 +76,24 @@ const [state, setState] = useState("unchecked");
 />
 ```
 
+## Best Practices
+
+### Dos
+- [ ] Use checkboxes for multiple selection in a list.
+- [ ] Use a single checkbox for a binary choice (on/off) where the effect is not immediate (use a Switch for immediate effects).
+- [ ] Group related checkboxes together.
+- [ ] Use labels for all checkboxes to ensure accessibility and ease of use.
+
+### Don'ts
+- [ ] Don't use a checkbox for an action that has an immediate effect (e.g., toggling dark mode); use a Switch instead.
+- [ ] Avoid placing more than 10-12 checkboxes in a single group without sub-headers.
+
 ## Accessibility
 
-- Checkboxes use a hidden semantic `<input type="checkbox">` to ensure full compatibility with assistive technologies.
-- When the `label` prop is used, the checkbox is automatically wrapped in a `<label>` and mapped via `id`.
-- The `indeterminate` state correctly sets `aria-checked="mixed"`.
-- The `error` state sets `aria-invalid="true"`.
-- Focus rings are visible on keyboard navigation and follow MD3 Expressive motion guidelines.
+- **Keyboard**: Full support for `Tab` to focus and `Space` to toggle.
+- **ARIA**: `indeterminate` state correctly sets `aria-checked="mixed"`.
+- **Linking**: Automatically links labels to inputs using `id` and `htmlFor`.
+- **Validation**: Sets `aria-invalid="true"` in error state.
 
 ## API Reference
 
@@ -88,25 +101,17 @@ const [state, setState] = useState("unchecked");
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `checked` | `boolean` | — | Controlled checked value. Use with `onCheckedChange`. |
-| `defaultChecked` | `boolean` | `false` | Initial checked value for uncontrolled mode. |
-| `indeterminate` | `boolean` | `false` | Forces the indeterminate rendering (visual only). |
-| `onCheckedChange` | `(checked: boolean) => void` | — | Callback fired when checked state changes. |
-| `state` | `"checked" \| "unchecked" \| "indeterminate"` | — | Controlled tri-state value. Priorities over `checked`. |
-| `onStateChange` | `(state: CheckboxState) => void` | — | Callback fired when tri-state value changes. |
-| `label` | `string` | — | Text label automatically associated with the checkbox. |
-| `error` | `boolean` | `false` | Renders in error style and sets `aria-invalid`. |
-| `disabled` | `boolean` | `false` | Disables interaction and applies muted opacity. |
-| `name` | `string` | — | Name for form submission. |
-| `value` | `string` | — | Value for form submission. |
-| `id` | `string` | — | ID for the hidden input (auto-generated if `label` is provided). |
-| `className` | `string` | — | Custom classes applied to the wrapper. |
+| `checked` | `boolean` | — | Controlled checked state. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Callback fired on change. |
+| `indeterminate` | `boolean` | `false` | Visual indeterminate state. |
+| `label` | `string` | — | Text label. |
+| `error` | `boolean` | `false` | Error visual state. |
+| `disabled` | `boolean` | `false` | Disables interaction. |
+| `name` | `string` | — | Form field name. |
 
 ### TriStateCheckbox
 
-Inherits all props from `Checkbox`, but requires `state` and `onStateChange` for cycling behavior.
-
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `state` | `"checked" \| "unchecked" \| "indeterminate"` | `"unchecked"` | **Required**. Current state in the cycle. |
-| `onStateChange` | `(state: CheckboxState) => void` | — | **Required**. Callback to update state. |
+| `state` | `"checked" \| "unchecked" \| "indeterminate"` | `"unchecked"` | **Required**. Current state. |
+| `onStateChange` | `(state: string) => void` | — | **Required**. Change callback. |

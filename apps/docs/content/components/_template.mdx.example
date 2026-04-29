@@ -1,0 +1,69 @@
+# [Component Name]
+
+[Short description from MD3/Frontmatter]
+
+<ComponentPreview name="[main-preview-name]" />
+
+## Introduction
+
+[Detailed explanation of what the component is and when to use it.]
+
+## Anatomy
+
+[Visual breakdown of the component's parts.]
+- **Container**: The main wrapper...
+- **Icon**: Optional leading/trailing icon...
+- **Label**: The text content...
+- **State Layer**: Ripple and hover effects...
+
+## Variants
+
+### [Variant Name]
+[Description of the variant.]
+<ComponentPreview name="[variant-preview]" />
+
+## Features
+
+### [Feature Name]
+[Description of the feature, e.g., Loading state, Toggle behavior.]
+
+## Usage
+
+[Code examples showing common patterns.]
+
+```tsx
+import { [Component] } from "@bug-on/md3-react";
+
+// Basic usage
+<[Component] ... />
+```
+
+## Best Practices
+
+### Dos
+- [ ] Do use X for Y...
+- [ ] Do ensure Z is accessible...
+
+### Don'ts
+- [ ] Don't use A when B is expected...
+
+## Design Tokens
+
+| Token | Value | Description |
+|-------|-------|-------------|
+| Height | ... | ... |
+| Corner Radius | ... | ... |
+
+## Accessibility
+
+[How the component meets WCAG standards.]
+- Uses [ARIA role]...
+- Supports [Keyboard navigation]...
+
+## API Reference
+
+### [Component]
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `prop` | `type` | `default` | description |

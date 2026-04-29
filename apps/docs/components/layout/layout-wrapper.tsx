@@ -158,7 +158,7 @@ function AppNavigation() {
 			{/* Desktop Rail */}
 			<NavigationRail
 				className="hidden lg:flex shadow-none"
-				xr
+				variant="xr"
 				header={
 					<IconButton
 						onClick={toggleDrawer}

@@ -7,78 +7,116 @@ Buttons help people take the most important actions. They communicate calls to a
 
 <ComponentPreview name="button-variants" />
 
-## With Icons
+## Introduction
 
-Icons help communicate the button's action and can be placed before (leading) or after (trailing) the label.
+Material Design 3 Expressive buttons are more than just clickable areas; they are interactive elements that provide tactile feedback through motion. They support five distinct visual styles (elevated, filled, tonal, outlined, and text) and five sizes (XS to XL) to fit any context from compact mobile views to large spatial interfaces.
 
-<ComponentPreview name="button-icons" />
+## Anatomy
 
-## Loading State
+- **Container**: The boundary of the button that holds all elements. Supports shape morphing from pill to rounded-square.
+- **Icon (Optional)**: A visual cue for the action. Can be leading (before label) or trailing (after label).
+- **Label Text**: The primary call to action text.
+- **State Layer (Ripple)**: A visual representation of the touch/click interaction using MD3 expressive ripple.
+- **Loading Indicator**: Replaces the icon or label when the button is in a loading state.
 
-Buttons support two loading variants. Use `loadingVariant="loading-indicator"` for expressive MD3 shape morphing (ideal for AI generation, uploads), or `loadingVariant="circular"` for a traditional spinner (ideal for form submissions, data syncing).
+## Variants
 
-Click a button below to trigger its loading state:
+### Color Styles
 
-<ComponentPreview name="button-loading" />
+Buttons support 5 color styles following MD3 color roles:
+- **Filled**: High emphasis, for the primary action.
+- **Elevated**: High emphasis, used when the background is already primary-colored.
+- **Tonal**: Medium emphasis, for secondary actions.
+- **Outlined**: Medium-low emphasis, for actions that are important but not primary.
+- **Text**: Low emphasis, for supplementary actions.
 
-## Toggle Button
+<ComponentPreview name="button-variants" />
 
-Toggle buttons morph from **round** (unselected) to **square** (selected) using Expressive shape animation. They also support icon transitions from outlined to filled.
+### Toggle Button
+
+Toggle buttons morph from **round** (unselected) to **square** (selected) using Expressive shape animation. This provides a clear visual distinction between states beyond just color changes.
 
 <ComponentPreview name="button-toggle" />
 
-## Sizes
+## Features
 
-Buttons support 5 sizes following M3 Expressive spec: `xs`, `sm` (default), `md`, `lg`, `xl`.
+### Loading States
+
+Buttons support two loading variants to maintain layout stability during asynchronous actions:
+- **Loading Indicator**: Uses MD3 expressive shape morphing (ideal for AI generation, long-running tasks).
+- **Circular**: Traditional spinner (ideal for quick form submissions).
+
+<ComponentPreview name="button-loading" />
+
+### Expressive Sizing
+
+Following the May 2025 MD3 Expressive spec, buttons scale from XS (32dp) for dense interfaces to XL (136dp) for hero sections and spatial UI.
 
 <ComponentPreview name="button-sizes" />
 
-## Disabled State
-
-<ComponentPreview name="button-disabled" />
-
 ## Usage
+
+### Basic Usage
+
+```tsx
+import { Button } from "@bug-on/md3-react";
+
+<Button colorStyle="filled">Save Changes</Button>
+```
+
+### With Icons
+
+Icons help communicate the button's action and can be placed before or after the label.
 
 ```tsx
 import { Button, Icon } from "@bug-on/md3-react";
 
-// Basic variants
-<Button colorStyle="filled">Save</Button>
-<Button colorStyle="outlined">Cancel</Button>
+<Button icon={<Icon name="add" />}>Create</Button>
+<Button icon={<Icon name="send" />} iconPosition="trailing">Send</Button>
+```
 
-// With leading icon
-<Button colorStyle="filled" icon={<Icon name="add" size={20} />}>
-  Add Item
-</Button>
+### Next.js Integration (asChild)
 
-// With trailing icon
-<Button colorStyle="text" icon={<Icon name="send" size={20} />} iconPosition="trailing">
-  Send
-</Button>
+Use the `asChild` prop to render a different element (like a Next.js `Link`) while maintaining Button styling and animations.
 
-// Toggle button
-<Button
-  colorStyle="outlined"
-  variant="toggle"
-  selected={saved}
-  onClick={() => setSaved(!saved)}
->
-  {saved ? "Saved" : "Save"}
-</Button>
+```tsx
+import Link from "next/link";
+import { Button } from "@bug-on/md3-react";
 
-// Loading state
-<Button loading loadingVariant="loading-indicator">
-  Uploading...
+<Button asChild colorStyle="tonal">
+  <Link href="/dashboard">Go to Dashboard</Link>
 </Button>
 ```
 
+## Best Practices
+
+### Dos
+- [ ] Use **Filled** buttons for the most important action on a page.
+- [ ] Keep button labels short and action-oriented (e.g., "Save", "Delete").
+- [ ] Use icons to reinforce meaning, especially for common actions like "Search" or "Add".
+- [ ] Ensure buttons have enough spacing around them to avoid accidental taps.
+
+### Don'ts
+- [ ] Don't use too many high-emphasis (Filled/Elevated) buttons on a single screen.
+- [ ] Don't use a button for a simple navigation link if it doesn't represent a primary "action".
+- [ ] Don't use purely decorative icons that don't relate to the action.
+
+## Design Tokens
+
+| Size | Height | Min Width | Icon Size |
+|------|--------|-----------|-----------|
+| **XS** | 32dp | 64dp | 18dp |
+| **SM** | 40dp | 80dp | 20dp |
+| **MD** | 56dp | 112dp | 24dp |
+| **LG** | 96dp | 176dp | 32dp |
+| **XL** | 136dp | 224dp | 40dp |
+
 ## Accessibility
 
-- All buttons render as semantic `<button type="button">` or `<button type="submit">`.
-- The `disabled` prop sets `aria-disabled="true"` and removes the element from the tab order.
-- Loading state automatically applies `aria-busy="true"` to prevent accidental double-submission.
-- Toggle buttons set `aria-pressed` to communicate their selected state to screen readers.
-- Focus rings are visible on keyboard navigation and comply with WCAG 2.4.11 Focus Appearance.
+- **Keyboard Support**: Full tab order support. `Space` and `Enter` trigger the `onClick` event.
+- **ARIA Roles**: Renders as a semantic `<button>`. Toggle buttons use `aria-pressed`.
+- **Busy State**: `loading={true}` automatically sets `aria-busy="true"` and `aria-disabled="true"`.
+- **Touch Targets**: Small buttons (XS/SM) automatically include an invisible 48x48dp touch target expander.
 
 ## API Reference
 
@@ -89,10 +127,14 @@ import { Button, Icon } from "@bug-on/md3-react";
 | `colorStyle` | `"elevated" \| "filled" \| "tonal" \| "outlined" \| "text"` | `"filled"` | Visual variant determining color and elevation. |
 | `variant` | `"default" \| "toggle"` | `"default"` | Set to `"toggle"` for shape-morphing toggle behavior. |
 | `selected` | `boolean` | `false` | Controls toggle state (requires `variant="toggle"`). |
+| `selectedColorStyle` | `string` | `"filled"` | Color style when `selected={true}` in toggle mode. |
 | `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"sm"` | Button height and padding scale. |
 | `shape` | `"round" \| "square"` | `"round"` | Override corner radius. |
 | `icon` | `ReactNode` | — | Icon to display inside the button. |
 | `iconPosition` | `"leading" \| "trailing"` | `"leading"` | Icon placement relative to the label. |
-| `loading` | `boolean` | `false` | Shows a loading indicator in place of the icon. |
+| `loading` | `boolean` | `false` | Shows a loading indicator and blocks interaction. |
 | `loadingVariant` | `"loading-indicator" \| "circular"` | `"loading-indicator"` | Style of the loading indicator. |
-| `disabled` | `boolean` | `false` | Disables the button and removes it from tab order. |
+| `asChild` | `boolean` | `false` | Renders as the child element while keeping styles. |
+| `disabled` | `boolean` | `false` | Disables the button. |
+| `onClick` | `() => void` | — | Click handler. |
+

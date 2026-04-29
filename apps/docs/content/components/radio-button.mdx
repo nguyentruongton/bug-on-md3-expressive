@@ -5,62 +5,89 @@ description: Radio buttons allow people to select one option from a set of mutua
 
 Radio buttons should be used when the user needs to see all available options. If there are more than five options or space is limited, consider using a dropdown menu instead.
 
-## Basic Usage
+<ComponentPreview name="radio-button-basic" />
 
-By default, radio buttons are grouped together via the `RadioGroup` container which manages the selection state and keyboard navigation (arrow keys to cycle through options).
+## Introduction
+
+The MD3 Expressive Radio Button is designed for clarity and precision. It uses smooth SVG animations to transition the center dot from hidden to visible, providing a clear confirmation of selection. Typically used within a `RadioGroup`, it ensures that only one option can be active at a time, making it ideal for mutually exclusive settings.
+
+## Anatomy
+
+- **Outer Circle**: The boundary of the radio button.
+- **Center Dot**: The indicator that appears when the option is selected.
+- **Label (Optional)**: Descriptive text associated with the radio button.
+- **State Layer**: Handles hover and pressed states with a ripple effect.
+
+## Variants
+
+### Basic Radio Group
+
+The standard vertical list of choices.
 
 <ComponentPreview name="radio-button-basic" />
 
-## Horizontal Layout
+### Horizontal Layout
 
-Radio groups can be laid out horizontally by setting the `orientation="horizontal"` prop.
+Useful for compact areas or when the labels are very short.
 
 <ComponentPreview name="radio-button-horizontal" />
 
-## Controlled State
+## Features
 
-To control the value of the radio group via React state, use the `value` and `onValueChange` props on the `<RadioGroup>` component. 
+### Group Management
 
-<ComponentPreview name="radio-button-controlled" />
+The `RadioGroup` component handles the selection logic, keyboard navigation, and ARIA roles for its children, ensuring a consistent and accessible experience.
 
-## States
+### States
 
-Radio buttons support `disabled` and `error` states. 
-- The `disabled` state lowers the opacity to `0.38` and removes interactivity. It can be applied to the group or individual buttons.
-- The `error` state changes the primary colors to `m3-error` values and adjusts the hover/focus state layers accordingly.
+Radio buttons support `error`, `disabled`, and `readOnly` states. The error state highlights the button in the theme's error color.
 
 <ComponentPreview name="radio-button-states" />
 
 ## Usage
 
-```tsx
-import { RadioButton, RadioGroup } from "@bug-on/md3-react";
+### Basic Usage
 
-// Basic Group
-<RadioGroup name="plan" defaultValue="free">
+```tsx
+import { RadioGroup, RadioButton } from "@bug-on/md3-react";
+
+<RadioGroup name="storage-plan" defaultValue="free">
+  <RadioButton value="free" label="Free (5GB)" />
+  <RadioButton value="pro" label="Pro (50GB)" />
+  <RadioButton value="business" label="Business (1TB)" />
+</RadioGroup>
+```
+
+### Controlled Component
+
+```tsx
+const [plan, setPlan] = useState("free");
+
+<RadioGroup value={plan} onValueChange={setPlan} name="plan">
   <RadioButton value="free" label="Free" />
   <RadioButton value="pro" label="Pro" />
 </RadioGroup>
-
-// Controlled Group
-const [selection, setSelection] = useState("");
-<RadioGroup name="controlled" value={selection} onValueChange={setSelection}>
-  <RadioButton value="1" label="Option 1" />
-  <RadioButton value="2" label="Option 2" />
-</RadioGroup>
-
-// Individual (Must share the same "name" to act as a native group)
-<RadioButton name="group" value="A" label="A" />
-<RadioButton name="group" value="B" label="B" error />
 ```
+
+## Best Practices
+
+### Dos
+- [ ] Use radio buttons for 2 to 5 mutually exclusive options.
+- [ ] Always provide a label for each radio button.
+- [ ] Group related radio buttons under a clear section heading.
+- [ ] Set a default selection whenever possible to help users move through the form faster.
+
+### Don'ts
+- [ ] Don't use radio buttons for more than 5 options; use a Dropdown or Menu instead.
+- [ ] Don't use a radio button for a binary choice that can be handled by a single Checkbox or Switch.
+- [ ] Avoid placing radio buttons in a way that makes it unclear which label belongs to which button.
 
 ## Accessibility
 
-- The `RadioGroup` wrapper uses the `radiogroup` ARIA role and manages internal keyboard navigation via Arrow Keys.
-- Each `RadioButton` component uses a hidden `<input type="radio">` making it fully compatible with forms and Screen Readers.
-- When `label` is provided, the input is correctly wrapped inside a native `<label>` tag.
-- The `error` prop sets semantic invalid states.
-- The minimum touch target size is maintained at `48x48` for ease of interaction.
+- **Keyboard**: Navigate between options using Arrow keys. Select with `Space`.
+- **Roles**: Correctly implements `role="radiogroup"` and `role="radio"`.
+- **Linking**: Automatically links labels to their respective inputs using `id` and `htmlFor`.
+- **Focus**: Visible focus rings are applied during keyboard navigation.
 
 ## API Reference
 
@@ -68,24 +95,19 @@ const [selection, setSelection] = useState("");
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `string` | — | **Required**. Shared name attribute applied to all child input elements. |
+| `name` | `string` | — | **Required.** Form name for the group. |
 | `value` | `string` | — | Controlled active value. |
-| `defaultValue` | `string` | — | Default active value for uncontrolled usage. |
-| `onValueChange` | `(value: string) => void` | — | Callback fired when the active value changes. |
-| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` | Layout orientation of the choices. |
-| `disabled` | `boolean` | `false` | Disables interactivity across the entire group. |
-| `label` | `string` | — | Accessible label for the group. Appears as screen-reader text unless `aria-labelledby` is set. |
+| `defaultValue` | `string` | — | Initial value. |
+| `onValueChange` | `(val: string) => void` | — | Change callback. |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction. |
+| `disabled` | `boolean` | `false` | Disables all buttons in the group. |
 
 ### RadioButton
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | — | Value for the radio option. Crucial when used within a RadioGroup. |
-| `label` | `string` | — | Visual label text rendered next to the radio button. |
-| `selected` | `boolean` | — | Unbound controlled selection. Overwritten if inside `RadioGroup`. |
-| `defaultSelected` | `boolean` | `false` | Initial checked value for uncontrolled standalone usage. |
-| `disabled` | `boolean` | `false` | Disables interactability for this specific radio. |
-| `error` | `boolean` | `false` | Sets error visually (red stroke & fill). Also sets via `color="error"`. |
-| `color` | `"primary" \| "error"` | `"primary"` | Specific color scheme override. |
-| `name` | `string` | — | Overrides the group context native input `name`. |
-| `onClick` | `() => void` | — | Callback fired on explicit component click. |
+| `value` | `string` | — | **Required.** Unique value for the option. |
+| `label` | `string` | — | Text label. |
+| `disabled` | `boolean` | `false` | Disables this specific button. |
+| `error` | `boolean` | `false` | Visual error state. |
+| `onClick` | `() => void` | — | Click callback. |

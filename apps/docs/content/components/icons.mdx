@@ -1,81 +1,117 @@
 ---
-title: "Icons"
-description: "Material Symbols Variable Font integration with customizable axes and hardware-accelerated animations."
+title: Icons
+description: Material Symbols Variable Font integration with customizable axes and hardware-accelerated animations.
 ---
 
-The `<Icon />` component provides a highly performant wrapper around Google's **Material Symbols** variable font. Instead of shipping static SVG files, it leverages a single variable font file capable of infinite interpolation across 4 distinct typography axes: Fill (`FILL`), Weight (`wght`), Grade (`GRAD`), and Optical Size (`opsz`), along with 3 geometric variations.
-
-## Setup & Configuration
-
-Before using the component, you must load the Material Symbols font in your application. We provide a pre-compiled CSS file with `@font-face` definitions that stream the required fonts directly from Google Fonts CDN.
-
-### Option 1: Global CSS Import (Recommended)
-Import the provided CSS file directly into your global stylesheet (e.g., `globals.css`):
-
-```css
-@import "@bug-on/md3-react/material-symbols.css";
-```
-
-### Option 2: Next.js Font Optimization
-For Next.js applications, you can host the variable font locally and prevent layout shift (FOUT) using `localFont` or `next/font/google`:
-
-```tsx
-// app/layout.tsx
-import localFont from "next/font/local";
-
-const materialSymbols = localFont({
-  src: "../public/fonts/MaterialSymbolsOutlined-VariableFont.woff2",
-  variable: "--font-material-symbols",
-  display: "block",
-});
-
-export default function RootLayout({ children }) {
-  return <html className={materialSymbols.variable}>{children}</html>;
-}
-```
-
----
-
-## Basic Usage & Variants
-
-Material Symbols offers three distinct stylistic variants: `outlined` (default), `rounded`, and `sharp`. 
+The `<Icon />` component provides a highly performant wrapper around Google's **Material Symbols** variable font. Instead of shipping static SVG files, it leverages a single variable font file capable of infinite interpolation across 4 distinct typography axes.
 
 <ComponentPreview name="icon-basic" />
 
-## Variable Font Axes (Playground)
+## Introduction
 
-The true power of a variable font lies in its axes. The `<Icon />` component exposes 4 direct properties to manipulate the font's appearance down to the pixel. 
+Material Symbols are the next generation of Material Icons, designed to be more flexible and expressive. By using a variable font, the `<Icon />` component can morph between different weights, fills, and styles without loading multiple assets. This ensures faster load times and smoother animations, especially for state transitions like "liking" or "favoriting" an item.
 
-- **Fill:** `0` (unfilled) to `1` (solid).
-- **Weight:** `100` (Thin) to `700` (Bold). Default is `400`.
-- **Grade:** `-50` (Low emphasis) to `200` (High emphasis). Modifies thickness without changing metrics.
-- **Optical Size:** `20`, `24`, `40`, `48`. Optimizes stroke rendering for specific pixel sizes.
+## Anatomy
+
+- **Glyph**: The visual representation of the icon, defined by its name (ligature).
+- **Axes**: Four parameters (Fill, Weight, Grade, Optical Size) that control the font's geometry.
+- **Bounding Box**: The 24x24dp (default) area that contains the icon, ensuring consistent alignment with other UI elements.
+
+## Variants
+
+### Stylistic Variants
+
+Material Symbols offers three distinct stylistic variations, each providing a different aesthetic for your application:
+- **Outlined (Default)**: Modern, clean lines.
+- **Rounded**: Softer, friendlier geometric forms.
+- **Sharp**: Direct, high-precision geometry.
+
+<ComponentPreview name="icon-basic" />
+
+## Features
+
+### Variable Font Axes
+
+The `<Icon />` component exposes four axes for fine-tuned control:
+- **Fill**: Toggle between outlined (`0`) and solid (`1`) styles.
+- **Weight**: Adjust the thickness of the icon strokes (100–700).
+- **Grade**: Fine-tune the stroke weight without affecting the icon's dimensions (-50 to 200).
+- **Optical Size**: Optimize the icon's rendering for specific display sizes (20, 24, 40, 48).
 
 <ComponentPreview name="icon-axes" />
 
-## Hardware-Accelerated Animation
+### Expressive Animations
 
-Variable font axes can be interpolated perfectly using CSS transitions. By setting the `animateFill` property to `true`, the `<Icon />` component utilizes `motion/react` spring transitions to morph between `fill={0}` and `fill={1}` states dynamically.
+By setting `animateFill={true}`, the icon can smoothly transition between its outlined and filled states. This is powered by `motion/react` and provides a premium feel to interactive icons.
 
 <ComponentPreview name="icon-animated" />
 
-## Tailwind CSS Integration
+## Usage
 
-The component seamlessly integrates with the `@bug-on/tailwind` plugin. Native component properties map directly to CSS variables (`--md-icon-*`), allowing you to override variants and axes using utility classes.
+### Basic Usage
 
-<ComponentPreview name="icon-tailwind" />
+```tsx
+import { Icon } from "@bug-on/md3-react";
+
+<Icon name="favorite" />
+```
+
+### Advanced Customization
+
+```tsx
+<Icon 
+  name="settings" 
+  weight={600} 
+  fill={1} 
+  grade={100} 
+  opticalSize={48} 
+/>
+```
+
+### Animated Toggle
+
+```tsx
+const [isFavorite, setIsFavorite] = useState(false);
+
+<Icon 
+  name="favorite" 
+  fill={isFavorite ? 1 : 0} 
+  animateFill 
+  onClick={() => setIsFavorite(!isFavorite)}
+/>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use consistent icon styles (e.g., all Rounded) throughout your application.
+- [ ] Use **Optical Size** that matches the icon's actual display size for the clearest rendering.
+- [ ] Animate the **Fill** axis for toggle actions like "Like" or "Bookmark" for better feedback.
+- [ ] Pair icons with text labels or tooltips to ensure their meaning is clear.
+
+### Don'ts
+- [ ] Don't use different stylistic variants (e.g., Outlined and Sharp) on the same screen.
+- [ ] Avoid using very light weights (100) on low-contrast backgrounds as they may be hard to see.
+- [ ] Don't use complex icons at small sizes where they may lose detail.
+
+## Accessibility
+
+- **Decorative Icons**: By default, icons are marked with `aria-hidden="true"` as they are usually decorative.
+- **Semantic Icons**: If an icon conveys meaning on its own, wrap it in an `IconButton` or provide an `aria-label` on a parent element.
+- **Contrast**: Ensure the icon color meets WCAG contrast requirements against its background.
 
 ## API Reference
 
-### IconProps
+### Icon
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `children` | `string` | **Required** | The ligature string name of the icon (e.g., `"favorite"`). |
-| `variant` | `'outlined' \| 'rounded' \| 'sharp'` | `'outlined'` | The stylistic geometric variant to load. |
-| `fill` | `0 \| 1 \| number` | `0` | Fill axis, `0` for line-art, `1` for solid. Accepts decimals. |
-| `weight` | `number` | `400` | Stroke thickness (100–700). |
-| `grade` | `number` | `0` | Emphasis modifier (-50 to 200). Useful for hover states. |
-| `opticalSize` | `20 \| 24 \| 40 \| 48` | `24` | Size optimization for the font geometry. |
-| `size` | `number` | `24` | Sets the visual `font-size` in pixels, and bounds the width/height. |
-| `animateFill` | `boolean` | `false` | Enables spring animations when changing the `fill` prop. |
+|------|------|---------|-------------|
+| `name` | `string` | — | **Required.** Ligature name (e.g., "search"). |
+| `variant` | `"outlined" \| "rounded" \| "sharp"` | `"outlined"` | Stylistic variation. |
+| `fill` | `number` | `0` | Fill level (0 to 1). |
+| `weight` | `number` | `400` | Stroke thickness (100-700). |
+| `grade` | `number` | `0` | Emphasis modifier (-50 to 200). |
+| `opticalSize` | `number` | `24` | Rendering optimization size. |
+| `size` | `number` | `24` | Visual font-size in pixels. |
+| `animateFill` | `boolean` | `false` | Enables spring animation for fill changes. |
+| `className` | `string` | — | Custom classes. |

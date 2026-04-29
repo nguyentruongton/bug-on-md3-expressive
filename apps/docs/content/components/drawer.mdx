@@ -1,0 +1,126 @@
+---
+title: Drawer
+description: Drawers are bottom-anchored panels that provide additional context or actions without losing the current screen's focus.
+---
+
+Drawers (also known as Bottom Sheets in MD3) are used to provide supplemental content, navigation, or actions. They slide up from the bottom of the screen and are ideal for mobile-first or spatial interfaces where vertical space is premium.
+
+<ComponentPreview name="drawer-basic" />
+
+## Introduction
+
+The MD3 Expressive Drawer follows the "Bottom Sheet" specification. It features spring-based "Emphasized" motion and rounded top corners (28dp) to communicate a tactile, paper-like quality. It is built on top of Radix UI's Dialog for best-in-class accessibility.
+
+## Anatomy
+
+- **Scrim (Overlay)**: A semi-transparent background that dims the rest of the UI to focus attention on the drawer.
+- **Container**: The panel that slides up.Bo góc trên (28dp).
+- **Drag Handle (Decorative)**: A visual hint that the panel can be interacted with.
+- **Close Button**: A dedicated button to dismiss the drawer.
+- **Content Area**: The scrollable region for your components.
+
+## Usage
+
+### Basic Usage
+
+The Drawer uses a modular structure to give you full control over its rendering.
+
+```tsx
+import { 
+  Drawer, 
+  DrawerTrigger, 
+  DrawerPortal, 
+  DrawerOverlay, 
+  DrawerContent, 
+  DrawerHeader, 
+  DrawerTitle, 
+  DrawerDescription,
+  Button
+} from "@bug-on/md3-react";
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button>Open Drawer</Button>
+      </DrawerTrigger>
+      <DrawerPortal>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Drawer Title</DrawerTitle>
+            <DrawerDescription>This is a short description of the drawer's content.</DrawerDescription>
+          </DrawerHeader>
+          <div className="py-4">
+            <p>Your custom content goes here...</p>
+          </div>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
+  );
+}
+```
+
+### With Footer Actions
+
+```tsx
+<DrawerContent>
+  <DrawerHeader>...</DrawerHeader>
+  <div className="flex-1">...</div>
+  <DrawerFooter>
+    <Button className="w-full">Action 1</Button>
+    <Button colorStyle="text" className="w-full">Cancel</Button>
+  </DrawerFooter>
+</DrawerContent>
+```
+
+## Features
+
+### Expressive Motion
+
+The Drawer uses a critically-damped spring animation (`stiffness: 350`, `damping: 35`) for the entry transition, creating a responsive and high-end feel.
+
+### Scroll Handling
+
+The content area automatically handles vertical scrolling and uses `overscroll-contain` to prevent scroll chaining to the background page.
+
+### Customizable Height
+
+You can control the maximum height of the drawer using the `maxHeight` prop (e.g., `80vh`, `500px`).
+
+## Best Practices
+
+### Dos
+- [ ] Use Drawers for tasks that take less than a minute (e.g., picking a date, viewing item details).
+- [ ] Keep the title clear and concise.
+- [ ] Ensure the most important actions are reachable at the bottom of the drawer (Footer).
+
+### Don'ts
+- [ ] Don't stack multiple drawers on top of each other.
+- [ ] Don't use a drawer for complex multi-step workflows; consider a full-screen Dialog instead.
+- [ ] Don't hide critical information that needs to be permanently visible on the screen.
+
+## Accessibility
+
+- **Keyboard Support**: `Esc` closes the drawer. Focus is trapped inside the drawer while open.
+- **Focus Management**: Automatically focuses the first interactive element or the close button upon opening.
+- **ARIA Roles**: Uses `role="dialog"` with proper `aria-labelledby` and `aria-describedby` linking.
+- **Screen Readers**: The Scrim is marked as `aria-hidden="true"`.
+
+## API Reference
+
+### Drawer
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | — | Controlled open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Callback when open state changes. |
+
+### DrawerContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `maxHeight` | `string` | `"90vh"` | Maximum height of the drawer container. |
+| `hideHandle` | `boolean` | `false` | Hides the decorative drag handle. |
+| `hideCloseButton` | `boolean` | `false` | Hides the default close button in the top-right. |
+| `className` | `string` | — | Custom classes for the container. |

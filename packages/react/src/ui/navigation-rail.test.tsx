@@ -373,9 +373,9 @@ describe("NavigationRail & NavigationRailItem", () => {
 			expect(nav).toHaveClass("w-20"); // narrow width
 		});
 
-		it("applies xr (spatial) styling when xr={true}", () => {
+		it("applies xr (spatial) styling when variant='xr'", () => {
 			render(
-				<NavigationRail xr>
+				<NavigationRail variant="xr">
 					<NavigationRailItem selected icon={<svg />} label="Home" />
 				</NavigationRail>,
 			);
@@ -383,10 +383,11 @@ describe("NavigationRail & NavigationRailItem", () => {
 			expect(nav).toHaveClass("py-5", "rounded-[48px]", "bg-m3-surface");
 		});
 
-		it("renders spatial wrapper structurally when xr='spatialized'", () => {
+		it("renders spatial wrapper structurally when fabPlacement='spatialized'", () => {
 			render(
 				<NavigationRail
-					xr="spatialized"
+					variant="xr"
+					fabPlacement="spatialized"
 					fab={
 						<button type="button" data-testid="rail-fab">
 							FAB

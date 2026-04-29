@@ -7,66 +7,92 @@ Cards are flexible containers that group related information and actions. They a
 
 <ComponentPreview name="card-variants" />
 
-## Interactive Types
+## Introduction
 
-The `Card` component automatically selects the correct element based on the props you pass:
+The MD3 Expressive Card is a fundamental unit of UI that helps organize content into digestible blocks. It supports three primary variants: **Elevated**, **Filled**, and **Outlined**. Beyond just layout, these cards are "smart" and automatically adapt their HTML semantics and interaction patterns based on whether they are static, clickable, or linkable.
 
-- **Static** (default) — renders as `<div>`. Best when the card contains its own distinct actions.
-- **Button** — renders as `<motion.button>` when `onClick` is provided. Features elevation morphing and Ripple.
-- **Link** — renders as `<motion.a>` when `href` is provided. Adds `rel="noreferrer"` automatically for `target="_blank"`.
+## Anatomy
+
+- **Container**: The main surface of the card. Supports different elevation levels and corner radii.
+- **Content Area**: A flexible space for text, images, and other components.
+- **Actions (Optional)**: Buttons or links typically placed at the bottom of the card.
+- **State Layer**: Interactive cards (button/link) show a hover state and a ripple effect on click/tap.
+
+## Variants
+
+### Color Styles
+
+- **Elevated**: High emphasis, uses a shadow to create depth. Best for standout content on plain backgrounds.
+- **Filled**: Medium emphasis, uses a solid background color (Surface Container). Good for grouping related items.
+- **Outlined**: Low emphasis, uses a border. Best for dense layouts where many cards are visible.
+
+<ComponentPreview name="card-variants" />
+
+### Interactive Types
+
+The `Card` component automatically selects the correct element:
+- **Static**: Renders as `<div>`. Use when the card is purely for display.
+- **Button**: Renders as `<button>` when `onClick` is provided. Features elevation morphing and MD3 ripple.
+- **Link**: Renders as `<a>` when `href` is provided.
 
 <ComponentPreview name="card-interactive" />
 
-## Disabled State
-
-Disabled cards drop to 38% opacity, block pointer events, add `aria-disabled="true"`, and remove keyboard access (`tabIndex=-1`).
-
-<ComponentPreview name="card-disabled" />
-
 ## Usage
 
+### Basic Static Card
+
 ```tsx
-import { Card, Button } from "@bug-on/md3-react";
+import { Card } from "@bug-on/md3-react";
 
-// Static card (div)
 <Card variant="elevated" className="p-6">
-  <h3>Weather Today</h3>
-  <p>28°C, partly cloudy</p>
-  <Button colorStyle="tonal">See forecast</Button>
-</Card>
-
-// Interactive button card (onClick)
-<Card
-  variant="filled"
-  className="p-6 text-left"
-  onClick={() => console.log("Clicked!")}
->
-  <h3>Go to Analytics</h3>
-  <p>View your performance metrics.</p>
-</Card>
-
-// Link card (href)
-<Card
-  variant="outlined"
-  className="p-6"
-  href="/analytics"
->
-  <h3>Analytics</h3>
-</Card>
-
-// Disabled card
-<Card variant="elevated" className="p-6" onClick={handleClick} disabled>
-  <h3>Unavailable</h3>
+  <h3>Project Title</h3>
+  <p>Some descriptive text about the project.</p>
 </Card>
 ```
 
+### Interactive Button Card
+
+```tsx
+<Card 
+  onClick={() => console.log("Card clicked")}
+  variant="filled"
+  className="p-6"
+>
+  <h3>Settings</h3>
+  <p>Manage your account preferences.</p>
+</Card>
+```
+
+### Card with Images
+
+```tsx
+<Card className="overflow-hidden">
+  <img src="/image.jpg" alt="Description" className="w-full h-48 object-cover" />
+  <div className="p-4">
+    <h3>Card Title</h3>
+    <p>Supporting text...</p>
+  </div>
+</Card>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use cards to group related information that belongs together.
+- [ ] Maintain consistent padding and typography across all cards in a layout.
+- [ ] Use Outlined cards for lists or grids with many items to avoid "shadow clutter".
+
+### Don'ts
+- [ ] Don't use too many Elevated cards on a single page, as it can make the UI feel "heavy".
+- [ ] Don't make a card interactive if it only contains other interactive elements (e.g., buttons). This can lead to nested button issues.
+- [ ] Avoid putting too much content in a single card; keep it focused on a single subject.
+
 ## Accessibility
 
-- Static cards (no `onClick` or `href`) render as `<div>` with no interactive role — they are not focusable.
-- Button cards render as `<button type="button">` and are fully keyboard accessible.
-- Link cards render as `<a>` with descriptive content and `rel="noreferrer"` for `target="_blank"`.
-- The `disabled` prop sets `aria-disabled="true"` and disables pointer events and keyboard focus.
-- Ripple effects are suppressed when `prefers-reduced-motion` is active.
+- **Keyboard Support**: Interactive cards (button/link) are fully reachable via `Tab` and triggerable via `Space`/`Enter`.
+- **Roles**: Automatically applies `role="button"` or `role="link"` as appropriate.
+- **Disabled State**: Sets `aria-disabled="true"` and removes the card from the tab order.
+- **Focus**: Visible focus rings are applied to interactive cards.
 
 ## API Reference
 
@@ -74,10 +100,10 @@ import { Card, Button } from "@bug-on/md3-react";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `"elevated" \| "filled" \| "outlined"` | `"elevated"` | Visual style of the card surface. |
-| `onClick` | `() => void` | — | When provided, renders as `<button>` with ripple and elevation animation. |
-| `href` | `string` | — | When provided, renders as `<a>` (link card). |
-| `target` | `string` | — | Link target (e.g. `"_blank"`). Adds `rel="noreferrer"` automatically. |
-| `disabled` | `boolean` | `false` | Disables interaction, focus, and sets `aria-disabled`. |
-| `className` | `string` | — | Additional Tailwind classes. |
-| `children` | `ReactNode` | — | Card content. |
+| `variant` | `"elevated" \| "filled" \| "outlined"` | `"elevated"` | Visual style of the card. |
+| `onClick` | `() => void` | — | Makes the card a `<button>`. |
+| `href` | `string` | — | Makes the card a link (`<a>`). |
+| `target` | `string` | — | Link target (e.g., `_blank`). |
+| `disabled` | `boolean` | `false` | Disables interaction and dims the card. |
+| `asChild` | `boolean` | `false` | Renders as the child element while keeping styles. |
+| `className` | `string` | — | Additional CSS classes. |

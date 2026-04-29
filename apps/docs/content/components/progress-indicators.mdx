@@ -1,51 +1,108 @@
 ---
-title: "Progress Indicator"
-description: "Progress indicators show the status of a process in real time."
+title: Progress Indicator
+description: Progress indicators show the status of a process in real time.
 ---
 
 Progress indicators show the real-time status of a process. Features include determinate and indeterminate modes, circular indicators, and expressive wavy linear bars.
 
-## Interactive Playground
-
 <ComponentPreview name="progress-playground" />
 
-## Linear Progress
+## Introduction
+
+The MD3 Expressive Progress Indicator provides visual feedback for tasks that take more than a few seconds. It supports both **Linear** and **Circular** formats, and offers a unique **Wavy** design style that adds a layer of sophisticated motion to the standard progress bar. It handles both determinate (known progress) and indeterminate (unknown duration) states gracefully.
+
+## Anatomy
+
+- **Track**: The background line or circle representing the total progress.
+- **Indicator**: The active part of the bar or circle representing completed progress.
+- **Wavy Element (Optional)**: A dynamic SVG path that adds a wave effect to the indicator.
+
+## Variants
+
+### Linear Progress
+
+Horizontal bars that are ideal for placement at the top of a surface or container.
 
 <ComponentPreview name="progress-linear-variants" />
 
-## Circular Progress
+### Circular Progress
+
+Circular indicators that are best for smaller spaces or when a more centered focus is required.
 
 <ComponentPreview name="progress-circular-variants" />
 
-## Use Cases
+## Features
 
-<ComponentPreview name="progress-use-cases" />
+### Determinate vs Indeterminate
 
-## Usage Guidelines
+- **Determinate**: Use when the percentage of completion is known.
+- **Indeterminate**: Use when the duration of the task is unknown.
 
-### When to use
-- Show elapsed time or progress over time.
-- Display a determinate indicator when the progression can be calculated against a specific target.
-- Display an indeterminate indicator when duration is unknown.
+### Wavy Motion
 
-### Accessibility
-- Provide an `aria-label` to communicate the loading state to screen readers.
-- Determinate variants automatically expose `aria-valuemin="0"` and `aria-valuemax="100"` along with the current `aria-valuenow`.
+The `shape="wavy"` prop transforms the flat progress bar into an animated wave. This expressive style is perfect for high-end interfaces that want to stand out.
+
+<ComponentPreview name="progress-playground" />
+
+## Usage
+
+### Basic Linear Progress
+
+```tsx
+import { ProgressIndicator } from "@bug-on/md3-react";
+
+<ProgressIndicator value={60} />
+```
+
+### Indeterminate Circular Progress
+
+```tsx
+<ProgressIndicator variant="circular" />
+```
+
+### Expressive Wavy Progress
+
+```tsx
+<ProgressIndicator 
+  shape="wavy" 
+  value={45} 
+  amplitude={6} 
+  wavelength={30} 
+/>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use Determinate progress whenever the duration can be calculated.
+- [ ] Provide an `aria-label` that describes what is being loaded.
+- [ ] Use Linear progress for long processes like file uploads or page loads.
+- [ ] Use Circular progress for smaller, contextual loading (e.g., inside a card).
+
+### Don'ts
+- [ ] Don't use a progress indicator if the task takes less than 1 second.
+- [ ] Don't switch between determinate and indeterminate states frequently; it can be confusing.
+- [ ] Avoid using too many wavy indicators on a single page, as the motion can be distracting.
+
+## Accessibility
+
+- **Roles**: Automatically applies `role="progressbar"`.
+- **States**: Manages `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` for determinate states.
+- **Indeterminate**: Removes `aria-valuenow` to signal unknown progress to screen readers.
 
 ## API Reference
 
 ### ProgressIndicator
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `variant` | `'linear' \| 'circular'` | `'linear'` | The type of progress indicator to render. |
-| `value` | `number \| undefined` | `undefined` | The amount of progress (0-100). If omitted, indicator is indeterminate. |
-| `shape` | `'flat' \| 'wavy'` | `'flat'` | Defines the visual appearance of the active indicator. |
-| `trackShape` | `'flat' \| 'wavy'` | `'flat'` | (Linear only) defines the visual appearance of the track. |
-| `size` | `number` | `48` | (Circular only) the diameter in pixels. |
-| `trackHeight` | `number` | `4` | The thickness of the track and indicator. |
-| `gapSize` | `number` | `4` | Spacing between the indicator and the track. |
-| `amplitude` | `number` | `4` | The height of the waves (if shape='wavy'). |
-| `wavelength` | `number` | `20` | The length of a single wave cycle (if shape='wavy'). |
-| `waveSpeed` | `number` | `1` | Controls how fast the wave animates. |
-| `crawlerSpeed` | `number` | `1` | (Indeterminate only) Controls the overall movement speed. |
+|------|------|---------|-------------|
+| `variant` | `"linear" \| "circular"` | `"linear"` | Visual type. |
+| `value` | `number` | — | Progress percentage (0-100). |
+| `shape` | `"flat" \| "wavy"` | `"flat"` | Visual style of the indicator. |
+| `trackShape` | `"flat" \| "wavy"` | `"flat"` | Visual style of the track. |
+| `size` | `number` | `48` | Circular diameter. |
+| `trackHeight` | `number` | `4` | Thickness. |
+| `amplitude` | `number` | `4` | Wave height. |
+| `wavelength` | `number` | `20` | Wave cycle length. |
+| `waveSpeed` | `number` | `1` | Animation speed. |
+| `className` | `string` | — | Custom classes. |

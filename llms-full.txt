@@ -108,6 +108,7 @@ import { SPRING_TRANSITION, SPRING_TRANSITION_FAST } from "@bug-on/md3-react";
 
 - `SPRING_TRANSITION`: Standard damping, good for general movement.
 - `SPRING_TRANSITION_FAST`: Higher stiffness, good for subtle feedback (hover/tap).
+- `SPRING_TRANSITION_EXPRESSIVE`: High bounce (0.45) for active indicators and "pop" effects.
 
 ## 4. Icon Styles
 Icons should always use the `Icon` component for consistent variable font settings:
@@ -118,11 +119,9 @@ Available weights: 100, 200, 300, 400 (default), 500, 600, 700.
 
 ---
 
-# PART 3: Component Reference
+# PART 3: Component Reference (Standardized MD3 Expressive)
 
-# Component Reference (AI-Optimized, Source-Verified)
-
-> All APIs verified directly from source code. Do not guess props — use only what is documented here.
+> **AI Note**: All components below have been standardized to follow Material Design 3 Expressive guidelines. Use these APIs for high-fidelity implementations. All components support `asChild` (polymorphism) unless otherwise noted.
 
 ---
 
@@ -151,7 +150,7 @@ function Root() {
 
 ## 1. Icon
 
-Material Symbols variable font component. Always `aria-hidden="true"` — add labels to the parent.
+Material Symbols variable font component. Standardized for high performance and accessibility. Always `aria-hidden="true"`.
 
 ```tsx
 import { Icon } from "@bug-on/md3-react";
@@ -159,88 +158,82 @@ import { Icon } from "@bug-on/md3-react";
 // Basic
 <Icon name="home" />
 
-// Full API
+// Full API Reference
 <Icon
-  name="favorite"          // string — snake_case icon name (REQUIRED)
+  name="favorite"          // string — REQUIRED. Ligature name in snake_case (e.g., "arrow_forward")
   variant="outlined"       // "outlined" | "rounded" | "sharp" (default: "outlined")
-  fill={1}                 // 0 | 1 (default: 0)
-  weight={400}             // 100–700 (default: 400)
-  grade={0}                // -50 | -25 | 0 | 100 | 200 (default: 0)
-  opticalSize={24}         // 20 | 24 | 40 | 48 (default: 24)
-  size={24}                // number | "inherit" — overrides font-size in px
-  animateFill              // boolean — spring-animates FILL axis on change
+  fill={1}                 // 0 | 1 — 0 for outlined, 1 for solid (default: 0)
+  weight={400}             // 100, 200, 300, 400, 500, 600, 700 (default: 400)
+  grade={0}                // -50 | -25 | 0 | 100 | 200 — Optical weight adjustment
+  opticalSize={24}         // 20 | 24 | 40 | 48 — Geometric optimization (default: 24)
+  size={24}                // number | "inherit" — Visual font-size in pixels
+  animateFill              // boolean — Enables spring-based morphing for the FILL axis
 />
 ```
-
-> **AI Gotcha**: Icon names are `snake_case`. Never `ArrowForward` — always `arrow_forward`.
 
 ---
 
 ## 2. Button
 
-5 color styles, 5 sizes, shape morphing, icon, loading, toggle, and `asChild` support.
+High-fidelity action component with expressive motion and polymorphism support.
 
 ```tsx
 import { Button } from "@bug-on/md3-react";
 
-// Standard button
+// Standard Button
 <Button
   colorStyle="filled"      // "elevated" | "filled" | "tonal" | "outlined" | "text" (default: "filled")
   size="sm"                // "xs" | "sm" | "md" | "lg" | "xl" (default: "sm")
-  shape="round"            // "round" | "square" (default: "round")
-  icon={<Icon name="add" />}      // leading/trailing icon
+  shape="round"            // "round" (pill) | "square" (rounded-rect) (default: "round")
+  icon={<Icon name="add" />}      // Leading/trailing graphic
   iconPosition="leading"   // "leading" | "trailing" (default: "leading")
-  loading={false}          // boolean
-  loadingVariant="loading-indicator" // "loading-indicator" | "circular"
+  loading={false}          // Replaces content with a loading indicator
+  loadingVariant="loading-indicator" // "loading-indicator" (morphing) | "circular"
   disabled={false}
-  asChild={false}          // boolean — merge props onto child element
+  asChild={false}          // Merge props onto child element (Polymorphism)
 >
   Label
 </Button>
 
-// Toggle button — REQUIRES variant="toggle" AND selected prop
+// Toggle Button — REQUIRES variant="toggle" AND selected prop
 <Button variant="toggle" selected={isActive} onClick={toggle}>
   Filter
 </Button>
 
-// asChild with Next.js Link
-<Button asChild size="lg">
-  <Link href="/page">Go</Link>
+// Link Button via asChild
+<Button asChild>
+  <a href="/docs">View Docs</a>
 </Button>
 ```
-
-> **AI Gotcha**: `variant="toggle"` is **required** together with `selected: boolean`. TypeScript enforces this — omitting either will cause a type error.
 
 ---
 
 ## 3. IconButton
 
-Icon-only button. `aria-label` is **required** (no visible text).
+Icon-only action component. `aria-label` is **required**.
 
 ```tsx
 import { IconButton } from "@bug-on/md3-react";
 
 <IconButton
-  aria-label="Close"           // string — REQUIRED
+  aria-label="Close"           // string — REQUIRED for accessibility
   colorStyle="standard"        // "standard" | "filled" | "tonal" | "outlined" (default: "standard")
-  size="sm"                    // "xs" | "sm" | "md" | "lg" | "xl" (default: "sm")
+  size="md"                    // "xs" | "sm" | "md" | "lg" | "xl" (default: "md")
   shape="round"                // "round" | "square" (default: "round")
   loading={false}
-  loadingVariant="loading-indicator"
   onClick={handleClose}
 >
   <Icon name="close" />
 </IconButton>
 
-// Toggle variant — REQUIRES variant="toggle" AND selected prop
+// Toggle Variant — Requires variant="toggle" and selected
 <IconButton
   variant="toggle"
-  selected={isBookmarked}
-  aria-label={isBookmarked ? "Remove bookmark" : "Bookmark"}
-  colorStyle="filled"
-  onClick={toggleBookmark}
+  selected={isLiked}
+  aria-label="Like"
+  onClick={() => setLiked(!liked)}
 >
-  <Icon name="bookmark" />
+  <Icon name={isLiked ? "favorite" : "favorite_border"} />
 </IconButton>
 ```
 
@@ -248,55 +241,50 @@ import { IconButton } from "@bug-on/md3-react";
 
 ## 4. FAB (Floating Action Button)
 
+High-emphasis action button with extended label support and shape-morphing.
+
 ```tsx
 import { FAB, FABPosition } from "@bug-on/md3-react";
 
 <FAB
-  icon={<Icon name="edit" />}   // ReactNode — REQUIRED
+  icon={<Icon name="add" />}    // ReactNode — REQUIRED
   size="md"                     // "sm" | "md" | "lg" | "xl" (default: "md")
-  colorStyle="primary"          // "primary" | "secondary" | "tertiary" | "surface" (default: "primary")
-  extended={false}              // boolean — reveals label with animated width expansion
-  lowered={false}               // boolean — reduces shadow elevation
-  loading={false}
-  visible={true}                // boolean — controls entrance/exit scale animation
-  aria-label="New post"         // REQUIRED for icon-only FABs
+  colorStyle="primary"          // "primary" | "secondary" | "tertiary" | "surface"
+  extended={false}              // boolean — Reveals label with fluid width animation
+  lowered={false}               // boolean — Reduces shadow elevation for sub-menus
+  visible={true}                // boolean — Controls entrance/exit scale animation
+  aria-label="Create item"      // REQUIRED if label is not provided via children
 >
-  New Post                      {/* shown only when extended={true} */}
+  Create                        {/* Label content for extended FAB */}
 </FAB>
 
-// Fixed positioning helper
+// Fixed Positioning Helper
 <FABPosition position="bottom-right"> // "bottom-right" | "bottom-left" | "top-right" | "top-left"
-  <FAB icon={<Icon name="add" />} aria-label="Add" />
+  <FAB icon={<Icon name="send" />} />
 </FABPosition>
 ```
-
-> **AI Gotcha**: `FABPosition` requires the **parent** to have `position: relative` (or `position: fixed/absolute`).
 
 ---
 
 ## 5. Badge & BadgedBox
 
+Compact status indicators for notifications and counts.
+
 ```tsx
 import { Badge, BadgedBox } from "@bug-on/md3-react";
 
-// Dot badge (decorative, no content)
+// Dot Badge (Decorative signal)
 <Badge />
 
-// Numbered badge
-<Badge max={99}>150</Badge>    // renders "99+"
+// Numeric Badge (Counts)
+<Badge max={99}>{count}</Badge>   // Automatically appends "+" if count > max
 
-// Text badge
-<Badge>NEW</Badge>
-
-// Custom colors
-<Badge containerColor="#6750A4" contentColor="#fff">3</Badge>
-
-// BadgedBox — positions badge at top-trailing corner of anchor
-<BadgedBox badge={<Badge max={99}>{count}</Badge>}>
-  <Icon name="notifications" />
+// BadgedBox — Positioning orchestrator
+<BadgedBox badge={<Badge>{count}</Badge>}>
+  <IconButton icon={<Icon name="notifications" />} />
 </BadgedBox>
 
-// badgeSize overrides auto-detection
+// Explicit sizing for manual offsets
 <BadgedBox badge={<Badge />} badgeSize="small">
   <Icon name="mail" />
 </BadgedBox>
@@ -306,201 +294,180 @@ import { Badge, BadgedBox } from "@bug-on/md3-react";
 
 ## 6. Card
 
-Static, interactive-button, or link card with MD3 elevation.
+Surface component for grouping content. Supports elevation, filling, and outlining.
 
 ```tsx
 import { Card } from "@bug-on/md3-react";
 
-// Static card (div)
+// Static Card
 <Card variant="elevated">
   <div className="p-4">Content</div>
 </Card>
 
-// Interactive button card (adds ripple + elevation on hover)
-<Card variant="filled" onClick={() => alert("clicked!")}>
-  <div className="p-4">Click me</div>
+// Interactive Card (as Button)
+<Card variant="filled" onClick={() => handleAction()}>
+  <div className="p-4">Clickable content</div>
 </Card>
 
-// Link card (renders as <a>)
-<Card variant="outlined" href="/home">
-  <div className="p-4">Navigate</div>
+// Polymorphic Link Card
+<Card variant="outlined" asChild>
+  <a href="/details">View Details</a>
 </Card>
 
-// Props
+// API Reference
 // variant: "elevated" | "filled" | "outlined" (default: "elevated")
-// interactive: boolean — force interactive even without onClick
-// disabled: boolean
-// href: string — renders as <a>
-// target: "_blank" | "_self" | "_parent" | "_top"
+// disabled: boolean — Lowers opacity and prevents clicks
+// className: string — Custom styling
 ```
 
 ---
 
 ## 7. Chip
 
-4 semantic variants for different use cases.
+Compact interactive elements for actions, filtering, input, or suggestions.
 
 ```tsx
 import { Chip } from "@bug-on/md3-react";
 
-// Assist chip — smart actions
-<Chip variant="assist" label="Share" onClick={share} />
+// Assist Chip (Actions)
+<Chip variant="assist" label="Add to plan" icon={<Icon name="add" />} />
 
-// Filter chip — toggleable selection with animated checkmark
-<Chip
-  variant="filter"
-  label="Unread"
-  selected={showUnread}
-  onClick={toggle}
-  leadingIcon={<Icon name="mail" />}   // replaced by checkmark when selected
+// Filter Chip (Selection)
+<Chip 
+  variant="filter" 
+  label="Favorites" 
+  selected={isFav} 
+  onClick={() => setFav(!isFav)} 
 />
 
-// Input chip — entity representation (tag)
-<Chip
-  variant="input"
-  label="React"
-  onRemove={() => removeTag("React")}  // adds ✕ close button
-  avatar={<img src="..." />}            // takes priority over leadingIcon
+// Input Chip (Entities/Tags)
+<Chip 
+  variant="input" 
+  label="John Doe" 
+  onRemove={() => removeUser()} 
+  avatar={<img src="/user.png" />} 
 />
 
-// Suggestion chip — contextual recommendations
-<Chip variant="suggestion" label="Try this" elevated onClick={suggest} />
+// Suggestion Chip (Hints)
+<Chip variant="suggestion" label="Try this" elevated />
 
-// Shared props:
+// API Reference
 // label: ReactNode — REQUIRED
-// elevated: boolean — adds elevation shadow
-// selected: boolean — for filter/input
-// disabled: boolean
+// selected: boolean — For filter/input variants
+// elevated: boolean — Adds shadow depth
 // leadingIcon: ReactNode
-// trailingIcon: ReactNode
+// avatar: ReactNode — Circular graphic (takes priority over leadingIcon)
+// onRemove: () => void — Enables the close (✕) button
 ```
 
 ---
 
 ## 8. Checkbox
 
-2-state and tri-state support.
+Selection control for multiple choices or tri-state logic.
 
 ```tsx
 import { Checkbox, TriStateCheckbox } from "@bug-on/md3-react";
 
-// Controlled 2-state
+// Basic 2-State
 <Checkbox
-  checked={isChecked}
-  onCheckedChange={setIsChecked}
   label="Accept terms"
+  checked={checked}
+  onCheckedChange={setChecked}
 />
 
-// With error state
-<Checkbox
-  checked={false}
-  onCheckedChange={() => {}}
-  error
-  label="Required field"
-  aria-describedby="err-msg"
-/>
+// Error State
+<Checkbox label="Required" error checked={false} />
 
-// Tri-state (unchecked | checked | indeterminate)
+// Tri-State (Mixed)
 <TriStateCheckbox
-  state={parentState}           // "unchecked" | "checked" | "indeterminate"
+  label="Select All"
+  state={parentState} // "checked" | "unchecked" | "indeterminate"
   onStateChange={setParentState}
-  label="Select all"
 />
 
-// Indeterminate visual override
-<Checkbox
-  checked={false}
-  indeterminate           // forces indeterminate visual regardless of checked
-  onCheckedChange={() => {}}
-/>
+// Forced Indeterminate
+<Checkbox label="Child options" indeterminate />
 ```
 
 ---
 
 ## 9. Switch
 
+Binary toggle for immediate settings.
+
 ```tsx
 import { Switch } from "@bug-on/md3-react";
 
 <Switch
-  checked={isOn}                    // boolean — REQUIRED (controlled)
-  onCheckedChange={setIsOn}         // (checked: boolean) => void — REQUIRED
-  label="Wi-Fi"                     // string — wraps in <label>
-  disabled={false}
-  thumbContent={<Icon name="check" size={16} />}  // icon inside thumb
-  icons={false}             // show thumbContent in both states
-  showOnlySelectedIcon={false} // show thumbContent only when checked
-  ariaLabel="Toggle Wi-Fi"   // used when no label prop
-  // Color overrides:
-  checkedTrackColor="..."
-  uncheckedTrackColor="..."
-  checkedThumbColor="..."
-  uncheckedThumbColor="..."
+  label="Dark Mode"
+  checked={isDark}
+  onCheckedChange={setDark}
+  icons // Enables icons inside the thumb
+  thumbContent={isDark ? <Icon name="dark_mode" /> : <Icon name="light_mode" />}
 />
+
+// API Reference
+// checked: boolean — REQUIRED
+// onCheckedChange: (val: boolean) => void — REQUIRED
+// icons: boolean — Display thumb content in both states
+// showOnlySelectedIcon: boolean — Only show thumb content when ON
 ```
 
 ---
 
-## 10. RadioButton
+## 10. Radio Button
+
+Selection control for mutually exclusive choices.
 
 ```tsx
-import { RadioButton, RadioGroup } from "@bug-on/md3-react";
+import { RadioGroup, RadioButton } from "@bug-on/md3-react";
 
-<RadioGroup value={selected} onValueChange={setSelected}>
-  <RadioButton value="a" label="Option A" />
-  <RadioButton value="b" label="Option B" />
-  <RadioButton value="c" label="Option C" disabled />
+<RadioGroup 
+  name="plan" 
+  defaultValue="free" 
+  onValueChange={(val) => console.log(val)}
+>
+  <RadioButton value="free" label="Free Plan" />
+  <RadioButton value="pro" label="Pro Plan" />
+  <RadioButton value="enterprise" label="Enterprise" disabled />
 </RadioGroup>
+
+// API Reference
+// orientation: "horizontal" | "vertical" (default: "vertical")
+// error: boolean (on RadioButton) — Visual error state
 ```
 
 ---
 
-## 11. TextField
+## 11. Text Field
 
-Full-featured input with floating label, error states, icons, and imperative handle.
+Comprehensive input component with floating labels and expressive transitions.
 
 ```tsx
 import { TextField } from "@bug-on/md3-react";
 import type { TextFieldHandle } from "@bug-on/md3-react";
 
-// Basic
-<TextField label="Email" type="email" variant="outlined" />
-
-// Full API
 <TextField
-  variant="filled"          // "filled" | "outlined" (default: "filled")
   label="Username"
-  type="text"               // "text" | "email" | "number" | "password" | "search" | "tel" | "url" | "textarea"
+  variant="outlined"        // "filled" | "outlined" (default: "filled")
+  type="text"               // Support all native types + "textarea"
   value={val}
-  onChange={(value, event) => setVal(value)}  // NOTE: first arg is string, not event
-  placeholder="Enter text"
-  supportingText="Helper text"
-  error={hasError}
-  errorText="This field is required"
-  required
-  maxLength={100}           // enables character counter
-  leadingIcon={<Icon name="search" />}
+  onChange={(v) => setVal(v)} // NOTE: First arg is string value
+  supportingText="Required"
+  error={!!err}
+  errorText={err}
+  leadingIcon={<Icon name="person" />}
   trailingIconMode="clear"  // "none" | "clear" | "password-toggle" | "custom"
-  trailingIcon={<Icon name="check" />}  // used with trailingIconMode="custom"
-  prefixText="$"
-  suffixText=".00"
-  disabled={false}
-  readOnly={false}
-  fullWidth
-  dense                     // reduced height (48px instead of 56px)
-  // For textarea type:
-  rows={4}
-  autoResize
-  maxRows={8}
-  scrollAreaType="hover"    // "hover" | "scroll" | "always" | "none"
+  dense                     // 48px height instead of 56px
+  autoResize                // For "textarea" type
 />
 
-// Imperative handle
+// Imperative API
 const ref = useRef<TextFieldHandle>(null);
-<TextField ref={ref} label="Search" />
+<TextField ref={ref} ... />
 ref.current?.focus();
 ref.current?.clear();
-ref.current?.getValue();
 ```
 
 > **AI Gotcha**: `onChange` receives `(value: string, event)` NOT `(event)`. The first argument is the new value string.
@@ -509,370 +476,360 @@ ref.current?.getValue();
 
 ## 12. Tabs
 
+Categorical navigation within a view. Built on Radix UI.
+
 ```tsx
 import { Tabs, TabsList, Tab, TabsContent } from "@bug-on/md3-react";
 
-// Controlled
-<Tabs value={activeTab} onValueChange={setActiveTab}>
+<Tabs defaultValue="overview">
   <TabsList variant="primary"> {/* "primary" | "secondary" — REQUIRED */}
-    <Tab value="flights" icon={<Icon name="flight" />}>Flights</Tab>
-    <Tab value="hotels" disabled>Hotels</Tab>
-    <Tab value="trips" icon={<Icon name="map" />} inlineIcon>Trips</Tab>
+    <Tab value="overview">Overview</Tab>
+    <Tab value="details" icon={<Icon name="info" />}>Details</Tab>
+    <Tab value="settings" badge={<Badge />}>Settings</Tab>
   </TabsList>
-  <TabsContent value="flights">Flights content</TabsContent>
-  <TabsContent value="hotels">Hotels content</TabsContent>
-  <TabsContent value="trips">Trips content</TabsContent>
+  <TabsContent value="overview">Overview content</TabsContent>
 </Tabs>
 
-// Uncontrolled
-<Tabs defaultValue="flights">
-  ...
-</Tabs>
-
-// Tab props:
-// value: string — REQUIRED, must match TabsContent value
-// icon: ReactNode
-// inlineIcon: boolean — icon beside label (48dp height) vs stacked (64dp)
-// disabled: boolean
-// badge: ReactNode
-
-// TabsList props:
-// variant: "primary" | "secondary" — REQUIRED
-// scrollable: boolean (default: false) — horizontal scroll with 52px edge padding
-// backgroundColor: string
+// API Reference
+// variant: "primary" (short indicator) | "secondary" (full-width)
+// scrollable: boolean — Enables horizontal scrolling
+// inlineIcon: boolean (on Tab) — Positions icon beside label
 ```
 
 ---
 
-## 13. NavigationRail
+## 13. Navigation Rail
+
+Vertical navigation for medium-to-large screens.
 
 ```tsx
 import { NavigationRail, NavigationRailItem } from "@bug-on/md3-react";
 
 <NavigationRail
-  variant="collapsed"         // "collapsed" | "expanded" | "modal" (default: "collapsed")
-  labelVisibility="labeled"   // "labeled" | "auto" | "unlabeled" (default: "labeled")
-  fab={<FAB icon={<Icon name="edit" />} size="md" aria-label="Compose" />}
-  header={<img src="logo.png" />}
-  footer={<NavigationRailItem ... />}
+  variant="collapsed" // "collapsed" | "expanded" | "modal" | "xr"
+  fab={<FAB icon={<Icon name="add" />} />}
 >
   <NavigationRailItem
-    selected={current === "home"}   // boolean — REQUIRED
-    icon={<Icon name="home" />}     // ReactNode — REQUIRED (use <Icon> for fill animation)
     label="Home"
-    onClick={() => setCurrent("home")}
-    disabled={false}
-    badge={3}              // badge content shown on icon
+    icon={<Icon name="home" />}
+    selected={active === "home"}
+    onClick={() => setActive("home")}
   />
-  <NavigationRailItem selected={current === "search"} icon={<Icon name="search" />} label="Search" onClick={() => setCurrent("search")} />
 </NavigationRail>
 
-// Modal variant (drawer-style, slides in from left)
-<NavigationRail variant="modal" open={isOpen} onClose={() => setIsOpen(false)}>
-  ...
-</NavigationRail>
+// API Reference
+// variant: "collapsed" (rail) | "expanded" (drawer) | "modal" | "xr" (floating)
+// labelVisibility: "labeled" | "auto" | "unlabeled"
+// activeIndicatorTransition: Transition — Custom spring config for the active pill
 ```
 
 > **AI Gotcha**: When using `<Icon>` for the `icon` prop, `NavigationRail` automatically adds `fill={selected ? 1 : 0}` and `animateFill` — no need to set these manually.
 
 ---
 
-## 14. AppBar
+## 14. Navigation Bar
+
+Horizontal navigation for compact screens (mobile/tablet).
 
 ```tsx
-import {
-  SmallAppBar, SearchAppBar, BottomAppBar,
-  LargeFlexibleAppBar, MediumFlexibleAppBar, DockedToolbar
-} from "@bug-on/md3-react";
+import { NavigationBar, NavigationBarItem, Icon } from "@bug-on/md3-react";
 
-// Small (most common)
-<SmallAppBar
-  title="Dashboard"
-  leadingIcon={<IconButton aria-label="Menu" onClick={openMenu}><Icon name="menu" /></IconButton>}
-  trailingIcons={[
-    <IconButton key="search" aria-label="Search"><Icon name="search" /></IconButton>
-  ]}
-/>
+<NavigationBar
+  variant="flexible" // "flexible" | "baseline" | "xr"
+  hideOnScroll={true}
+>
+  <NavigationBarItem
+    label="Home"
+    icon={<Icon name="home" />}
+    selected={active === "home"}
+    onClick={() => setActive("home")}
+  />
+</NavigationBar>
 
-// Search app bar
-<SearchAppBar placeholder="Search..." />
-
-// Bottom app bar (mobile)
-<BottomAppBar
-  leadingIcons={[...]}
-  fab={<FAB icon={<Icon name="add" />} size="md" aria-label="Add" lowered />}
-/>
+// API Reference
+// variant: "flexible" (responsive) | "baseline" (fixed height) | "xr" (orbiter)
+// itemLayout: "vertical" | "horizontal" (overrides responsive)
+// hideOnScroll: boolean
+// elevated: boolean
+// activeIndicatorTransition: Transition — Custom spring config for the active pill
 ```
 
 ---
 
-## 15. Dialog
+## 15. App Bar
 
-Based on Radix UI. Use `Dialog` > `DialogTrigger` > `DialogContent` compound pattern.
+Top and bottom screen headers/footers with dynamic scroll behaviors.
 
 ```tsx
-import {
-  Dialog, DialogTrigger, DialogContent,
-  DialogHeader, DialogTitle, DialogBody,
-  DialogFooter, DialogClose, DialogIcon,
-  DialogFullScreenContent
+import { 
+  SmallAppBar, 
+  MediumFlexibleAppBar, 
+  LargeFlexibleAppBar, 
+  BottomAppBar 
 } from "@bug-on/md3-react";
 
-// Controlled
-const [open, setOpen] = useState(false);
-<Dialog open={open} onOpenChange={setOpen}>
-  <DialogTrigger asChild>
-    <Button>Open</Button>
-  </DialogTrigger>
-  <DialogContent hideCloseButton={false}>
-    <DialogHeader>
-      <DialogIcon><Icon name="warning" /></DialogIcon>
-      <DialogTitle>Confirmation</DialogTitle>
-    </DialogHeader>
-    <DialogBody>Are you sure you want to delete this?</DialogBody>
+// Standard Small App Bar
+<SmallAppBar
+  title="Page Title"
+  navigationIcon={<IconButton icon={<Icon name="menu" />} />}
+  actions={<IconButton icon={<Icon name="search" />} />}
+/>
+
+// Bottom App Bar with FAB
+<BottomAppBar
+  actions={<IconButton icon={<Icon name="menu" />} />}
+  fab={<FAB icon={<Icon name="add" />} size="md" lowered />}
+/>
+
+// API Reference
+// scrollBehavior: Result of useAppBarScroll hook
+// behavior: "pinned" | "enterAlways" | "exitUntilCollapsed"
+```
+
+---
+
+## 16. Dialog
+
+Modal overlays for critical information and decisions.
+
+```tsx
+import { 
+  Dialog, DialogTrigger, DialogContent, 
+  DialogTitle, DialogBody, DialogFooter 
+} from "@bug-on/md3-react";
+
+<Dialog>
+  <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
+  <DialogContent>
+    <DialogTitle>Confirm Action</DialogTitle>
+    <DialogBody>Are you sure you want to proceed?</DialogBody>
     <DialogFooter>
-      <DialogClose asChild>
-        <Button colorStyle="text">Cancel</Button>
-      </DialogClose>
-      <Button colorStyle="filled" onClick={confirmDelete}>Delete</Button>
+      <DialogClose asChild><Button colorStyle="text">Cancel</Button></DialogClose>
+      <Button onClick={handleConfirm}>Confirm</Button>
     </DialogFooter>
   </DialogContent>
 </Dialog>
 
-// Full-screen dialog
-<Dialog open={open} onOpenChange={setOpen}>
-  <DialogTrigger asChild><Button>Edit</Button></DialogTrigger>
-  <DialogFullScreenContent
-    title="Edit Profile"
-    actionLabel="Save"
-    onAction={handleSave}
-    showDivider
-  >
-    <p>Full screen content here</p>
-  </DialogFullScreenContent>
-</Dialog>
+// Full-screen Variant
+<DialogFullScreenContent 
+  title="New Event" 
+  actionLabel="Save" 
+  onAction={handleSave}
+>
+  Content...
+</DialogFullScreenContent>
 ```
 
 > **AI Gotcha**: `DialogBody` uses `ScrollArea` internally and has a max-height of `calc(85dvh - 200px)`. For very short dialogs you may want to pass `className="max-h-none"`.
 
 ---
 
-## 16. Drawer (Bottom Sheet)
+## 17. Drawer (Bottom Sheet)
 
-Vaul-based bottom sheet.
+Responsive container that slides up from the bottom of the screen.
 
 ```tsx
-import {
-  Drawer, DrawerTrigger, DrawerContent,
-  DrawerHeader, DrawerTitle, DrawerFooter, DrawerClose
+import { 
+  Drawer, DrawerTrigger, DrawerContent, 
+  DrawerTitle, DrawerHeader, DrawerFooter 
 } from "@bug-on/md3-react";
 
 <Drawer>
-  <DrawerTrigger asChild>
-    <Button>Open Sheet</Button>
-  </DrawerTrigger>
+  <DrawerTrigger asChild><Button>Open Sheet</Button></DrawerTrigger>
   <DrawerContent>
     <DrawerHeader>
-      <DrawerTitle>Settings</DrawerTitle>
+      <DrawerTitle>Select Option</DrawerTitle>
     </DrawerHeader>
-    <p className="p-4">Sheet content here</p>
+    <div className="p-4">Content goes here...</div>
     <DrawerFooter>
-      <DrawerClose asChild>
-        <Button colorStyle="tonal">Close</Button>
-      </DrawerClose>
+      <DrawerClose asChild><Button>Close</Button></DrawerClose>
     </DrawerFooter>
   </DrawerContent>
 </Drawer>
+
+// API Reference
+// maxHeight: number — Limit sheet height
+// hideHandle: boolean — Hide the drag handle
 ```
 
 ---
 
-## 17. Snackbar
+## 18. Snackbar
 
-Imperative toast system. One at a time — subsequent calls are queued.
+Brief messages about app processes. Features a queuing system for sequential display.
 
 ```tsx
 import { SnackbarProvider, useSnackbar } from "@bug-on/md3-react";
 
-// 1. Wrap app (or section) in provider — ONCE
-<SnackbarProvider>
-  <App />
-</SnackbarProvider>
+// 1. Wrap your app
+<SnackbarProvider><App /></SnackbarProvider>
 
-// 2. Use in any descendant
-function SaveButton() {
-  const { showSnackbar } = useSnackbar();
+// 2. Trigger from any child
+const { showSnackbar } = useSnackbar();
 
-  const handleSave = async () => {
-    const result = await showSnackbar({
-      message: "Changes saved",
-      actionLabel: "Undo",           // optional action button
-      withDismissAction: false,      // show X close button
-      actionOnNewLine: false,        // stack action below message
-      duration: "short",             // "short" (4s) | "long" (7s) | number (ms)
-    });
-
-    if (result === "action-performed") undoSave();
-  };
-
-  return <Button onClick={handleSave}>Save</Button>;
-}
+const trigger = async () => {
+  const result = await showSnackbar({
+    message: "Message deleted",
+    actionLabel: "Undo",
+    duration: "short", // "short" (4s) | "long" (10s)
+  });
+  
+  if (result === "action-performed") handleUndo();
+};
 ```
 
 ---
 
-## 18. Tooltip
+## 19. Tooltip
+
+Informative text that appears on focus or hover.
 
 ```tsx
-import { PlainTooltip, RichTooltip, TooltipBox } from "@bug-on/md3-react";
+import { PlainTooltip, RichTooltip } from "@bug-on/md3-react";
 
-// Plain tooltip
-<PlainTooltip content="Helpful hint">
-  <IconButton aria-label="Help"><Icon name="help" /></IconButton>
+// Plain Tooltip (Simple label)
+<PlainTooltip content="Edit profile">
+  <IconButton icon={<Icon name="edit" />} />
 </PlainTooltip>
 
-// Rich tooltip (title + description + actions)
-<RichTooltip
-  title="More information"
-  description="This is a detailed explanation."
+// Rich Tooltip (Header + Description + Optional Actions)
+<RichTooltip 
+  title="Permissions" 
+  description="Grant access to camera and microphone."
 >
-  <IconButton aria-label="Info"><Icon name="info" /></IconButton>
+  <IconButton icon={<Icon name="security" />} />
 </RichTooltip>
 ```
 
 ---
 
-## 19. Slider
+## 20. Slider
+
+Control for selecting values from a range. Supports discrete and continuous modes.
 
 ```tsx
 import { Slider, RangeSlider } from "@bug-on/md3-react";
 
-// Single value
-<Slider
-  defaultValue={[50]}
-  min={0}
-  max={100}
-  step={1}
-  // variant: "continuous" | "discrete" (default: "continuous")
-  // orientation: "horizontal" | "vertical"
-/>
+// Single Handle
+<Slider defaultValue={[50]} min={0} max={100} step={1} />
 
-// Range slider (two handles)
-<RangeSlider defaultValue={[20, 80]} min={0} max={100} step={5} />
+// Range (Dual Handles)
+<RangeSlider defaultValue={[20, 80]} />
+
+// API Reference
+// variant: "continuous" | "discrete"
+// showTickMarks: boolean — For discrete sliders
 ```
 
 ---
 
-## 20. ScrollArea
+## 21. Scroll Area
 
-Custom scrollbar matching MD3 styles.
+Custom scrollbar implementation with MD3 styling and fluid visibility.
 
 ```tsx
 import { ScrollArea } from "@bug-on/md3-react";
 
-<ScrollArea
-  type="hover"              // "auto" | "always" | "scroll" | "hover" (default: "hover")
-  orientation="vertical"   // "vertical" | "horizontal" | "both"
-  className="h-64"
->
-  <div>Long content...</div>
+<ScrollArea type="hover" className="h-64">
+  <div className="p-4">Long content...</div>
 </ScrollArea>
+
+// API Reference
+// type: "auto" | "always" | "scroll" | "hover"
+// orientation: "vertical" | "horizontal" | "both"
 ```
 
 ---
 
-## 21. Menu
+## 22. Menu
 
-Dropdown menus with shape morphing, submenus, and context menu.
+Contextual list of actions or options. Supports submenus and checkboxes.
 
 ```tsx
-import {
-  Menu, MenuTrigger, MenuContent,
-  MenuItem, MenuDivider, MenuGroup,
-  SubMenu, ContextMenu, ContextMenuTrigger, ContextMenuContent
-} from "@bug-on/md3-react";
+import { Menu, MenuTrigger, MenuContent, MenuItem } from "@bug-on/md3-react";
 
 <Menu>
-  <MenuTrigger asChild>
-    <IconButton aria-label="More options"><Icon name="more_vert" /></IconButton>
-  </MenuTrigger>
+  <MenuTrigger asChild><Button>Options</Button></MenuTrigger>
   <MenuContent>
-    <MenuItem icon={<Icon name="edit" />} onSelect={handleEdit}>Edit</MenuItem>
+    <MenuItem icon={<Icon name="edit" />}>Edit</MenuItem>
+    <MenuItem icon={<Icon name="share" />}>Share</MenuItem>
     <MenuDivider />
-    <MenuGroup>
-      <MenuItem onSelect={handleCopy}>Copy</MenuItem>
-      <MenuItem onSelect={handlePaste}>Paste</MenuItem>
-    </MenuGroup>
-    <SubMenu trigger={<MenuItem>More options</MenuItem>}>
-      <MenuContent>
-        <MenuItem onSelect={handleA}>Option A</MenuItem>
-      </MenuContent>
-    </SubMenu>
+    <MenuItem variant="danger" icon={<Icon name="delete" />}>Delete</MenuItem>
   </MenuContent>
 </Menu>
 
-// Context menu (right-click)
-<ContextMenu>
-  <ContextMenuTrigger>
-    <div>Right-click me</div>
-  </ContextMenuTrigger>
-  <ContextMenuContent>
-    <MenuItem onSelect={handleCut}>Cut</MenuItem>
-    <MenuItem onSelect={handleCopy}>Copy</MenuItem>
-  </ContextMenuContent>
-</ContextMenu>
+// Also available: SubMenu, ContextMenu, MenuCheckboxItem
 ```
 
 ---
 
-## 22. Divider
+## 23. Divider
+
+Visual rule for separating content. Supports expressive wavy shapes.
 
 ```tsx
 import { Divider } from "@bug-on/md3-react";
 
-<Divider />                          // horizontal line
-<Divider orientation="vertical" />  // vertical line
+// Standard
+<Divider />
+
+// Expressive Wavy
+<Divider shape="wavy" />
+
+// Inset for lists
+<Divider variant="inset" insetStart="icon" />
+
+// API Reference
+// variant: "full-bleed" | "inset" | "middle-inset" | "subheader"
+// shape: "flat" | "wavy"
+// orientation: "horizontal" | "vertical"
 ```
 
 ---
 
-## 23. ButtonGroup
+## 24. Button Group
 
-Groups related buttons with shared borders and shape logic.
+Groups related buttons with shared borders and expressive shape-morphing.
 
 ```tsx
 import { ButtonGroup, Button } from "@bug-on/md3-react";
 
 <ButtonGroup>
-  <Button colorStyle="outlined">Day</Button>
-  <Button colorStyle="outlined">Week</Button>
-  <Button colorStyle="outlined">Month</Button>
+  <Button colorStyle="outlined">Left</Button>
+  <Button colorStyle="outlined">Center</Button>
+  <Button colorStyle="outlined">Right</Button>
 </ButtonGroup>
+
+// API Reference
+// connected: boolean — If true, removes margins between buttons (Segmented style)
+// fullWidth: boolean
 ```
 
 ---
 
-## 24. Progress Indicators
+## 25. Progress & Loading Indicators
+
+Visual signals for status and progress.
 
 ```tsx
-import { ProgressIndicator } from "@bug-on/md3-react";
+import { ProgressIndicator, LoadingIndicator } from "@bug-on/md3-react";
 
-// Linear (determinate)
-<ProgressIndicator variant="linear" value={65} max={100} />
+// Linear Progress
+<ProgressIndicator variant="linear" value={40} />
 
-// Linear (indeterminate)
-<ProgressIndicator variant="linear" />
+// Circular Progress
+<ProgressIndicator variant="circular" value={40} />
 
-// Circular (determinate)
-<ProgressIndicator variant="circular" value={65} max={100} size={48} />
+// Morphing Loading Indicator (Standard MD3 Expressive)
+<LoadingIndicator size="md" />
 
-// Circular (indeterminate)
-<ProgressIndicator variant="circular" size={48} color="currentColor" />
+// API Reference
+// value: number (0-100) — If omitted, shows indeterminate animation
 ```
 
 ---
 
-## 25. Theme Provider & Hooks
+## 26. Theme Provider & Hooks
 
 ```tsx
 import { MD3ThemeProvider, useTheme, useThemeMode } from "@bug-on/md3-react";
@@ -894,30 +851,28 @@ const { theme } = useTheme();
 
 ---
 
-## 26. Typography
+## 27. Typography
+
+Expressive type system powered by Google Sans Flex.
 
 ```tsx
-import { Typography, TypographyProvider } from "@bug-on/md3-react";
+import { Text } from "@bug-on/md3-react";
 
-// Provider (optional — sets font)
-<TypographyProvider>
-  <App />
-</TypographyProvider>
+<Text variant="displayLarge">Welcome</Text>
+<Text variant="bodyMedium" as="p">This is a paragraph.</Text>
 
-// Typography component
-<Typography variant="headline-large">Page Title</Typography>
-<Typography variant="body-medium" as="p">Body text</Typography>
-
-// Variants: display-large, display-medium, display-small,
-//           headline-large, headline-medium, headline-small,
-//           title-large, title-medium, title-small,
-//           body-large, body-medium, body-small,
-//           label-large, label-medium, label-small
+// Variants: 
+//   displayLarge, displayMedium, displaySmall
+//   headlineLarge, headlineMedium, headlineSmall
+//   titleLarge, titleMedium, titleSmall
+//   bodyLarge, bodyMedium, bodySmall
+//   labelLarge, labelMedium, labelSmall
+//   (Also supported: emphasized variants like displayLargeEmphasized)
 ```
 
 ---
 
-## 27. Ripple (Low-level)
+## 28. Ripple (Low-level)
 
 For custom interactive components.
 
@@ -944,7 +899,7 @@ function CustomButton({ children, onClick }) {
 
 ---
 
-## 28. Text (Raw)
+## 29. Text (Raw)
 
 Simple span with MD3 typography styles.
 
@@ -958,7 +913,7 @@ import { Text } from "@bug-on/md3-react";
 
 ---
 
-## 29. CodeBlock
+## 30. CodeBlock
 
 Syntax-highlighted code display.
 
@@ -972,7 +927,7 @@ import { CodeBlock } from "@bug-on/md3-react";
 
 ---
 
-## 30. TableOfContents
+## 31. TableOfContents
 
 Auto-generated TOC from headings.
 
@@ -990,14 +945,50 @@ import { TableOfContents } from "@bug-on/md3-react";
 
 ---
 
-## Quick Common Mistakes
+## 32. Search
+
+Comprehensive search interface with docking and fullscreen support.
+
+```tsx
+import { Search } from "@bug-on/md3-react";
+
+<Search
+  placeholder="Search files..."
+  value={query}
+  onChange={setQuery}
+  variant="docked" // "docked" | "fullscreen"
+  leadingIcon={<Icon name="search" />}
+/>
+```
+
+---
+
+## 33. FAB Menu (Speed Dial)
+
+Staggered menu that expands from a FAB.
+
+```tsx
+import { FABMenu } from "@bug-on/md3-react";
+
+<FABMenu
+  expanded={isOpen}
+  onToggle={setIsOpen}
+  items={[
+    { id: "1", label: "Image", icon: <Icon name="image" />, onClick: () => {} },
+    { id: "2", label: "Video", icon: <Icon name="videocam" />, onClick: () => {} },
+  ]}
+/>
+```
+
+---
+
+## 34. Quick Common Mistakes
 
 | Mistake | Correct |
 |---------|---------|
 | `<Icon name="ArrowForward" />` | `<Icon name="arrow_forward" />` |
 | `<Button variant="toggle">` (no `selected`) | Must also pass `selected={boolean}` |
-| `<IconButton>` (no `aria-label`) | TypeScript error — `aria-label` is required |
-| `onChange={e => setValue(e.target.value)}` on TextField | `onChange={(value) => setValue(value)}` (first arg is string) |
-| `<TabsList>` (no `variant`) | `variant` prop is required on `TabsList` |
-| Using `useSnackbar()` outside `<SnackbarProvider>` | Throws error — ensure provider wraps the tree |
-| Setting custom FAB position without `position: relative` on parent | `FABPosition` uses `absolute` — parent must be positioned |
+| `<IconButton>` (no `aria-label`) | `aria-label` is required for accessibility |
+| `onChange={e => setValue(v)}` | `onChange={(value) => setValue(value)}` (TextField uses string as 1st arg) |
+| `<TabsList>` (no `variant`) | `variant="primary" \| "secondary"` is required |
+| `useSnackbar()` outside Provider | Ensure `<SnackbarProvider>` wraps the component tree |

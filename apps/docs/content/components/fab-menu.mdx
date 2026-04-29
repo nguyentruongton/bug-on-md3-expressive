@@ -7,104 +7,112 @@ Floating Action Button menus help group related actions under a single, prominen
 
 <ComponentPreview name="fab-menu-default" />
 
-## Color Variants
+## Introduction
 
-FAB menus can use primary, secondary, or tertiary colors. This applies to both the central toggle FAB and the individual list items as per Material Design 3 Expressive guidelines.
+The MD3 Expressive FAB Menu (or Speed Dial) is an advanced variant of the FAB. It allows a single primary action button to expand into a suite of related actions, saving screen space while keeping multiple options easily accessible. It features high-end staggered entrance animations and a fluid transformation of the main toggle button.
 
-<ComponentPreview name="fab-menu-variants" />
+## Anatomy
 
-## Sizes
+- **Main FAB (Toggle)**: The primary button that the user interacts with to open the menu. Often changes its icon (e.g., from "Add" to "Close") when expanded.
+- **Menu Items**: A vertical list of secondary action buttons that appear above or below the main FAB.
+- **Labels**: Descriptive text for each menu item, typically displayed next to the secondary icons.
+- **Scrim (Optional)**: A subtle background dimming that appears when the menu is open to focus attention.
 
-FAB menus support the three MD3 Expressive FAB sizes for the main toggle button. The `fabSize` prop controls the initial size of the FAB (`baseline`, `medium`, `large`). 
+## Variants
 
-*Note: The menu items themselves remain a consistent size to maintain a reliable touch target area.*
+### Sizes
+
+The main toggle FAB supports the three standard MD3 Expressive sizes:
+- **Baseline (Default)**
+- **Medium**
+- **Large**
 
 <ComponentPreview name="fab-menu-sizes" />
 
-## Alignment
+### Color Styles
 
-You can align the menu items to unfold from `end` (default behavior starting from the trailing edge) or `start` based on positioning and design requirements.
+FAB Menus can be styled using **Primary**, **Secondary**, or **Tertiary** container roles, which are applied consistently to the toggle and all menu items.
+
+<ComponentPreview name="fab-menu-variants" />
+
+## Features
+
+### Staggered Animations
+
+When the menu opens, the items appear one after another with a slight delay, creating a fluid, "waterfall" effect that is a hallmark of Material Design 3 Expressive.
+
+### Alignment
+
+Items can be aligned to the **start** or **end** of the toggle FAB, allowing for flexible positioning in different corners of the screen.
 
 <ComponentPreview name="fab-menu-alignment" />
 
-## Icon Only (Advanced)
-
-While menu items usually require text for clarity and accessibility, you can visually hide the text labels for more compact displays by utilizing Tailwind CSS classes in the item's `className` property.
-
-<ComponentPreview name="fab-menu-icon-only" />
-
-## Accessibility
-
-- Full keyboard support is implemented. Pressing `Escape` will close the FAB menu and return focus to the toggle button.
-- Focus is trapped or rationally directed when the menu is open, allowing `Tab` or `Arrow Keys` to cycle through the available menu actions.
-- ARIA semantics (`menu`, `menuitem`, `button`, `aria-expanded`, `aria-haspopup`) are strictly enforced for screen reader compatibility.
-- Ensure every `FABMenuItemData` has a clear, descriptive `label` even if it is visually hidden.
-
 ## Usage
+
+### Basic Usage
 
 ```tsx
 import { FABMenu, Icon } from "@bug-on/md3-react";
-import * as React from "react";
 
-export default function MyComponent() {
-  const [expanded, setExpanded] = React.useState(false);
+export function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const actions = [
+    { id: 'image', label: 'Image', icon: <Icon name="image" />, onClick: () => {} },
+    { id: 'video', label: 'Video', icon: <Icon name="videocam" />, onClick: () => {} },
+    { id: 'file', label: 'File', icon: <Icon name="description" />, onClick: () => {} },
+  ];
 
   return (
     <FABMenu
-      expanded={expanded}
-      onToggle={setExpanded}
-      aria-label="Document actions"
-      items={[
-        {
-          id: "edit",
-          label: "Edit",
-          icon: <Icon name="edit" />,
-          onClick: () => console.log("Edit"),
-        },
-        {
-          id: "share",
-          label: "Share",
-          icon: <Icon name="share" />,
-          onClick: () => console.log("Share"),
-        },
-        {
-          id: "delete",
-          label: "Delete",
-          icon: <Icon name="delete" />,
-          disabled: true,
-          onClick: () => console.log("Delete"),
-        },
-      ]}
+      expanded={isOpen}
+      onToggle={setIsOpen}
+      items={actions}
+      aria-label="Create new content"
     />
   );
 }
 ```
 
+## Best Practices
+
+### Dos
+- [ ] Use a FAB Menu for 3 to 6 related actions.
+- [ ] Ensure the main toggle icon clearly communicates that it can be expanded (e.g., an "Add" or "Menu" icon).
+- [ ] Provide clear labels for all secondary actions.
+- [ ] Use consistent color styles for all elements in the menu.
+
+### Don'ts
+- [ ] Don't use a FAB Menu for actions that are completely unrelated.
+- [ ] Avoid putting more than 6 actions in a single FAB Menu; it can become difficult to use and visually cluttered.
+- [ ] Don't use a FAB Menu if the actions are critical and should be always visible (use a Toolbar instead).
+
+## Accessibility
+
+- **Keyboard**: Press `Esc` to close the menu. Use Arrow keys or `Tab` to navigate through items.
+- **Roles**: Correctly implements `role="menu"` and `role="menuitem"`.
+- **States**: Uses `aria-expanded` on the main toggle to signal the state to screen readers.
+- **Labels**: Every menu item requires a `label` for both visual clarity and accessibility.
+
 ## API Reference
 
 ### FABMenu
 
-The primary orchestrator component representing the morphing FAB and the staggered list of actions.
-
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `expanded` | `boolean` | — | **Required.** Determines if the menu actions are currently visible. |
-| `onToggle` | `(expanded: boolean) => void` | — | **Required.** Callback invoked when the toggle FAB is clicked or menu interactions require closing. |
-| `items` | `FABMenuItemData[]` | — | **Required.** Array of objects representing each actionable menu item. |
-| `colorVariant` | `"primary" \| "secondary" \| "tertiary"` | `"primaryContainer"` | Which MD3 color system theme is applied. |
-| `fabSize` | `"baseline" \| "medium" \| "large"` | `"baseline"` | The dimensions of the unexpanded FAB. |
-| `alignment` | `"start" \| "end"` | `"end"` | Origins of staggered layout growth. |
-| `className` | `string` | — | Extra wrapper tailwind classes (useful for `absolute` positioning). |
+| `expanded` | `boolean` | — | **Required.** Controlled open state. |
+| `onToggle` | `(open: boolean) => void` | — | **Required.** Open state change callback. |
+| `items` | `FABMenuItemData[]` | — | **Required.** Array of action items. |
+| `colorVariant` | `string` | `"primaryContainer"` | MD3 color roles. |
+| `fabSize` | `"baseline" \| "medium" \| "large"` | `"baseline"` | Initial FAB size. |
+| `alignment` | `"start" \| "end"` | `"end"` | Staggered layout alignment. |
 
 ### FABMenuItemData
 
-The interface object detailing the content and behavior of each individual menu item.
-
 | Property | Type | Default | Description |
-|------|------|---------|-------------|
-| `id` | `string` | — | **Required.** Unique identifier for the item slice. |
-| `label` | `string` | — | **Required.** Tooltip title, accessible text, and visible text for this menu item. |
-| `icon` | `React.ReactNode` | — | The React component icon to display on the left side of the label. |
-| `onClick` | `() => void` | — | Action triggered when the item is pressed. |
-| `disabled` | `boolean` | `false` | Sets native `disabled` state and blocks interactions. |
-| `className` | `string` | — | Optional stylistic overrides per menu item. |
+|----------|------|---------|-------------|
+| `id` | `string` | — | **Required.** Unique ID. |
+| `label` | `string` | — | **Required.** Action label. |
+| `icon` | `ReactNode` | — | **Required.** Item icon. |
+| `onClick` | `() => void` | — | Action callback. |
+| `disabled` | `boolean` | `false` | Disables the item. |

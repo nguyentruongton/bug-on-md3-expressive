@@ -1,126 +1,146 @@
 ---
 title: App Bars
 description: App Bars display information and actions at the top and bottom of a screen.
-component: true
 ---
 
-## App Bars
-
-App Bars display information and actions relating to the current screen. The Material Design 3 Expressive (May 2025) update introduces dynamic scrolling behaviors, shared element search transitions, and fully responsive Flexible App Bars.
+App Bars display information and actions relating to the current screen. The Material Design 3 Expressive update introduces dynamic scrolling behaviors, shared element search transitions, and fully responsive Flexible App Bars.
 
 <ComponentPreview name="app-bar-small-demo" />
 
-### Overview
+## Introduction
 
-Our App Bar system provides complete, accessible, and performant implementations of all MD3 variants:
+The MD3 Expressive App Bar system is a comprehensive suite of header and footer components. It ranges from compact headers (Small) to immersive, expanding banners (Medium/Large). Integrated with Framer Motion, it supports advanced features like shared-element transitions for search and scroll-aware behaviors that optimize screen real estate.
 
-- **Small App Bar**: Compact header with optional subtitle.
-- **Medium & Large Flexible App Bars**: Expanding headers that crossfade their typography as the user scrolls.
-- **Search App Bar**: Integrated pill-shaped search bar with full-screen `SearchView` transitioning via Framer Motion's `layoutId`.
-- **Bottom App Bar**: Persistent bottom navigation with floating action button support.
-- **Docked Toolbar**: Secondary action row typically placed below the main app bar.
+## Anatomy
 
----
+- **Container**: The background surface spanning the width of the screen.
+- **Navigation Icon**: Typically a "Back" arrow or a "Menu" hamburger icon at the start.
+- **Title**: The name of the current view or application.
+- **Actions**: A row of interactive icons (e.g., Search, Settings, Profile) at the end.
+- **Flexible Space (Medium/Large)**: An expanded area that collapses as the user scrolls.
 
 ## Variants
 
 ### Small App Bar
 
-The standard top app bar. It can be pinned, or configured to hide/show on scroll (`enterAlways`).
+The standard, most common header variant. Ideal for simple navigation and consistent UI across views.
 
 <ComponentPreview name="app-bar-small-demo" />
 
-### Flexible App Bars
+### Flexible App Bars (Medium & Large)
 
-Flexible app bars start out expanded with larger typography (`HeadlineMedium` or `DisplaySmall`) and smoothly collapse to standard size (`TitleLarge`) as the user scrolls.
+These bars start out expanded, often showing a larger headline or additional context, and smoothly collapse to a standard size as the user scrolls up.
 
 <ComponentPreview name="app-bar-flexible-demo" />
 
 ### Search App Bar
 
-A specialized variant that incorporates a search bar directly into the app bar space. Clicking the search bar seamlessly expands it into a full-screen `SearchView` overlay using shared element transitions.
+A specialized variant that features a built-in search field. It is designed to transition seamlessly into a full-screen search view.
 
 <ComponentPreview name="app-bar-search-demo" />
 
 ### Bottom App Bar
 
-Fixed to the bottom of the screen. Typical for mobile devices to keep primary actions, like filtering or publishing, within thumbs reach. Supports `hidden` scroll behavior to slide away during downward scrolls.
+Provides primary actions at the bottom of the screen, within easy reach of the user's thumb. Often used on mobile devices.
 
 <ComponentPreview name="app-bar-bottom-demo" />
 
----
+## Features
+
+### Scroll Behaviors
+
+App bars can respond to page scrolling in several ways:
+- **Pinned**: Stays at the top/bottom regardless of scroll.
+- **Enter Always**: Hides on scroll down, appears immediately on scroll up.
+- **Exit Until Collapsed**: (Flexible only) Collapses as the user scrolls but stays visible in its collapsed state.
+
+### Search Transitions
+
+Using the `SearchView` and `SearchAppBar` together enables a premium "shared element" transition where the search pill morphs into the full-screen search header.
+
+<ComponentPreview name="app-bar-search-demo" />
+
+## Usage
+
+### Basic Small App Bar
+
+```tsx
+import { SmallAppBar, IconButton } from "@bug-on/md3-react";
+
+<SmallAppBar 
+  title="Page Title" 
+  navigationIcon={<IconButton icon="menu" />}
+  actions={<IconButton icon="more_vert" />}
+/>
+```
+
+### Flexible App Bar with Scroll tracking
+
+```tsx
+import { MediumFlexibleAppBar, useAppBarScroll } from "@bug-on/md3-react";
+
+export function Page() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollBehavior = useAppBarScroll({
+    behavior: "exitUntilCollapsed",
+    scrollElement: scrollRef
+  });
+
+  return (
+    <div ref={scrollRef} className="overflow-auto h-screen">
+      <MediumFlexibleAppBar 
+        title="Expanded Title" 
+        scrollBehavior={scrollBehavior} 
+      />
+      <div className="h-[200vh]">Content...</div>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use a **Small App Bar** for standard views with 1-3 primary actions.
+- [ ] Use a **Flexible App Bar** for landing pages or media-heavy headers to create a sense of depth.
+- [ ] Use the **Bottom App Bar** for mobile-first apps where thumb-reachability is a priority.
+- [ ] Keep the title clear and concise to avoid truncation on small screens.
+
+### Don'ts
+- [ ] Don't put more than 3-4 icons in the actions area; use an overflow menu for secondary actions.
+- [ ] Avoid using a Flexible App Bar if there isn't enough scrollable content to justify the collapse.
+- [ ] Don't hide the App Bar if it contains critical navigation or search functionality that users need constantly.
+
+## Accessibility
+
+- **Roles**: Automatically applies `role="banner"` (top) or `role="contentinfo"` (bottom).
+- **Heading Level**: Titles are rendered within appropriate heading levels (typically `h1` or `h2`).
+- **Focus**: Interactive elements are reachable via `Tab`.
+- **Motion**: Scroll transitions and search expansions respect `prefers-reduced-motion`.
 
 ## API Reference
 
-### useAppBarScroll (Hook)
-
-Centralized hook to manage scroll behaviors for custom implementations.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `behavior` | `pinned` \| `enterAlways` \| `exitUntilCollapsed` | `pinned` | The scroll behavior |
-| `scrollElement` | `RefObject<HTMLElement>` | `undefined` | The scrollable container. Uses `window` if omitted |
-| `collapsedHeight` | `number` | `64` | Target collapsed height |
-| `expandedHeight` | `number` | `112` | Initial expanded height |
-
-### Base AppBar Props
-
-Shared across all variants.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `navigationIcon` | `ReactNode` | - | Primary navigation (e.g. Hamburger menu or Back button) |
-| `actions` | `ReactNode` | - | Trailing actions (e.g. IconButtons). Use `AppBarRow` for overflow routing. |
-| `scrollBehavior` | `AppBarScrollBehavior` | `pinned` | Defines how the bar reacts to scroll |
-| `scrollElement` | `RefObject<HTMLElement>` | - | Target scroll container to track |
-
 ### SmallAppBar
 
-Extends `BaseAppBarProps`.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `ReactNode` | — | View title. |
+| `subtitle` | `ReactNode` | — | Optional secondary text. |
+| `navigationIcon` | `ReactNode` | — | Leading icon. |
+| `actions` | `ReactNode` | — | Trailing action icons. |
+| `scrollBehavior` | `object` | — | Result of `useAppBarScroll`. |
+
+### Flexible App Bars (Medium/Large)
 
 | Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `title` | `ReactNode` | - | Main view title |
-| `subtitle` | `ReactNode` | - | Optional subtitle rendered below the title |
-| `titleAlignment` | `start` \| `center` | `start` | Text alignment for the title |
-
-### Flexible App Bar API
-
-Applies to `MediumFlexibleAppBar` and `LargeFlexibleAppBar`. Extends `BaseAppBarProps`.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `title` | `ReactNode` | - | Main view title |
-| `subtitle` | `ReactNode` | - | Subtitle for the expanded state |
-| `headerContent` | `ReactNode` | - | Additional elements beneath the title (e.g., banner images, avatars) |
-
-### SearchAppBar
-
-Extends `BaseAppBarProps`.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `searchPlaceholder`| `string` | `"Search"` | Placeholder input text |
-| `onSearchFocus` | `() => void` | - | Listener for user intent to search (usually opens SearchView) |
-| `trailingSearchActions`| `ReactNode` | - | Actions *inside* the search pill (e.g., Mic icon) |
-| `externalActions`| `ReactNode` | - | Actions *outside* the search pill (e.g., Profile avatar) |
-| `searchBarId` | `string` | `"search-bar"`| Must match the `SearchView` layoutId to enable smooth transition |
-
-### SearchView
-
-The full-screen overlay component.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `searchBarId` | `string` | `"search-bar"`| Must match the `SearchAppBar`'s ID |
-| `value` | `string` | - | Controlled search text |
-| `onChange` | `(val: string) => void` | - | Update listener for the input |
-| `onClose` | `() => void` | - | Called on Back/Escape or when the leading icon is clicked |
+|------|------|---------|-------------|
+| `title` | `ReactNode` | — | Main title (animates size). |
+| `subtitle` | `ReactNode` | — | Optional subtitle. |
+| `headerContent` | `ReactNode` | — | Additional content in expanded space. |
 
 ### BottomAppBar
 
 | Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `actions` | `ReactNode` | - | Leading action buttons |
-| `floatingActionButton` | `ReactNode` | - | Prominent trailing action (usually a customized FAB) |
-| `scrollBehavior` | `visible` \| `hidden` | `visible` | If hidden, the bar slides down when scrolling down |
+|------|------|---------|-------------|
+| `actions` | `ReactNode` | — | Leading actions. |
+| `fab` | `ReactNode` | — | Optional FAB integrated into the bar. |

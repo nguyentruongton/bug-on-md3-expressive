@@ -5,115 +5,129 @@ description: Snackbars provide brief messages about app processes at the bottom 
 
 Snackbars inform users of a process that an app has performed or will perform. They appear temporarily, towards the bottom of the screen. They shouldn't interrupt the user experience, and they don't require user input to disappear.
 
-## Setup
+<ComponentPreview name="snackbar-basic" />
 
-### Recommended: Via `MD3ThemeProvider`
+## Introduction
 
-The simplest way to enable snackbars is the `enableSnackbar` prop on `MD3ThemeProvider`. No additional provider is required.
+The MD3 Expressive Snackbar is a lightweight notification component used for low-priority feedback. It provides a non-disruptive way to confirm actions (e.g., "Message sent") or inform about background processes. Built with a queuing system, it ensures that messages are delivered sequentially without overlapping.
+
+## Anatomy
+
+- **Container**: A dark surface with rounded corners (4dp) that floats at the bottom of the screen.
+- **Message Text**: A short string describing the event.
+- **Action (Optional)**: A single text button for the user to respond to the notification (e.g., "Undo").
+- **Close Button (Optional)**: A dedicated "X" button to dismiss the snackbar immediately.
+
+## Variants
+
+### Basic Snackbar
+
+A simple message that appears and automatically dismisses after a short duration.
+
+<ComponentPreview name="snackbar-basic" />
+
+### With Action
+
+Includes a text button for a follow-up action. The `showSnackbar` function returns a promise that resolves when the action is clicked.
+
+<ComponentPreview name="snackbar-action" />
+
+### Multi-line / New Line Action
+
+For longer messages or labels, the action can be placed on a new line to maintain readability.
+
+<ComponentPreview name="snackbar-newline" />
+
+## Features
+
+### Queuing System
+
+If multiple snackbars are triggered in rapid succession, the system automatically queues them, showing one at a time to avoid overwhelming the user.
+
+### Automatic Dismissal
+
+Snackbars are temporary and dismiss themselves after a delay (default 4s for short, 7s for long).
+
+## Usage
+
+### Setup
+
+Enable snackbars in your root layout via `MD3ThemeProvider`:
 
 ```tsx
 import { MD3ThemeProvider } from "@bug-on/md3-react";
 
-export default function RootLayout({ children }) {
+export function Root({ children }) {
   return (
-    <MD3ThemeProvider sourceColor="#6750A4" enableSnackbar>
+    <MD3ThemeProvider enableSnackbar>
       {children}
     </MD3ThemeProvider>
   );
 }
 ```
 
-Then use `useSnackbar()` in any child component:
+### Triggering a Snackbar
+
+Use the `useSnackbar` hook to access the `showSnackbar` function.
 
 ```tsx
 import { useSnackbar } from "@bug-on/md3-react";
 
-function SaveButton() {
+export function MyComponent() {
   const { showSnackbar } = useSnackbar();
 
-  return (
-    <button onClick={() => showSnackbar({ message: "Changes saved!" })}>
-      Save
-    </button>
-  );
+  const handleSave = async () => {
+    // Logic...
+    const result = await showSnackbar({
+      message: "Profile updated",
+      actionLabel: "Undo"
+    });
+
+    if (result === 'action-performed') {
+      // Undo logic...
+    }
+  };
+
+  return <Button onClick={handleSave}>Save</Button>;
 }
 ```
 
-### Advanced: Scoped `SnackbarProvider`
+## Best Practices
 
-For scoped notifications (e.g., only inside a specific section), or when you need to control the host position, use `SnackbarProvider` directly. The host renders at the bottom of its provider scope.
+### Dos
+- [ ] Keep messages short and direct.
+- [ ] Use snackbars for non-critical confirmation messages.
+- [ ] Provide an "Undo" action for destructive operations if possible.
+- [ ] Ensure the snackbar doesn't obscure important UI elements like FABs or Navigation Bars.
 
-```tsx
-import { SnackbarProvider } from "@bug-on/md3-react";
+### Don'ts
+- [ ] Don't use snackbars for critical errors that require immediate attention (use a Dialog instead).
+- [ ] Don't put more than one action in a snackbar.
+- [ ] Avoid using snackbars for long-lasting or permanent information.
 
-function DashboardSection({ children }) {
-  return (
-    <SnackbarProvider>
-      {children}
-    </SnackbarProvider>
-  );
-}
-```
+## Accessibility
 
-## Basic Usage
-
-The `useSnackbar` hook returns a `showSnackbar` function. Call it with a message to display a snackbar.
-
-<ComponentPreview name="snackbar-basic" />
-
-## With Action
-
-Snackbars can include a single action. `showSnackbar` returns a Promise that resolves with either `'action-performed'` or `'dismissed'`.
-
-<ComponentPreview name="snackbar-action" />
-
-## Dismissible
-
-If a snackbar message is important or has a longer duration, you can include a dismiss ("X") button by setting `withDismissAction: true`.
-
-<ComponentPreview name="snackbar-dismiss" />
-
-## Long Text and New Line Action
-
-When the message is long or the action label is too wide, the action button can be placed on a new line using `actionOnNewLine: true`.
-
-<ComponentPreview name="snackbar-newline" />
-
-## Queueing Sequence
-
-The Snackbar system includes a built-in queue. If you trigger a new snackbar while one is already showing, it will automatically wait until the current one is dismissed before appearing.
-
-<ComponentPreview name="snackbar-queue" />
+- **Roles**: Uses `role="status"` with `aria-live="polite"` to ensure screen readers announce the message without interrupting the current task.
+- **Duration**: Provides enough time for users to read the message. The `long` duration is recommended for snackbars with actions.
+- **Interaction**: The action button is reachable via keyboard.
 
 ## API Reference
 
 ### useSnackbar
 
-Returns an object with the following properties:
+Hook providing access to the snackbar system.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `showSnackbar` | `(visuals: SnackbarVisuals) => Promise<SnackbarResult>` | Function to push a new snackbar to the queue. |
+| `showSnackbar` | `(config: SnackbarConfig) => Promise<string>` | Triggers a snackbar and returns its result. |
 
-### SnackbarVisuals
+### SnackbarConfig
 
-The object passed to `showSnackbar`:
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `message` | `string` | — | **Required**. The text message to display. |
-| `actionLabel` | `string` | — | Text for the action button. |
-| `withDismissAction` | `boolean` | `false` | Shows a close ("X") button when true. |
-| `actionOnNewLine` | `boolean` | `false` | Places the action button on a new line below the message. |
-| `duration` | `"short" \| "long" \| number` | `"short"` | Duration before auto-dismissal. `short` = 4000ms, `long` = 7000ms. |
-| `className` | `string` | — | Custom className applied to the root container. |
-
-### Returns: SnackbarResult
-
-A union type `'action-performed' | 'dismissed'` indicating how the snackbar was closed.
-
-## Accessibility
-
-- The Snackbar wrapper uses the `status` ARIA role.
-- It includes `aria-live="polite"` and `aria-atomic="true"` ensuring screen readers announce the message.
-- Keyboard focus is not trapped, and the snackbar will not steal focus when it appears, preserving the user's flow.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `message` | `string` | — | **Required.** Message text. |
+| `actionLabel` | `string` | — | Label for the action button. |
+| `withDismissAction` | `boolean` | `false` | Shows a close icon. |
+| `actionOnNewLine` | `boolean` | `false` | Moves action to a new line. |
+| `duration` | `"short" \| "long" \| number` | `"short"` | Display time. |
+| `className` | `string` | — | Custom classes. |

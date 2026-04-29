@@ -1,0 +1,159 @@
+---
+title: Navigation Bar
+description: Navigation bars provide access to primary destinations at the bottom of the screen.
+---
+
+Navigation bars offer a persistent and convenient way to switch between primary destinations in an app. They are typically fixed at the bottom of the screen and contain 3 to 5 destinations.
+
+<ComponentPreview name="navigation-bar-flexible" />
+
+## Introduction
+
+The MD3 Expressive Navigation Bar is designed for modern, multi-device interfaces. It intelligently adapts its layout based on screen width, ensuring that navigation remains ergonomic and efficient on everything from compact smartphones to large spatial panels.
+
+## Anatomy
+
+- **Container**: The bottom-anchored wrapper that holds navigation destinations. Supports elevation and blur effects.
+- **Navigation Destination (Item)**: A clickable area representing a primary destination.
+- **Active Indicator (Pill)**: A visual representation (pill-shaped) of the currently selected destination.
+- **Icon**: Represents the destination's purpose. Supports fill-state animation on selection.
+- **Label Text**: Short text describing the destination.
+- **Badge (Optional)**: Numeric or dot indicator for notifications (e.g., unread messages).
+
+## Variants
+
+### Flexible (Default)
+
+The `flexible` variant is the recommended MD3 Expressive default. It uses a responsive layout:
+- **Compact screens (< 600px)**: Vertical layout (Icon above Label).
+- **Medium screens (≥ 600px)**: Horizontal layout (Icon next to Label) to save vertical space.
+
+<ComponentPreview name="navigation-bar-flexible" />
+
+### Baseline
+
+The `baseline` variant follows the standard Material Design 3 height (80dp) and always maintains a vertical item layout, regardless of screen width. Use this for a consistent classic mobile look.
+
+<ComponentPreview name="navigation-bar-baseline" />
+
+### XR (Spatial)
+
+The `xr` variant is designed for spatial and immersive interfaces. It renders as a floating **orbiter** (pill-shaped container) that is detached from the screen edges, ideal for AR/VR or premium spatial desktop apps.
+
+<ComponentPreview name="navigation-bar-xr" />
+
+## Features
+
+### Hide on Scroll
+
+To maximize screen real estate, enable `hideOnScroll`. The navigation bar will slide out of view when scrolling down and reappear instantly when scrolling up.
+
+*Accessibility Note: Automatically disabled if `prefers-reduced-motion` is active or a screen reader is detected.*
+
+<ComponentPreview name="navigation-bar-hide-on-scroll" />
+
+### Automatic Icon Animation
+
+If you use the `<Icon>` component from `@bug-on/md3-react`, the icon will automatically animate from **outlined** to **filled** when selected.
+
+### Custom Animation
+
+You can customize the spring behavior of the active indicator pill using the `activeIndicatorTransition` prop. This allows for even more expressive transitions.
+
+```tsx
+<NavigationBar 
+  activeIndicatorTransition={{ 
+    type: "spring", 
+    bounce: 0.7, 
+    duration: 0.6 
+  }}
+>
+  {/* items */}
+</NavigationBar>
+```
+
+## Usage
+
+### Basic Usage
+
+```tsx
+import { NavigationBar, NavigationBarItem, Icon } from "@bug-on/md3-react";
+
+export function App() {
+  return (
+    <NavigationBar>
+      <NavigationBarItem
+        icon={<Icon name="home" />}
+        label="Home"
+        selected={true}
+      />
+      <NavigationBarItem
+        icon={<Icon name="search" />}
+        label="Search"
+      />
+      <NavigationBarItem
+        icon={<Icon name="person" />}
+        label="Profile"
+      />
+    </NavigationBar>
+  );
+}
+```
+
+### Controlled Navigation with Badges
+
+```tsx
+<NavigationBarItem
+  icon={<Icon name="notifications" />}
+  label="Notifications"
+  selected={currentTab === 'notifs'}
+  onClick={() => setTab('notifs')}
+  badge="12"
+/>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use between 3 and 5 destinations. For more than 5, consider a Navigation Rail or Modal Drawer.
+- [ ] Use short, clear labels (1-2 words).
+- [ ] Place the most frequently used destination in the leftmost or center position.
+
+### Don'ts
+- [ ] Don't use a Navigation Bar for secondary actions or settings.
+- [ ] Don't use labels that wrap to multiple lines.
+- [ ] Avoid using purely decorative icons without labels unless the meaning is universally understood.
+
+## Accessibility
+
+- **Keyboard Support**: Full tab order. Items are marked with `role="menuitem"`.
+- **Active State**: The selected item uses `aria-current="page"`.
+- **Labels**: If a label is not provided or insufficient, use `aria-label`.
+- **Hiding**: When hidden on scroll, the bar is removed from the tab order to prevent focus trapping.
+
+## API Reference
+
+### NavigationBar
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"flexible" \| "baseline" \| "xr"` | `"flexible"` | The visual style and responsive behavior. |
+| `itemLayout` | `"vertical" \| "horizontal"` | — | Overrides automatic responsive layout. |
+| `hideOnScroll` | `boolean` | `false` | Slides the bar out of view on scroll down. |
+| `elevated` | `boolean` | `false` | Adds a subtle top shadow (or full shadow for XR). |
+| `fixed` | `boolean` | `true` | Whether to fix to the viewport or stay absolute. |
+| `scrollContainerRef` | `RefObject` | — | The element to track for scroll hiding. |
+| `activeIndicatorTransition` | `Transition` | — | Custom spring transition for the active indicator pill. |
+
+### NavigationBarItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `selected` | `boolean` | `false` | Marks the item as the active destination. |
+| `icon` | `ReactNode` | — | Icon element. Animates if using library `<Icon>`. |
+| `label` | `ReactNode` | — | Descriptive text label. |
+| `badge` | `ReactNode` | — | Optional numeric or dot indicator. |
+| `disabled` | `boolean` | `false` | Mutes appearance and blocks interaction. |
+| `onClick` | `() => void` | — | Selection handler. Scrolls to top if already selected. |
+| `aria-label` | `string` | — | Custom accessibility label. |
+

@@ -1,66 +1,120 @@
 ---
-title: "Icon Buttons"
-description: "Icon buttons let people take action with a single icon."
+title: Icon Buttons
+description: Icon buttons let people take action with a single icon.
 ---
 
 Icon buttons let people take action with a single icon. They are compact, high-density components used for the most frequent actions — like liking, bookmarking, or sharing. They morph in shape and color to communicate context and state.
 
-## Icon Button Types
+<ComponentPreview name="icon-button-types" />
+
+## Introduction
+
+The MD3 Expressive Icon Button is a refined version of the standard button, optimized for density and clarity. It supports four primary color styles (Standard, Filled, Tonal, and Outlined) and can function as a simple action or a stateful toggle. In the Expressive update, icon buttons feature smooth shape-morphing transitions that provide tactile confirmation of interaction.
+
+## Anatomy
+
+- **Container**: The surface of the button. Supports multiple shapes (round, square) and variants.
+- **Icon**: The visual indicator of the action. Should be universally understood.
+- **State Layer**: Handles hover and pressed states with a ripple effect and morphing.
+- **Selection Indicator (Toggle)**: In toggle mode, the container color or icon fill changes to indicate the active state.
+
+## Variants
+
+### Color Styles
+
+- **Filled**: High emphasis. Best for the primary action in a section.
+- **Tonal**: Medium-high emphasis. A softer alternative to Filled.
+- **Outlined**: Medium emphasis. Uses a border for visual separation.
+- **Standard**: Low emphasis. Ideal for toolbars and overflow menus.
 
 <ComponentPreview name="icon-button-types" />
 
-## Toggle & Shape Morph
+### Toggle Mode
+
+Icon buttons can toggle between two states. When selected, the button can morph its shape (e.g., from round to rounded-square) and its color to provide clear feedback.
 
 <ComponentPreview name="icon-button-toggle" />
 
-## Sizes
+## Features
 
-<ComponentPreview name="icon-button-sizes" />
+### Shapes
 
-## Shapes
+Choose between **Round** (classic) and **Square** (modern/expressive) base shapes. Both support morphing on interaction.
 
 <ComponentPreview name="icon-button-shapes" />
 
-## Loading State
+### Sizing
+
+Supports five sizes (XS to XL), allowing you to match the density of your interface.
+
+<ComponentPreview name="icon-button-sizes" />
+
+### Loading State
+
+Displays a loading indicator while a process is in progress, automatically disabling interaction and updating ARIA states.
 
 <ComponentPreview name="icon-button-loading" />
 
-## Usage Guidelines
+## Usage
 
-### When to use
-- Frequent, well-understood actions (like, save, share).
-- Compact toolbars and action bars where space is limited.
-- Secondary actions alongside text or other components.
-- Toggle states with clear visual affordance (filled/tonal).
+### Basic Action
 
-### Accessibility
-- **aria-label is required** — icon buttons have no text label.
-- Toggle buttons use aria-pressed for screen readers.
-- Loading state exposes aria-busy=true to assistive tech.
-- XS/SM sizes have 48×48dp touch target (WCAG 2.5.5).
+```tsx
+import { IconButton, Icon } from "@bug-on/md3-react";
 
-### Variant hierarchy
-- **Filled** — highest emphasis, primary action.
-- **Tonal** — medium-high, softer visual weight.
-- **Outlined** — medium emphasis, supports toggle.
-- **Standard** — lowest emphasis, toolbars.
+<IconButton 
+  icon={<Icon name="share" />} 
+  aria-label="Share content" 
+  onClick={() => handleShare()} 
+/>
+```
 
-### Best practices
-- Use only one filled icon button per section.
-- Pair icon buttons with tooltips for clarity.
-- Do not place more than 3–4 icon buttons in a row.
-- Match size to content density: MD/LG for FAB-like usage.
+### Toggle Button
+
+```tsx
+const [liked, setLiked] = useState(false);
+
+<IconButton
+  variant="toggle"
+  selected={liked}
+  onClick={() => setLiked(!liked)}
+  icon={<Icon name={liked ? "favorite" : "favorite_border"} />}
+  aria-label="Like"
+  colorStyle="tonal"
+/>
+```
+
+## Best Practices
+
+### Dos
+- [ ] Always provide a descriptive `aria-label` since the button has no text.
+- [ ] Use tooltips to explain the action if the icon is not universally known.
+- [ ] Use the **Standard** variant for low-priority actions in a toolbar.
+- [ ] Ensure the icon is centered perfectly within the container.
+
+### Don'ts
+- [ ] Don't use more than one **Filled** icon button in a single area.
+- [ ] Avoid using very small sizes (XS) for primary actions on touch devices.
+- [ ] Don't use complex or ambiguous icons; stick to well-known symbols.
+
+## Accessibility
+
+- **Required Label**: `aria-label` must be provided for every icon button.
+- **Toggle State**: Uses `aria-pressed` for toggle variants.
+- **Touch Target**: Even smaller visual sizes maintain a minimum 48x48dp touch target.
+- **Motion**: Morphing animations respect `prefers-reduced-motion`.
 
 ## API Reference
 
 ### IconButton
 
 | Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `colorStyle` | `'standard' \| 'filled' \| 'tonal' \| 'outlined'` | `'standard'` | The visual variant of the icon button. |
-| `variant` | `'action' \| 'toggle'` | `'action'` | Determines if the button acts as a toggle. |
-| `selected` | `boolean` | `false` | Required when `variant="toggle"`. Represents the on/off state. |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | The size of the icon button. |
-| `shape` | `'round' \| 'square'` | `'round'` | The base shape of the icon button. |
-| `loading` | `boolean` | `false` | Displays a loading state. |
-| `loadingVariant` | `'circular' \| 'loading-indicator'` | `'loading-indicator'` | The type of loading indicator to show. |
+|------|------|---------|-------------|
+| `colorStyle` | `"standard" \| "filled" \| "tonal" \| "outlined"` | `"standard"` | Visual variant. |
+| `variant` | `"action" \| "toggle"` | `"action"` | Behavior mode. |
+| `selected` | `boolean` | `false` | Required for `toggle` variant. |
+| `icon` | `ReactNode` | — | The icon to display. |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Button dimensions. |
+| `shape` | `"round" \| "square"` | `"round"` | Base container shape. |
+| `loading` | `boolean` | `false` | Shows loading indicator. |
+| `className` | `string` | — | Custom classes. |

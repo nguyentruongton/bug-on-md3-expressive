@@ -24,8 +24,8 @@ export default function NavigationRailSpatialDemo() {
 					and from each other if narrow=true 
 				*/}
 				<NavigationRail
-					variant="collapsed"
-					xr="spatialized"
+					variant="xr"
+					fabPlacement="spatialized"
 					narrow
 					fab={
 						<FAB

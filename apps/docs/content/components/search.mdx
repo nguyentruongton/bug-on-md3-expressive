@@ -1,76 +1,115 @@
 ---
 title: Search
-description: A flexible, fully accessible search component with support for Docked and FullScreen views.
-component: true
+description: A flexible, fully accessible search component with support for Docked and Full-screen views.
 ---
-
-## Search
 
 The Search component allows users to input search queries and view suggestions or results. Following the Material Design 3 Expressive guidelines, this component supports flexible display modes—collapsing into a pill-shaped **SearchBar** and expanding into a **SearchView** overlay with smooth Framer Motion layout transitions.
 
 <ComponentPreview name="search-basic" />
 
-### Overview
+## Introduction
 
-Our Search system is highly modular and WAI-ARIA compliant out of the box. It manages focus, keyboard navigation (Arrow keys, Enter, Escape), and semantic HTML elements natively.
+The MD3 Expressive Search system is a highly modular set of components designed for both simple queries and complex filtering. It seamlessly transitions between a compact, non-intrusive pill (SearchBar) and a focused results view (SearchView). Using Framer Motion's shared element transitions, the expansion feels fluid and natural, anchoring the user's focus.
 
-- **SearchBar**: The collapsed state. Click or focus to transition to the active mode.
-- **SearchViewDocked**: An overlay that typically hovers just below the app bar. Suitable for large screens (Tablet, Desktop).
-- **SearchViewFullScreen**: An overlay that completely masks the screen underneath using a portal. Common on Mobile platforms.
+## Anatomy
 
----
+- **Search Bar (Collapsed)**: A pill-shaped input field that serves as the entry point.
+- **Search View (Active)**: The expanded panel that displays suggestions and results.
+- **Leading Icon**: Typically a "Search" icon when collapsed, and a "Back" arrow when active.
+- **Input Field**: The area for typing the query.
+- **Trailing Actions**: Icons for clearing the text or triggering secondary actions (e.g., Microphone).
+- **Results / Suggestions List**: The scrollable area below the input.
 
 ## Variants
 
-### Docked, Contained Style (Default)
+### Docked View
 
-The standard search behavior. The view remains anchored to the input area and shares the background container.
+The search view expands directly below the input field, keeping the rest of the screen visible. Ideal for desktop and tablet layouts.
 
-### Docked, Divided Style
-
-The `divided` style variant places a subtle horizontal ruler line beneath the search header, separating the input field from the drop-down results. Useful for search views with heavy content. 
+- **Contained**: The input and results share a single container.
+- **Divided**: A horizontal line separates the input from the results.
+- **Gap**: The results panel is detached from the input header.
 
 <ComponentPreview name="search-docked-divided" />
 
-### Docked with Gap
+### Full-screen View
 
-When `hasGap=true` is provided, the docked view detaches slightly (2dp space) from the header section.
-
-<ComponentPreview name="search-docked-gap" />
-
-### FullScreen Viewer
-
-If `variant="fullscreen"` is used, the search expands dramatically into a full screen dialog, rendered cleanly into a React Portal to avoid `z-index` collisions.
+The search view expands to cover the entire viewport. Best for mobile devices to provide maximum focus on results.
 
 <ComponentPreview name="search-fullscreen" />
 
----
+## Features
+
+### Shared Element Transitions
+
+When the user focuses the SearchBar, it morphs into the SearchView header using a `layoutId` transition, ensuring a consistent visual anchor.
+
+### Text Alignment
+
+The placeholder text can be centered in the collapsed state and smoothly slides to the left as the field is focused, matching MD3 expressive motion.
+
+## Usage
+
+### Basic Usage
+
+```tsx
+import { Search } from "@bug-on/md3-react";
+
+export function SearchExample() {
+  const [query, setQuery] = useState("");
+  const [active, setActive] = useState(false);
+
+  return (
+    <Search
+      query={query}
+      onQueryChange={setQuery}
+      active={active}
+      onActiveChange={setActive}
+      placeholder="Search photos..."
+    >
+      <div className="p-4">
+        {/* Render your search results or suggestions here */}
+        <p>Suggestions go here...</p>
+      </div>
+    </Search>
+  );
+}
+```
+
+## Best Practices
+
+### Dos
+- [ ] Use **Docked** search for desktop layouts and **Full-screen** for mobile.
+- [ ] Provide immediate visual feedback as the user types (suggestions).
+- [ ] Include a "Clear" button in the trailing icon slot to help users reset their query.
+- [ ] Ensure the placeholder text is descriptive of what can be searched.
+
+### Don'ts
+- [ ] Don't hide the search entry point in deeply nested menus if search is a primary app function.
+- [ ] Avoid long delays in displaying search results; use a loading state if necessary.
+- [ ] Don't use search for filtering a list that has fewer than 10 items.
+
+## Accessibility
+
+- **Roles**: Correctly implements `role="search"` and `role="combobox"`.
+- **States**: Uses `aria-expanded` and `aria-haspopup` to communicate the state of the results view.
+- **Keyboard**: Navigate results with Arrow keys. `Enter` to select, `Esc` to close.
+- **Focus**: Focus is automatically managed during the transition between states.
 
 ## API Reference
 
-### Search API
-
-The main orchestrator component managing the transition between the SearchBar and the active SearchView.
+### Search
 
 | Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `query` | `string` | - | **Required.** Controlled search query text. |
-| `onQueryChange` | `(query: string) => void` | - | **Required.** Callback triggered to change query text. |
-| `onSearch` | `(query: string) => void` | - | Callback triggered when the user commits to a search (Presses Enter or submits the form). |
-| `active` | `boolean` | `false` | Specifies whether the SearchView is open. |
-| `onActiveChange` | `(active: boolean) => void` | - | Callback triggered when the component requests to open/close. |
-| `variant` | `docked` \| `fullscreen` | `docked` | Visual layout variant of the active view. |
-| `styleType` | `contained` \| `divided` | `contained` | Whether a divider separates the input from the results. |
-| `textAlign` | `left` \| `center` \| `right` | `left` | Alignment of the placeholder when inactive. Smoothly slides to `left` when focus/active. |
-| `hasGap` | `boolean` | `false` | (Docked only) Configures a 2dp gap between header and body. |
-| `leadingIcon` | `ReactNode` | `<SearchIcon />` \| `<ArrowBackIcon />` | The leading action graphic depending on view state. |
-| `trailingIcon` | `ReactNode` | - | The trailing graphic when query is empty. Replaced by "Clear" button dynamically. |
-| `searchId` | `string` | `(auto-generated)` | Links the Framer Motion `layoutId` and the input `id`. |
-| `listboxId` | `string` | `(auto-generated)` | References the WAI-ARIA listbox id for `aria-controls`. |
-
-### Accessibility
-
-- Natively uses `<search>` HTML tags for the container.
-- Input uses `role="combobox"` with correct `aria-expanded` and `aria-controls` bindings.
-- Dynamic `aria-activedescendant` is applied as the user navigates results using Arrow keys.
-- Search items inside `children` must manually apply `role="option"` and `tabIndex={-1}` for semantic validity.
+|------|------|---------|-------------|
+| `query` | `string` | — | **Required.** Controlled search text. |
+| `onQueryChange` | `(q: string) => void` | — | **Required.** Query change callback. |
+| `active` | `boolean` | `false` | Controls whether view is expanded. |
+| `onActiveChange` | `(a: boolean) => void` | — | Expanded state change callback. |
+| `variant` | `"docked" \| "fullscreen"` | `"docked"` | Layout style. |
+| `placeholder` | `string` | `"Search"` | Input placeholder. |
+| `textAlign` | `"left" \| "center"` | `"left"` | Inactive text alignment. |
+| `hasGap` | `boolean` | `false` | (Docked) Adds gap between header and body. |
+| `leadingIcon` | `ReactNode` | — | Leading icon override. |
+| `trailingIcon` | `ReactNode` | — | Trailing icon override. |
+| `onSearch` | `(q: string) => void` | — | Triggered on "Enter". |
